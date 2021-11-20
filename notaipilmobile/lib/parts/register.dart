@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 
-Widget buildTextFieldRegister(String hint, TextInputType type){
+Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador){
   return TextFormField(
     keyboardType: type,
     decoration: InputDecoration(
@@ -12,6 +12,32 @@ Widget buildTextFieldRegister(String hint, TextInputType type){
       fillColor: Color(0xFF202733),
       border: OutlineInputBorder(),
     ),
+    controller: controlador,
+    validator: (String? value){
+      if (value!.isEmpty){
+        return "Preencha o campo $hint";
+      }
+    },
+  );
+}
+
+Widget buildDropdownFormField(String hint, String? _value){
+  return DropdownButtonFormField(
+    hint: Text(hint),
+    decoration: InputDecoration(
+      border: OutlineInputBorder(),
+      filled: true,
+      fillColor: Color(0xFF202733),
+    ),
+    items: [
+      DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
+      DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
+    ],
+    value: _value,
+    onChanged: (newValue){
+      _value = newValue.toString();
+    },
+    validator: (value) => value == null ? 'Preencha o campo $hint' : null,
   );
 }
 
@@ -58,12 +84,15 @@ Widget buildForwardButton(context, String route){
   );
 }
 
-Widget buildMiddleNavigator(active, String route){
+Widget buildMiddleNavigator(context, active, String route){
   return GestureDetector(
     child: Container(
       width: SizeConfig.widthMultiplier !* 20,
       height: SizeConfig.heightMultiplier !* .4,
       color: active? Colors.white : Colors.grey,
     ),
+    onTap: (){
+      Navigator.pushNamed(context, route);
+    },
   );
 }

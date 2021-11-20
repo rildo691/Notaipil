@@ -22,6 +22,9 @@ class _FirstPageState extends State<FirstPage> {
 
     final _formKey = GlobalKey<FormState>();
 
+    TextEditingController _numeroBilhete = TextEditingController();
+    TextEditingController _numeroProcesso = TextEditingController();
+
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -45,10 +48,10 @@ class _FirstPageState extends State<FirstPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(true, '/first'),
-                          buildMiddleNavigator(false, '/second'),
-                          buildMiddleNavigator(false, '/third'),
-                          buildMiddleNavigator(false, '/fourth'),
+                          buildMiddleNavigator(context, true, '/first'),
+                          buildMiddleNavigator(context, false, '/second'),
+                          buildMiddleNavigator(context, false, '/third'),
+                          buildMiddleNavigator(context, false, '/fourth'),
                         ]
                       ),
                       Form(
@@ -57,9 +60,9 @@ class _FirstPageState extends State<FirstPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildTextFieldRegister("Nº de Processo", TextInputType.number),
+                            buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text, _numeroBilhete),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                            buildTextFieldRegister("Nº de Processo", TextInputType.number, _numeroProcesso),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),

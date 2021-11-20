@@ -34,6 +34,15 @@ class _StudentRegisterState extends State<StudentRegister> {
             case '/first':
               page = FirstPage();
               break;
+            case '/second':
+              page = SecondPage();
+              break;
+            case '/third':
+              page = ThirdPage();
+              break;
+            case '/fourth':
+              page = FourthPage();
+              break;
             default:
               return null;
           }
