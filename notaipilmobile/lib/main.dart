@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
-import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/register/student/student_register.dart';
 
 
 void main() {
@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => const Login(),
         '/type': (_) => const AccountType(),
+        '/student': (_) => const StudentRegister(),
       },
     );
   }

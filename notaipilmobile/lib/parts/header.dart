@@ -23,3 +23,4 @@ Widget buildHeaderPartTwo(String text){
     child: Text(text, style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto', fontWeight: FontWeight.w200), textAlign: TextAlign.center), 
   );
 }
+

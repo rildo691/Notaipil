@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+
+/**Steps to complete the task */
+import 'package:notaipilmobile/register/student/steps/first_page.dart';
+import 'package:notaipilmobile/register/student/steps/second_page.dart';
+import 'package:notaipilmobile/register/student/steps/third_page.dart';
+import 'package:notaipilmobile/register/student/steps/fourth_page.dart';
+
+/**Configurations */
+import 'package:notaipilmobile/configs/size_config.dart';
+
+/**Functions */
+import 'package:notaipilmobile/parts/header.dart';
+
+class StudentRegister extends StatefulWidget {
+
+  const StudentRegister({ Key? key }) : super(key: key);
+
+  @override
+  _StudentRegisterState createState() => _StudentRegisterState();
+}
+
+class _StudentRegisterState extends State<StudentRegister> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Navigator(
+        initialRoute: '/first',
+        onGenerateRoute: (settings){
+          var route = settings.name;
+          Widget page;
+          switch (route) {
+            case '/first':
+              page = FirstPage();
+              break;
+            default:
+              return null;
+          }
+
+          return MaterialPageRoute(builder: (context) => page, settings: settings);
+        },
+      )
+    );
+  }
+}

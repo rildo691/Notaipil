@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
-/**User Interface */
+/**Fucntions*/
 import 'package:notaipilmobile/parts/header.dart';
 
 class AccountType extends StatelessWidget {
@@ -34,8 +34,8 @@ class AccountType extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildAccountButton(context, "Professor", '/teacher_register'),
-                          _buildAccountButton(context, "Aluno", '/student_register')
+                          _buildAccountButton(context, "Professor", '/teacher'),
+                          _buildAccountButton(context, "Aluno", '/student')
                         ],
                       ),
                       Container(

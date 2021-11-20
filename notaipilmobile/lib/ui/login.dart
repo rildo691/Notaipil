@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-/**Config */
+/**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
-/**User Interface */
+/**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 
 class Login extends StatefulWidget {
@@ -48,9 +48,9 @@ class _LoginState extends State<Login> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             _buildTextFormField("E-mail", TextInputType.emailAddress),
-                            SizedBox(height: 40.0),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             _buildPassFromField("Palavra-passe"),
-                            SizedBox(height: 40.0),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             ElevatedButton(
                               child: Text("Entrar"),
                               style: ElevatedButton.styleFrom(
