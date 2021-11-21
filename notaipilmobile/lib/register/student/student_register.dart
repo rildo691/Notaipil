@@ -40,7 +40,7 @@ class _StudentRegisterState extends State<StudentRegister> {
             Widget page;
             switch (route) {
               case '/first':
-                page = FirstPage(student: student,);
+                page = FirstPage();
                 break;
               case '/second':
                 page = SecondPage();

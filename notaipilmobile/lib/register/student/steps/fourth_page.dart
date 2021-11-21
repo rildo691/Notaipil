@@ -12,7 +12,9 @@ import 'package:notaipilmobile/register/model/studentModel.dart';
 
 class FourthPage extends StatefulWidget {
 
-  const FourthPage({ Key? key }) : super(key: key);
+  StudentModel? student;
+
+  FourthPage({this.student});
 
   @override
   _FourthPageState createState() => _FourthPageState();
@@ -30,8 +32,17 @@ class _FourthPageState extends State<FourthPage> {
   @override
   void initState(){
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+    setState((){
+      
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+
+        if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null){
+          _emailAluno.text = newStudent.emailAluno.toString();
+          _emailEncarregado.text = newStudent.emailEncarregado.toString();
+        }
+      });
+      
     });
   }
 
@@ -96,7 +107,8 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      Navigator.pushNamed(context, '/third', arguments: newStudent);
+                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text);
+                                      Navigator.pushNamed(context, '/third', arguments: model);
                                     },
                                   ),
                                   GestureDetector(
@@ -113,8 +125,9 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
+                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text);
                                       if (_formKey.currentState!.validate()){
-                                        print(newStudent.toString());
+                                        print(model);
                                         _buildModal();
                                       } else {
                                         _buildErrorModal();
@@ -173,7 +186,9 @@ class _FourthPageState extends State<FourthPage> {
                     textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/');
+                  },
                 )
               ]
             ),

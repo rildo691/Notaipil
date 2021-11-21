@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/parts/header.dart';
 
 Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador){
   return TextFormField(
@@ -41,10 +40,6 @@ Widget buildDropdownFormField(String hint, String? _value){
     },
     validator: (value) => value == null ? 'Preencha o campo $hint' : null,
   );
-}
-
-dynamic returnArguments(List<TextEditingController> controladores){
-
 }
 
 Widget buildBackButton(context, String route, ){

@@ -12,9 +12,7 @@ import 'package:notaipilmobile/register/model/studentModel.dart';
 
 class FirstPage extends StatefulWidget {
 
-  StudentModel? student;
-
-  FirstPage({this.student});
+  const FirstPage({Key? key }) : super(key: key);
 
   @override
   _FirstPageState createState() => _FirstPageState();
@@ -34,14 +32,16 @@ class _FirstPageState extends State<FirstPage> {
     super.initState();
 
     setState((){
-      if (widget.student != null){
-        newStudent = widget.student;
+      
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
 
-        _numeroBilhete.text = newStudent!.numeroBI.toString();
-        _numeroProcesso.text = newStudent!.numeroProcesso.toString();
-      } else {
-        newStudent = StudentModel();
-      }
+          if (newStudent?.numeroBI != null && newStudent?.numeroProcesso!= null){
+            _numeroBilhete.text = newStudent!.numeroBI.toString();
+            _numeroProcesso.text = newStudent!.numeroProcesso.toString();
+            
+          }
+        });
     });
   }
 
@@ -109,9 +109,8 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      newStudent!.numeroBI = _numeroBilhete.text.toString();
-                                      newStudent!.numeroProcesso = _numeroProcesso.text.toString();
-                                      Navigator.pushNamed(context, '/fourth', arguments: newStudent);
+                                      var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: _numeroProcesso.text);
+                                      Navigator.pushNamed(context, '/fourth', arguments: model);
                                     },
                                   ),
                                   GestureDetector(
@@ -129,7 +128,8 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      Navigator.pushNamed(context, '/second');
+                                      var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: _numeroProcesso.text);
+                                      Navigator.pushNamed(context, '/second', arguments: model);
                                     },
                                   )
                                 ],  
@@ -148,7 +148,7 @@ class _FirstPageState extends State<FirstPage> {
                       )
                     ],
                   ),
-                )
+                ),
               )
             );
           }

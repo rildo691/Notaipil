@@ -30,9 +30,19 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   void initState(){
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+
+      if (newStudent?.classe != null && newStudent?.turma != null){
+        setState((){
+          _value = newStudent.classe.toString();
+          _value2 = newStudent.turma.toString();
+        });
+      }
+      
     });
+    
   }
 
   @override
@@ -73,9 +83,43 @@ class _ThirdPageState extends State<ThirdPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildDropdownFormField("Classe", _value),
+                            DropdownButtonFormField(
+                              hint: Text("Classe"),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              items: [
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
+                              ],
+                              value: _value,
+                              onChanged: (newValue){
+                                _value = newValue.toString();
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Classe' : null,
+                            ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildDropdownFormField("Turma", _value),
+                            DropdownButtonFormField(
+                              hint: Text("Turma"),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              items: [
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
+                              ],
+                              value: _value2,
+                              onChanged: (newValue){
+                                _value2 = newValue.toString();
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Turma' : null,
+                            ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -98,9 +142,8 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      newStudent.areaFormacao = _value;
-                                      newStudent.curso = _value2;
-                                      Navigator.pushNamed(context, '/second', arguments: newStudent);
+                                      var model = newStudent?.copyWith(classe: _value, turma: _value2);
+                                      Navigator.pushNamed(context, '/second', arguments: model);
                                     },
                                   ),
                                   GestureDetector(
@@ -118,7 +161,8 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      Navigator.pushNamed(context, '/fourth', arguments: newStudent);
+                                      var model = newStudent?.copyWith(classe: _value, turma: _value2);
+                                      Navigator.pushNamed(context, '/fourth', arguments: model);
                                     },
                                   )
                                 ],  

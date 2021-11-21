@@ -6,6 +6,7 @@ import 'package:notaipilmobile/parts/header.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/register/model/studentModel.dart';
 
 class SecondPage extends StatefulWidget {
 
@@ -17,11 +18,34 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
 
-  @override
-  Widget build(BuildContext context) {
+  final _formKey = GlobalKey<FormState>();
+  
+  String? _value;
+  String? _value2;
 
-    final _formKey = GlobalKey<FormState>();
-    String? _value;
+  late StudentModel? newStudent;
+
+  @override
+  void initState(){
+    super.initState();
+
+    
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
+      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+        
+      if (newStudent?.areaFormacao != null && newStudent?.curso != null){
+        setState(() {
+          _value = newStudent?.areaFormacao.toString();
+          _value2 = newStudent?.curso.toString();
+        });
+      }
+
+    });
+  }
+  
+
+  @override
+  Widget build(BuildContext context) {   
 
     return LayoutBuilder(
       builder: (context, constraints){
@@ -58,17 +82,88 @@ class _SecondPageState extends State<SecondPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildDropdownFormField("Área de Formação", _value),
+                            DropdownButtonFormField(
+                              hint: _value == null ? Text("Área de Formação") : null,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              items: [
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
+                              ],
+                              value: _value,
+                              onChanged: (newValue){
+                                _value = newValue.toString();
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,
+                            ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildDropdownFormField("Curso", _value),
+                            DropdownButtonFormField(
+                              hint: Text("Curso"),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              items: [
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
+                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
+                              ],
+                              value: _value2,
+                              onChanged: (newValue){
+                                _value2 = newValue.toString();
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Curso' : null,
+                            ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  buildBackButton(context, '/first'),
-                                  buildForwardButton(context, '/third')
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                          SizedBox(width: 8.0),
+                                          Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      var model = newStudent?.copyWith(areaFormacao: _value, curso: _value2);
+                                      Navigator.pushNamed(context, '/first', arguments: model);
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                          SizedBox(width: 8.0),
+                                          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      var model = newStudent?.copyWith(areaFormacao: _value, curso: _value2);
+                                      Navigator.pushNamed(context, '/third', arguments: model);
+                                    },
+                                  )
                                 ],  
                               ),
                             )
