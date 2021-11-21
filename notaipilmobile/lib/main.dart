@@ -6,6 +6,7 @@ import 'package:notaipilmobile/ui/account_type.dart';
 import 'package:notaipilmobile/register/student/student_register.dart';
 
 
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'NotaIPIL',
       theme: ThemeData(
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => const Login(),
         '/type': (_) => const AccountType(),
-        '/student': (_) => const StudentRegister(),
+        '/student': (_) => StudentRegister(),
       },
     );
   }

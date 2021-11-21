@@ -7,6 +7,9 @@ import 'package:notaipilmobile/parts/header.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/studentModel.dart';
+
 class FourthPage extends StatefulWidget {
 
   const FourthPage({ Key? key }) : super(key: key);
@@ -17,15 +20,23 @@ class FourthPage extends StatefulWidget {
 
 class _FourthPageState extends State<FourthPage> {
 
-   @override
-   Widget build(BuildContext context) {
+  final _formKey = GlobalKey<FormState>();
 
-    final _formKey = GlobalKey<FormState>();
-    String? _value;
+  TextEditingController _emailAluno = TextEditingController();
+  TextEditingController _emailEncarregado = TextEditingController();
 
-    TextEditingController _emailAluno = TextEditingController();
-    TextEditingController _emailEncarregado = TextEditingController();
+  late StudentModel newStudent;
 
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -70,7 +81,24 @@ class _FourthPageState extends State<FourthPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  buildBackButton(context, '/third'),
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                          SizedBox(width: 8.0),
+                                          Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.pushNamed(context, '/third', arguments: newStudent);
+                                    },
+                                  ),
                                   GestureDetector(
                                     child: Container(
                                       width: SizeConfig.screenWidth !* .32,
@@ -85,7 +113,12 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      _buildModal();
+                                      if (_formKey.currentState!.validate()){
+                                        print(newStudent.toString());
+                                        _buildModal();
+                                      } else {
+                                        _buildErrorModal();
+                                      }
                                     },
                                   )
                                 ],  
@@ -149,4 +182,42 @@ class _FourthPageState extends State<FourthPage> {
       }
     );
   }
+
+  Future<Widget>? _buildErrorModal(){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.error_outline, size: 70.0, color: Colors.red),
+                Text("Ocorreu um erro na validação do formulário. Certifique-se que tem tudo conforme o pedido.", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){},
+                )
+              ]
+            ),
+          )
+        );
+      }
+    );
+  }
+  
 }

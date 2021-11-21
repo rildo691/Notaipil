@@ -7,9 +7,14 @@ import 'package:notaipilmobile/parts/header.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/studentModel.dart';
+
 class FirstPage extends StatefulWidget {
 
-  const FirstPage({ Key? key }) : super(key: key);
+  StudentModel? student;
+
+  FirstPage({this.student});
 
   @override
   _FirstPageState createState() => _FirstPageState();
@@ -17,13 +22,32 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
 
+  StudentModel? newStudent;
+
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _numeroBilhete = TextEditingController();
+  TextEditingController _numeroProcesso = TextEditingController();
+
+  @override
+  void initState(){
+    super.initState();
+
+    setState((){
+      if (widget.student != null){
+        newStudent = widget.student;
+
+        _numeroBilhete.text = newStudent!.numeroBI.toString();
+        _numeroProcesso.text = newStudent!.numeroProcesso.toString();
+      } else {
+        newStudent = StudentModel();
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
-
-    final _formKey = GlobalKey<FormState>();
-
-    TextEditingController _numeroBilhete = TextEditingController();
-    TextEditingController _numeroProcesso = TextEditingController();
 
     return LayoutBuilder(
       builder: (context, constraints){
@@ -52,7 +76,7 @@ class _FirstPageState extends State<FirstPage> {
                           buildMiddleNavigator(context, false, '/second'),
                           buildMiddleNavigator(context, false, '/third'),
                           buildMiddleNavigator(context, false, '/fourth'),
-                        ]
+                        ],
                       ),
                       Form(
                         key: _formKey,
@@ -69,8 +93,45 @@ class _FirstPageState extends State<FirstPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  buildBackButton(context, '/fourth'),
-                                  buildForwardButton(context, '/second')
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                          SizedBox(width: 8.0),
+                                          Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      newStudent!.numeroBI = _numeroBilhete.text.toString();
+                                      newStudent!.numeroProcesso = _numeroProcesso.text.toString();
+                                      Navigator.pushNamed(context, '/fourth', arguments: newStudent);
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                          SizedBox(width: 8.0),
+                                          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.pushNamed(context, '/second');
+                                    },
+                                  )
                                 ],  
                               ),
                             )

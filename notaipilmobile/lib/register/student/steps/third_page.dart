@@ -7,6 +7,9 @@ import 'package:notaipilmobile/parts/header.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/studentModel.dart';
+
 class ThirdPage extends StatefulWidget {
 
   const ThirdPage({ Key? key }) : super(key: key);
@@ -17,11 +20,23 @@ class ThirdPage extends StatefulWidget {
 
 class _ThirdPageState extends State<ThirdPage> {
 
+  final _formKey = GlobalKey<FormState>();
+
+  String? _value;
+  String? _value2;
+
+  late StudentModel newStudent;
+
+  @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    final _formKey = GlobalKey<FormState>();
-    String? _value;
 
     return LayoutBuilder(
       builder: (context, constraints){
@@ -67,8 +82,45 @@ class _ThirdPageState extends State<ThirdPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  buildBackButton(context, '/second'),
-                                  buildForwardButton(context, '/fourth')
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                          SizedBox(width: 8.0),
+                                          Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      newStudent.areaFormacao = _value;
+                                      newStudent.curso = _value2;
+                                      Navigator.pushNamed(context, '/second', arguments: newStudent);
+                                    },
+                                  ),
+                                  GestureDetector(
+                                    child: Container(
+                                      width: SizeConfig.screenWidth !* .32,
+                                      height: SizeConfig.heightMultiplier !* 6,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                          SizedBox(width: 8.0),
+                                          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.pushNamed(context, '/fourth', arguments: newStudent);
+                                    },
+                                  )
                                 ],  
                               ),
                             )

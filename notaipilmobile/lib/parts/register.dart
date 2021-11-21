@@ -5,6 +5,7 @@ import 'package:notaipilmobile/parts/header.dart';
 Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador){
   return TextFormField(
     keyboardType: type,
+    style: TextStyle(color: Colors.white),
     decoration: InputDecoration(
       labelText: hint,
       labelStyle: TextStyle(color: Colors.white),
@@ -28,6 +29,7 @@ Widget buildDropdownFormField(String hint, String? _value){
       border: OutlineInputBorder(),
       filled: true,
       fillColor: Color(0xFF202733),
+      hintStyle: TextStyle(color: Colors.white),
     ),
     items: [
       DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
@@ -41,7 +43,11 @@ Widget buildDropdownFormField(String hint, String? _value){
   );
 }
 
-Widget buildBackButton(context, String route){
+dynamic returnArguments(List<TextEditingController> controladores){
+
+}
+
+Widget buildBackButton(context, String route, ){
   return GestureDetector(
     child: Container(
       width: SizeConfig.screenWidth !* .32,
