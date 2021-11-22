@@ -83,13 +83,15 @@ class _SecondPageState extends State<SecondPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             DropdownButtonFormField(
-                              hint: _value == null ? Text("Área de Formação") : null,
+                              hint: Text("Área de Formação"),
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
                                 fillColor: Color(0xFF202733),
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
+                              dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
@@ -103,12 +105,14 @@ class _SecondPageState extends State<SecondPage> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             DropdownButtonFormField(
                               hint: Text("Curso"),
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
                                 fillColor: Color(0xFF202733),
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
+                              dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste2",),

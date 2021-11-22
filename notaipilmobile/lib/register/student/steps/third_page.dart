@@ -85,12 +85,14 @@ class _ThirdPageState extends State<ThirdPage> {
                           children: [
                             DropdownButtonFormField(
                               hint: Text("Classe"),
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
                                 fillColor: Color(0xFF202733),
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
+                              dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
@@ -104,12 +106,14 @@ class _ThirdPageState extends State<ThirdPage> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             DropdownButtonFormField(
                               hint: Text("Turma"),
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
                                 fillColor: Color(0xFF202733),
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
+                              dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
                                 DropdownMenuItem(child: Text("Teste"), value: "Teste2",),

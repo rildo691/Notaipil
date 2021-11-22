@@ -27,7 +27,7 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
           return Fluttertoast.showToast(
             msg: "E-mail inválido, tente novamente",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
           ).toString();
         }
       }
