@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:email_validator/email_validator.dart';
+
 Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador){
   return TextFormField(
     keyboardType: type,
@@ -14,6 +18,20 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
     ),
     controller: controlador,
     validator: (String? value){
+      bool isValid = false;
+
+      if (type == TextInputType.emailAddress && value!.isNotEmpty){
+        isValid = EmailValidator.validate(value);
+
+        if (!isValid){
+          return Fluttertoast.showToast(
+            msg: "E-mail inválido, tente novamente",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+          ).toString();
+        }
+      }
+
       if (value!.isEmpty){
         return "Preencha o campo $hint";
       }
