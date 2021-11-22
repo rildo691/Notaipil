@@ -26,14 +26,11 @@ class StudentRegister extends StatefulWidget {
 
 class _StudentRegisterState extends State<StudentRegister> {
 
-  var _navigatorKey = GlobalKey<NavigatorState>();
-
   StudentModel? student;
   
   @override
   Widget build(BuildContext context) {
     return  Navigator(
-          key: _navigatorKey,
           initialRoute: '/first',
           onGenerateRoute: (settings){
             var route = settings.name;

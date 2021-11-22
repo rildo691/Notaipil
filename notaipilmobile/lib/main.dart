@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
 import 'package:notaipilmobile/register/student/student_register.dart';
-
+import 'package:notaipilmobile/register/teacher/teacher_register.dart';
 
 
 void main() {
@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/': (_) => const Login(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
+        '/teacher': (_) => TeacherRegister(),
       },
     );
   }
