@@ -24,6 +24,7 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
 Widget buildDropdownFormField(String hint, String? _value){
   return DropdownButtonFormField(
     hint: Text(hint),
+    style: TextStyle(color: Colors.white),
     decoration: InputDecoration(
       border: OutlineInputBorder(),
       filled: true,
