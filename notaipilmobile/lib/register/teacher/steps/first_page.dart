@@ -97,7 +97,7 @@ class _FirstPageState extends State<FirstPage> {
                                     child: Container(
                                       width: SizeConfig.screenWidth !* .32,
                                       height: SizeConfig.heightMultiplier !* 6,
-                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      color: Colors.grey,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,8 +109,7 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = TeacherModel(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
-                                      Navigator.pushNamed(context, '/four', arguments: model);
+                                      
                                     },
                                   ),
                                   GestureDetector(

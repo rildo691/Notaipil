@@ -23,28 +23,28 @@ class _TeacherRegisterState extends State<TeacherRegister> {
    @override
    Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: '/one_page',
+      initialRoute: '/one',
       onGenerateRoute: (settings){
         var route = settings.name;
         Widget page;
         switch (route) {
-          case '/one_page':
+          case '/one':
             page = teacher.FirstPage();
             break;
-          case '/two_page':
+          case '/two':
             page = teacher.SecondPage();
             break;
-          case '/three_page':
+          case '/three':
             page = teacher.ThirdPage();
             break;
-          case '/four_page':
+          case '/four':
             page = teacher.FourthPage();
             break;
           default:
             return null;
         }
 
-        MaterialPageRoute(builder: (context) => page, settings: settings);
+        return MaterialPageRoute(builder: (context) => page, settings: settings);
       }
     );
   }

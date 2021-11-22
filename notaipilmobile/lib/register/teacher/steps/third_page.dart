@@ -100,7 +100,7 @@ class _ThirdPageState extends State<ThirdPage> {
                               onChanged: (newValue){
                                 _value = newValue.toString();
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Regime Laboral' : null,
+                              validator: (value) => value == null ? 'Preencha o campo Habilitações Literárias' : null,
                             ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             DropdownButtonFormField(
@@ -121,7 +121,7 @@ class _ThirdPageState extends State<ThirdPage> {
                               onChanged: (newValue){
                                 _value2 = newValue.toString();
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Regime Laboral' : null,
+                              validator: (value) => value == null ? 'Preencha o campo Categoria' : null,
                             ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
@@ -145,7 +145,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newTeacher?.copyWith(habiitacoes: _value, categoria: _value2);
+                                      var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
                                       Navigator.pushNamed(context, '/two', arguments: model);
                                     },
                                   ),
@@ -165,7 +165,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     ),
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
-                                        var model = newTeacher?.copyWith(habiitacoes: _value, categoria: _value2);
+                                        var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
                                         Navigator.pushNamed(context, '/four', arguments: model);
                                       }
                                     },

@@ -45,7 +45,6 @@ class _SecondPageState extends State<SecondPage> {
       if (newTeacher?.email != null){
         _email.text = newTeacher!.email.toString();
       }
-
     });
   }
 
@@ -86,7 +85,7 @@ class _SecondPageState extends State<SecondPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildTextFieldRegister("E-mail", TextInputType.text, _email),
+                            buildTextFieldRegister("E-mail", TextInputType.emailAddress, _email),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             DropdownButtonFormField(
                               hint: Text("Regime Laboral"),

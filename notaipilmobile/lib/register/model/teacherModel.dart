@@ -23,7 +23,7 @@ class TeacherModel{
     String? numeroBI,
     String? email,
     String? telefone,
-    String? habiitacoes,
+    String? habilitacoes,
     String? regimeLaboral,
     String? categoria,
     String? tempoServicoIpil,
@@ -41,6 +41,9 @@ class TeacherModel{
     );
   }
   
-  
+  @override
+  String toString() {
+    return "Professor: {BI n.º: $numeroBI, Email n.º: $email, Telefone: $telefone, Habilitações Literárias: $habilitacoes, Categoria: $categoria, Regime Laboral: $regimeLaboral, Tempo de Servico no IPIL: $tempoServicoIpil, Tempo de Servico na Educação: $tempoServicoEducacao}";
+  }
   
 }
