@@ -9,13 +9,6 @@ import 'package:notaipilmobile/register/student/steps/fourth_page.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
-/**Functions */
-import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/parts/register.dart';
-
-/**Model */
-import 'package:notaipilmobile/register/model/studentModel.dart';
-
 class StudentRegister extends StatefulWidget {
 
   const StudentRegister({ Key? key }) : super(key: key);
@@ -25,8 +18,6 @@ class StudentRegister extends StatefulWidget {
 }
 
 class _StudentRegisterState extends State<StudentRegister> {
-
-  StudentModel? student;
   
   @override
   Widget build(BuildContext context) {

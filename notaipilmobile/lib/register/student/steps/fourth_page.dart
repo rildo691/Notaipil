@@ -127,10 +127,9 @@ class _FourthPageState extends State<FourthPage> {
                                     onTap: (){
                                       var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text);
                                       if (_formKey.currentState!.validate()){
-                                        print(model);
                                         _buildModal();
                                       } else {
-                                        _buildErrorModal();
+                                        _buildErrorModal(model);
                                       }
                                     },
                                   )
@@ -198,7 +197,7 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
-  Future<Widget>? _buildErrorModal(){
+  Future<Widget>? _buildErrorModal(model){
     showDialog(
       context: context,
       builder: (context){
@@ -225,7 +224,9 @@ class _FourthPageState extends State<FourthPage> {
                     textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/fourth', arguments: model);
+                  },
                 )
               ]
             ),

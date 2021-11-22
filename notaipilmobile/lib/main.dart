@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
+
+/**Registers */
 import 'package:notaipilmobile/register/student/student_register.dart';
 import 'package:notaipilmobile/register/teacher/teacher_register.dart';
 

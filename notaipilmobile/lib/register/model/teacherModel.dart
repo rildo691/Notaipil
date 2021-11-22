@@ -19,7 +19,7 @@ class TeacherModel{
     this.tempoServicoEducacao
   });
 
-  TeacherModelcopyWith({
+  TeacherModel copyWith({
     String? numeroBI,
     String? email,
     String? telefone,
