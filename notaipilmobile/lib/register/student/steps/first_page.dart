@@ -128,8 +128,10 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: _numeroProcesso.text);
-                                      Navigator.pushNamed(context, '/second', arguments: model);
+                                      if (_formKey.currentState!.validate()){
+                                        var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: _numeroProcesso.text);
+                                        Navigator.pushNamed(context, '/second', arguments: model);
+                                      }
                                     },
                                   )
                                 ],  
@@ -142,7 +144,7 @@ class _FirstPageState extends State<FirstPage> {
                         child: GestureDetector(
                           child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           onTap: (){
-                            Navigator.pushNamed(context, '/');
+                            Navigator.of(context, rootNavigator: true).pushNamed('/');
                           }
                         )
                       )

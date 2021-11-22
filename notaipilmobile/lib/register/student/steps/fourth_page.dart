@@ -27,7 +27,7 @@ class _FourthPageState extends State<FourthPage> {
   TextEditingController _emailAluno = TextEditingController();
   TextEditingController _emailEncarregado = TextEditingController();
 
-  late StudentModel newStudent;
+  late StudentModel? newStudent;
 
   @override
   void initState(){
@@ -38,8 +38,8 @@ class _FourthPageState extends State<FourthPage> {
         newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
 
         if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null){
-          _emailAluno.text = newStudent.emailAluno.toString();
-          _emailEncarregado.text = newStudent.emailEncarregado.toString();
+          _emailAluno.text = newStudent!.emailAluno.toString();
+          _emailEncarregado.text = newStudent!.emailEncarregado.toString();
         }
       });
       
@@ -144,7 +144,7 @@ class _FourthPageState extends State<FourthPage> {
                         child: GestureDetector(
                           child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           onTap: (){
-                            Navigator.pushNamed(context, '/');
+                            Navigator.of(context, rootNavigator: true).pushNamed('/');
                           }
                         )
                       )

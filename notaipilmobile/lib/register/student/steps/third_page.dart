@@ -25,7 +25,7 @@ class _ThirdPageState extends State<ThirdPage> {
   String? _value;
   String? _value2;
 
-  late StudentModel newStudent;
+  late StudentModel? newStudent;
 
   @override
   void initState(){
@@ -36,8 +36,8 @@ class _ThirdPageState extends State<ThirdPage> {
 
       if (newStudent?.classe != null && newStudent?.turma != null){
         setState((){
-          _value = newStudent.classe.toString();
-          _value2 = newStudent.turma.toString();
+          _value = newStudent?.classe.toString();
+          _value2 = newStudent?.turma.toString();
         });
       }
       
@@ -161,8 +161,10 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newStudent?.copyWith(classe: _value, turma: _value2);
-                                      Navigator.pushNamed(context, '/fourth', arguments: model);
+                                      if (_formKey.currentState!.validate()){
+                                        var model = newStudent?.copyWith(classe: _value, turma: _value2);
+                                        Navigator.pushNamed(context, '/fourth', arguments: model);
+                                      }
                                     },
                                   )
                                 ],  
@@ -175,7 +177,7 @@ class _ThirdPageState extends State<ThirdPage> {
                         child: GestureDetector(
                           child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           onTap: (){
-                            Navigator.pushNamed(context, '/');
+                            Navigator.of(context, rootNavigator: true).pushNamed('/');
                           }
                         )
                       )

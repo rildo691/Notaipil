@@ -160,8 +160,10 @@ class _SecondPageState extends State<SecondPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newStudent?.copyWith(areaFormacao: _value, curso: _value2);
-                                      Navigator.pushNamed(context, '/third', arguments: model);
+                                      if (_formKey.currentState!.validate()){
+                                        var model = newStudent?.copyWith(areaFormacao: _value, curso: _value2);
+                                        Navigator.pushNamed(context, '/third', arguments: model);
+                                      }
                                     },
                                   )
                                 ],  
@@ -174,7 +176,7 @@ class _SecondPageState extends State<SecondPage> {
                         child: GestureDetector(
                           child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           onTap: (){
-                            Navigator.pushNamed(context, '/');
+                            Navigator.of(context, rootNavigator: true).pushNamed('/');
                           }
                         )
                       )
