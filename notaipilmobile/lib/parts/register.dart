@@ -24,7 +24,7 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
         isValid = EmailValidator.validate(value);
 
         if (!isValid){
-          return Fluttertoast.showToast(
+          Fluttertoast.showToast(
             msg: "E-mail inválido, tente novamente",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
