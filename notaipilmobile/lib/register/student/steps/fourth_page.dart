@@ -10,6 +10,10 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Model */
 import 'package:notaipilmobile/register/model/studentModel.dart';
 
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:email_validator/email_validator.dart';
+
 class FourthPage extends StatefulWidget {
 
   StudentModel? student;
@@ -60,7 +64,7 @@ class _FourthPageState extends State<FourthPage> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Colors.blueGrey.shade900,
+                  color: Color(0xFF202733),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -225,7 +229,7 @@ class _FourthPageState extends State<FourthPage> {
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
-                    Navigator.pushNamed(context, '/fourth', arguments: model);
+                    Navigator.pop(context, model);
                   },
                 )
               ]

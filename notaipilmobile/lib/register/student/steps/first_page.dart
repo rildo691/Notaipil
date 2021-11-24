@@ -64,7 +64,7 @@ class _FirstPageState extends State<FirstPage> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Colors.blueGrey.shade900,
+                  color: Color(0xFF202733),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -161,3 +161,4 @@ class _FirstPageState extends State<FirstPage> {
     );
   }
 }
+

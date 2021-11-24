@@ -59,7 +59,7 @@ class _FourthPageState extends State<FourthPage> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Colors.blueGrey.shade900,
+                  color: Color(0xFF202733),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -226,7 +226,7 @@ class _FourthPageState extends State<FourthPage> {
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
-                    Navigator.pushNamed(context, '/four', arguments: model);
+                    Navigator.pop(context, model);
                   },
                 )
               ]

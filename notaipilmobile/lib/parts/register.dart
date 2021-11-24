@@ -29,6 +29,8 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
           ).toString();
+
+          return "E-mail inválido.";
         }
       }
 
