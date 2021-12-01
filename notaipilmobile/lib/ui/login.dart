@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
                           children: [
                             _buildTextFormField("E-mail", TextInputType.emailAddress),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            _buildPassFromField("Palavra-passe"),
+                            _buildPassFormField("Palavra-passe"),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             ElevatedButton(
                               child: Text("Entrar"),
@@ -108,7 +108,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildPassFromField(String hint){
+  Widget _buildPassFormField(String hint){
     return TextFormField(
       decoration: InputDecoration(
         labelText: hint,
