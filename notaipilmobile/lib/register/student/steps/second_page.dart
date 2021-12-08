@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
@@ -7,6 +9,10 @@ import 'package:notaipilmobile/parts/header.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/register/model/studentModel.dart';
+
+/**Models */
+import 'package:notaipilmobile/register/model/areaModel.dart';
+import 'package:notaipilmobile/register/model/courseModel.dart';
 
 class SecondPage extends StatefulWidget {
 
@@ -25,6 +31,9 @@ class _SecondPageState extends State<SecondPage> {
 
   late StudentModel? newStudent;
 
+  var areas = [];
+  var courses = [];
+
   @override
   void initState(){
     super.initState();
@@ -41,6 +50,36 @@ class _SecondPageState extends State<SecondPage> {
       }
 
     });
+
+    Future<List> getArea() async{
+      var url = "http://localhost:9800/api/v1/areas";
+      var response = await http.get(Uri.parse(url));
+
+
+      if (response.statusCode == 200){
+        var areasJson = json.decode(response.body);
+        for (var area in areasJson){
+          areas.add(Area.fromJson(areasJson));
+        }
+      }
+
+      return areas;
+    }
+
+    Future<List> getCourse() async{
+      var url = "http://localhost:9800/api/v1/courses";
+      var response = await http.get(Uri.parse(url));
+
+
+      if (response.statusCode == 200){
+        var coursesJson = json.decode(response.body);
+        for (var course in coursesJson){
+          courses.add(CourseModel.fromJson(coursesJson));
+        }
+      }
+
+      return courses;
+    }
   }
   
 
@@ -82,7 +121,7 @@ class _SecondPageState extends State<SecondPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DropdownButtonFormField(
+                            DropdownButtonFormField<String>(
                               hint: Text("Área de Formação"),
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -92,10 +131,12 @@ class _SecondPageState extends State<SecondPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
-                              ],
+                              items: areas.map((e) {
+                                return new DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e.toString())
+                                );
+                              }).toList(),
                               value: _value,
                               onChanged: (newValue){
                                 _value = newValue.toString();
@@ -113,10 +154,12 @@ class _SecondPageState extends State<SecondPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
-                              ],
+                              items: courses.map((e) {
+                                return new DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e.toString())
+                                );
+                              }).toList(),
                               value: _value2,
                               onChanged: (newValue){
                                 _value2 = newValue.toString();
@@ -193,5 +236,9 @@ class _SecondPageState extends State<SecondPage> {
         );
       },
     );
+  }
+
+  void buildItems(){
+
   }
 }

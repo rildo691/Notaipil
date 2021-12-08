@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
@@ -9,6 +11,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/studentModel.dart';
+import 'package:notaipilmobile/register/model/gradeModel.dart';
 
 class ThirdPage extends StatefulWidget {
 
@@ -25,7 +28,14 @@ class _ThirdPageState extends State<ThirdPage> {
   String? _value;
   String? _value2;
 
+  String? area;
+  String? curso;
+
+
   late StudentModel? newStudent;
+
+  var grades = [];
+  var classrom = [];
 
   @override
   void initState(){
@@ -40,8 +50,30 @@ class _ThirdPageState extends State<ThirdPage> {
           _value2 = newStudent?.turma.toString();
         });
       }
-      
+
+      if (newStudent?.areaFormacao != null && newStudent?.curso != null){
+        setState(() {
+          area = newStudent?.areaFormacao.toString();
+          curso = newStudent?.curso.toString();
+        });
+      }
     });
+
+    Future<List> getGrade() async{
+      var url = "http://localhost:9800/api/v1/grades";
+      var response = await http.get(Uri.parse(url));
+
+
+      if (response.statusCode == 200){
+        var areasJson = json.decode(response.body);
+        for (var area in areasJson){
+          grades.add(GradeModel.fromJson(areasJson));
+        }
+      }
+
+      return grades;
+    }
+    
     
   }
 
@@ -83,7 +115,7 @@ class _ThirdPageState extends State<ThirdPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DropdownButtonFormField(
+                            DropdownButtonFormField<String>(
                               hint: Text("Classe"),
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -93,10 +125,12 @@ class _ThirdPageState extends State<ThirdPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
-                              ],
+                              items: grades.map((e) {
+                                return new DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e.toString())
+                                );
+                              }).toList(),
                               value: _value,
                               onChanged: (newValue){
                                 _value = newValue.toString();
@@ -114,10 +148,12 @@ class _ThirdPageState extends State<ThirdPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste1",),
-                                DropdownMenuItem(child: Text("Teste"), value: "Teste2",),
-                              ],
+                              items: classrom.map((e) {
+                                return new DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e.toString())
+                                );
+                              }).toList(),
                               value: _value2,
                               onChanged: (newValue){
                                 _value2 = newValue.toString();
