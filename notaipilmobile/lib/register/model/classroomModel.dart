@@ -1,31 +1,41 @@
 // To parse this JSON data, do
 //
-//     final classRoomModel = classRoomModelFromJson(jsonString);
+//     final classroomModel = classroomModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ClassroomModel classRoomModelFromJson(String str) => ClassroomModel.fromJson(json.decode(str));
+ClassroomModel classroomModelFromJson(String str) => ClassroomModel.fromJson(json.decode(str));
 
-String classRoomModelToJson(ClassroomModel data) => json.encode(data.toJson());
+String classroomModelToJson(ClassroomModel data) => json.encode(data.toJson());
 
 class ClassroomModel {
-  String? classroom;
-  String? room;
+    ClassroomModel({
+        this.room,
+        this.code,
+        this.gradeId,
+        this.courseId,
+        this.academicYearId,
+    });
 
-  ClassroomModel({
-    this.classroom,
-    this.room,
-  });
+    String? room;
+    String? code;
+    String? gradeId;
+    String? courseId;
+    String? academicYearId;
 
-    
+    factory ClassroomModel.fromJson(Map<String, dynamic> json) => ClassroomModel(
+        room: json["room"],
+        code: json["code"],
+        gradeId: json["gradeId"],
+        courseId: json["courseId"],
+        academicYearId: json["academicYearId"],
+    );
 
-  factory ClassroomModel.fromJson(Map<String, dynamic> json) => ClassroomModel(
-    classroom: json["classroom"],
-    room: json["room"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "classroom": classroom,
-    "room": room,
-  };
+    Map<String, dynamic> toJson() => {
+        "room": room,
+        "code": code,
+        "gradeId": gradeId,
+        "courseId": courseId,
+        "academicYearId": academicYearId,
+    };
 }

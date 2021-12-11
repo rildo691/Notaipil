@@ -9,23 +9,41 @@ CourseModel courseModelFromJson(String str) => CourseModel.fromJson(json.decode(
 String courseModelToJson(CourseModel data) => json.encode(data.toJson());
 
 class CourseModel {
-  String? code;
-  String? name;
+    CourseModel({
+        this.name,
+        this.code,
+        this.area,
+    });
 
-  CourseModel({
-    this.code,
-    this.name,
-  });
+    String? name;
+    String? code;
+    Area? area;
 
-    
+    factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
+        name: json["name"],
+        code: json["code"],
+        area: Area.fromJson(json["area"]),
+    );
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
-    code: json["code"],
-    name: json["name"],
-  );
+    Map<String, dynamic> toJson() => {
+        "name": name,
+        "code": code,
+        "area": area!.toJson(),
+    };
+}
 
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "name": name,
-  };
+class Area {
+    Area({
+        this.id,
+    });
+
+    String? id;
+
+    factory Area.fromJson(Map<String, dynamic> json) => Area(
+        id: json["id"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+    };
 }

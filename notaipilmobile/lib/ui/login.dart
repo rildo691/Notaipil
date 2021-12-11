@@ -7,6 +7,15 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
+
+/**User Interface */
+import 'package:notaipilmobile/ui/dashboard.dart';
+
 class Login extends StatefulWidget {
 
   const Login({ Key? key }) : super(key: key);
@@ -16,6 +25,39 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  bool _isLoading = false;
+  ApiService helper = ApiService();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  signIn(String email, String pass) async{
+    SharedPreferences sharedP = await SharedPreferences.getInstance();
+    Map body = {
+      'email': email,
+      'password': pass
+    };
+    var response = await helper.login("users/login", body);
+
+    if (response != null){
+      print(response);
+
+      setState((){
+        _isLoading = false;
+      });
+
+      sharedP.setString("token", response['token']);
+      print(sharedP.toString());
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Dashboard()),
+        (Route<dynamic> route) => false);
+    }
+  }
+
+  verifyUser(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +89,9 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildTextFormField("E-mail", TextInputType.emailAddress),
+                            _buildTextFormField("E-mail", TextInputType.emailAddress, _emailController),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            _buildPassFormField("Palavra-passe"),
+                            _buildPassFormField("Palavra-passe", _passwordController),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             ElevatedButton(
                               child: Text("Entrar"),
@@ -63,7 +105,14 @@ class _LoginState extends State<Login> {
                                 ),
                               minimumSize: Size(0.0, 50.0),
                               ),
-                              onPressed: (){},
+                              onPressed: (){
+                                if (_formKey.currentState!.validate()){
+                                  setState((){
+                                    _isLoading = true;
+                                  });
+                                  signIn(_emailController.text.toString(), _passwordController.text.toString());
+                                }
+                              },
                             )
                           ],
                         ),
@@ -94,7 +143,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type){
+  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
     return TextFormField(
       keyboardType: type,
       decoration: InputDecoration(
@@ -105,10 +154,11 @@ class _LoginState extends State<Login> {
         border: OutlineInputBorder(),
       ),
       style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+      controller: controller,
     );
   }
 
-  Widget _buildPassFormField(String hint){
+  Widget _buildPassFormField(String hint, TextEditingController controller){
     return TextFormField(
       decoration: InputDecoration(
         labelText: hint,
@@ -121,6 +171,7 @@ class _LoginState extends State<Login> {
       enableSuggestions: false,
       autocorrect: false,
       style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+      controller: controller,
     );
   }
 }

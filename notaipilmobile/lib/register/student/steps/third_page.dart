@@ -12,6 +12,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Model */
 import 'package:notaipilmobile/register/model/studentModel.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
+import 'package:notaipilmobile/register/model/classroomModel.dart';
 
 class ThirdPage extends StatefulWidget {
 
@@ -35,7 +36,7 @@ class _ThirdPageState extends State<ThirdPage> {
   late StudentModel? newStudent;
 
   var grades = [];
-  var classrom = [];
+  var classroom = [];
 
   @override
   void initState(){
@@ -74,7 +75,19 @@ class _ThirdPageState extends State<ThirdPage> {
       return grades;
     }
     
-    
+    Future<List> getClassroom() async{
+      var url = "";
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200){
+        var classroomJson = json.decode(response.body);
+        for (var c in classroomJson){
+          classroom.add(ClassroomModel.fromJson(c));
+        }
+      }
+
+      return classroom;
+    }
   }
 
   @override
@@ -148,7 +161,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: classrom.map((e) {
+                              items: classroom.map((e) {
                                 return new DropdownMenuItem<String>(
                                   value: e,
                                   child: Text(e.toString())

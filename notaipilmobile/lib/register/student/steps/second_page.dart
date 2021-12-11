@@ -51,6 +51,7 @@ class _SecondPageState extends State<SecondPage> {
 
     });
 
+/*
     Future<List> getArea() async{
       var url = "http://localhost:9800/api/v1/areas";
       var response = await http.get(Uri.parse(url));
@@ -79,7 +80,7 @@ class _SecondPageState extends State<SecondPage> {
       }
 
       return courses;
-    }
+    }*/
   }
   
 
