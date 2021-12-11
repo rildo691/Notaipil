@@ -48,7 +48,6 @@ class _LoginState extends State<Login> {
       });
 
       sharedP.setString("token", response['token']);
-      print(sharedP.toString());
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => Dashboard()),
         (Route<dynamic> route) => false);
@@ -56,7 +55,7 @@ class _LoginState extends State<Login> {
   }
 
   verifyUser(){
-
+    
   }
 
   @override

@@ -33,6 +33,15 @@ class ApiService{
     return responseJson;
   }
 
+  Future<dynamic> get(String url) async{
+    var response = await http.get(
+      Uri.parse(_baseUrl + url),
+      
+    );
+    var responseJson = _responseStatus(response);
+    return responseJson;
+  }
+
   Future<dynamic> post(String url, String token, Map<String, String> body) async{
     var response = await http.post(
       Uri.parse(_baseUrl + url),
