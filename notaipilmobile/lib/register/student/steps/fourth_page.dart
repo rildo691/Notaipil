@@ -9,10 +9,19 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/studentModel.dart';
+import 'package:notaipilmobile/register/model/studentAccountModel.dart';
+import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
+import 'package:notaipilmobile/register/model/student.dart';
+import 'package:notaipilmobile/register/model/typeAccountModel.dart';
+
+
 
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
+
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
 
 class FourthPage extends StatefulWidget {
 
@@ -30,23 +39,53 @@ class _FourthPageState extends State<FourthPage> {
 
   TextEditingController _emailAluno = TextEditingController();
   TextEditingController _emailEncarregado = TextEditingController();
+  TextEditingController _telefoneEncarregado = TextEditingController();
 
   late StudentModel? newStudent;
+  late Student student;
+  late StudentAccountModel studentAccount;  
+  late ClassroomStudentModel classroomStudent;
+
+  ApiService helper = ApiService();
+
+  String? id;
+
+  Future registerUser(studentBody, classroomBody, studentAccountBody) async{
+    var studentResponse = await helper.postWithoutToken("students", studentBody);
+    var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
+    var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
+    print(studentResponse);
+    print(classroomStudentResponse);
+    print(studentAccountResponse);
+  }
+
+  Future getTypeAccounts() async{
+    var response = await helper.get("type_accounts");
+    for(var r in response){
+      if (TypeAccountModel.fromJson(r).name == "Aluno"){
+        setState(() {
+          id = TypeAccountModel.fromJson(r).id.toString();
+        });
+      }
+    }
+  }
 
   @override
   void initState(){
     super.initState();
-    setState((){
-      
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
 
-        if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null){
+    getTypeAccounts();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+
+      if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null && newStudent?.telefoneEncarregado != null){
+        setState((){
           _emailAluno.text = newStudent!.emailAluno.toString();
           _emailEncarregado.text = newStudent!.emailEncarregado.toString();
-        }
-      });
-      
+          _telefoneEncarregado.text = newStudent!.telefoneEncarregado.toString();
+        });
+      }
     });
   }
 
@@ -63,7 +102,7 @@ class _FourthPageState extends State<FourthPage> {
             return Scaffold(
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color(0xFF202733),
@@ -93,6 +132,8 @@ class _FourthPageState extends State<FourthPage> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             buildTextFieldRegister("E-mail do Encarregado", TextInputType.emailAddress, _emailEncarregado),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                            buildTextFieldRegister("Telefone do Encarregado", TextInputType.text, _telefoneEncarregado),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
                               child: Row(
@@ -113,7 +154,7 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text);
+                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
                                       Navigator.pushNamed(context, '/third', arguments: model);
                                     },
                                   ),
@@ -131,8 +172,33 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text);
+                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+
+                                      student = Student(
+                                        process: model?.numeroProcesso,
+                                        statusForm: 1,
+                                        personalDataId: model?.numeroBI,
+                                        courseId: model?.curso,
+                                        gradeId: model?.classe,
+                                      );
+
+                                      classroomStudent = ClassroomStudentModel(
+                                        studentId: model!.numeroProcesso,
+                                        classroomId: model.turma
+                                      );
+
+                                      studentAccount = StudentAccountModel(
+                                        bilhete: model.numeroBI, 
+                                        email: model.emailAluno, 
+                                        emailEducator: model.emailEncarregado,
+                                        telephoneEducator: model.telefoneEncarregado,
+                                        process: model.numeroProcesso,
+                                        classroomId: model.turma,
+                                        typeAccountId: id,
+                                      );                                      
+
                                       if (_formKey.currentState!.validate()){
+                                        registerUser(student.toJson(), classroomStudent.toJson(), studentAccount.toJson());
                                         _buildModal();
                                       } else {
                                         _buildErrorModal(model);

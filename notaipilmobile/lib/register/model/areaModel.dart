@@ -4,22 +4,26 @@
 
 import 'dart:convert';
 
-Area areaFromJson(String str) => Area.fromJson(json.decode(str));
+AreaModel areaFromJson(String str) => AreaModel.fromJson(json.decode(str));
 
-String areaToJson(Area data) => json.encode(data.toJson());
+String areaToJson(AreaModel data) => json.encode(data.toJson());
 
-class Area {
+class AreaModel {
+  String? id;
   String? name;
 
-  Area({
+  AreaModel({
+    this.id,
     this.name,
   });
 
-  factory Area.fromJson(Map<String, dynamic> json) => Area(
+  factory AreaModel.fromJson(Map<String, dynamic> json) => AreaModel(
+    id: json["id"],
     name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "id": id,
+    "name": name,    
   };
 }

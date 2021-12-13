@@ -9,19 +9,21 @@ GradeModel gradeModelFromJson(String str) => GradeModel.fromJson(json.decode(str
 String gradeModelToJson(GradeModel data) => json.encode(data.toJson());
 
 class GradeModel {
-
-  String? grade;
+  String? id;
+  String? name;
 
   GradeModel({
-    this.grade,
+    this.id,
+    this.name,
   });
 
     
   factory GradeModel.fromJson(Map<String, dynamic> json) => GradeModel(
-    grade: json["grade"],
+    id: json["id"],
+    name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
-    "grade": grade,
+    "name": name,
   };
 }

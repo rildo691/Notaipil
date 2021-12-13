@@ -42,13 +42,26 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> post(String url, String token, Map<String, String> body) async{
+  Future<dynamic> post(String url, String token, Map body) async{
     var response = await http.post(
       Uri.parse(_baseUrl + url),
       headers: {
         'Content-type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
         'x-access-token': 'Bearer ' + token,
+      },
+      body: json.encode(body),
+    );
+    var responseJson = _responseStatus(response);
+    return responseJson;
+  }
+
+  Future<dynamic> postWithoutToken(String url, body) async{
+    var response = await http.post(
+      Uri.parse(_baseUrl + url),
+      headers: {
+        'Content-type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
       },
       body: json.encode(body),
     );
@@ -65,7 +78,7 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> patch(String url, String token, String id, Map<String, String> body) async{
+  Future<dynamic> patch(String url, String token, String id, Map body) async{
     var response = await http.patch(
       Uri.parse(_baseUrl + url + "$id"),
       headers: {

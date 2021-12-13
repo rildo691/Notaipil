@@ -1,13 +1,14 @@
 class StudentModel{
 
   String? numeroBI;
-  String? numeroProcesso;
+  int? numeroProcesso;
   String? areaFormacao;
   String? curso;
   String? classe;
   String? turma;
   String? emailAluno;
   String? emailEncarregado;
+  String? telefoneEncarregado;
 
   StudentModel({
     this.numeroBI,
@@ -17,18 +18,20 @@ class StudentModel{
     this.classe,
     this.turma,
     this.emailAluno,
-    this.emailEncarregado
+    this.emailEncarregado,
+    this.telefoneEncarregado
   });
 
   StudentModel copyWith({
     String?  numeroBI,
-    String? numeroProcesso,
+    int? numeroProcesso,
     String? areaFormacao,
     String? curso,
     String? classe,
     String? turma,
     String? emailAluno,
-    String? emailEncarregado
+    String? emailEncarregado,
+    String? telefoneEncarregado,
   }) {
     return StudentModel(
       numeroBI: numeroBI ?? this.numeroBI,
@@ -38,7 +41,8 @@ class StudentModel{
       classe: classe ?? this.classe,
       turma: turma ?? this.turma,
       emailAluno: emailAluno ?? this.emailAluno,
-      emailEncarregado: emailEncarregado ?? this.emailEncarregado
+      emailEncarregado: emailEncarregado ?? this.emailEncarregado,
+      telefoneEncarregado: telefoneEncarregado ?? this.telefoneEncarregado
     );
   }
 

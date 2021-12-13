@@ -14,6 +14,9 @@ import 'package:notaipilmobile/register/model/studentModel.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
 import 'package:notaipilmobile/register/model/classroomModel.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
 class ThirdPage extends StatefulWidget {
 
   const ThirdPage({ Key? key }) : super(key: key);
@@ -34,13 +37,46 @@ class _ThirdPageState extends State<ThirdPage> {
 
 
   late StudentModel? newStudent;
+  ApiService helper = ApiService();
 
   var grades = [];
-  var classroom = [];
+  var classrooms = [];
+
+  Future getGrade() async{
+    var response = await helper.get("grades");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": GradeModel.fromJson(r).id.toString(),
+        "name": GradeModel.fromJson(r).name.toString(),
+      };
+      setState((){
+        grades.add(map);
+      });
+    }
+  }
+    
+    Future getClassroom() async{
+      var response = await helper.get("classrooms");
+
+      for (var r in response){
+        Map<String, dynamic> map = {
+          "id": ClassroomModel.fromJson(r).id.toString(),
+          "name": ClassroomModel.fromJson(r).name.toString(),
+        };
+        setState((){
+          classrooms.add(map);
+        });
+      }
+    }
+
 
   @override
   void initState(){
     super.initState();
+
+    getGrade();
+    getClassroom();
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -51,43 +87,7 @@ class _ThirdPageState extends State<ThirdPage> {
           _value2 = newStudent?.turma.toString();
         });
       }
-
-      if (newStudent?.areaFormacao != null && newStudent?.curso != null){
-        setState(() {
-          area = newStudent?.areaFormacao.toString();
-          curso = newStudent?.curso.toString();
-        });
-      }
     });
-
-    Future<List> getGrade() async{
-      var url = "http://localhost:9800/api/v1/grades";
-      var response = await http.get(Uri.parse(url));
-
-
-      if (response.statusCode == 200){
-        var areasJson = json.decode(response.body);
-        for (var area in areasJson){
-          grades.add(GradeModel.fromJson(areasJson));
-        }
-      }
-
-      return grades;
-    }
-    
-    Future<List> getClassroom() async{
-      var url = "";
-      var response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200){
-        var classroomJson = json.decode(response.body);
-        for (var c in classroomJson){
-          classroom.add(ClassroomModel.fromJson(c));
-        }
-      }
-
-      return classroom;
-    }
   }
 
   @override
@@ -140,8 +140,8 @@ class _ThirdPageState extends State<ThirdPage> {
                               dropdownColor: Colors.black,
                               items: grades.map((e) {
                                 return new DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e.toString())
+                                  value: e["id"],
+                                  child: Text(e["name"] + "ª".toString())
                                 );
                               }).toList(),
                               value: _value,
@@ -161,10 +161,10 @@ class _ThirdPageState extends State<ThirdPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: classroom.map((e) {
+                              items: classrooms.map((e) {
                                 return new DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e.toString())
+                                  value: e["id"],
+                                  child: Text(e["name"].toString())
                                 );
                               }).toList(),
                               value: _value2,

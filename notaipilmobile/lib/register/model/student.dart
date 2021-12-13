@@ -17,7 +17,7 @@ class Student {
         this.gradeId,
     });
 
-    String? process;
+    int? process;
     int? statusForm;
     String? personalDataId;
     String? courseId;

@@ -10,19 +10,23 @@ String typeAccountModelToJson(TypeAccountModel data) => json.encode(data.toJson(
 
 class TypeAccountModel {
 
-  String? description;
+  String? name;
+  String? id;
 
   TypeAccountModel({
-    this.description,
+    this.name,
+    this.id
   });
 
     
 
   factory TypeAccountModel.fromJson(Map<String, dynamic> json) => TypeAccountModel(
-    description: json["description"],
+    name: json["name"],
+    id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
-    "description": description,
+    "name": name,
+    "id": id,
   };
 }

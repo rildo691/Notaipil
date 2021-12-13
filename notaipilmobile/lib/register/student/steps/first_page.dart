@@ -9,8 +9,11 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/studentModel.dart';
+import 'package:notaipilmobile/register/model/studentAccountModel.dart';
+import 'package:notaipilmobile/register/model/typeAccountModel.dart';
 
-/**User Interface */
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
 
 
 class FirstPage extends StatefulWidget {
@@ -23,9 +26,11 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
 
-  StudentModel? newStudent;
+  StudentModel? newStudent;  
 
-  final _formKey = GlobalKey<FormState>();
+  ApiService helper = ApiService();
+
+  final _formKey = GlobalKey<FormState>();  
 
   TextEditingController _numeroBilhete = TextEditingController();
   TextEditingController _numeroProcesso = TextEditingController();
@@ -34,17 +39,15 @@ class _FirstPageState extends State<FirstPage> {
   void initState(){
     super.initState();
 
-    setState((){
-      
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
 
-          if (newStudent?.numeroBI != null && newStudent?.numeroProcesso!= null){
-            _numeroBilhete.text = newStudent!.numeroBI.toString();
-            _numeroProcesso.text = newStudent!.numeroProcesso.toString();
+      if (newStudent?.numeroBI != null && newStudent?.numeroProcesso!= null){
+
+        _numeroBilhete.text = newStudent!.numeroBI.toString();
+        _numeroProcesso.text = newStudent!.numeroProcesso.toString();
             
-          }
-        });
+      }
     });
   }
 
@@ -129,9 +132,9 @@ class _FirstPageState extends State<FirstPage> {
                                         ],
                                       ),
                                     ),
-                                    onTap: (){
+                                    onTap: () async{
                                       if (_formKey.currentState!.validate()){
-                                        var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: _numeroProcesso.text);
+                                        var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: int.parse(_numeroProcesso.text.toString()));
                                         Navigator.pushNamed(context, '/second', arguments: model);
                                       }
                                     },

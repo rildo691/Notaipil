@@ -14,6 +14,9 @@ import 'package:notaipilmobile/register/model/studentModel.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
 import 'package:notaipilmobile/register/model/courseModel.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
 class SecondPage extends StatefulWidget {
 
   const SecondPage({ Key? key }) : super(key: key);
@@ -34,10 +37,44 @@ class _SecondPageState extends State<SecondPage> {
   var areas = [];
   var courses = [];
 
+  ApiService helper = ApiService();
+
+  Future getAreas() async{
+    var response = await helper.get("areas");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": AreaModel.fromJson(r).id.toString(),
+        "name": AreaModel.fromJson(r).name.toString(),
+      };
+
+      setState(() {
+        areas.add(map);
+      });
+    }
+  }
+
+  Future getCourses() async{
+    var response = await helper.get("courses");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": CourseModel.fromJson(r).id.toString(),
+        "name": CourseModel.fromJson(r).name.toString(),
+      };
+      String course = CourseModel.fromJson(r).name.toString();
+      setState(() {
+        courses.add(map);
+      });
+    }
+  }
+
   @override
   void initState(){
     super.initState();
 
+    getAreas();
+    getCourses();
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -48,39 +85,7 @@ class _SecondPageState extends State<SecondPage> {
           _value2 = newStudent?.curso.toString();
         });
       }
-
     });
-
-/*
-    Future<List> getArea() async{
-      var url = "http://localhost:9800/api/v1/areas";
-      var response = await http.get(Uri.parse(url));
-
-
-      if (response.statusCode == 200){
-        var areasJson = json.decode(response.body);
-        for (var area in areasJson){
-          areas.add(Area.fromJson(areasJson));
-        }
-      }
-
-      return areas;
-    }
-
-    Future<List> getCourse() async{
-      var url = "http://localhost:9800/api/v1/courses";
-      var response = await http.get(Uri.parse(url));
-
-
-      if (response.statusCode == 200){
-        var coursesJson = json.decode(response.body);
-        for (var course in coursesJson){
-          courses.add(CourseModel.fromJson(coursesJson));
-        }
-      }
-
-      return courses;
-    }*/
   }
   
 
@@ -134,8 +139,8 @@ class _SecondPageState extends State<SecondPage> {
                               dropdownColor: Colors.black,
                               items: areas.map((e) {
                                 return new DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e.toString())
+                                  value: e["id"].toString(),
+                                  child: Text(e["name"].toString())
                                 );
                               }).toList(),
                               value: _value,
@@ -157,8 +162,8 @@ class _SecondPageState extends State<SecondPage> {
                               dropdownColor: Colors.black,
                               items: courses.map((e) {
                                 return new DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e.toString())
+                                  value: e["id"].toString(),
+                                  child: Text(e["name"].toString())
                                 );
                               }).toList(),
                               value: _value2,

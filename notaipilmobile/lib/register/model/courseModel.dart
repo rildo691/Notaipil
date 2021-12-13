@@ -10,16 +10,19 @@ String courseModelToJson(CourseModel data) => json.encode(data.toJson());
 
 class CourseModel {
     CourseModel({
+        this.id,
         this.name,
         this.code,
         this.area,
     });
 
+    String? id;
     String? name;
     String? code;
     Area? area;
 
     factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
+        id: json["id"],
         name: json["name"],
         code: json["code"],
         area: Area.fromJson(json["area"]),
