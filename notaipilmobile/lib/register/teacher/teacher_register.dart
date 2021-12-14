@@ -6,6 +6,7 @@ import 'package:notaipilmobile/register/teacher/steps/first_page.dart' as teache
 import 'package:notaipilmobile/register/teacher/steps/second_page.dart' as teacher;
 import 'package:notaipilmobile/register/teacher/steps/third_page.dart' as teacher;
 import 'package:notaipilmobile/register/teacher/steps/fourth_page.dart' as teacher;
+import 'package:notaipilmobile/register/teacher/steps/fifth_page.dart' as teacher;
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -29,15 +30,18 @@ class _TeacherRegisterState extends State<TeacherRegister> {
         Widget page;
         switch (route) {
           case '/one':
-            page = teacher.FirstPage();
+            page = teacher.FifthPage();
             break;
           case '/two':
-            page = teacher.SecondPage();
+            page = teacher.FirstPage();
             break;
           case '/three':
-            page = teacher.ThirdPage();
+            page = teacher.SecondPage();
             break;
           case '/four':
+            page = teacher.ThirdPage();
+            break;
+          case '/fifth':
             page = teacher.FourthPage();
             break;
           default:

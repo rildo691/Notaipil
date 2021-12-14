@@ -1,41 +1,41 @@
 class TeacherModel{
-  String? numeroBI;
   String? email;
   String? telefone;
   String? habilitacoes;
   String? regimeLaboral;
   String? categoria;
+  String? numeroBI;
   String? tempoServicoIpil;
   String? tempoServicoEducacao;
   
   TeacherModel({
-    this.numeroBI,
     this.email,
     this.telefone,
     this.habilitacoes,
     this.regimeLaboral,
     this.categoria,
+    this.numeroBI,
     this.tempoServicoIpil,
     this.tempoServicoEducacao
   });
 
-  TeacherModel copyWith({
-    String? numeroBI,
+  TeacherModel copyWith({    
     String? email,
     String? telefone,
     String? habilitacoes,
     String? regimeLaboral,
     String? categoria,
+    String? numeroBI,
     String? tempoServicoIpil,
     String? tempoServicoEducacao
   }) {
     return TeacherModel(
-      numeroBI: numeroBI ?? this.numeroBI,
       email: email ?? this.email,
       telefone: telefone ?? this.telefone,
       habilitacoes: habilitacoes ?? this.habilitacoes,
       regimeLaboral: regimeLaboral ?? this.regimeLaboral,
       categoria: categoria ?? this.categoria,
+      numeroBI: numeroBI ?? this.numeroBI,
       tempoServicoIpil: tempoServicoIpil ?? this.tempoServicoIpil,
       tempoServicoEducacao: tempoServicoEducacao ?? this.tempoServicoEducacao
     );

@@ -76,6 +76,7 @@ class _FirstPageState extends State<FirstPage> {
                           buildMiddleNavigator(context, false, '/two'),
                           buildMiddleNavigator(context, false, '/three'),
                           buildMiddleNavigator(context, false, '/four'),
+                          buildMiddleNavigator(context, false, '/fifth'),
                         ],
                       ),
                       Form(
@@ -97,7 +98,7 @@ class _FirstPageState extends State<FirstPage> {
                                     child: Container(
                                       width: SizeConfig.screenWidth !* .32,
                                       height: SizeConfig.heightMultiplier !* 6,
-                                      color: Colors.grey,
+                                      color: Color.fromRGBO(0, 209, 255, 0.49),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,7 +110,8 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      
+                                      var model = newTeacher?.copyWith(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
+                                      Navigator.pushNamed(context, '/one', arguments: model);
                                     },
                                   ),
                                   GestureDetector(
@@ -128,8 +130,8 @@ class _FirstPageState extends State<FirstPage> {
                                     ),
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
-                                        var model = TeacherModel(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
-                                        Navigator.pushNamed(context, '/two', arguments: model);
+                                        var model = newTeacher?.copyWith(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
+                                        Navigator.pushNamed(context, '/three', arguments: model);
                                       }
                                     },
                                   )

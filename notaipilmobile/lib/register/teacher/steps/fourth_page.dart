@@ -74,6 +74,7 @@ class _FourthPageState extends State<FourthPage> {
                           buildMiddleNavigator(context, false, '/two'),
                           buildMiddleNavigator(context, false, '/three'),
                           buildMiddleNavigator(context, true, '/four'),
+                          buildMiddleNavigator(context, false, '/fifth'),
                         ],
                       ),
                       Form(
@@ -108,7 +109,7 @@ class _FourthPageState extends State<FourthPage> {
                                     ),
                                     onTap: (){
                                       var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil.text, tempoServicoEducacao: _tempoServicoEd.text);
-                                      Navigator.pushNamed(context, '/three', arguments: model);
+                                      Navigator.pushNamed(context, '/four', arguments: model);
                                     },
                                   ),
                                   GestureDetector(

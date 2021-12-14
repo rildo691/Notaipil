@@ -77,6 +77,7 @@ class _SecondPageState extends State<SecondPage> {
                           buildMiddleNavigator(context, true, '/two'),
                           buildMiddleNavigator(context, false, '/three'),
                           buildMiddleNavigator(context, false, '/four'),
+                          buildMiddleNavigator(context, false, '/fifth'),
                         ],
                       ),
                       Form(
@@ -130,7 +131,7 @@ class _SecondPageState extends State<SecondPage> {
                                     ),
                                     onTap: (){
                                       var model = newTeacher?.copyWith(email: _email.text, regimeLaboral: _value);
-                                      Navigator.pushNamed(context, '/one', arguments: model);
+                                      Navigator.pushNamed(context, '/two', arguments: model);
                                     },
                                   ),
                                   GestureDetector(
@@ -150,7 +151,7 @@ class _SecondPageState extends State<SecondPage> {
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
                                         var model = newTeacher?.copyWith(email: _email.text, regimeLaboral: _value);
-                                        Navigator.pushNamed(context, '/three', arguments: model);
+                                        Navigator.pushNamed(context, '/four', arguments: model);
                                       }
                                     },
                                   )

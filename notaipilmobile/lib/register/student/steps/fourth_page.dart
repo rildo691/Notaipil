@@ -176,7 +176,6 @@ class _FourthPageState extends State<FourthPage> {
 
                                       student = Student(
                                         process: model?.numeroProcesso,
-                                        statusForm: 1,
                                         personalDataId: model?.numeroBI,
                                         courseId: model?.curso,
                                         gradeId: model?.classe,

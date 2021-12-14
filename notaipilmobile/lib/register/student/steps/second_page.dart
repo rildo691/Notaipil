@@ -36,6 +36,7 @@ class _SecondPageState extends State<SecondPage> {
 
   var areas = [];
   var courses = [];
+  var areasId;
 
   ApiService helper = ApiService();
 
@@ -54,18 +55,20 @@ class _SecondPageState extends State<SecondPage> {
     }
   }
 
-  Future getCourses() async{
+  Future getCourses(areas) async{
     var response = await helper.get("courses");
 
     for (var r in response){
-      Map<String, dynamic> map = {
-        "id": CourseModel.fromJson(r).id.toString(),
-        "name": CourseModel.fromJson(r).name.toString(),
-      };
-      String course = CourseModel.fromJson(r).name.toString();
-      setState(() {
-        courses.add(map);
-      });
+      if (CourseModel.fromJson(r).area.toString() == areasId){
+        Map<String, dynamic> map = {
+          "id": CourseModel.fromJson(r).id.toString(),
+          "name": CourseModel.fromJson(r).name.toString(),
+        };
+        String course = CourseModel.fromJson(r).name.toString();
+        setState(() {
+          courses.add(map);
+        }); 
+      }
     }
   }
 
@@ -74,7 +77,6 @@ class _SecondPageState extends State<SecondPage> {
     super.initState();
 
     getAreas();
-    getCourses();
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -146,6 +148,7 @@ class _SecondPageState extends State<SecondPage> {
                               value: _value,
                               onChanged: (newValue){
                                 _value = newValue.toString();
+                                areasId = _value.toString();
                               },
                               validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,
                             ),

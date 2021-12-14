@@ -10,43 +10,26 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
 
-class ThirdPage extends StatefulWidget {
+class FifthPage extends StatefulWidget {
 
-  const ThirdPage({ Key? key }) : super(key: key);
+  const FifthPage({ Key? key }) : super(key: key);
 
   @override
-  _ThirdPageState createState() => _ThirdPageState();
+  _FifthPageState createState() => _FifthPageState();
 }
 
-class _ThirdPageState extends State<ThirdPage> {
+class _FifthPageState extends State<FifthPage> {
 
+  TeacherModel? newTeacher;
+  
   final _formKey = GlobalKey<FormState>();
 
   String? _value;
-  String? _value2;
-  
 
-  late TeacherModel? newTeacher;
+  TextEditingController _nomeCompleto = TextEditingController();
 
-  @override
-  void initState(){
-    super.initState();
-
-    
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
-      newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;
-        
-      if (newTeacher?.habilitacoes != null && newTeacher?.categoria != null){
-        setState(() {
-          _value = newTeacher?.habilitacoes.toString();
-          _value2 = newTeacher?.categoria.toString();
-        });
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+   @override
+   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -70,9 +53,9 @@ class _ThirdPageState extends State<ThirdPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/one'),
+                          buildMiddleNavigator(context, true, '/one'),
                           buildMiddleNavigator(context, false, '/two'),
-                          buildMiddleNavigator(context, true, '/three'),
+                          buildMiddleNavigator(context, false, '/three'),
                           buildMiddleNavigator(context, false, '/four'),
                           buildMiddleNavigator(context, false, '/fifth'),
                         ],
@@ -83,8 +66,10 @@ class _ThirdPageState extends State<ThirdPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text, _nomeCompleto),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             DropdownButtonFormField(
-                              hint: Text("Habilitações Literárias"),
+                              hint: Text("Sexo"),
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -94,35 +79,14 @@ class _ThirdPageState extends State<ThirdPage> {
                               ),
                               dropdownColor: Colors.black,
                               items: [
-                                DropdownMenuItem(child: Text("Diurno"), value: "Diurno",),
-                                DropdownMenuItem(child: Text("Nocturno"), value: "Nocturno",),
+                                DropdownMenuItem(child: Text("Masculino"), value: "M",),
+                                DropdownMenuItem(child: Text("Feminino"), value: "F",),
                               ],
                               value: _value,
                               onChanged: (newValue){
                                 _value = newValue.toString();
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Habilitações Literárias' : null,
-                            ),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                            DropdownButtonFormField(
-                              hint: Text("Categoria"),
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Diurno"), value: "Diurno",),
-                                DropdownMenuItem(child: Text("Nocturno"), value: "Nocturno",),
-                              ],
-                              value: _value2,
-                              onChanged: (newValue){
-                                _value2 = newValue.toString();
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Categoria' : null,
+                              validator: (value) => value == null ? 'Preencha o campo Regime Laboral' : null,
                             ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
@@ -134,7 +98,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     child: Container(
                                       width: SizeConfig.screenWidth !* .32,
                                       height: SizeConfig.heightMultiplier !* 6,
-                                      color: Color.fromRGBO(0, 209, 255, 0.49),
+                                      color: Colors.grey,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,8 +110,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
-                                      Navigator.pushNamed(context, '/three', arguments: model);
+                                      
                                     },
                                   ),
                                   GestureDetector(
@@ -166,8 +129,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     ),
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
-                                        var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
-                                        Navigator.pushNamed(context, '/fifth', arguments: model);
+                                       
                                       }
                                     },
                                   )
