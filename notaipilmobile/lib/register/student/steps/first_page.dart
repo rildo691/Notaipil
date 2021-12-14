@@ -15,6 +15,9 @@ import 'package:notaipilmobile/register/model/typeAccountModel.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class FirstPage extends StatefulWidget {
 
@@ -31,6 +34,7 @@ class _FirstPageState extends State<FirstPage> {
   ApiService helper = ApiService();
 
   final _formKey = GlobalKey<FormState>();  
+  bool _isValid = false;
 
   TextEditingController _numeroBilhete = TextEditingController();
   TextEditingController _numeroProcesso = TextEditingController();
@@ -133,7 +137,20 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: () async{
-                                      if (_formKey.currentState!.validate()){
+                                      RegExp expression = RegExp(
+                                        r"^/^[0-9]{9}[a-z]{2}[0-9]{3}$/"
+                                      );
+                                      if (expression.hasMatch(_numeroBilhete.text)){
+                                        _isValid = true;
+                                      } else {
+                                        Fluttertoast.showToast(
+                                          msg: "N.º do bilhete de identidade, tente novamente",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      }
+
+                                      if (_formKey.currentState!.validate() && _isValid){
                                         var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: int.parse(_numeroProcesso.text.toString()));
                                         Navigator.pushNamed(context, '/second', arguments: model);
                                       }

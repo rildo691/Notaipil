@@ -194,7 +194,6 @@ class _FourthPageState extends State<FourthPage> {
                                         telephoneEducator: model.telefoneEncarregado,
                                         process: model.numeroProcesso,
                                         classroomId: model.turma,
-                                        typeAccountId: id,
                                       );                                      
 
                                       if (_formKey.currentState!.validate()){
