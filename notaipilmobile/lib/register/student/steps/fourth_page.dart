@@ -50,11 +50,9 @@ class _FourthPageState extends State<FourthPage> {
 
   String? id;
 
-  Future registerUser(studentBody, classroomBody, studentAccountBody) async{
-    var studentResponse = await helper.postWithoutToken("students", studentBody);
+  Future registerUser(classroomBody, studentAccountBody) async{
     var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
     var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
-    print(studentResponse);
     print(classroomStudentResponse);
     print(studentAccountResponse);
   }
@@ -116,10 +114,10 @@ class _FourthPageState extends State<FourthPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/first'),
-                          buildMiddleNavigator(context, false, '/second'),
-                          buildMiddleNavigator(context, false, '/third'),
-                          buildMiddleNavigator(context, true, '/fourth'),
+                          buildMiddleNavigator(context, false, '/first', false),
+                          buildMiddleNavigator(context, false, '/second', false),
+                          buildMiddleNavigator(context, false, '/third', false),
+                          buildMiddleNavigator(context, true, '/fourth', false),
                         ]
                       ),
                       Form(
@@ -174,13 +172,6 @@ class _FourthPageState extends State<FourthPage> {
                                     onTap: (){
                                       var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
 
-                                      student = Student(
-                                        process: model?.numeroProcesso,
-                                        personalDataId: model?.numeroBI,
-                                        courseId: model?.curso,
-                                        gradeId: model?.classe,
-                                      );
-
                                       classroomStudent = ClassroomStudentModel(
                                         studentId: model!.numeroProcesso,
                                         classroomId: model.turma
@@ -196,7 +187,7 @@ class _FourthPageState extends State<FourthPage> {
                                       );                                      
 
                                       if (_formKey.currentState!.validate()){
-                                        registerUser(student.toJson(), classroomStudent.toJson(), studentAccount.toJson());
+                                        registerUser(classroomStudent.toJson(), studentAccount.toJson());
                                         _buildModal();
                                       } else {
                                         _buildErrorModal(model);

@@ -1,4 +1,7 @@
 class TeacherModel{
+  String? nome;
+  String? sexo;
+  DateTime? dataNascimento;
   String? email;
   String? telefone;
   String? habilitacoes;
@@ -9,6 +12,9 @@ class TeacherModel{
   String? tempoServicoEducacao;
   
   TeacherModel({
+    this.nome,
+    this.sexo,
+    this.dataNascimento,
     this.email,
     this.telefone,
     this.habilitacoes,
@@ -20,6 +26,9 @@ class TeacherModel{
   });
 
   TeacherModel copyWith({    
+    String? nome,
+    String? sexo,
+    DateTime? dataNascimento,
     String? email,
     String? telefone,
     String? habilitacoes,
@@ -30,6 +39,9 @@ class TeacherModel{
     String? tempoServicoEducacao
   }) {
     return TeacherModel(
+      nome: nome ?? this.nome,
+      sexo: sexo ?? this.sexo,
+      dataNascimento: dataNascimento ?? this.dataNascimento,
       email: email ?? this.email,
       telefone: telefone ?? this.telefone,
       habilitacoes: habilitacoes ?? this.habilitacoes,
@@ -39,11 +51,6 @@ class TeacherModel{
       tempoServicoIpil: tempoServicoIpil ?? this.tempoServicoIpil,
       tempoServicoEducacao: tempoServicoEducacao ?? this.tempoServicoEducacao
     );
-  }
-  
-  @override
-  String toString() {
-    return "Professor: {BI n.º: $numeroBI, Email n.º: $email, Telefone: $telefone, Habilitações Literárias: $habilitacoes, Categoria: $categoria, Regime Laboral: $regimeLaboral, Tempo de Servico no IPIL: $tempoServicoIpil, Tempo de Servico na Educação: $tempoServicoEducacao}";
   }
   
 }

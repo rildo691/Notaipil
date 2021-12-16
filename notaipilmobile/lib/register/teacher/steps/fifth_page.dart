@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:intl/intl.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
+
+/**User Interface */
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class FifthPage extends StatefulWidget {
 
@@ -19,14 +24,15 @@ class FifthPage extends StatefulWidget {
 }
 
 class _FifthPageState extends State<FifthPage> {
-
-  TeacherModel? newTeacher;
   
   final _formKey = GlobalKey<FormState>();
 
   String? _value;
 
+  var _date;
+
   TextEditingController _nomeCompleto = TextEditingController();
+  TextEditingController _dataNascimento = TextEditingController();
 
    @override
    Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class _FifthPageState extends State<FifthPage> {
             return Scaffold(
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color(0xFF202733),
@@ -53,11 +59,11 @@ class _FifthPageState extends State<FifthPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, true, '/one'),
-                          buildMiddleNavigator(context, false, '/two'),
-                          buildMiddleNavigator(context, false, '/three'),
-                          buildMiddleNavigator(context, false, '/four'),
-                          buildMiddleNavigator(context, false, '/fifth'),
+                          buildMiddleNavigator(context, true, '/one', true),
+                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
                       Form(
@@ -86,9 +92,27 @@ class _FifthPageState extends State<FifthPage> {
                               onChanged: (newValue){
                                 _value = newValue.toString();
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Regime Laboral' : null,
+                              validator: (value) => value == null ? 'Preencha o campo Sexo' : null,
                             ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                            DateTimeField(
+                              decoration: InputDecoration(
+                                labelText: "Data de nascimento",
+                                suffixIcon: Icon(Icons.event_note, color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.white),
+                              ),
+                              format: DateFormat("yyyy-MM-dd"),
+                              style:  TextStyle(color: Colors.white),
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                  context: context,
+                                  locale: const Locale("pt"),
+                                  firstDate: DateTime(1900),
+                                  initialDate: DateTime.now(),
+                                  lastDate: DateTime(2100)
+                                );
+                              },
+                            ),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
                               child: Row(
@@ -129,7 +153,8 @@ class _FifthPageState extends State<FifthPage> {
                                     ),
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
-                                       
+                                        var model = TeacherModel(nome: _nomeCompleto.text, sexo: _value, dataNascimento: _date);
+                                        Navigator.pushNamed(context, '/two', arguments: model);
                                       }
                                     },
                                   )

@@ -70,11 +70,11 @@ class _ThirdPageState extends State<ThirdPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/one'),
-                          buildMiddleNavigator(context, false, '/two'),
-                          buildMiddleNavigator(context, true, '/three'),
-                          buildMiddleNavigator(context, false, '/four'),
-                          buildMiddleNavigator(context, false, '/fifth'),
+                          buildMiddleNavigator(context, false, '/one', true),
+                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, true, '/three', true),
+                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
                       Form(

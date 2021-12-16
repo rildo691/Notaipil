@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
@@ -37,6 +38,14 @@ class MyApp extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.white),
         )
       ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+       ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr'),
+        const Locale('pt'),
+      ],
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (_) => const Login(),

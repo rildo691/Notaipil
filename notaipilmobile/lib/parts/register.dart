@@ -106,8 +106,20 @@ Widget buildForwardButton(context, String route){
   );
 }
 
-Widget buildMiddleNavigator(context, active, String route){
-  return GestureDetector(
+Widget buildMiddleNavigator(context, active, String route, bool width){
+  if (width){
+    return GestureDetector(
+    child: Container(
+      width: SizeConfig.widthMultiplier !* 15,
+      height: SizeConfig.heightMultiplier !* .4,
+      color: active? Colors.white : Colors.grey,
+    ),
+    onTap: (){
+      Navigator.pushNamed(context, route);
+    },
+  );
+  } else {
+    return GestureDetector(
     child: Container(
       width: SizeConfig.widthMultiplier !* 20,
       height: SizeConfig.heightMultiplier !* .4,
@@ -117,4 +129,5 @@ Widget buildMiddleNavigator(context, active, String route){
       Navigator.pushNamed(context, route);
     },
   );
+  }
 }

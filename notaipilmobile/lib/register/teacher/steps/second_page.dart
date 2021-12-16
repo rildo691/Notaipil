@@ -73,11 +73,11 @@ class _SecondPageState extends State<SecondPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/one'),
-                          buildMiddleNavigator(context, true, '/two'),
-                          buildMiddleNavigator(context, false, '/three'),
-                          buildMiddleNavigator(context, false, '/four'),
-                          buildMiddleNavigator(context, false, '/fifth'),
+                          buildMiddleNavigator(context, false, '/one', true),
+                          buildMiddleNavigator(context, true, '/two', true),
+                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
                       Form(

@@ -70,11 +70,11 @@ class _FourthPageState extends State<FourthPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/one'),
-                          buildMiddleNavigator(context, false, '/two'),
-                          buildMiddleNavigator(context, false, '/three'),
-                          buildMiddleNavigator(context, true, '/four'),
-                          buildMiddleNavigator(context, false, '/fifth'),
+                          buildMiddleNavigator(context, false, '/one', true),
+                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, true, '/four', true),
+                          buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
                       Form(

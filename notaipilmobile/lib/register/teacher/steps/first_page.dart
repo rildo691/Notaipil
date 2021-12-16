@@ -72,11 +72,11 @@ class _FirstPageState extends State<FirstPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, true, '/one'),
-                          buildMiddleNavigator(context, false, '/two'),
-                          buildMiddleNavigator(context, false, '/three'),
-                          buildMiddleNavigator(context, false, '/four'),
-                          buildMiddleNavigator(context, false, '/fifth'),
+                          buildMiddleNavigator(context, true, '/one', true),
+                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
                       Form(
