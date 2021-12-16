@@ -24,6 +24,8 @@ class _ThirdPageState extends State<ThirdPage> {
 
   String? _value;
   String? _value2;
+
+  TextEditingController _categoria = TextEditingController();
   
 
   late TeacherModel? newTeacher;
@@ -94,8 +96,8 @@ class _ThirdPageState extends State<ThirdPage> {
                               ),
                               dropdownColor: Colors.black,
                               items: [
-                                DropdownMenuItem(child: Text("Diurno"), value: "Diurno",),
-                                DropdownMenuItem(child: Text("Nocturno"), value: "Nocturno",),
+                                DropdownMenuItem(child: Text("Ensino Médio"), value: "Ensino Médio",),
+                                DropdownMenuItem(child: Text("Licenciatura"), value: "Nocturno",),
                               ],
                               value: _value,
                               onChanged: (newValue){
@@ -104,26 +106,7 @@ class _ThirdPageState extends State<ThirdPage> {
                               validator: (value) => value == null ? 'Preencha o campo Habilitações Literárias' : null,
                             ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                            DropdownButtonFormField(
-                              hint: Text("Categoria"),
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Diurno"), value: "Diurno",),
-                                DropdownMenuItem(child: Text("Nocturno"), value: "Nocturno",),
-                              ],
-                              value: _value2,
-                              onChanged: (newValue){
-                                _value2 = newValue.toString();
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Categoria' : null,
-                            ),
+                            buildTextFieldRegister("Categoria", TextInputType.text, _categoria),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
