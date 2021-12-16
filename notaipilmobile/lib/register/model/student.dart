@@ -10,31 +10,39 @@ String studentToJson(Student data) => json.encode(data.toJson());
 
 class Student {
     Student({
+        this.bi,
+        this.fullName,
+        this.birthdate,
+        this.gender,
         this.process,
-        this.statusForm,
-        this.personalDataId,
         this.courseId,
         this.gradeId,
     });
 
+    String? bi;
+    String? fullName;
+    String? birthdate;
+    String? gender;
     int? process;
-    int? statusForm;
-    String? personalDataId;
     String? courseId;
     String? gradeId;
 
     factory Student.fromJson(Map<String, dynamic> json) => Student(
+        bi: json["bi"],
+        fullName: json["fullName"],
+        birthdate: json["birthdate"],
+        gender: json["gender"],
         process: json["process"],
-        statusForm: json["statusForm"],
-        personalDataId: json["personalDataId"],
         courseId: json["courseId"],
         gradeId: json["gradeId"],
     );
 
     Map<String, dynamic> toJson() => {
+        "bi": bi,
+        "fullName": fullName,
+        "birthdate": brithdate,
+        "gender": gender,
         "process": process,
-        "statusForm": statusForm,
-        "personalDataId": personalDataId,
         "courseId": courseId,
         "gradeId": gradeId,
     };
