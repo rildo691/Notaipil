@@ -10,52 +10,57 @@ String teacherAccountModelToJson(TeacherAccountModel data) => json.encode(data.t
 
 class TeacherAccountModel {
     TeacherAccountModel({
+        this.bi,
+        this.fullName,
+        this.birthdate,
+        this.gender,
         this.email,
         this.telephone,
-        this.qualification,
+        this.qualificationId,
         this.regime,
         this.ipilDate,
         this.educationDate,
         this.category,
-        this.statusForm,
-        this.personalDataId,
-        this.typeAccountId,
     });
 
+    String? bi;
+    String? fullName;
+    String? birthdate;
+    String? gender;
     String? email;
     String? telephone;
-    String? qualification;
+    String? qualificationId;
     String? regime;
     DateTime? ipilDate;
     DateTime? educationDate;
     String? category;
-    String? statusForm;
-    String? personalDataId;
-    String? typeAccountId;
 
     factory TeacherAccountModel.fromJson(Map<String, dynamic> json) => TeacherAccountModel(
+        bi: json["bi"],
+        fullName: json["fullName"],
+        birthdate: json["birthdate"],
+        gender: json["gender"],
         email: json["email"],
         telephone: json["telephone"],
-        qualification: json["qualification"],
+        qualification: json["qualificationId"],
         regime: json["regime"],
         ipilDate: DateTime.parse(json["ipilDate"]),
         educationDate: DateTime.parse(json["educationDate"]),
         category: json["category"],
-        statusForm: json["statusForm"],
-        personalDataId: json["personalDataId"],
-        typeAccountId: json["typeAccountId"],
     );
 
     Map<String, dynamic> toJson() => {
+        "bi": bi,
+        "fullName": fullName,
+        "birthdate": birthdate,
+        "gender": gender,
         "email": email,
         "telephone": telephone,
-        "qualification": qualification,
+        "qualificationId": qualification,
         "regime": regime,
         "ipilDate": "${ipilDate!.year.toString().padLeft(4, '0')}-${ipilDate!.month.toString().padLeft(2, '0')}-${ipilDate!.day.toString().padLeft(2, '0')}",
         "educationDate": "${educationDate!.year.toString().padLeft(4, '0')}-${educationDate!.month.toString().padLeft(2, '0')}-${educationDate!.day.toString().padLeft(2, '0')}",
         "category": category,
-        "statusForm": statusForm,
-        "personalDataId": personalDataId,
-        "typeAccountId": typeAccountId,
+
     };
 }

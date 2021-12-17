@@ -72,7 +72,7 @@ class _FifthPageState extends State<FifthPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text, _nomeCompleto),
+                            buildTextFieldRegister("Nome Completo", TextInputType.text, _nomeCompleto),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             DropdownButtonFormField(
                               hint: Text("Sexo"),
@@ -97,7 +97,7 @@ class _FifthPageState extends State<FifthPage> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             DateTimeField(
                               decoration: InputDecoration(
-                                labelText: "Data de nascimento",
+                                labelText: "Data de Nascimento",
                                 suffixIcon: Icon(Icons.event_note, color: Colors.white),
                                 labelStyle: TextStyle(color: Colors.white),
                               ),
