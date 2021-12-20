@@ -32,9 +32,7 @@ class _ThirdPageState extends State<ThirdPage> {
   String? _value;
   String? _value2;
 
-  String? area;
   String? curso;
-
 
   late StudentModel? newStudent;
   ApiService helper = ApiService();
@@ -56,17 +54,19 @@ class _ThirdPageState extends State<ThirdPage> {
     }
   }
     
-    Future getClassroom() async{
+    Future getClassroom(course, grade) async{
       var response = await helper.get("classrooms");
 
       for (var r in response){
-        Map<String, dynamic> map = {
-          "id": ClassroomModel.fromJson(r).id.toString(),
-          "name": ClassroomModel.fromJson(r).name.toString(),
-        };
-        setState((){
-          classrooms.add(map);
-        });
+        if (ClassroomModel.fromJson(r).courseId == course && ClassroomModel.fromJson(r).gradeId == grade){
+          Map<String, dynamic> map = {
+            "id": ClassroomModel.fromJson(r).id.toString(),
+            "name": ClassroomModel.fromJson(r).name.toString(),
+          };
+          setState((){
+            classrooms.add(map);
+          });
+        }
       }
     }
 
@@ -76,7 +76,6 @@ class _ThirdPageState extends State<ThirdPage> {
     super.initState();
 
     getGrade();
-    getClassroom();
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -85,6 +84,12 @@ class _ThirdPageState extends State<ThirdPage> {
         setState((){
           _value = newStudent?.classe.toString();
           _value2 = newStudent?.turma.toString();
+        });
+      }
+
+      if (newStudent?.curso != null){
+        setState((){
+          curso = newStudent?.curso.toString();
         });
       }
     });
@@ -146,6 +151,7 @@ class _ThirdPageState extends State<ThirdPage> {
                               }).toList(),
                               value: _value,
                               onChanged: (newValue){
+                                getClassroom(curso, newValue);
                                 _value = newValue.toString();
                               },
                               validator: (value) => value == null ? 'Preencha o campo Classe' : null,

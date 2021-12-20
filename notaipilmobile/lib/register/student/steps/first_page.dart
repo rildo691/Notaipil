@@ -137,6 +137,7 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: () async{
+                                      /*
                                       RegExp expression = RegExp(
                                         r"^/^[0-9]{9}[a-z]{2}[0-9]{3}$/"
                                       );
@@ -144,13 +145,15 @@ class _FirstPageState extends State<FirstPage> {
                                         _isValid = true;
                                       } else {
                                         Fluttertoast.showToast(
-                                          msg: "N.º do bilhete de identidade, tente novamente",
-                                          toastLength: Toast.LENGTH_SHORT,
+                                          msg: "N.º do bilhete de identidade inválido, tente novamente.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
                                           gravity: ToastGravity.BOTTOM,
                                         ).toString();
-                                      }
+                                      }*/
 
-                                      if (_formKey.currentState!.validate() && _isValid){
+                                      if (_formKey.currentState!.validate()){
                                         var model = StudentModel(numeroBI: _numeroBilhete.text, numeroProcesso: int.parse(_numeroProcesso.text.toString()));
                                         Navigator.pushNamed(context, '/second', arguments: model);
                                       }

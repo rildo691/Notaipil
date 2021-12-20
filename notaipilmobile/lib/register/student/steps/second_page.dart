@@ -36,7 +36,6 @@ class _SecondPageState extends State<SecondPage> {
 
   var areas = [];
   var courses = [];
-  var areasId;
 
   ApiService helper = ApiService();
 
@@ -59,7 +58,7 @@ class _SecondPageState extends State<SecondPage> {
     var response = await helper.get("courses");
 
     for (var r in response){
-      if (CourseModel.fromJson(r).area.toString() == areasId){
+      if (CourseModel.fromJson(r).area!.id.toString() == areas){
         Map<String, dynamic> map = {
           "id": CourseModel.fromJson(r).id.toString(),
           "name": CourseModel.fromJson(r).name.toString(),
@@ -147,8 +146,8 @@ class _SecondPageState extends State<SecondPage> {
                               }).toList(),
                               value: _value,
                               onChanged: (newValue){
+                                getCourses(newValue.toString());
                                 _value = newValue.toString();
-                                areasId = _value.toString();
                               },
                               validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,
                             ),

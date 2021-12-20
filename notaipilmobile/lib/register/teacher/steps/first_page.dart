@@ -11,6 +11,8 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/register/model/teacherModel.dart';
 
 /**User Interface */
+//import 'package:international_phone_input/international_phone_input.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstPage extends StatefulWidget {
 
@@ -25,6 +27,8 @@ class _FirstPageState extends State<FirstPage> {
   TeacherModel? newTeacher;
   
   final _formKey = GlobalKey<FormState>();
+  bool _isValid = false;
+  bool _isBi = false;
 
   TextEditingController _numeroBilhete = TextEditingController();
   TextEditingController _telefone = TextEditingController();
@@ -72,8 +76,8 @@ class _FirstPageState extends State<FirstPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, true, '/one', true),
-                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, false, '/one', true),
+                          buildMiddleNavigator(context, true, '/two', true),
                           buildMiddleNavigator(context, false, '/three', true),
                           buildMiddleNavigator(context, false, '/four', true),
                           buildMiddleNavigator(context, false, '/fifth', true),
@@ -88,6 +92,20 @@ class _FirstPageState extends State<FirstPage> {
                             buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text, _numeroBilhete),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             buildTextFieldRegister("Telefone", TextInputType.number, _telefone),
+                            /*InternationalPhoneInput(
+                              decoration:InputDecoration(
+                                labelText: "Número de telefone",
+                                labelStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                border: OutlineInputBorder(),
+                              ),
+                              onPhoneNumberChange: onPhoneNumberChange, 
+                              initialPhoneNumber: _telefone.text,
+                              initialSelection: 'AO',
+                              enabledCountries: ['+244'],
+                              showCountryCodes: true
+                            )*/
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -129,7 +147,34 @@ class _FirstPageState extends State<FirstPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      if (_formKey.currentState!.validate()){
+                                      /*RegExp expression = RegExp(
+                                        r"^/^[0-9]{9}[a-z]{2}[0-9]{3}$/"
+                                      );
+                                      if (expression.hasMatch(_numeroBilhete.text)){
+                                        _isBi = true;
+                                      } else {
+                                        Fluttertoast.showToast(
+                                          msg: "N.º do bilhete de identidade inválido, tente novamente.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      }*/
+
+                                      if (_telefone.text.length > 9 || _telefone.text.length < 9){
+                                        Fluttertoast.showToast(
+                                          msg: "Número de telefone deve possuir 9 dígitos.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+                                        _isValid = true;
+                                      }
+
+                                      if (_formKey.currentState!.validate() && _isValid){
                                         var model = newTeacher?.copyWith(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
                                         Navigator.pushNamed(context, '/three', arguments: model);
                                       }
@@ -158,5 +203,11 @@ class _FirstPageState extends State<FirstPage> {
         );
       },
     );
+  }
+
+  void onPhoneNumberChange(String phoneNumber, String internationalizedPhoneNumber, String isoCode) {
+    setState((){
+      _telefone.text = internationalizedPhoneNumber;
+    });
   }
 }

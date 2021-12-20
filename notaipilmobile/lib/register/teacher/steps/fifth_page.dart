@@ -29,10 +29,35 @@ class _FifthPageState extends State<FifthPage> {
 
   String? _value;
 
+  TeacherModel? newTeacher;
+
   var _date;
 
   TextEditingController _nomeCompleto = TextEditingController();
   TextEditingController _dataNascimento = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    
+      
+        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;
+
+          if (newTeacher?.nome != null && newTeacher?.sexo != null && newTeacher?.dataNascimento != null){
+            setState(() {
+              _nomeCompleto.text = newTeacher!.nome.toString();
+              _value = newTeacher!.sexo.toString();
+              _dataNascimento.text = newTeacher!.dataNascimento.toString();
+            });
+          } else {
+            _dataNascimento.text = "";
+          }
+        });
+  
+  }
 
    @override
    Widget build(BuildContext context) {
@@ -101,6 +126,7 @@ class _FifthPageState extends State<FifthPage> {
                                 suffixIcon: Icon(Icons.event_note, color: Colors.white),
                                 labelStyle: TextStyle(color: Colors.white),
                               ),
+                              controller: _dataNascimento,
                               format: DateFormat("yyyy-MM-dd"),
                               style:  TextStyle(color: Colors.white),
                               onShowPicker: (context, currentValue) {
@@ -109,8 +135,13 @@ class _FifthPageState extends State<FifthPage> {
                                   locale: const Locale("pt"),
                                   firstDate: DateTime(1900),
                                   initialDate: DateTime.now(),
-                                  lastDate: DateTime(2100)
-                                );
+                                  lastDate: DateTime.now(),
+                                ).then((date){
+                                  setState((){
+                                    _dataNascimento.text = date.toString();
+                                    _date = date;
+                                  });
+                                });
                               },
                             ),
                             Container(

@@ -14,8 +14,6 @@ import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
 import 'package:notaipilmobile/register/model/student.dart';
 import 'package:notaipilmobile/register/model/typeAccountModel.dart';
 
-
-
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
@@ -49,6 +47,8 @@ class _FourthPageState extends State<FourthPage> {
   ApiService helper = ApiService();
 
   String? id;
+
+  bool _isValid = false;
 
   Future registerUser(classroomBody, studentAccountBody) async{
     var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
@@ -86,8 +86,6 @@ class _FourthPageState extends State<FourthPage> {
       }
     });
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +128,21 @@ class _FourthPageState extends State<FourthPage> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             buildTextFieldRegister("E-mail do Encarregado", TextInputType.emailAddress, _emailEncarregado),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildTextFieldRegister("Telefone do Encarregado", TextInputType.text, _telefoneEncarregado),
+                            buildTextFieldRegister("Telefone do Encarregado", TextInputType.number, _telefoneEncarregado),
+                            /*InternationalPhoneInput(
+                              decoration:InputDecoration(
+                                labelText: "Número de telefone",
+                                labelStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                border: OutlineInputBorder(),
+                              ),
+                              onPhoneNumberChange: onPhoneNumberChange, 
+                              initialPhoneNumber: _telefoneEncarregado.text,
+                              initialSelection: 'AO',
+                              enabledCountries: ['+244'],
+                              showCountryCodes: true
+                            ),*/
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -171,7 +183,7 @@ class _FourthPageState extends State<FourthPage> {
                                     ),
                                     onTap: (){
                                       var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
-
+                                      
                                       classroomStudent = ClassroomStudentModel(
                                         studentId: model!.numeroProcesso,
                                         classroomId: model.turma
@@ -184,9 +196,21 @@ class _FourthPageState extends State<FourthPage> {
                                         telephoneEducator: model.telefoneEncarregado,
                                         process: model.numeroProcesso,
                                         classroomId: model.turma,
-                                      );                                      
+                                      );       
 
-                                      if (_formKey.currentState!.validate()){
+                                      if (_telefoneEncarregado.text.length > 9 || _telefoneEncarregado.text.length < 9){
+                                        Fluttertoast.showToast(
+                                          msg: "Número de telefone deve possuir 9 dígitos.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+                                        _isValid = true;
+                                      }
+
+                                      if (_formKey.currentState!.validate() && _isValid){
                                         registerUser(classroomStudent.toJson(), studentAccount.toJson());
                                         _buildModal();
                                       } else {
@@ -297,4 +321,10 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
   
+
+  void onPhoneNumberChange(String phoneNumber, String internationalizedPhoneNumber, String isoCode) {
+    setState((){
+      _telefoneEncarregado.text = internationalizedPhoneNumber;
+    });
+  }
 }

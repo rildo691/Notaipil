@@ -40,7 +40,7 @@ class Student {
     Map<String, dynamic> toJson() => {
         "bi": bi,
         "fullName": fullName,
-        "birthdate": brithdate,
+        "birthdate": birthdate,
         "gender": gender,
         "process": process,
         "courseId": courseId,

@@ -8,8 +8,8 @@ class TeacherModel{
   String? regimeLaboral;
   String? categoria;
   String? numeroBI;
-  String? tempoServicoIpil;
-  String? tempoServicoEducacao;
+  DateTime? tempoServicoIpil;
+  DateTime? tempoServicoEducacao;
   
   TeacherModel({
     this.nome,
@@ -35,8 +35,8 @@ class TeacherModel{
     String? regimeLaboral,
     String? categoria,
     String? numeroBI,
-    String? tempoServicoIpil,
-    String? tempoServicoEducacao
+    DateTime? tempoServicoIpil,
+    DateTime? tempoServicoEducacao
   }) {
     return TeacherModel(
       nome: nome ?? this.nome,

@@ -74,8 +74,8 @@ class _SecondPageState extends State<SecondPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           buildMiddleNavigator(context, false, '/one', true),
-                          buildMiddleNavigator(context, true, '/two', true),
-                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, false, '/two', true),
+                          buildMiddleNavigator(context, true, '/three', true),
                           buildMiddleNavigator(context, false, '/four', true),
                           buildMiddleNavigator(context, false, '/fifth', true),
                         ],
@@ -99,8 +99,8 @@ class _SecondPageState extends State<SecondPage> {
                               ),
                               dropdownColor: Colors.black,
                               items: [
-                                DropdownMenuItem(child: Text("Diurno"), value: "Diurno",),
-                                DropdownMenuItem(child: Text("Nocturno"), value: "Nocturno",),
+                                DropdownMenuItem(child: Text("Efectivo"), value: "Efectivo",),
+                                DropdownMenuItem(child: Text("Colaborador"), value: "Colaborador",),
                               ],
                               value: _value,
                               onChanged: (newValue){

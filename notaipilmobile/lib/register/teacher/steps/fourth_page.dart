@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:intl/intl.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
+import 'package:notaipilmobile/register/model/teacherAccountModel.dart';
+
+/**User Interface */
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
 
 class FourthPage extends StatefulWidget {
 
@@ -21,11 +30,22 @@ class FourthPage extends StatefulWidget {
 class _FourthPageState extends State<FourthPage> {
 
   TeacherModel? newTeacher;
+  ApiService helper = ApiService();
+  TeacherAccountModel _teacherAccount = TeacherAccountModel();
+
   
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _tempoServicoIpil = TextEditingController();
-  TextEditingController _tempoServicoEd = TextEditingController();
+  DateTime? _tempoServicoIpil;
+  DateTime? _tempoServicoEducacao;
+
+  TextEditingController _tempoIpil = TextEditingController();
+  TextEditingController _tempoEd = TextEditingController();
+
+  Future registerTeacher(body) async{
+    var teacherResponse = await helper.postWithoutToken("teacher_accounts", body);
+    print(teacherResponse);
+  }
 
   @override
   void initState(){
@@ -37,9 +57,11 @@ class _FourthPageState extends State<FourthPage> {
         newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;
 
           if (newTeacher?.tempoServicoIpil != null && newTeacher?.tempoServicoEducacao != null){
-            _tempoServicoIpil.text = newTeacher!.tempoServicoIpil.toString();
-            _tempoServicoEd.text = newTeacher!.tempoServicoEducacao.toString();
-            
+            _tempoIpil.text = newTeacher!.tempoServicoIpil.toString();
+            _tempoEd.text = newTeacher!.tempoServicoEducacao.toString();
+          } else {
+            _tempoIpil.text = "";
+            _tempoEd.text = "";
           }
         });
     });
@@ -73,8 +95,8 @@ class _FourthPageState extends State<FourthPage> {
                           buildMiddleNavigator(context, false, '/one', true),
                           buildMiddleNavigator(context, false, '/two', true),
                           buildMiddleNavigator(context, false, '/three', true),
-                          buildMiddleNavigator(context, true, '/four', true),
-                          buildMiddleNavigator(context, false, '/fifth', true),
+                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, true, '/fifth', true),
                         ],
                       ),
                       Form(
@@ -83,10 +105,56 @@ class _FourthPageState extends State<FourthPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            buildTextFieldRegister("Tempo de Serviço no IPIL", TextInputType.text, _tempoServicoIpil),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                            buildTextFieldRegister("Tempo de Serviço na Educação", TextInputType.number, _tempoServicoEd),
+                            DateTimeField(
+                              decoration: InputDecoration(
+                                labelText: "Tempo de Serviço no IPIL",
+                                suffixIcon: Icon(Icons.event_note, color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.white),
+                              ),
+                              controller: _tempoIpil,
+                              format: DateFormat("yyyy-MM-dd"),
+                              style:  TextStyle(color: Colors.white),
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                  context: context,
+                                  locale: const Locale("pt"),
+                                  firstDate: DateTime(1900),
+                                  initialDate: DateTime.now(),
+                                  lastDate: DateTime.now(),
+                                ).then((date){
+                                  setState((){
+                                    _tempoIpil.text = date.toString();
+                                    _tempoServicoIpil = date;
+                                  });
+                                });
+                              },
+                            ),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                            DateTimeField(
+                              decoration: InputDecoration(
+                                labelText: "Tempo de Serviço na Educação",
+                                suffixIcon: Icon(Icons.event_note, color: Colors.white),
+                                labelStyle: TextStyle(color: Colors.white),
+                              ),
+                              controller: _tempoEd,
+                              format: DateFormat("yyyy-MM-dd"),
+                              style:  TextStyle(color: Colors.white),
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                  context: context,
+                                  locale: const Locale("pt"),
+                                  firstDate: DateTime(1900),
+                                  initialDate: DateTime.now(),
+                                  lastDate: DateTime.now(),
+                                ).then((date){
+                                  setState((){
+                                    _tempoEd.text = date.toString();
+                                    _tempoServicoEducacao = date;
+                                  });
+                                });
+                              },
+                            ),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                             Container(
                               padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
                               child: Row(
@@ -108,7 +176,7 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil.text, tempoServicoEducacao: _tempoServicoEd.text);
+                                      var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao);
                                       Navigator.pushNamed(context, '/four', arguments: model);
                                     },
                                   ),
@@ -127,10 +195,27 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
+                                      var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao);
+
+                                      _teacherAccount = TeacherAccountModel(
+                                        bi: model?.numeroBI,
+                                        fullName: model?.nome,
+                                        birthdate: model?.dataNascimento,
+                                        gender: model?.sexo,
+                                        email: model?.email,
+                                        telephone: model?.telefone,
+                                        qualificationId: model?.habilitacoes,
+                                        regime: model?.regimeLaboral,
+                                        ipilDate: model?.tempoServicoIpil,
+                                        educationDate: model?.tempoServicoEducacao,
+                                        category: model?.categoria
+                                      );
+
                                       if (_formKey.currentState!.validate()){
+                                        registerTeacher(_teacherAccount.toJson());
                                         _buildModal();
                                       } else {
-                                        var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil.text, tempoServicoEducacao: _tempoServicoEd.text);
+                                        
                                         _buildErrorModal(model);
                                       }
                                     }

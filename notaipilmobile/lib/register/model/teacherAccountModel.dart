@@ -25,7 +25,7 @@ class TeacherAccountModel {
 
     String? bi;
     String? fullName;
-    String? birthdate;
+    DateTime? birthdate;
     String? gender;
     String? email;
     String? telephone;
@@ -38,11 +38,11 @@ class TeacherAccountModel {
     factory TeacherAccountModel.fromJson(Map<String, dynamic> json) => TeacherAccountModel(
         bi: json["bi"],
         fullName: json["fullName"],
-        birthdate: json["birthdate"],
+        birthdate: DateTime.parse(json["birthdate"]),
         gender: json["gender"],
         email: json["email"],
         telephone: json["telephone"],
-        qualification: json["qualificationId"],
+        qualificationId: json["qualificationId"],
         regime: json["regime"],
         ipilDate: DateTime.parse(json["ipilDate"]),
         educationDate: DateTime.parse(json["educationDate"]),
@@ -52,11 +52,11 @@ class TeacherAccountModel {
     Map<String, dynamic> toJson() => {
         "bi": bi,
         "fullName": fullName,
-        "birthdate": birthdate,
+        "birthdate": "${birthdate!.year.toString().padLeft(4, '0')}-${birthdate!.month.toString().padLeft(2, '0')}-${birthdate!.day.toString().padLeft(2, '0')}",
         "gender": gender,
         "email": email,
         "telephone": telephone,
-        "qualificationId": qualification,
+        "qualificationId": qualificationId,
         "regime": regime,
         "ipilDate": "${ipilDate!.year.toString().padLeft(4, '0')}-${ipilDate!.month.toString().padLeft(2, '0')}-${ipilDate!.day.toString().padLeft(2, '0')}",
         "educationDate": "${educationDate!.year.toString().padLeft(4, '0')}-${educationDate!.month.toString().padLeft(2, '0')}-${educationDate!.day.toString().padLeft(2, '0')}",

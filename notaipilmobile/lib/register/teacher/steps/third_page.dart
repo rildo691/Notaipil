@@ -9,6 +9,10 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
+import 'package:notaipilmobile/register/model/qualificationsModel.dart';
+
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
 
 class ThirdPage extends StatefulWidget {
 
@@ -26,14 +30,33 @@ class _ThirdPageState extends State<ThirdPage> {
   String? _value2;
 
   TextEditingController _categoria = TextEditingController();
+  ApiService helper = ApiService();
   
 
   late TeacherModel? newTeacher;
+
+  var qualifications = [];
+
+  Future getQualifications() async{
+    var response = await helper.get("qualifications");
+
+    for(var r in response){
+      Map<String, dynamic> map = {
+        "id": QualificationsModel.fromJson(r).id,
+        "name": QualificationsModel.fromJson(r).name,
+      };
+
+      setState((){
+        qualifications.add(map);
+      });
+    }
+  }
 
   @override
   void initState(){
     super.initState();
 
+    getQualifications();
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;
@@ -42,6 +65,7 @@ class _ThirdPageState extends State<ThirdPage> {
         setState(() {
           _value = newTeacher?.habilitacoes.toString();
           _value2 = newTeacher?.categoria.toString();
+          _categoria.text = _value2.toString();
         });
       }
     });
@@ -74,8 +98,8 @@ class _ThirdPageState extends State<ThirdPage> {
                         children: [
                           buildMiddleNavigator(context, false, '/one', true),
                           buildMiddleNavigator(context, false, '/two', true),
-                          buildMiddleNavigator(context, true, '/three', true),
-                          buildMiddleNavigator(context, false, '/four', true),
+                          buildMiddleNavigator(context, false, '/three', true),
+                          buildMiddleNavigator(context, true, '/four', true),
                           buildMiddleNavigator(context, false, '/fifth', true),
                         ],
                       ),
@@ -85,7 +109,7 @@ class _ThirdPageState extends State<ThirdPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DropdownButtonFormField(
+                            DropdownButtonFormField<String>(
                               hint: Text("Habilitações Literárias"),
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
@@ -95,10 +119,12 @@ class _ThirdPageState extends State<ThirdPage> {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(child: Text("Ensino Médio"), value: "Ensino Médio",),
-                                DropdownMenuItem(child: Text("Licenciatura"), value: "Nocturno",),
-                              ],
+                              items: qualifications.map((e){
+                                return new DropdownMenuItem<String>(
+                                  value: e["id"].toString(),
+                                  child: Text(e["name"].toString()),
+                                );
+                              }).toList(),
                               value: _value,
                               onChanged: (newValue){
                                 _value = newValue.toString();
@@ -129,7 +155,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
+                                      var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _categoria.text);
                                       Navigator.pushNamed(context, '/three', arguments: model);
                                     },
                                   ),
@@ -149,7 +175,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                     ),
                                     onTap: (){
                                       if (_formKey.currentState!.validate()){
-                                        var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _value2);
+                                        var model = newTeacher?.copyWith(habilitacoes: _value, categoria: _categoria.text);
                                         Navigator.pushNamed(context, '/fifth', arguments: model);
                                       }
                                     },
