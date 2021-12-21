@@ -11,7 +11,6 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/register/model/teacherModel.dart';
 
 /**User Interface */
-//import 'package:international_phone_input/international_phone_input.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstPage extends StatefulWidget {

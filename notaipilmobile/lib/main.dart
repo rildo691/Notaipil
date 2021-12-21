@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
+import 'package:notaipilmobile/ui/choose_profile.dart';
 
 /**Registers */
 import 'package:notaipilmobile/register/student/student_register.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (_) => const Login(),
+        //'/': (_) => const Chooseprofile(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
