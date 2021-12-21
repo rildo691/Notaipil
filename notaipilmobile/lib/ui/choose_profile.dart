@@ -28,7 +28,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
             return Scaffold(
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 35.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color(0xFF202733),
@@ -50,17 +50,10 @@ class _ChooseprofileState extends State<Chooseprofile> {
                           _buildCard("Director"),
                         ]
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                            height: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                            child: Icon(Icons.power_settings_new_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1),
-                          )
-                        ],
-                      )
+                      SizedBox(height: SizeConfig.heightMultiplier !* 1.7,),
+                      Container(
+                        child: Icon(Icons.power_settings_new_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1)
+                      ),
                     ],  
                   ),
                 )
