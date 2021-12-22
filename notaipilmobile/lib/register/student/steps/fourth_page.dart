@@ -13,6 +13,7 @@ import 'package:notaipilmobile/register/model/studentAccountModel.dart';
 import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
 import 'package:notaipilmobile/register/model/student.dart';
 import 'package:notaipilmobile/register/model/typeAccountModel.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
@@ -50,11 +51,12 @@ class _FourthPageState extends State<FourthPage> {
 
   bool _isValid = false;
 
+  var model;
+
   Future registerUser(classroomBody, studentAccountBody) async{
     var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
     var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
-    print(classroomStudentResponse);
-    print(studentAccountResponse);
+    buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], studentAccountResponse["error"] ? model : '/');
   }
 
   Future getTypeAccounts() async{
@@ -182,7 +184,9 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                      setState(() {
+                                        model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                      });
                                       
                                       classroomStudent = ClassroomStudentModel(
                                         studentId: model!.numeroProcesso,
@@ -211,10 +215,7 @@ class _FourthPageState extends State<FourthPage> {
                                       }
 
                                       if (_formKey.currentState!.validate() && _isValid){
-                                        registerUser(classroomStudent.toJson(), studentAccount.toJson());
-                                        _buildModal();
-                                      } else {
-                                        _buildErrorModal(model);
+                                        registerUser(classroomStudent.toJson(), studentAccount.toJson()); 
                                       }
                                     },
                                   )
@@ -243,6 +244,7 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
+  /*
   Future<Widget>? _buildModal(){
     showDialog(
       context: context,
@@ -326,5 +328,5 @@ class _FourthPageState extends State<FourthPage> {
     setState((){
       _telefoneEncarregado.text = internationalizedPhoneNumber;
     });
-  }
+  }*/
 }

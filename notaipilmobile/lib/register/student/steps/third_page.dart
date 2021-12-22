@@ -151,6 +151,7 @@ class _ThirdPageState extends State<ThirdPage> {
                               }).toList(),
                               value: _value,
                               onChanged: (newValue){
+                                classrooms.clear();
                                 getClassroom(curso, newValue);
                                 _value = newValue.toString();
                               },

@@ -111,15 +111,20 @@ class ApiService{
         var responseJson = json.decode(response.body);
         return responseJson;
       case 400:
-        return null;
+        var responseJson = json.decode(response.body);
+        return responseJson;
       case 401:
-        return null;
+        var responseJson = json.decode(response.body);
+        return responseJson;
       case 403:
-        return null;
+        var responseJson = json.decode(response.body);
+        return responseJson;
       case 500:
-        return null;
+        var responseJson = json.decode(response.body);
+        return responseJson;
       default:
-        return null;
+        var responseJson = json.decode(response.body);
+        return responseJson;
     }
   }
 }

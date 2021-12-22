@@ -146,6 +146,7 @@ class _SecondPageState extends State<SecondPage> {
                               }).toList(),
                               value: _value,
                               onChanged: (newValue){
+                                courses.clear();
                                 getCourses(newValue.toString());
                                 _value = newValue.toString();
                               },
