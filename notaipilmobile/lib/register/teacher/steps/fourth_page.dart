@@ -12,6 +12,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
 import 'package:notaipilmobile/register/model/teacherAccountModel.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**User Interface */
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -35,6 +36,7 @@ class _FourthPageState extends State<FourthPage> {
 
   
   final _formKey = GlobalKey<FormState>();
+  var model;
 
   DateTime? _tempoServicoIpil;
   DateTime? _tempoServicoEducacao;
@@ -44,7 +46,7 @@ class _FourthPageState extends State<FourthPage> {
 
   Future registerTeacher(body) async{
     var teacherResponse = await helper.postWithoutToken("teacher_accounts", body);
-    print(teacherResponse);
+    buildModal(context, teacherResponse["error"], teacherResponse["message"], route: !teacherResponse["error"] ? '/' : null);
   }
 
   @override
@@ -195,7 +197,9 @@ class _FourthPageState extends State<FourthPage> {
                                       ),
                                     ),
                                     onTap: (){
-                                      var model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao);
+                                      setState((){
+                                        model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao);
+                                      });
 
                                       _teacherAccount = TeacherAccountModel(
                                         bi: model?.numeroBI,
@@ -213,7 +217,6 @@ class _FourthPageState extends State<FourthPage> {
 
                                       if (_formKey.currentState!.validate()){
                                         registerTeacher(_teacherAccount.toJson());
-                                        _buildModal();
                                       } else {
                                         
                                         _buildErrorModal(model);

@@ -92,19 +92,6 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> login(String url, Map body) async{
-    var response = await http.post(
-      Uri.parse(_baseUrl + url),
-      headers: {
-        'Content-type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
-      },
-      body: json.encode(body)
-    );
-    var responseJson = _responseStatus(response);
-    return responseJson;
-  }
-
   dynamic _responseStatus(http.Response response){
     switch (response.statusCode) {
       case 200:

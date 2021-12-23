@@ -9,13 +9,32 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 class Chooseprofile extends StatefulWidget {
 
-  const Chooseprofile({ Key? key }) : super(key: key);
+  late var _typeAccounts = [];
+
+  Chooseprofile(this._typeAccounts);
 
   @override
   _ChooseprofileState createState() => _ChooseprofileState();
 }
 
 class _ChooseprofileState extends State<Chooseprofile> {
+
+  var accountTypes = [];
+
+  @override 
+  void initState(){
+    super.initState();
+
+    for (int i = 0; i < widget._typeAccounts.length; i++){
+      setState((){
+        accountTypes.add(widget._typeAccounts[i]["name"]);
+      });
+    }
+  }
+
+  int _getQuantity(){
+    return widget._typeAccounts.length;
+  }
 
    @override
    Widget build(BuildContext context) {
@@ -39,16 +58,49 @@ class _ChooseprofileState extends State<Chooseprofile> {
                       buildHeaderPartOne(),
                       buildHeaderPartTwo("Escolha o seu perfil"),
                       GridView.count(
+                        shrinkWrap: true,
                         crossAxisCount: 2,
                         crossAxisSpacing: 10.0,
                         mainAxisSpacing: 10.0,
-                        shrinkWrap: true,
-                        children: [
-                          _buildCard("Professor"),                                        
-                          _buildCard("Aluno"),
-                          _buildCard("Coordenador"),
-                          _buildCard("Director"),
-                        ]
+                        children: widget._typeAccounts.map<Widget>((data){
+                          return GestureDetector(
+                            child: Card(
+                              color: Color(0xFF222A37),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                        height: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                      ),
+                                      SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
+                                      Text(data["name"], style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    ],
+                                  ),
+                                )
+                              )
+                            ),
+                            onTap: (){
+                              if (data["name"] == "Aluno"){
+                                Navigator.pushNamed(context, '/studentDashboard');
+                              } else if (data["name"] == "Professor"){
+
+                              } else if (data["name"] == "Encarregado") {
+
+                              } else if (data["name"] == "Director"){
+
+                              }
+                            },
+                          );
+                        }).toList(),
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 1.7,),
                       Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:notaipilmobile/ui/dashboard.dart';
 
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
+        '/studentDashboard': (_) => Dashboard(),
       },
     );
   }

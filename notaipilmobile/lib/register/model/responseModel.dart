@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
-Future<Widget>? buildModal(context, error, message, route){
+Future<Widget>? buildModal(context, error, message, {route}){
     showDialog(
       context: context,
       builder: (context){
@@ -31,7 +31,7 @@ Future<Widget>? buildModal(context, error, message, route){
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
-                    error ? Navigator.pop(context, route) : Navigator.pushNamed(context, route);
+                    error ? Navigator.pop(context) : Navigator.pushNamed(context, route);
                   },
                 )
               ]

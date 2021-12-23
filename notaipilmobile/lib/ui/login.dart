@@ -15,6 +15,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /**User Interface */
 import 'package:notaipilmobile/ui/dashboard.dart';
+import 'choose_profile.dart';
+
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
+
 
 class Login extends StatefulWidget {
 
@@ -26,36 +32,48 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  bool _isLoading = false;
   ApiService helper = ApiService();
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  signIn(String email, String pass) async{
-    SharedPreferences sharedP = await SharedPreferences.getInstance();
+  var token;
+
+  Future signIn(String email, String pass) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map body = {
       'email': email,
       'password': pass
     };
-    var response = await helper.login("users/login", body);
-
-    if (response != null){
-      print(response);
-
-      setState((){
-        _isLoading = false;
-      });
-
-      sharedP.setString("token", response['token']);
+    var response = await helper.postWithoutToken("users/login", body);
+    
+    if (!response["error"] && response["user"]["typesAccounts"].length < 2){
+      sharedPreferences.setString("token", response['token']);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => Dashboard()),
         (Route<dynamic> route) => false);
+    } else if (!response["error"] && response["user"]["typesAccounts"].length>= 2) {
+      sharedPreferences.setString("token", response['token']);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => Chooseprofile(response["user"]["typesAccounts"])),
+        (Route<dynamic> route) => false);
+    } else {
+      buildModal(context, response["error"], "Credenciais inválidas, por favor tente novamente.");
     }
   }
 
-  verifyUser(){
-    
+  Future verifyUser() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState((){
+      token = preferences.getString('token');
+    });
+    token == null ? Navigator.pushNamed(context, '/') : Navigator.pushNamed(context, '/dashboard');
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    //verifyUser();
   }
 
   @override
@@ -106,9 +124,6 @@ class _LoginState extends State<Login> {
                               ),
                               onPressed: (){
                                 if (_formKey.currentState!.validate()){
-                                  setState((){
-                                    _isLoading = true;
-                                  });
                                   signIn(_emailController.text.toString(), _passwordController.text.toString());
                                 }
                               },

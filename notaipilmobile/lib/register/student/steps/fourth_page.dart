@@ -56,7 +56,7 @@ class _FourthPageState extends State<FourthPage> {
   Future registerUser(classroomBody, studentAccountBody) async{
     var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
     var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
-    buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], studentAccountResponse["error"] ? model : '/');
+    buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], route: !studentAccountResponse["error"] ? '/' : null);
   }
 
   Future getTypeAccounts() async{
