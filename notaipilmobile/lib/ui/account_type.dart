@@ -20,35 +20,48 @@ class AccountType extends StatelessWidget {
 
             return Scaffold(
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color(0xFF202733),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartOne(),
-                      buildHeaderPartTwo("Tipo de Conta"),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildAccountButton(context, "Professor", '/teacher'),
-                          _buildAccountButton(context, "Aluno", '/student')
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(top: 130.0),
-                        child: GestureDetector(
-                          child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                          onTap: (){
-                            Navigator.pushNamed(context, '/');
-                          }
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(34, 42, 55, 1.0),
+                            Color.fromRGBO(21, 23, 23, 1.0),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         )
                       ),
-                    ],
-                  ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          buildHeaderPartOne(),
+                          buildHeaderPartTwo("Tipo de Conta"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildAccountButton(context, "Professor", '/teacher'),
+                              _buildAccountButton(context, "Aluno", '/student')
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 130.0),
+                            child: GestureDetector(
+                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              onTap: (){
+                                Navigator.pushNamed(context, '/');
+                              }
+                            )
+                          ),
+                        ],
+                      ),
+                    )
+                  ]
                 )
               )
             );

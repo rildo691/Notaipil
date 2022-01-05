@@ -99,142 +99,138 @@ class _FourthPageState extends State<FourthPage> {
 
             return Scaffold(
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color(0xFF202733),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartOne(),
-                      buildHeaderPartTwo("Cadastrar Aluno"),
-                      Row(
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(34, 42, 55, 1.0),
+                            Color.fromRGBO(21, 23, 23, 1.0),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        )
+                      ),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          buildMiddleNavigator(context, false, '/first', false),
-                          buildMiddleNavigator(context, false, '/second', false),
-                          buildMiddleNavigator(context, false, '/third', false),
-                          buildMiddleNavigator(context, true, '/fourth', false),
-                        ]
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailAluno),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildTextFieldRegister("E-mail do Encarregado", TextInputType.emailAddress, _emailEncarregado),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            buildTextFieldRegister("Telefone do Encarregado", TextInputType.number, _telefoneEncarregado),
-                            /*InternationalPhoneInput(
-                              decoration:InputDecoration(
-                                labelText: "Número de telefone",
-                                labelStyle: TextStyle(color: Colors.white),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                border: OutlineInputBorder(),
-                              ),
-                              onPhoneNumberChange: onPhoneNumberChange, 
-                              initialPhoneNumber: _telefoneEncarregado.text,
-                              initialSelection: 'AO',
-                              enabledCountries: ['+244'],
-                              showCountryCodes: true
-                            ),*/
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            Container(
-                              padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    child: Container(
-                                      width: SizeConfig.screenWidth !* .32,
-                                      height: SizeConfig.heightMultiplier !* 6,
-                                      color: Color.fromRGBO(0, 209, 255, 0.49),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
-                                          SizedBox(width: 8.0),
-                                          Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                        ],
+                          buildHeaderPartOne(),
+                          buildHeaderPartTwo("Cadastrar Aluno"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              buildMiddleNavigator(context, false, '/first', false),
+                              buildMiddleNavigator(context, false, '/second', false),
+                              buildMiddleNavigator(context, false, '/third', false),
+                              buildMiddleNavigator(context, true, '/fourth', false),
+                            ]
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailAluno),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                buildTextFieldRegister("E-mail do Encarregado", TextInputType.emailAddress, _emailEncarregado),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                buildTextFieldRegister("Telefone do Encarregado", TextInputType.number, _telefoneEncarregado),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Container(
+                                  padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              SizedBox(width: 8.0),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                          Navigator.pushNamed(context, '/third', arguments: model);
+                                        },
                                       ),
-                                    ),
-                                    onTap: (){
-                                      var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
-                                      Navigator.pushNamed(context, '/third', arguments: model);
-                                    },
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("Finalizar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              SizedBox(width: 8.0),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          setState(() {
+                                            model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                          });
+                                          
+                                          classroomStudent = ClassroomStudentModel(
+                                            studentId: model!.numeroProcesso,
+                                            classroomId: model.turma
+                                          );
+                                            studentAccount = StudentAccountModel(
+                                            bilhete: model.numeroBI, 
+                                            email: model.emailAluno, 
+                                            emailEducator: model.emailEncarregado,
+                                            telephoneEducator: model.telefoneEncarregado,
+                                            process: model.numeroProcesso,
+                                            classroomId: model.turma,
+                                          );       
+                                            if (_telefoneEncarregado.text.length > 9 || _telefoneEncarregado.text.length < 9){
+                                            Fluttertoast.showToast(
+                                              msg: "Número de telefone deve possuir 9 dígitos.",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                              gravity: ToastGravity.BOTTOM,
+                                            ).toString();
+                                          } else {
+                                            _isValid = true;
+                                          }
+                                            if (_formKey.currentState!.validate() && _isValid){
+                                            registerUser(classroomStudent.toJson(), studentAccount.toJson()); 
+                                          }
+                                        },
+                                      )
+                                    ],  
                                   ),
-                                  GestureDetector(
-                                    child: Container(
-                                      width: SizeConfig.screenWidth !* .32,
-                                      height: SizeConfig.heightMultiplier !* 6,
-                                      color: Color.fromRGBO(0, 209, 255, 0.49),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text("Finalizar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                          SizedBox(width: 8.0),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: (){
-                                      setState(() {
-                                        model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
-                                      });
-                                      
-                                      classroomStudent = ClassroomStudentModel(
-                                        studentId: model!.numeroProcesso,
-                                        classroomId: model.turma
-                                      );
-
-                                      studentAccount = StudentAccountModel(
-                                        bilhete: model.numeroBI, 
-                                        email: model.emailAluno, 
-                                        emailEducator: model.emailEncarregado,
-                                        telephoneEducator: model.telefoneEncarregado,
-                                        process: model.numeroProcesso,
-                                        classroomId: model.turma,
-                                      );       
-
-                                      if (_telefoneEncarregado.text.length > 9 || _telefoneEncarregado.text.length < 9){
-                                        Fluttertoast.showToast(
-                                          msg: "Número de telefone deve possuir 9 dígitos.",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          gravity: ToastGravity.BOTTOM,
-                                        ).toString();
-                                      } else {
-                                        _isValid = true;
-                                      }
-
-                                      if (_formKey.currentState!.validate() && _isValid){
-                                        registerUser(classroomStudent.toJson(), studentAccount.toJson()); 
-                                      }
-                                    },
-                                  )
-                                ],  
-                              ),
+                                )
+                              ]
+                            ),
+                          ),
+                          Container(
+                            child: GestureDetector(
+                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              onTap: (){
+                                Navigator.of(context, rootNavigator: true).pushNamed('/');
+                              }
                             )
-                          ]
-                        ),
+                          )
+                        ],
                       ),
-                      Container(
-                        child: GestureDetector(
-                          child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                          onTap: (){
-                            Navigator.of(context, rootNavigator: true).pushNamed('/');
-                          }
-                        )
-                      )
-                    ],
-                  ),
+                    )
+                  ]
                 )
               )
             );
@@ -243,90 +239,4 @@ class _FourthPageState extends State<FourthPage> {
       },
     );
   }
-
-  /*
-  Future<Widget>? _buildModal(){
-    showDialog(
-      context: context,
-      builder: (context){
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0)
-          ),
-          backgroundColor: Color(0xFF202733),
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            width: SizeConfig.screenWidth !* .8,
-            height: SizeConfig.screenHeight !* .4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
-                Text("Obrigado por cadastrar-se, por favor aguarde uma resposta no seu e-mail.", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
-                ElevatedButton(
-                  child: Text("OK"),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(0, 209, 255, 0.49),
-                    onPrimary: Colors.white,
-                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
-                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
-                  ),
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/');
-                  },
-                )
-              ]
-            ),
-          )
-        );
-      }
-    );
-  }
-
-  Future<Widget>? _buildErrorModal(model){
-    showDialog(
-      context: context,
-      builder: (context){
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0)
-          ),
-          backgroundColor: Color(0xFF202733),
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            width: SizeConfig.screenWidth !* .8,
-            height: SizeConfig.screenHeight !* .4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.error_outline, size: 70.0, color: Colors.red),
-                Text("Ocorreu um erro na validação do formulário. Certifique-se que tem tudo conforme o pedido.", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
-                ElevatedButton(
-                  child: Text("OK"),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(0, 209, 255, 0.49),
-                    onPrimary: Colors.white,
-                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
-                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
-                  ),
-                  onPressed: (){
-                    Navigator.pop(context, model);
-                  },
-                )
-              ]
-            ),
-          )
-        );
-      }
-    );
-  }
-  
-
-  void onPhoneNumberChange(String phoneNumber, String internationalizedPhoneNumber, String isoCode) {
-    setState((){
-      _telefoneEncarregado.text = internationalizedPhoneNumber;
-    });
-  }*/
 }

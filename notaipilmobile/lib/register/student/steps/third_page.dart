@@ -110,7 +110,16 @@ class _ThirdPageState extends State<ThirdPage> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color(0xFF202733),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromRGBO(34, 42, 55, 1.0),
+                        Color.fromRGBO(21, 23, 23, 1.0),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
