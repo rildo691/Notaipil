@@ -75,16 +75,7 @@ class _FifthPageState extends State<FifthPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromRGBO(34, 42, 55, 1.0),
-                            Color.fromRGBO(21, 23, 23, 1.0),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        )
-                      ),
+                      color: Color.fromARGB(255, 34, 42, 55),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,

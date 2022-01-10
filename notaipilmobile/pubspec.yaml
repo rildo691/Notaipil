@@ -39,10 +39,9 @@ dependencies:
   fluttertoast: ^8.0.8
   email_validator: ^2.0.1
   shared_preferences: ^0.5.8
-  get: 
   http: ^0.13.4
   datetime_picker_formfield: ^2.0.0
-  intl: ^0.17.0
+  syncfusion_flutter_datagrid: ^19.4.41
 
 dev_dependencies:
   flutter_test:

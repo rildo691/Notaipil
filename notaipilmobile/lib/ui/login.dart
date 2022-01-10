@@ -14,7 +14,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /**User Interface */
-import 'package:notaipilmobile/ui/dashboard.dart';
+
 import 'choose_profile.dart';
 
 /**Model */
@@ -49,9 +49,9 @@ class _LoginState extends State<Login> {
     
     if (!response["error"] && response["user"]["typesAccounts"].length < 2){
       sharedPreferences.setString("token", response['token']);
-      Navigator.of(context).pushAndRemoveUntil(
+      /*Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => Dashboard()),
-        (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);*/
     } else if (!response["error"] && response["user"]["typesAccounts"].length>= 2) {
       sharedPreferences.setString("token", response['token']);
       Navigator.of(context).pushAndRemoveUntil(
@@ -97,16 +97,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(34, 42, 55, 1.0),
-                        Color.fromRGBO(21, 23, 23, 1.0),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
-                  ),
+                  color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
