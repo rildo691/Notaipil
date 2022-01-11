@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -37,26 +38,17 @@ class _ThirdPageState extends State<ThirdPage> {
 
   var qualifications = [];
 
-  Future getQualifications() async{
-    var response = await helper.get("qualifications");
-
-    for(var r in response){
-      Map<String, dynamic> map = {
-        "id": QualificationsModel.fromJson(r).id,
-        "name": QualificationsModel.fromJson(r).name,
-      };
-
-      setState((){
-        qualifications.add(map);
-      });
-    }
-  }
+  
 
   @override
   void initState(){
     super.initState();
 
-    getQualifications();
+    getQualifications().then((List<dynamic> value) => 
+      setState((){
+        qualifications = value;
+      })
+    );
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;

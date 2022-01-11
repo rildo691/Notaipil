@@ -11,11 +11,11 @@ import 'package:notaipilmobile/register/model/areaModel.dart';
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
 
-/**User Interface */
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
+
+/**Complemtnts */
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -30,22 +30,27 @@ class _MainPageState extends State<MainPage> {
   var token;
   var areaCoordinator = [
     {
+      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
       'area': 'Construção Civil',
       'coordinator': 'Carlos Capapelo',
     },
     {
+      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
       'area': 'Electricidade, Electronica e Telecomunicações',
       'coordinator': 'Telma Monteiro'
     },
     {
+      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
       'area': 'Informática',
       'coordinator': 'Edson Viegas',
     },
     {
+      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
       'area': 'Mecânica',
       'coordinator': 'Desconhecido'
     },
     {
+      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
       'area': 'Química',
       'coordinator': 'Álvaro Delly'
     }
@@ -148,15 +153,31 @@ class _MainPageState extends State<MainPage> {
                           DataRow(
                             cells: [
                               DataCell(
-                                Expanded(child: Text(e['area'].toString(), textAlign: TextAlign.center,)),
-                                placeholder: false,
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e['area'].toString(), textAlign: TextAlign.center,),
+                                  )
+                                ),
                                 showEditIcon: false,
+                                placeholder: false,
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage(value: [e['id'], e['area']])));
+                                }
                               ),
                               DataCell(
-                                Expanded(child: Text(e['coordinator'].toString(), textAlign: TextAlign.center,)),
-                                placeholder: false,
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e['coordinator'].toString(), textAlign: TextAlign.center,),
+                                  )
+                                ),
                                 showEditIcon: false,
-                              ),
+                                placeholder: false,
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage(value: [e['id'], e['area']])));
+                                }
+                              )
                             ]
                           )
                         ).toList(),
@@ -197,8 +218,8 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
               ],
             )
           ],

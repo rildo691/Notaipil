@@ -41,7 +41,7 @@ dependencies:
   shared_preferences: ^0.5.8
   http: ^0.13.4
   datetime_picker_formfield: ^2.0.0
-  syncfusion_flutter_datagrid: ^19.4.41
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

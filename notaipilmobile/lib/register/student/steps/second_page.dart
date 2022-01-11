@@ -5,6 +5,7 @@ import 'dart:convert';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -37,45 +38,16 @@ class _SecondPageState extends State<SecondPage> {
   var areas = [];
   var courses = [];
 
-  ApiService helper = ApiService();
-
-  Future getAreas() async{
-    var response = await helper.get("areas");
-
-    for (var r in response){
-      Map<String, dynamic> map = {
-        "id": AreaModel.fromJson(r).id.toString(),
-        "name": AreaModel.fromJson(r).name.toString(),
-      };
-
-      setState(() {
-        areas.add(map);
-      });
-    }
-  }
-
-  Future getCourses(areas) async{
-    var response = await helper.get("courses");
-
-    for (var r in response){
-      if (CourseModel.fromJson(r).area!.id.toString() == areas){
-        Map<String, dynamic> map = {
-          "id": CourseModel.fromJson(r).id.toString(),
-          "name": CourseModel.fromJson(r).name.toString(),
-        };
-        String course = CourseModel.fromJson(r).name.toString();
-        setState(() {
-          courses.add(map);
-        }); 
-      }
-    }
-  }
-
   @override
   void initState(){
     super.initState();
 
-    getAreas();
+    getAreas().then((List<dynamic> value) => 
+      setState((){
+        areas = value;
+      })
+    );
+    
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -149,7 +121,13 @@ class _SecondPageState extends State<SecondPage> {
                                   value: _value,
                                   onChanged: (newValue){
                                     courses.clear();
-                                    getCourses(newValue.toString());
+                                    setState((){
+                                      getCourses(newValue.toString()).then((List<dynamic> value) => 
+                                        setState((){
+                                          courses = value;
+                                        })
+                                      );
+                                    });
                                     _value = newValue.toString();
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,

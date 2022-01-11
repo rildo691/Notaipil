@@ -5,6 +5,7 @@ import 'dart:convert';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -35,47 +36,20 @@ class _ThirdPageState extends State<ThirdPage> {
   String? curso;
 
   late StudentModel? newStudent;
-  ApiService helper = ApiService();
 
   var grades = [];
   var classrooms = [];
-
-  Future getGrade() async{
-    var response = await helper.get("grades");
-
-    for (var r in response){
-      Map<String, dynamic> map = {
-        "id": GradeModel.fromJson(r).id.toString(),
-        "name": GradeModel.fromJson(r).name.toString(),
-      };
-      setState((){
-        grades.add(map);
-      });
-    }
-  }
-    
-    Future getClassroom(course, grade) async{
-      var response = await helper.get("classrooms");
-
-      for (var r in response){
-        if (ClassroomModel.fromJson(r).courseId == course && ClassroomModel.fromJson(r).gradeId == grade){
-          Map<String, dynamic> map = {
-            "id": ClassroomModel.fromJson(r).id.toString(),
-            "name": ClassroomModel.fromJson(r).name.toString(),
-          };
-          setState((){
-            classrooms.add(map);
-          });
-        }
-      }
-    }
-
 
   @override
   void initState(){
     super.initState();
 
-    getGrade();
+    
+    getGrade().then((List <dynamic> value) => 
+      setState((){
+        grades = value;
+      })
+    );
     
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {  
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
@@ -152,7 +126,11 @@ class _ThirdPageState extends State<ThirdPage> {
                               value: _value,
                               onChanged: (newValue){
                                 classrooms.clear();
-                                getClassroom(curso, newValue);
+                                getClassroom(curso, newValue).then((List <dynamic> value) => 
+                                  setState((){
+                                    classrooms = value;
+                                  })
+                                );
                                 _value = newValue.toString();
                               },
                               validator: (value) => value == null ? 'Preencha o campo Classe' : null,

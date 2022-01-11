@@ -47,8 +47,6 @@ class _FourthPageState extends State<FourthPage> {
 
   ApiService helper = ApiService();
 
-  String? id;
-
   bool _isValid = false;
 
   var model;
@@ -59,22 +57,9 @@ class _FourthPageState extends State<FourthPage> {
     buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], route: !studentAccountResponse["error"] ? '/' : null);
   }
 
-  Future getTypeAccounts() async{
-    var response = await helper.get("type_accounts");
-    for(var r in response){
-      if (TypeAccountModel.fromJson(r).name == "Aluno"){
-        setState(() {
-          id = TypeAccountModel.fromJson(r).id.toString();
-        });
-      }
-    }
-  }
-
   @override
   void initState(){
     super.initState();
-
-    getTypeAccounts();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;

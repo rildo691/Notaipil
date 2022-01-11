@@ -50,11 +50,11 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (_) => const MainPage() /*(Login()*/,
+        '/': (_) => const MainPage()/*Login()*/,
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
-        '/studentDashboard': (_) => MainPage(),
+        '/principalDashboard': (_) => MainPage(),
       },
     );
   }
