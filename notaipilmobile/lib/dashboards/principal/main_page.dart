@@ -139,6 +139,7 @@ class _MainPageState extends State<MainPage> {
                         showBottomBorder: true,
                         dividerThickness: 5,
                         headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                        dataRowHeight: SizeConfig.heightMultiplier !* 7.7,
                         columns: [
                           DataColumn(
                             label: Expanded(child: Text("Área de Formação", textAlign: TextAlign.center,),),
@@ -153,29 +154,25 @@ class _MainPageState extends State<MainPage> {
                           DataRow(
                             cells: [
                               DataCell(
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['area'].toString(), textAlign: TextAlign.center,),
-                                  )
-                                ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(e['area'].toString(), textAlign: TextAlign.left,),
+                                  ),
                                 showEditIcon: false,
                                 placeholder: false,
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage(value: [e['id'], e['area']])));
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": e['id'], "area": e['area']})));
                                 }
                               ),
                               DataCell(
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['coordinator'].toString(), textAlign: TextAlign.center,),
-                                  )
-                                ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(e['coordinator'].toString(), textAlign: TextAlign.right,),
+                                  ),
                                 showEditIcon: false,
                                 placeholder: false,
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage(value: [e['id'], e['area']])));
+                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": e['id'], "area": e['area']})));
                                 }
                               )
                             ]
