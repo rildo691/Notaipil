@@ -28,7 +28,7 @@ ApiService helper = ApiService();
     return areas;
   }
 
-  Future<List<dynamic>> getCourses(areas) async{
+  Future<List<dynamic>> getCoursesName(areas) async{
     var courses = [];
     var response = await helper.get("courses");
 
@@ -38,7 +38,24 @@ ApiService helper = ApiService();
           "id": CourseModel.fromJson(r).id.toString(),
           "name": CourseModel.fromJson(r).name.toString(),
         };
-        String course = CourseModel.fromJson(r).name.toString();
+
+        courses.add(map);
+      }
+    }
+
+    return courses;
+  }
+
+  Future<List<dynamic>> getCoursesCode(areas) async{
+    var courses = [];
+    var response = await helper.get("courses");
+
+    for (var r in response){
+      if (CourseModel.fromJson(r).area!.id.toString() == areas){
+        Map<String, dynamic> map = {
+          "id": CourseModel.fromJson(r).id.toString(),
+          "code": CourseModel.fromJson(r).code.toString(),
+        };
         courses.add(map);
       }
     }

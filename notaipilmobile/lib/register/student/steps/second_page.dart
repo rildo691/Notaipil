@@ -122,7 +122,7 @@ class _SecondPageState extends State<SecondPage> {
                                   onChanged: (newValue){
                                     courses.clear();
                                     setState((){
-                                      getCourses(newValue.toString()).then((List<dynamic> value) => 
+                                      getCoursesName(newValue.toString()).then((List<dynamic> value) => 
                                         setState((){
                                           courses = value;
                                         })

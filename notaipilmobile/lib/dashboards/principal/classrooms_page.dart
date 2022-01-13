@@ -20,6 +20,11 @@ import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
 /**User Interface */
 import 'package:carousel_slider/carousel_slider.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/areaModel.dart';
+import 'package:notaipilmobile/register/model/courseModel.dart';
+import 'package:notaipilmobile/register/model/gradeModel.dart';
+
 
 class ClassroomsPage extends StatefulWidget {
 
@@ -86,23 +91,32 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   void initState(){
     super.initState();
 
+    /*
     getAreas().then((List<dynamic> value) =>
       setState((){
         areas = value;
       })
-    );    
+    );    */
+
+
+    /*
+    getGrade().then((List<dynamic> value) =>
+      setState((){
+        grades = value;
+      })
+    );*/
 
     setState(() {
-      _value = widget.value;
+      _value = widget.value["id"];
       _stringValue = widget.value["area"];
     });
     
-
-    getCourses(widget.value["id"]).then((List<dynamic> value) => 
+    /*
+    getCoursesCode(widget.value["id"]).then((List<dynamic> value) => 
       setState((){
         courses = value;
       })
-    );
+    );*/
   }
 
   Future _getStudents(classroom) async{
@@ -144,216 +158,219 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
               drawer: Navbar(),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartTwo("Turmas"),
-                      DropdownButtonFormField<String>(
-                        hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
-                        style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Color(0xFF202733),
-                          ),
-                        dropdownColor: Colors.black,
-                        items: areas.map((e) => 
-                          DropdownMenuItem<String>(
-                            value: e["id"],
-                            child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 25) + "..." : e["name"].toString())
-                          )
-                        ).toList(),
-                        value: _stringValue,
-                        onChanged: (newValue){
-                          courses.clear();
-                          getCourses(newValue).then((List<dynamic> value) => 
-                            setState((){
-                              courses = value;
-                            })
+                  child: FutureBuilder(
+                    future: Future.wait([getAreas(), getCoursesCode(_value), getGrade()]),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting: 
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
+                            ),
                           );
-                          _stringValue = newValue.toString();
-                        }
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField<String>(
-                                hint: Text("Curso"),
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
-                                ),
-                                dropdownColor: Colors.black,
-                                items: courses.map((e) => 
-                                  DropdownMenuItem<String>(
-                                    value: e["id"],
-                                    child: Text(e["name"].toString()),
-                                  )
-                                ).toList(),
-                                value: _courseValue,
-                                onChanged: (newValue){
-                                  setState((){
-                                    _courseValue = newValue;
-                                  });
-                                }
-                              )
-                            )
-                          ),
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField<String>(
-                                hint: Text("Classe"),
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
-                                ),
-                                dropdownColor: Colors.black,
-                                items: grades.map((e) => 
-                                  DropdownMenuItem<String>(
-                                    value: e["id"],
-                                    child: Text(e["name"].toString()),
-                                  )
-                                ).toList(),
-                                value: _gradeValue,
-                                onChanged: (newValue){
-                                  _studentClassroom.clear();
-                                  _getStudents(_gradeValue);
-                                  setState((){
-                                    _gradeValue = newValue;
-                                  });
-                                }
-                              )
-                            )
-                          ),
-                        ],
-                      ),
-                      DataTable(
-                        dataRowColor: MaterialStateColor.resolveWith((states) => 
-                          states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                        ),
-                        dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        showBottomBorder: true,
-                        dividerThickness: 5,
-                        headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                          ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
-                        ),
-                        
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("N.º"),
-                            numeric: true
-                          ),
-                          DataColumn(
-                            label: Text("Proc."),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Nome Completo"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Sexo"),
-                            numeric: false,
-                          )
-                        ],
-                        rows: _fakeStudents.map((e) => 
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.imageSizeMultiplier !* .5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    height: SizeConfig.imageSizeMultiplier !* .5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
+                        default:
+                          if (snapshot.hasError)
+                            return Container();
+                          else {
+                            areas = (snapshot.data! as List)[0];
+                            courses = (snapshot.data! as List)[1];
+                            grades = (snapshot.data! as List)[2];
+                            
+                            return 
+                              Column (
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  buildHeaderPartTwo("Turmas"),
+                                  DropdownButtonFormField<String>(
+                                    hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
+                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Color(0xFF202733),
+                                      ),
+                                    dropdownColor: Colors.black,
+                                    items: areas.map((e) => 
+                                      DropdownMenuItem<String>(
+                                        value: e["id"],
+                                        child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
+                                      )
+                                    ).toList(),
+                                    value: _value,
+                                    onChanged: (newValue){
+                                      courses.clear();
+                                      /*
+                                      getCoursesCode(newValue).then((List<dynamic> value) => 
+                                        setState((){
+                                          courses = value;
+                                        })
+                                      );*/
+                                      _value = newValue.toString();
+                                    }
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField<String>(
+                                            hint: Text("Curso"),
+                                            style: TextStyle(color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: courses.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["code"].toString()),
+                                              )
+                                            ).toList(),
+                                            value: _courseValue,
+                                            onChanged: (newValue){
+                                              setState((){
+                                                _courseValue = newValue;
+                                              });
+                                            }
+                                          )
+                                        )
+                                      ),
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField<String>(
+                                            hint: Text("Classe"),
+                                            style: TextStyle(color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: grades.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["name"].toString() + "ª"),
+                                              )
+                                            ).toList(),
+                                            value: _gradeValue,
+                                            onChanged: (newValue){
+                                              _studentClassroom.clear();
+                                              _getStudents(_gradeValue);
+                                              setState((){
+                                                _gradeValue = newValue;
+                                              });
+                                            }
+                                          )
+                                        )
+                                      ),
+                                    ],
+                                  ),
+                                  DataTable(
+                                    dataRowColor: MaterialStateColor.resolveWith((states) => 
+                                      states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
                                     ),
-                                    child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,)),
-                                )
-                              ),
-                              DataCell(
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.widthMultiplier !* .5,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['numero'].toString(), textAlign: TextAlign.center)
+                                    dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    showBottomBorder: true,
+                                    dividerThickness: 5,
+                                    headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+                                      ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
+                                    ),
+                                    columnSpacing: SizeConfig.widthMultiplier !* 3,
+                                    columns: [
+                                      DataColumn(
+                                        label: Text(""),
+                                        numeric: false,
+                                      ),
+                                      DataColumn(
+                                        label: Text("N.º"),
+                                        numeric: true
+                                      ),
+                                      DataColumn(
+                                        label: Text("Proc."),
+                                        numeric: false,
+                                      ),
+                                      DataColumn(
+                                        label: Text("Nome"),
+                                        numeric: false,
+                                      ),
+                                      DataColumn(
+                                        label: Text("Sexo"),
+                                        numeric: false,
+                                      )
+                                    ],
+                                    rows: _fakeStudents.map((e) => 
+                                      DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                          ),
+                                          DataCell(
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(e['numero'].toString(), textAlign: TextAlign.center)
+                                            ),
+                                            showEditIcon: false,
+                                            placeholder: true,
+                                          ),
+                                          DataCell(
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(e['processo'].toString(), textAlign: TextAlign.center)
+                                            ),
+                                            showEditIcon: false,
+                                            placeholder: true,
+                                          ),
+                                          DataCell(
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(e['nomeCompleto'].toString(), textAlign: TextAlign.left)
+                                            ),
+                                            showEditIcon: false,
+                                            placeholder: false,
+                                          ),
+                                          DataCell(
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(e['sexo'].toString(), textAlign: TextAlign.center)
+                                            ),
+                                            showEditIcon: false,
+                                            placeholder: false,
+                                          ),
+                                        ]
+                                      ),
+                                    ).toList(),
                                   ),
-                                ),
-                                showEditIcon: false,
-                                placeholder: true,
-                              ),
-                              DataCell(
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.widthMultiplier !* .5,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['processo'].toString(), textAlign: TextAlign.center)
-                                  ),
-                                ),
-                                showEditIcon: false,
-                                placeholder: true,
-                              ),
-                              DataCell(
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: SizeConfig.widthMultiplier !* 1,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['nomeCompleto'].toString(), textAlign: TextAlign.left)
-                                  ),
-                                ),
-                                showEditIcon: false,
-                                placeholder: false,
-                              ),
-                              DataCell(
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: SizeConfig.widthMultiplier !* 1,
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text(e['sexo'].toString(), textAlign: TextAlign.center)
-                                  ),
-                                ),
-                                showEditIcon: false,
-                                placeholder: false,
-                              ),
-                                ]
-                          ),
-                        ).toList(),
-                      ),
-                      GestureDetector(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("Ver mais", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        ),
-                      )
-                    ]  
-                  )
-                ),
+                                  GestureDetector(
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text("Ver mais", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    ),
+                                  )
+                                ],
+                              );
+                          }      
+                      }
+                    }
+                  ),  
+                )
               ),
             );
           },

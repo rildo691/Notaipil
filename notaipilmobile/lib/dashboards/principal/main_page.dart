@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -26,6 +27,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  int _selectedIndex = 0;
 
   var token;
   var areaCoordinator = [
@@ -182,6 +185,46 @@ class _MainPageState extends State<MainPage> {
                     ]  
                   )
                 ),
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                elevation: 1,
+                mouseCursor: SystemMouseCursors.grab,
+                selectedFontSize: 15,
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
+                selectedItemColor: Color(0xFF0D89A4),
+                unselectedItemColor: Colors.grey,
+                unselectedLabelStyle: TextStyle(color: Colors.grey),
+                items: const <BottomNavigationBarItem> [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                onTap:(index){
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
               ),
             );
           },
