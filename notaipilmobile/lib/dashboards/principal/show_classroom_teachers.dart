@@ -9,55 +9,63 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
-/**API Helper */
-import 'package:notaipilmobile/services/apiService.dart';
-
+/**Complements */
 import 'package:notaipilmobile/dashboards/principal/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_statistics.dart';
 
-class ShowClassroomPage extends StatefulWidget {
+class ShowClassroomTeachers extends StatefulWidget {
 
   late String classroomId;
-  ShowClassroomPage(this.classroomId);
+  ShowClassroomTeachers(this.classroomId);
 
   @override
-  _ShowClassroomPageState createState() => _ShowClassroomPageState();
+  _ShowClassroomTeachersState createState() => _ShowClassroomTeachersState();
 }
 
-class _ShowClassroomPageState extends State<ShowClassroomPage> {
+class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   int _selectedIndex = 0;
+
   String? _classroomName;
 
-  var classroom = [];
-  var students = [];
-  var _maleQuant;
-  var _femaleQuant;
+  var _fakeTeachers = [
+    {
+      'name': 'Carlos Capapelo',
+      'gender': 'M',
+      'subject': 'TCC'
+    },
+    {
+      'name': 'Telma Monteiro',
+      'gender': 'F',
+      'subject': 'Telecomunicações'
+    },
+    {
+      'name': 'Edson Viegas',
+      'gender': 'M',
+      'subject': 'TLP',
+    },
+    {
+      'name': 'Desconhecido',
+      'gender': 'M',
+      'subject': 'DCM',
+    },
+    {
+      'name': 'Álvaro Delly',
+      'gender': 'M',
+      'subject': 'Química Geral'
+    }
+  ];
 
   @override
   void initState(){
-    super.initState();
-    
+
     getClassroomById(widget.classroomId).then((value) => 
       setState((){
-        classroom = value;
-        _classroomName = classroom[0]["name"].toString();
+        _classroomName = value[0]["name"].toString();
       })
     );
 
-    getAllClassroomStudents(widget.classroomId).then((value) => 
-      setState((){
-        students = value;
-      })
-    );
-
-    getAllClassroomsStudentsGender(widget.classroomId).then((value) => 
-      setState((){
-        _maleQuant = value[0];
-        _femaleQuant = value [1];
-      })
-    );
   }
 
   @override
@@ -109,7 +117,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1.2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
                                 },
@@ -117,16 +125,14 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                               IconButton(
                                 icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics((widget.classroomId))));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId)));
                                 },
                               ),
                             ],
                           )
                         ]
                       ),
-                      Text("PERÍODO:"),
-                      Text("SALA:"),
-                      Text("DIRECTOR DE TURMA:"),
+                      Text("PROFESSORES"),
                       DataTable(
                         dataRowColor: MaterialStateColor.resolveWith((states) => 
                           states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
@@ -145,14 +151,6 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                             numeric: false,
                           ),
                           DataColumn(
-                            label: Text("N.º"),
-                            numeric: true
-                          ),
-                          DataColumn(
-                            label: Text("Proc."),
-                            numeric: false,
-                          ),
-                          DataColumn(
                             label: Text("Nome Completo"),
                             numeric: false,
                           ),
@@ -160,33 +158,22 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                             label: Text("Sexo"),
                             numeric: false,
                           ),
+                          DataColumn(
+                            label: Text("Disciplina"),
+                            numeric: false,
+                          ),
                         ],
-                        rows: students.map((e) => 
+                        rows: _fakeTeachers.map((e) => 
                           DataRow(
                             cells: [
                               DataCell(
                                 Center(child: Icon(Icons.account_circle, color: Colors.white,),)
                               ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text("1", textAlign: TextAlign.center)
-                                ),
-                                showEditIcon: false,
-                                placeholder: true,
-                              ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(e['process'].toString(), textAlign: TextAlign.center)
-                                ),
-                                showEditIcon: false,
-                                placeholder: true,
-                              ),
+                              
                               DataCell(
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                  child: Text(e['name'].toString(), textAlign: TextAlign.left)
                                 ),
                                 showEditIcon: false,
                                 placeholder: false,
@@ -198,12 +185,19 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                 ),
                                 showEditIcon: false,
                                 placeholder: false,
+                              ),
+                              DataCell(
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(e['subject'].toString(), textAlign: TextAlign.left)
+                                ),
+                                showEditIcon: false,
+                                placeholder: false,
                               )
                             ]
                           )
                         ).toList(),
                       ),
-                      Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_"),
                     ]  
                   )
                 ),
