@@ -29,6 +29,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
   String? _classroomName;
 
   var classroom = [];
+  var students = [];
 
   @override
   void initState(){
@@ -38,6 +39,12 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
       setState((){
         classroom = value;
         _classroomName = classroom[0]["name"].toString();
+      })
+    );
+
+    getAllClassroomStudents(widget.classroomId).then((value) => 
+      setState((){
+        students = value;
       })
     );
   }
@@ -67,7 +74,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
               drawer: Navbar(),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),

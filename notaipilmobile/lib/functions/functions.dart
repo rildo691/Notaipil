@@ -152,3 +152,25 @@ ApiService helper = ApiService();
 
     return students;
   }
+
+  Future<List<dynamic>> getAllClassroomStudents(classroom) async{
+    var students = [];
+    var response = await helper.get("classroom_students");
+
+    for (var r in response){
+      if (ClassroomStudentModel.fromJson(r).classroomId == classroom){
+        var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
+        var student = await helper.get("students/$studentProcess");
+
+          Map<String, dynamic> map = {
+            "process": student["process"],
+            "fullName": student["personalData"]["fullName"],
+            "gender": student["personalData"]["gender"],
+          };
+
+          students.add(map);
+      }
+    }
+
+    return students;
+  }
