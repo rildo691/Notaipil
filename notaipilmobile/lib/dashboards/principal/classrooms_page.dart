@@ -327,7 +327,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         numeric: false,
                                       ),
                                       DataColumn(
-                                        label: Text("Nome"),
+                                        label: Text("Nome Completo"),
                                         numeric: false,
                                       ),
                                       DataColumn(
@@ -359,7 +359,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           ),
                                           DataCell(
                                             Align(
-                                              alignment: Alignment.center,
+                                              alignment: Alignment.centerLeft,
                                               child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
                                             ),
                                             showEditIcon: false,
