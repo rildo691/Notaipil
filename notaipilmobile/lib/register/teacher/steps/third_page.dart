@@ -121,7 +121,9 @@ class _ThirdPageState extends State<ThirdPage> {
                                   }).toList(),
                                   value: _value,
                                   onChanged: (newValue){
-                                    _value = newValue.toString();
+                                    setState(() {
+                                      _value = newValue.toString();
+                                    });
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Habilitações Literárias' : null,
                                 ),

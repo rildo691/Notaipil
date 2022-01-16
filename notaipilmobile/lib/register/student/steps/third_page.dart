@@ -126,12 +126,14 @@ class _ThirdPageState extends State<ThirdPage> {
                               value: _value,
                               onChanged: (newValue){
                                 classrooms.clear();
+                                setState(() {
+                                  _value = newValue.toString();
+                                });
                                 getClassroom(curso, newValue).then((List <dynamic> value) => 
                                   setState((){
                                     classrooms = value;
                                   })
                                 );
-                                _value = newValue.toString();
                               },
                               validator: (value) => value == null ? 'Preencha o campo Classe' : null,
                             ),
@@ -154,7 +156,9 @@ class _ThirdPageState extends State<ThirdPage> {
                               }).toList(),
                               value: _value2,
                               onChanged: (newValue){
-                                _value2 = newValue.toString();
+                                setState(() {
+                                  _value2 = newValue.toString();
+                                });
                               },
                               validator: (value) => value == null ? 'Preencha o campo Turma' : null,
                             ),

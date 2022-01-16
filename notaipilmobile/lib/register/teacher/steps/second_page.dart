@@ -106,7 +106,9 @@ class _SecondPageState extends State<SecondPage> {
                                   ],
                                   value: _value,
                                   onChanged: (newValue){
-                                    _value = newValue.toString();
+                                    setState(() {
+                                      _value = newValue.toString();
+                                    });
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Regime Laboral' : null,
                                 ),

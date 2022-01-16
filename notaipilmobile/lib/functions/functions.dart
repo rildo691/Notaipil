@@ -9,6 +9,8 @@ import 'package:notaipilmobile/register/model/courseModel.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
 import 'package:notaipilmobile/register/model/classroomModel.dart';
 import 'package:notaipilmobile/register/model/qualificationsModel.dart';
+import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
+import 'package:notaipilmobile/register/model/student.dart';
 
 ApiService helper = ApiService();
 
@@ -111,4 +113,28 @@ ApiService helper = ApiService();
     }
 
     return qualifications;
+  }
+
+  Future<List<dynamic>> getClassroomStudent(classroom) async{
+    var students = [];
+    var response = await helper.get("classroom_students");
+
+    for (var r in response){
+      if (ClassroomStudentModel.fromJson(r).classroomId == classroom){
+        var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
+        var student = await helper.get("students/$studentProcess");
+
+          Map<String, dynamic> map = {
+            "process": student["process"],
+            "fullName": student["personalData"]["fullName"],
+            "gender": student["personalData"]["gender"],
+          };
+
+          if (students.length < 5){
+            students.add(map);
+          }
+      }
+    }
+
+    return students;
   }

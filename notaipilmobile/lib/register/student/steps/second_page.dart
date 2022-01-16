@@ -121,14 +121,14 @@ class _SecondPageState extends State<SecondPage> {
                                   value: _value,
                                   onChanged: (newValue){
                                     courses.clear();
-                                    setState((){
-                                      getCoursesName(newValue.toString()).then((List<dynamic> value) => 
-                                        setState((){
-                                          courses = value;
-                                        })
-                                      );
+                                    setState(() {
+                                      _value = newValue.toString();
                                     });
-                                    _value = newValue.toString();
+                                    getCoursesName(newValue.toString()).then((List<dynamic> value) => 
+                                      setState((){
+                                        courses = value;
+                                      })
+                                    );                                    
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,
                                 ),
@@ -151,7 +151,9 @@ class _SecondPageState extends State<SecondPage> {
                                   }).toList(),
                                   value: _value2,
                                   onChanged: (newValue){
-                                    _value2 = newValue.toString();
+                                    setState(() {
+                                      _value2 = newValue.toString();
+                                    });
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Curso' : null,
                                 ),

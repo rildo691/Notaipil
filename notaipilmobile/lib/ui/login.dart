@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -48,9 +49,9 @@ class _LoginState extends State<Login> {
     var response = await helper.postWithoutToken("users/login", body);
     
     if (!response["error"] && response["user"]["typesAccounts"].length < 2){
-      sharedPreferences.setString("token", response['token']);
+      //sharedPreferences.setString("token", response['token']);
       /*Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Dashboard()),
+        MaterialPageRoute(builder: (context) => MainPage()),
         (Route<dynamic> route) => false);*/
     } else if (!response["error"] && response["user"]["typesAccounts"].length>= 2) {
       sharedPreferences.setString("token", response['token']);

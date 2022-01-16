@@ -20,6 +20,7 @@ class Chooseprofile extends StatefulWidget {
 class _ChooseprofileState extends State<Chooseprofile> {
 
   var accountTypes = [];
+  int _selectedIndex = 0;
 
   @override 
   void initState(){
@@ -93,10 +94,14 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                 onTap: (){
                                   if (data["name"] == "Aluno"){
                                     Navigator.pushNamed(context, '/studentDashboard');
-                                  } else if (data["name"] == "Professor"){
-                                    } else if (data["name"] == "Encarregado") {
-                                    } else if (data["name"] == "Director"){
-                                    }
+                                  } 
+                                  else if (data["name"] == "Professor"){
+
+                                  } else if (data["name"] == "Encarregado") {
+
+                                  } else if (data["name"] == "Director"){
+                                    Navigator.pushNamed(context, '/principalDashboard');
+                                  }
                                 },
                               );
                             }).toList(),
@@ -110,6 +115,46 @@ class _ChooseprofileState extends State<Chooseprofile> {
                     )
                   ]
                 )
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Color(0xFF151717),
+                elevation: 1,
+                mouseCursor: SystemMouseCursors.grab,
+                selectedFontSize: 15,
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
+                selectedItemColor: Color(0xFF0D89A4),
+                unselectedItemColor: Colors.grey,
+                unselectedLabelStyle: TextStyle(color: Colors.grey),
+                items: const <BottomNavigationBarItem> [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                onTap:(index){
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
               )
             );
           }
