@@ -49,12 +49,20 @@ class _LoginState extends State<Login> {
     var response = await helper.postWithoutToken("users/login", body);
     
     if (!response["error"] && response["user"]["typesAccounts"].length < 2){
-      //sharedPreferences.setString("token", response['token']);
-      /*Navigator.of(context).pushAndRemoveUntil(
+      sharedPreferences.setString("$email", response['token']);
+      if (response["user"]["typesAccounts"]["name"] == "Director"){
+        Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => MainPage()),
-        (Route<dynamic> route) => false);*/
+        (Route<dynamic> route) => false);
+      } else if (response["user"]["typesAccounts"]["name"] == "Aluno"){
+
+      } else if (response["user"]["typesAccounts"]["name"] == "Professor"){
+
+      } else if (response["user"]["typesAccounts"]["name"] == "Educador"){
+
+      }
     } else if (!response["error"] && response["user"]["typesAccounts"].length>= 2) {
-      sharedPreferences.setString("token", response['token']);
+      sharedPreferences.setString("$email", response['token']);
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => Chooseprofile(response["user"]["typesAccounts"])),
         (Route<dynamic> route) => false);

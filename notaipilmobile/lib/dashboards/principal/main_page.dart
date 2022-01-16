@@ -74,14 +74,6 @@ class _MainPageState extends State<MainPage> {
     Navigator.pushNamed(context, '/');
   }
 
-  /*Future _getAreas() async{
-    var response = await helper.get("areas");
-
-    for (var r in response){
-      areas.add(AreaModel.fromJson(r).name);
-    }
-  }*/
-
   @override
   void initState(){
     super.initState();

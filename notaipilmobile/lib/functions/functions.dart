@@ -99,6 +99,20 @@ ApiService helper = ApiService();
     return classrooms;
   }
 
+  Future<List<dynamic>> getClassroomById(classroomId) async{
+    var classroom = [];
+    var response = await helper.get("classrooms/$classroomId");
+
+        Map<String, dynamic> map = {
+          "id": response["id"],
+          "name": response["name"],
+        };
+
+        classroom.add(map);
+
+    return classroom;
+  }
+
   Future<List<dynamic>> getQualifications() async{
     var qualifications = [];
     var response = await helper.get("qualifications");

@@ -109,15 +109,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   void initState(){
     super.initState();
 
-    /*
-    getAreas().then((List<dynamic> value) =>
-      setState((){
-        areas = value;
-      })
-    );    */
-
-
-    
     getGrade().then((List<dynamic> value) =>
       setState((){
         grades = value;
@@ -196,7 +187,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
 
                             if ((snapshot.data! as List)[3] != null){
                               classrooms = (snapshot.data! as List)[3];
-                              //getClassroomStudent(_classroomId == null ? classrooms[0]["id"] : _classroomId).then((value) => students = value);
                             }
 
                             if ((snapshot.data! as List)[4] != null){
@@ -729,7 +719,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             onPressed: (){
               setState((){
                 setState((){_classroomId = classroomId;});
-                //setState((){classrooms.insert(index, classrooms.removeAt(0));});
                 students.clear();
                 getClassroomStudent(_classroomId).then((value) => students = value);
               });
