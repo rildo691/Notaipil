@@ -174,3 +174,29 @@ ApiService helper = ApiService();
 
     return students;
   }
+
+  Future<List<dynamic>> getAllClassroomsStudentsGender(classroom) async{
+    int male = 0;
+    int female = 0;
+    var response = await helper.get("classroom_students");
+
+    for (var r in response){
+      if (ClassroomStudentModel.fromJson(r).classroomId == classroom){
+        var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
+        var student = await helper.get("students/$studentProcess");
+
+        if (student["personalData"]["gender"] == "M"){
+          male++;
+        } else {
+          female++;
+        }
+          
+      }
+    }
+
+    return [male, female];
+  }
+
+
+  
+

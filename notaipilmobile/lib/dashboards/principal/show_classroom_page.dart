@@ -30,6 +30,8 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
 
   var classroom = [];
   var students = [];
+  var _maleQuant;
+  var _femaleQuant;
 
   @override
   void initState(){
@@ -45,6 +47,13 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
     getAllClassroomStudents(widget.classroomId).then((value) => 
       setState((){
         students = value;
+      })
+    );
+
+    getAllClassroomsStudentsGender(widget.classroomId).then((value) => 
+      setState((){
+        _maleQuant = value[0];
+        _femaleQuant = value [1];
       })
     );
   }
@@ -107,6 +116,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                           )
                         ]
                       ),
+                      Text("Período"),
+                      Text("Sala"),
+                      Text("Director de Turma:"),
                       DataTable(
                         dataRowColor: MaterialStateColor.resolveWith((states) => 
                           states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
@@ -182,7 +194,8 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                             ]
                           )
                         ).toList(),
-                      )
+                      ),
+                      Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_"),
                     ]  
                   )
                 ),
