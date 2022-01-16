@@ -99,8 +99,11 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   ApiService helper = ApiService();
 
   int _currentPos = 0;
+  int _selectedIndex = 0;
 
   String? _classroomId;
+
+  bool _classroomsExists = false;
 
   @override
   void initState(){
@@ -197,6 +200,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                             }
 
                             if ((snapshot.data! as List)[4] != null){
+                              students.clear();
                               students = (snapshot.data! as List)[4];
                             }
                           
@@ -226,8 +230,11 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     onChanged: (newValue){
                                       courses.clear();         
                                       classrooms.clear();
+                                      students.clear();
                                       _courseValue = null;
-                                      _gradeValue = null;                           
+                                      _gradeValue = null;   
+                                      _classroomId = null;   
+                                      _classroomsExists = false;                     
                                       setState(() {
                                         _value = newValue.toString();
                                       });
@@ -242,7 +249,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         width: SizeConfig.widthMultiplier !* 30,
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
-                                            hint: Text("Cursos"),
+                                            hint: Text("Curso"),
                                             style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
@@ -260,6 +267,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                             value: _courseValue,
                                             onChanged: (newValue){
                                               classrooms.clear();
+                                              students.clear();
+                                              _classroomId = null;
                                               setState(() {
                                                 _courseValue = newValue;
                                               });
@@ -289,10 +298,13 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                             value: _gradeValue,
                                             onChanged: (newValue){
                                               classrooms.clear();
+                                              students.clear();
+                                              _classroomId = null;
                                               setState((){
                                                 _gradeValue = newValue;
                                               });
                                               getClassroom(_courseValue, newValue);
+                                              _classroomsExists = true;
                                             }
                                           )
                                         )
@@ -399,7 +411,10 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     itemBuilder: (context, index, _){
                                       for (int i = 0; i < classrooms.length; i++){
                                         if(classrooms[i]["id"] == _classroomId){
-                                          
+                                          for (int j = 0; j < i; j++){
+                                            classrooms.insert(j+1, classrooms.removeAt(j));
+                                          }
+                                          break;
                                         }
                                       }
                                       return _classroomLinks(classrooms[index]["name"], classrooms[index]["id"], index);
@@ -423,7 +438,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   )
                                 ],
                               );
-                            } else {
+                            } else if (classrooms.isEmpty && !_classroomsExists) {
                               return 
                               Column (
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -451,7 +466,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       courses.clear();         
                                       classrooms.clear();
                                       _courseValue = null;
-                                      _gradeValue = null;                           
+                                      _gradeValue = null;  
+                                      _classroomsExists = false;                         
                                       setState(() {
                                         _value = newValue.toString();
                                       });
@@ -467,8 +483,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         width: SizeConfig.widthMultiplier !* 30,
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
-                                            hint: Text("Cursos"),
-                                            style: TextStyle(color: Colors.white),
+                                            hint: Text("Curso"),
+                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
@@ -502,7 +518,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                               border: OutlineInputBorder(),
                                               filled: true,
                                               fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              hintStyle: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                             ),
                                             dropdownColor: Colors.black,
                                             items: grades.map((e) => 
@@ -518,6 +534,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                                 _gradeValue = newValue;
                                               });
                                               getClassroom(_courseValue, newValue);
+                                              _classroomsExists = true;
                                             }
                                           )
                                         )
@@ -531,12 +548,164 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   )
                                 ]  
                               );  
+                            } else {
+                              return 
+                              Column (
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  buildHeaderPartTwo("Turmas"),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                  DropdownButtonFormField<String>(
+                                    hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
+                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Color(0xFF202733),
+                                      ),
+                                    dropdownColor: Colors.black,
+                                    items: areas.map((e) => 
+                                      DropdownMenuItem<String>(
+                                        value: e["id"],
+                                        child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
+                                      )
+                                    ).toList(),
+                                    value: _value,
+                                    onChanged: (newValue){
+                                      courses.clear();         
+                                      classrooms.clear();
+                                      _courseValue = null;
+                                      _gradeValue = null; 
+                                      _classroomsExists = false;                          
+                                      setState(() {
+                                        _value = newValue.toString();
+                                      });
+                                      getCoursesCode(newValue).then((value) => setState((){courses = value;}));
+                                    }
+                                  ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField<String>(
+                                            hint: Text("Curso"),
+                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: courses.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["code"].toString()),
+                                              )
+                                            ).toList(),
+                                            value: _courseValue,
+                                            onChanged: (newValue){
+                                              classrooms.clear();
+                                              setState(() {
+                                                _courseValue = newValue;
+                                              });
+                                              getClassroom(_courseValue, _gradeValue);
+                                              _classroomsExists = true;
+                                            }
+                                          )
+                                        )
+                                      ),
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField<String>(
+                                            hint: Text("Classe"),
+                                            style: TextStyle(color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: grades.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["name"].toString() + "ª"),
+                                              )
+                                            ).toList(),
+                                            value: _gradeValue,
+                                            onChanged: (newValue){
+                                              classrooms.clear();
+                                              setState((){
+                                                _gradeValue = newValue;
+                                              });
+                                              getClassroom(_courseValue, newValue);
+                                              _classroomsExists = true;
+                                            }
+                                          )
+                                        )
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Center(
+                                      child: Text("Infelizmente não conseguimos encontrar uma turma para esse Curso e essa Classe. Tente novamente!", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                                    )
+                                  )
+                                ]  
+                              );
                             }
                           }      
                       }
                     }
                   ),  
                 )
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Color(0xFF151717),
+                elevation: 1,
+                mouseCursor: SystemMouseCursors.grab,
+                selectedFontSize: 15,
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
+                selectedItemColor: Color(0xFF0D89A4),
+                unselectedItemColor: Colors.grey,
+                unselectedLabelStyle: TextStyle(color: Colors.grey),
+                items: const <BottomNavigationBarItem> [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                onTap:(index){
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
               ),
             );
           },
