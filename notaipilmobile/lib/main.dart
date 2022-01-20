@@ -11,6 +11,9 @@ import 'package:notaipilmobile/ui/choose_profile.dart';
 import 'package:notaipilmobile/register/student/student_register.dart';
 import 'package:notaipilmobile/register/teacher/teacher_register.dart';
 
+/**Configurations */
+import 'configs/size_config.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -38,7 +41,14 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide(color: Color(0xFF0D89A4))
           ),
           hintStyle: TextStyle(color: Colors.white),
-        )
+        ),
+        dataTableTheme: DataTableThemeData(
+          dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
+          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color(0xFF0D89A4) : Color(0xFF0D89A4)),
+          //headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+          dividerThickness: 5,
+          //dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+        ),
       ),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate

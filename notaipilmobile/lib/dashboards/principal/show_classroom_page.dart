@@ -124,86 +124,100 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                           )
                         ]
                       ),
-                      Text("PERÍODO:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      Text("SALA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      DataTable(
-                        dataRowColor: MaterialStateColor.resolveWith((states) => 
-                          states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                        ),
-                        dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        showBottomBorder: true,
-                        dividerThickness: 5,
-                        headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                          ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
-                        ),
-                        columnSpacing: SizeConfig.widthMultiplier !* 3,
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("N.º"),
-                            numeric: true
-                          ),
-                          DataColumn(
-                            label: Text("Proc."),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Nome Completo"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Sexo"),
-                            numeric: false,
-                          ),
-                        ],
-                        rows: students.map((e) => 
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("PERÍODO:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("SALA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              ]
+                            ),
+                            DataTable(
+                              dataRowColor: MaterialStateColor.resolveWith((states) => 
+                                states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
                               ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text("1", textAlign: TextAlign.center)
-                                ),
-                                showEditIcon: false,
-                                placeholder: true,
+                              dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              showBottomBorder: true,
+                              dividerThickness: 5,
+                              headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+                                ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
                               ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                              columnSpacing: SizeConfig.widthMultiplier !* 3,
+                              columns: [
+                                DataColumn(
+                                  label: Text(""),
+                                  numeric: false,
                                 ),
-                                showEditIcon: false,
-                                placeholder: true,
-                              ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                DataColumn(
+                                  label: Text("N.º"),
+                                  numeric: true
                                 ),
-                                showEditIcon: false,
-                                placeholder: false,
-                              ),
-                              DataCell(
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                DataColumn(
+                                  label: Text("Proc."),
+                                  numeric: false,
                                 ),
-                                showEditIcon: false,
-                                placeholder: false,
-                              )
-                            ]
-                          )
-                        ).toList(),
-                      ),
-                      Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_"),
+                                DataColumn(
+                                  label: Text("Nome Completo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Sexo"),
+                                  numeric: false,
+                                ),
+                              ],
+                              rows: students.map((e) => 
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text("1", textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: true,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: true,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    )
+                                  ]
+                                )
+                              ).toList(),
+                            ),
+                            Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_", style: TextStyle(color: Colors.white)),
+                          ]
+                        )
+                      )
                     ]  
                   )
                 ),

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+
 class Navbar extends StatelessWidget {
 
   const Navbar({ Key? key }) : super(key: key);
@@ -21,7 +24,7 @@ class Navbar extends StatelessWidget {
             accountEmail: Text('Teste', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
             currentAccountPicture: CircleAvatar(              
               child: ClipOval(
-                child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 2.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.25 * double.parse(SizeConfig.textMultiplier.toString()) * 1,),
               ),
             ),
             decoration: BoxDecoration(
@@ -32,7 +35,9 @@ class Navbar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.notifications, color: Colors.white,),
             title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.group, color: Colors.white,),

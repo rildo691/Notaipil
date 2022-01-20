@@ -310,7 +310,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     dividerThickness: 5,
                                     headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                     headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                      ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
+                                      ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
                                     ),
                                     columnSpacing: SizeConfig.widthMultiplier !* 3,
                                     columns: [
