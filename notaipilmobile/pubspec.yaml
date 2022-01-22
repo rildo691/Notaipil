@@ -42,6 +42,7 @@ dependencies:
   http: ^0.13.4
   datetime_picker_formfield: ^2.0.0
   carousel_slider: ^4.0.0
+  expansion_tile_card: ^1.1.0
 
 dev_dependencies:
   flutter_test:

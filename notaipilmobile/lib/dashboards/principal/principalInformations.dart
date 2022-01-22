@@ -128,61 +128,14 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                     title: Text(_fakeInformations[index]["mensagem"].toString(), style: TextStyle(color: Colors.white),),
                                     leading: Icon(Icons.info_outline, color: Colors.yellow,),
                                     trailing: Text(_fakeInformations[index]["prazo"].toString(), style: TextStyle(color: Colors.white),),
+                                    onTap: (){
+
+                                    },
                                   ),
                                 );
                               },
                             ),
                             )
-                            /*
-                            DataTable(
-                              dataRowColor: MaterialStateColor.resolveWith((states) => 
-                                states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                              ),
-                              dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              showBottomBorder: true,
-                              dividerThickness: 5,
-                              headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
-                              ),
-                              columns: [
-                                DataColumn(
-                                  label: Text("Mensagem"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Prazo"),
-                                  numeric: true
-                                ),
-                              ],
-                              rows: [
-                                DataRow(
-                                  cells: [
-                                    _buildDataCellLeft("Data de Término da Minipauta"),
-                                    _buildDataCellRight("20/09/2021")
-                                  ]
-                                ),
-                                DataRow(
-                                  cells: [
-                                    _buildDataCellLeft("Data de Término da Minipauta"),
-                                    _buildDataCellRight("20/09/2021")
-                                  ]
-                                ),
-                                DataRow(
-                                  cells: [
-                                    _buildDataCellLeft("Data de Término da Minipauta"),
-                                    _buildDataCellRight("20/09/2021")
-                                  ]
-                                ),
-                                DataRow(
-                                  cells: [
-                                    _buildDataCellLeft("Data de Término da Minipauta"),
-                                    _buildDataCellRight("20/09/2021")
-                                  ]
-                                ),
-                              ],
-                            )
-                            */
                           ],
                         ),
                       )
@@ -198,21 +151,25 @@ class _PrincipalinformationsState extends State<Principalinformations> {
     );
   }
 
-  DataCell _buildDataCellLeft(text){
-    return DataCell(
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Text(text, textAlign: TextAlign.left,),
-      )
+  Future<Widget> buildModal(context, date, title){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            width: SizeConfig.widthMultiplier !* .8,
+            height: SizeConfig.heightMultiplier !* 5,
+            child: Column(
+              
+            ),
+          )
+        );
+      }
     );
-  }
-
-  DataCell _buildDataCellRight(text){
-    return DataCell(
-      Align(
-        alignment: Alignment.centerRight,
-        child: Text(text, textAlign: TextAlign.right,),
-      )
-    );
+    throw new Exception();
   }
 }

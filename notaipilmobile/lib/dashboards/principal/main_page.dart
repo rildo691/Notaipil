@@ -18,6 +18,9 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complemtnts */
 import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
 
+/**User Interface */
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+
 class MainPage extends StatefulWidget {
 
   const MainPage({ Key? key }) : super(key: key);
@@ -58,7 +61,10 @@ class _MainPageState extends State<MainPage> {
       'coordinator': 'Álvaro Delly'
     }
   ];
+
   ApiService helper = ApiService();
+
+  final GlobalKey<ExpansionTileCardState> card = new GlobalKey();
 
   Future verifyUser() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -126,6 +132,15 @@ class _MainPageState extends State<MainPage> {
                           _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
                           _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
                         ],
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: areaCoordinator.length,
+                        itemBuilder: (context, index){
+                          return _buildCoordinatorCard(areaCoordinator[index]);
+                        },
                       ),
                       DataTable(
                         dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? 
@@ -257,6 +272,92 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCoordinatorCard(index){
+    return ExpansionTileCard(
+      baseColor: Color(0xFF1F2734),
+      expandedColor: Color(0xFF1F2734),
+      key: card,
+      leading: CircleAvatar(
+        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
+      ),
+      title: Text(index["coordinator"].toString()),
+      subtitle: Text("Área de Formação de " + index["area"].toString()),
+      children: [
+        Divider(
+          thickness: 1.0,
+          height: 1.0,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text("Consectetur amet laborum duis velit consectetur sunt nulla mollit sint Lorem."),
+        ),
+        ButtonBar(
+          alignment: MainAxisAlignment.spaceAround,
+          buttonHeight: 52.0,
+          buttonMinWidth: 90.0,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+              onPressed: () {
+                card.currentState?.expand();
+            },
+            child: Column(
+              children: <Widget>[
+                Icon(Icons.arrow_downward),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.0),
+                ),
+                Text('Open'),
+              ],
+            ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+              onPressed: () {
+                card.currentState?.collapse();
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(Icons.arrow_upward),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  ),
+                  Text('Close'),
+                ],
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+              onPressed: () {
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(Icons.swap_vert),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  ),
+                  Text('Ver coordenação'),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
