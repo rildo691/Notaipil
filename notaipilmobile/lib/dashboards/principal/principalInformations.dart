@@ -69,7 +69,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
               drawer: Navbar(),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
@@ -115,7 +115,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             
                             SizedBox(
-                              height: 200.0,
+                              height: SizeConfig.heightMultiplier !* 50,
                               child: ListView.builder(
                               itemCount: _fakeInformations.length,
                               itemBuilder: (context, index){
@@ -129,7 +129,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                     leading: Icon(Icons.info_outline, color: Colors.yellow,),
                                     trailing: Text(_fakeInformations[index]["prazo"].toString(), style: TextStyle(color: Colors.white),),
                                     onTap: (){
-
+                                      buildModal(context, _fakeInformations[index]["prazo"], _fakeInformations[index]["mensagem"]);
                                     },
                                   ),
                                 );
@@ -151,7 +151,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
     );
   }
 
-  Future<Widget> buildModal(context, date, title){
+  Future<Widget>? buildModal(context, date, title){
     showDialog(
       context: context,
       builder: (context){
@@ -161,15 +161,28 @@ class _PrincipalinformationsState extends State<Principalinformations> {
           ),
           backgroundColor: Color(0xFF202733),
           child: Container(
-            width: SizeConfig.widthMultiplier !* .8,
-            height: SizeConfig.heightMultiplier !* 5,
+            padding: EdgeInsets.all(10.0),
+            width: SizeConfig.widthMultiplier !* 100,
+            height: SizeConfig.heightMultiplier !* 100,
             child: Column(
-              
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(date.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text(title.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                ),
+                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                ),
+                Text("Ficheiros", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text("Para", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+              ],
             ),
           )
         );
       }
     );
-    throw new Exception();
   }
 }
