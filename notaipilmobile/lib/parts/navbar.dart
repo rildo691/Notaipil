@@ -24,7 +24,7 @@ class Navbar extends StatelessWidget {
             accountEmail: Text('Teste', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
             currentAccountPicture: CircleAvatar(              
               child: ClipOval(
-                child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.25 * double.parse(SizeConfig.textMultiplier.toString()) * 1,),
+                child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 2.3 * double.parse(SizeConfig.textMultiplier.toString()) * 1,),
               ),
             ),
             decoration: BoxDecoration(

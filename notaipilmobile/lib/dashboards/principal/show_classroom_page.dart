@@ -76,8 +76,8 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                 centerTitle: true,
                 actions: <Widget>[
                   IconButton(
-                    padding: EdgeInsets.only(right: 20.0),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){},
                   )
                 ],

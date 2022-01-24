@@ -315,6 +315,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": index['id'], "area": index['area']})));
               },
               child: Column(
                 children: <Widget>[

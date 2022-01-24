@@ -160,12 +160,12 @@ class _FourthPageState extends State<FourthPage> {
                                           setState(() {
                                             model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
                                           });
-                                          
+
                                           classroomStudent = ClassroomStudentModel(
                                             studentId: model!.numeroProcesso,
                                             classroomId: model.turma
                                           );
-                                            studentAccount = StudentAccountModel(
+                                          studentAccount = StudentAccountModel(
                                             bilhete: model.numeroBI, 
                                             email: model.emailAluno, 
                                             emailEducator: model.emailEncarregado,
