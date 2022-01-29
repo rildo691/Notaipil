@@ -14,6 +14,9 @@ import 'package:notaipilmobile/register/teacher/teacher_register.dart';
 /**Configurations */
 import 'configs/size_config.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart' as coordinator;
+
 
 void main() {
   runApp(const MyApp());
@@ -45,22 +48,14 @@ class MyApp extends StatelessWidget {
         dataTableTheme: DataTableThemeData(
           dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
           headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color(0xFF0D89A4) : Color(0xFF0D89A4)),
-          //headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+          headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ?  SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null) ,
           dividerThickness: 5,
-          //dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+          dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ? SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null),
         ),
       ),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate
-       ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('fr'),
-        const Locale('pt'),
-      ],
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (_) => const MainPage()/*Login()*/,
+        '/': (_) => const /*Login()*/ coordinator.ShowCoordination(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),

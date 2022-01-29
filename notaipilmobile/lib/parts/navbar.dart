@@ -5,6 +5,10 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
+import 'package:notaipilmobile/dashboards/principal/settings.dart';
+import 'package:notaipilmobile/dashboards/principal/profile.dart';
+
 
 class Navbar extends StatelessWidget {
 
@@ -42,17 +46,23 @@ class Navbar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.group, color: Colors.white,),
             title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.account_circle, color: Colors.white,),
             title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings, color: Colors.white,),
             title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-            onTap: () => null,
+            onTap: () => {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+            },
           ),
           ListTile(
             leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),

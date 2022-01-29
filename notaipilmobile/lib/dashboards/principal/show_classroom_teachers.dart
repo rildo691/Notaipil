@@ -13,6 +13,11 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_statistics.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/profile.dart';
+import 'package:notaipilmobile/dashboards/principal/settings.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 
 class ShowClassroomTeachers extends StatefulWidget {
 
@@ -90,7 +95,87 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                   )
                 ],
               ),
-              drawer: Navbar(),
+              drawer: new Drawer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 34, 42, 55),
+                  ),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      UserAccountsDrawerHeader(
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.group, color: Colors.white,),
+                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ),
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
@@ -221,10 +306,6 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                 unselectedItemColor: Colors.grey,
                 unselectedLabelStyle: TextStyle(color: Colors.grey),
                 items: const <BottomNavigationBarItem> [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home',

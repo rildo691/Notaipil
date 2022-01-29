@@ -121,6 +121,7 @@ class _SecondPageState extends State<SecondPage> {
                                   value: _value,
                                   onChanged: (newValue){
                                     courses.clear();
+                                    areas.clear();
                                     setState(() {
                                       _value = newValue.toString();
                                     });
@@ -151,6 +152,7 @@ class _SecondPageState extends State<SecondPage> {
                                   }).toList(),
                                   value: _value2,
                                   onChanged: (newValue){
+                                    courses.clear();
                                     setState(() {
                                       _value2 = newValue.toString();
                                     });

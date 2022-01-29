@@ -8,71 +8,74 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
-class SelectCoordinatorPage extends StatefulWidget {
+class ShowAgendaState extends StatefulWidget {
 
-  const SelectCoordinatorPage({ Key? key }) : super(key: key);
+  late int index;
+
+  ShowAgendaState(this.index);
 
   @override
-  _SelectCoordinatorPageState createState() => _SelectCoordinatorPageState();
+  _ShowAgendaStateState createState() => _ShowAgendaStateState();
 }
 
-class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
+class _ShowAgendaStateState extends State<ShowAgendaState> {
 
-  TextEditingController _nameController = TextEditingController();
-  DataTableSource _data = MyData();
-
+  var _value;
   int _selectedIndex = 0;
 
-   var areaCoordinator = [
-    {
-      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
-      'area': 'Construção Civil',
-      'coordinator': 'Carlos Capapelo',
-    },
-    {
-      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
-      'area': 'Electricidade, Electronica e Telecomunicações',
-      'coordinator': 'Telma Monteiro'
-    },
-    {
-      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
-      'area': 'Informática',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
-      'area': 'Mecânica',
-      'coordinator': 'Desconhecido'
-    },
-    {
-      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
-      'area': 'Química',
-      'coordinator': 'Álvaro Delly'
-    }
-  ];
-
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
 
   @override
   void initState(){
     super.initState();
+
+    setState(() {
+      _selectedIndex = widget.index;
+    });
   }
+
+  var areas = [
+    {
+      'id': '1',
+      'name': 'Construção Civil',
+    },
+    {
+      'id': '2',
+      'name': 'Electricidade, Electrónica e Telecomunicações',
+    },
+    {
+      'id': '3',
+      'name': 'Informática',
+    },
+    {
+      'id': '4',
+      'name': 'Mecânica',
+    },
+    {
+      'id': '5',
+      'name': 'Química',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -187,43 +190,101 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
+                      buildHeaderPartTwo("Estado das minipautas"),
+                      DropdownButtonFormField<String>(
+                        hint: Text("Área de Formação"),
+                        style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Color(0xFF202733),
                           ),
-                          DataColumn(
-                            label: Text("Coordenador"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Área de Formação"),
-                            numeric: false,
-                          ),
-                        ],
+                        dropdownColor: Colors.black,
+                        items: areas.map((e) => 
+                          DropdownMenuItem<String>(
+                            value: e["id"],
+                            child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
+                          )
+                        ).toList(),
+                        value: _value,
+                        onChanged: (newValue){
+                          setState(() {
+                            _value = newValue;
+                          });
+                        },
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                          ),
-                          onPressed: (){},
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text("I"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected1 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = true;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                  });
+                                }
+                              ),
+                              TextButton(
+                                child: Text("II"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected2 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = true;
+                                    _selected3 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("III"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = true;
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
                       )
                     ],
                   ),
@@ -273,7 +334,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                     case 2:
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
                       break;
-                    case 3:
+                    case 2:
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
                       break;
                     default:
@@ -286,54 +347,4 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
       },
     );
   }
-
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
-  }
-}
-
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
 }

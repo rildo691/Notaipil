@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +9,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
 /**API Helper */
@@ -25,54 +29,24 @@ import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.d
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
-class SelectCoordinatorPage extends StatefulWidget {
+class EditProfile extends StatefulWidget {
 
-  const SelectCoordinatorPage({ Key? key }) : super(key: key);
+  const EditProfile({ Key? key }) : super(key: key);
 
   @override
-  _SelectCoordinatorPageState createState() => _SelectCoordinatorPageState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
+class _EditProfileState extends State<EditProfile> {
 
-  TextEditingController _nameController = TextEditingController();
-  DataTableSource _data = MyData();
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _currentPwdController = TextEditingController();
+  TextEditingController _newPwdController = TextEditingController();
+  TextEditingController _confirmateNewPwdController = TextEditingController();
 
   int _selectedIndex = 0;
-
-   var areaCoordinator = [
-    {
-      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
-      'area': 'Construção Civil',
-      'coordinator': 'Carlos Capapelo',
-    },
-    {
-      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
-      'area': 'Electricidade, Electronica e Telecomunicações',
-      'coordinator': 'Telma Monteiro'
-    },
-    {
-      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
-      'area': 'Informática',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
-      'area': 'Mecânica',
-      'coordinator': 'Desconhecido'
-    },
-    {
-      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
-      'area': 'Química',
-      'coordinator': 'Álvaro Delly'
-    }
-  ];
-
-
-  @override
-  void initState(){
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +55,6 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
         return OrientationBuilder(
           builder: (context, orientation){
             SizeConfig().init(constraints, orientation);
-
             return Scaffold(
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
@@ -179,54 +152,57 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Coordenador"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Área de Formação"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                          ),
-                          onPressed: (){},
-                        ),
-                      )
-                    ],
-                  ),
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 8),
+                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: ElevatedButton(
+                                child: Text("Guardar alterações"),
+                                style: ElevatedButton.styleFrom(
+                                  primary:  Color(0xFF0D89A4),
+                                  onPrimary: Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Roboto',
+                                    fontSize: 20.0,
+                                  ),
+                                  minimumSize: Size(0.0, 50.0),
+                                ),
+                                onPressed: (){
+                                  if (_key.currentState!.validate()){
+                                    buildModal(context, false, "Palavra-passe alterada com sucesso");
+                                  }
+                                },
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -284,13 +260,37 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
           },
         );
       },
-    );
+    );  
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
+  Widget buildPasswordFormFieldWithIcon(hint, controller){
+    return TextFormField(
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.vpn_key_outlined, color: Colors.white,),
+        labelText: hint,
+        labelStyle: TextStyle(color: Colors.white),
+        filled: true,
+        fillColor: Color(0xFF202733),
+        border: OutlineInputBorder(),
+      ),
+      obscureText: true,
+      enableSuggestions: false,
+      autocorrect: false,
+      controller: controller,
+      validator: (String? value){
+        return "Preencha o campo $hint";
+      },
+    );
+  }
+}
+
+Widget buildTextFormFieldWithIcon(String hint, TextInputType type, TextEditingController controller, maxL, {icon}){
     return TextFormField(
       keyboardType: type,
+      maxLines: maxL ? int.parse((SizeConfig.heightMultiplier !* .9).toInt().toString()) : null,
       decoration: InputDecoration(
+        prefixIcon: icon,
         labelText: hint,
         labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
         filled: true,
@@ -299,41 +299,8 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
       ),
       style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
+      validator: (String? value){
+        return "Preencha o campo $hint";
+      }
     );
   }
-}
-
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
-}

@@ -8,74 +8,52 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/register.dart';
 import 'dart:math';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
-class SelectCoordinatorPage extends StatefulWidget {
+class ShowCoordinationTeachers extends StatefulWidget {
 
-  const SelectCoordinatorPage({ Key? key }) : super(key: key);
+  late int index;
+
+  ShowCoordinationTeachers(this.index);
 
   @override
-  _SelectCoordinatorPageState createState() => _SelectCoordinatorPageState();
+  _ShowCoordinationTeachersState createState() => _ShowCoordinationTeachersState();
 }
 
-class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
+class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
 
-  TextEditingController _nameController = TextEditingController();
   DataTableSource _data = MyData();
+  TextEditingController _nameController = TextEditingController();
 
   int _selectedIndex = 0;
-
-   var areaCoordinator = [
-    {
-      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
-      'area': 'Construção Civil',
-      'coordinator': 'Carlos Capapelo',
-    },
-    {
-      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
-      'area': 'Electricidade, Electronica e Telecomunicações',
-      'coordinator': 'Telma Monteiro'
-    },
-    {
-      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
-      'area': 'Informática',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
-      'area': 'Mecânica',
-      'coordinator': 'Desconhecido'
-    },
-    {
-      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
-      'area': 'Química',
-      'coordinator': 'Álvaro Delly'
-    }
-  ];
-
 
   @override
   void initState(){
     super.initState();
+
+    setState(() {
+      _selectedIndex = widget.index;
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
+   @override
+   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -179,7 +157,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
@@ -187,14 +165,13 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                      buildHeaderPartTwo("Professores"),
+                      buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                      
                       PaginatedDataTable(
                         source: _data,
                         rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
+                        columnSpacing: SizeConfig.widthMultiplier !* 14.2,
                         showCheckboxColumn: true,
                         columns: [
                           DataColumn(
@@ -202,29 +179,15 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                             numeric: false,
                           ),
                           DataColumn(
-                            label: Text("Coordenador"),
+                            label: Text("Nome Completo"),
                             numeric: false,
                           ),
                           DataColumn(
-                            label: Text("Área de Formação"),
+                            label: Text("Bilhete"),
                             numeric: false,
                           ),
                         ],
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                          ),
-                          onPressed: (){},
-                        ),
-                      )
                     ],
                   ),
                 )
@@ -284,21 +247,6 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
           },
         );
       },
-    );
-  }
-
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
     );
   }
 }

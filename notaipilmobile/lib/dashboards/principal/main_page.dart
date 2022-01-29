@@ -15,15 +15,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complemtnts */
+/**Complements */
 import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/profile.dart';
+import 'package:notaipilmobile/dashboards/principal/settings.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 
 /**User Interface */
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class MainPage extends StatefulWidget {
 
-  const MainPage({ Key? key }) : super(key: key);
+  const MainPage({ Key? key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -62,7 +69,7 @@ class _MainPageState extends State<MainPage> {
     }
   ];
 
-  ApiService helper = ApiService();
+  ApiService helper = ApiService();  
 
   final GlobalKey<ExpansionTileCardState> card = new GlobalKey();
 
@@ -84,6 +91,9 @@ class _MainPageState extends State<MainPage> {
   void initState(){
     super.initState();
     //verifyUser();
+
+    setState(() {
+    });
   }
 
    @override
@@ -108,7 +118,87 @@ class _MainPageState extends State<MainPage> {
                   )
                 ],
               ),
-              drawer: Navbar(),
+              drawer: new Drawer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 34, 42, 55),
+                  ),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      UserAccountsDrawerHeader(
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.group, color: Colors.white,),
+                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ),
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
@@ -150,54 +240,6 @@ class _MainPageState extends State<MainPage> {
                         },
                       ),
                       ),
-                      /*
-                      DataTable(
-                        dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? 
-                          Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
-                        dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        showBottomBorder: true,
-                        dividerThickness: 5,
-                        headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        dataRowHeight: SizeConfig.heightMultiplier !* 7.7,
-                        columns: [
-                          DataColumn(
-                            label: Expanded(child: Text("Área de Formação", textAlign: TextAlign.center,),),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Expanded(child: Text("Responsável", textAlign: TextAlign.center,),),
-                            numeric: false,
-                          ),
-                        ],
-                        rows: areaCoordinator.map((e) =>
-                          DataRow(
-                            cells: [
-                              DataCell(
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(e['area'].toString(), textAlign: TextAlign.left,),
-                                  ),
-                                showEditIcon: false,
-                                placeholder: false,
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": e['id'], "area": e['area']})));
-                                }
-                              ),
-                              DataCell(
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(e['coordinator'].toString(), textAlign: TextAlign.right,),
-                                  ),
-                                showEditIcon: false,
-                                placeholder: false,
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": e['id'], "area": e['area']})));
-                                }
-                              )
-                            ]
-                          )
-                        ).toList(),
-                      )   */
                     ]  
                   )
                 ),
@@ -224,11 +266,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
+                    label: 'Home',                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
@@ -240,6 +278,21 @@ class _MainPageState extends State<MainPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );
@@ -315,7 +368,8 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": index['id'], "area": index['area']})));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination()));
+                //Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": index['id'], "area": index['area']})));
               },
               child: Column(
                 children: <Widget>[

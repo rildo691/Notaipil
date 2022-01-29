@@ -16,5 +16,8 @@ Widget buildTextFormField(String hint, TextInputType type, TextEditingController
       ),
       style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
+      validator: (String? value){
+        return "Preencha o campo $hint";
+      }
     );
   }

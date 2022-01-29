@@ -15,6 +15,16 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/send_information_page.dart';
 import 'package:notaipilmobile/dashboards/principal/send_information_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/profile.dart';
+import 'package:notaipilmobile/dashboards/principal/settings.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class ShowInformationEntities extends StatefulWidget {
 
@@ -25,6 +35,8 @@ class ShowInformationEntities extends StatefulWidget {
 }
 
 class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +60,87 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                   )
                 ],
               ),
-              drawer: Navbar(),
+              drawer: new Drawer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 34, 42, 55),
+                  ),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      UserAccountsDrawerHeader(
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.group, color: Colors.white,),
+                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ),
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
@@ -103,6 +195,57 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                   ),
                       
                 )
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: Color(0xFF151717),
+                elevation: 1,
+                mouseCursor: SystemMouseCursors.grab,
+                selectedFontSize: 15,
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
+                selectedItemColor: Color(0xFF0D89A4),
+                unselectedItemColor: Colors.grey,
+                unselectedLabelStyle: TextStyle(color: Colors.grey),
+                items: const <BottomNavigationBarItem> [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',                    
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                onTap:(index){
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      break;
+                    default:
+                  }
+                },
               ),
             );
           },

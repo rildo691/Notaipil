@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 /**Configuration */
@@ -16,8 +14,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complemtnts */
+/**Complements */
 import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_classroom_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 
 /**User Interface */
 import 'package:carousel_slider/carousel_slider.dart';
@@ -26,14 +29,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
 import 'package:notaipilmobile/register/model/courseModel.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
-
-/**Complemtnts */
-import 'package:notaipilmobile/dashboards/principal/show_classroom_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/profile.dart';
+import 'package:notaipilmobile/dashboards/principal/settings.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 
 
 class ClassroomsPage extends StatefulWidget {
 
-  late Map<dynamic, dynamic> value;
+  late int value;
 
   ClassroomsPage(this.value);
 
@@ -58,44 +63,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   var _studentClassroom = [];
   var fullData = [];
 
-  var _fakeStudents = [
-    {
-      'photo': 'none',
-      'numero': '1',
-      'processo': '12345',
-      'nomeCompleto': 'António João da Silva Mateus',
-      'sexo': 'M'
-    }, 
-    {
-      'photo': 'none',
-      'numero': '2',
-      'processo': '12345',
-      'nomeCompleto': 'Maria de Oliveira dos Santos',
-      'sexo': 'F'
-    },
-    {
-      'photo': 'none',
-      'numero': '3',
-      'processo': '12345',
-      'nomeCompleto': 'Pedro Sungo Rozinho João',
-      'sexo': 'M'
-    },
-    {
-      'photo': 'none',
-      'numero': '4',
-      'processo': '12345',
-      'nomeCompleto': 'Bruno Fortunato Domingos Mateus',
-      'sexo': 'M'
-    },
-    {
-      'photo': 'none',
-      'numero': '5',
-      'processo': '12345',
-      'nomeCompleto': 'Rildo William de Melo Franco',
-      'sexo': 'M'
-    }
-  ];
-
   ApiService helper = ApiService();
 
   int _currentPos = 0;
@@ -109,6 +76,11 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   void initState(){
     super.initState();
 
+    setState((){
+      _selectedIndex = widget.value;
+    });
+
+    /*
     getGrade().then((List<dynamic> value) =>
       setState((){
         grades = value;
@@ -129,7 +101,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
         _courseValue = courses[0]["id"];
         _courseCode = courses[0]["name"];
       })
-    );
+    );*/
   }
 
    @override
@@ -154,7 +126,87 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   )
                 ],
               ),
-              drawer: Navbar(),
+              drawer: new Drawer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 34, 42, 55),
+                  ),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      UserAccountsDrawerHeader(
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.group, color: Colors.white,),
+                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ),
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
@@ -202,7 +254,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 children: [
                                   buildHeaderPartTwo("Turmas"),
                                   DropdownButtonFormField<String>(
-                                    hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
+                                    hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
@@ -437,7 +489,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   buildHeaderPartTwo("Turmas"),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                   DropdownButtonFormField<String>(
-                                    hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
+                                    hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
@@ -547,7 +599,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   buildHeaderPartTwo("Turmas"),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                   DropdownButtonFormField<String>(
-                                    hint: Text(_stringValue.toString().length > 35 ? _stringValue.toString().substring(0, 25) + "..." : _stringValue.toString()),
+                                    hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
@@ -685,16 +737,27 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
                 ],
                 currentIndex: _selectedIndex,
-                onTap:(index){
+                onTap:(int index){
                   setState(() {
                     _selectedIndex = index;
                   });
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );

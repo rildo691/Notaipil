@@ -5,11 +5,12 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
 
-Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador){
+Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador, {Icon? icon}){
   return TextFormField(
     keyboardType: type,
     style: TextStyle(color: Colors.white),
     decoration: InputDecoration(
+      prefixIcon: icon,
       labelText: hint,
       labelStyle: TextStyle(color: Colors.white),
       filled: true,
