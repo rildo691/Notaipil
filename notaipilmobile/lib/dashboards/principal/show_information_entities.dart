@@ -145,21 +145,12 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 100,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      /*
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                          
-                        ],
-                      ),*/
                       Text("Escolha a entidade", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                       Container(
                         width: SizeConfig.screenWidth !* .7,

@@ -3,45 +3,31 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complements */
-import 'package:notaipilmobile/dashboards/principal/select_coordinator_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+class GradesHistory extends StatefulWidget {
 
-class SendInformationPage extends StatefulWidget {
-
-  const SendInformationPage({ Key? key }) : super(key: key);
+  const GradesHistory({ Key? key }) : super(key: key);
 
   @override
-  _SendInformationPageState createState() => _SendInformationPageState();
+  _GradesHistoryState createState() => _GradesHistoryState();
 }
 
-class _SendInformationPageState extends State<SendInformationPage> {
-
-  TextEditingController _subjectController = TextEditingController();
-  TextEditingController _messageController = TextEditingController();
-
-  GlobalKey<FormState> key = GlobalKey<FormState>();
+class _GradesHistoryState extends State<GradesHistory> {
 
   int _selectedIndex = 0;
+
+  var _termValue;
 
   @override
   Widget build(BuildContext context) {
@@ -92,28 +78,28 @@ class _SendInformationPageState extends State<SendInformationPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -148,77 +134,96 @@ class _SendInformationPageState extends State<SendInformationPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 60,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Form(
-                    key: key,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Enviar uma determinada informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Assunto:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                            buildTextFormField("Escreva um assunto", TextInputType.text, _subjectController, false),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Mensagem:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                            buildTextFormField("Escreva uma mensagem", TextInputType.multiline, _messageController, true),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: SizeConfig.widthMultiplier !* 27,
-                              height: SizeConfig.heightMultiplier !* 6.5,
-                              child: ElevatedButton(
-                                child: Text("Anexar"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      buildHeaderPartTwo("Histórico de notas"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: SizeConfig.widthMultiplier !* 30,
+                            child: SizedBox(
+                              child: DropdownButtonFormField(
+                                hint: Text("Trimestre"),
+                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Color(0xFF202733),
+                                  hintStyle: TextStyle(color: Colors.white),
                                 ),
-                                onPressed: (){
-                                  if (key.currentState!.validate()){
+                                dropdownColor: Colors.black,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text("Nothing"),
+                                    value: Text("No value either"),
+                                  )
+                                ],
+                                value: _termValue,
+                                onChanged: (newValue){
+                                  setState((){
+                                    _termValue = newValue;
+                                  });
+                                },
+                                validator: (value) => value == null ? 'Preencha o campo Trimestre' : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Estado:"),
+                          SizedBox(
+                            height: SizeConfig.heightMultiplier !* 2.5,
+                          ),
+                          OutlinedButton(
+                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
+                              primary: Color.fromARGB(255, 34, 42, 55),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                            ),
 
-                                  }
-                                },
-                              )
+                            onPressed: (){}, 
+                          ),
+                        ]
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Média:"),
+                          SizedBox(
+                            height: SizeConfig.heightMultiplier !* 2.5,
+                          ),
+                          OutlinedButton(
+                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
+                              primary: Color.fromARGB(255, 34, 42, 55),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
                             ),
-                            Container(
-                              width: SizeConfig.widthMultiplier !* 27,
-                              height: SizeConfig.heightMultiplier !* 6.5,
-                              child: ElevatedButton(
-                                child: Text("Enviar"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                                ),
-                                onPressed: (){
-                                  if (key.currentState!.validate()){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectCoordinatorPage()));
-                                  }
-                                },
-                              )
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                )
+
+                            onPressed: (){}, 
+                          ),
+                        ]
+                      )
+                    ]  
+                  )
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -254,27 +259,13 @@ class _SendInformationPageState extends State<SendInformationPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
           },
         );
       },
-    );
+    );  
   }
 }

@@ -1,46 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:intl/intl.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
-
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-class ShowCoordination extends StatefulWidget {
+/**Complements */
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_schedule.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_stats.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/coordinator/edit_classroom.dart';
 
-  const ShowCoordination({ Key? key }) : super(key: key);
+class ShowClassroomTeachers extends StatefulWidget {
+
+  late String classroomId;
+  ShowClassroomTeachers(this.classroomId);
 
   @override
-  _ShowCoordinationState createState() => _ShowCoordinationState();
+  _ShowClassroomTeachersState createState() => _ShowClassroomTeachersState();
 }
 
-class _ShowCoordinationState extends State<ShowCoordination> {
-
-  var _courseValue;
-  var _gradeValue;
-  var areaCoordinator = [
-    {
-      'job': 'Coordenador de Área',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'job': 'Coordenador de Curso',
-      'coordinator': 'Olívia de Matos',
-    },
-  ];
+class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   int _selectedIndex = 0;
+
+  String? _classroomName;
+
+  var _fakeTeachers = [
+    {
+      'name': 'Carlos Capapelo',
+      'gender': 'M',
+      'subject': 'TCC'
+    },
+    {
+      'name': 'Telma Monteiro',
+      'gender': 'F',
+      'subject': 'Telecomunicações'
+    },
+    {
+      'name': 'Edson Viegas',
+      'gender': 'M',
+      'subject': 'TLP',
+    },
+    {
+      'name': 'Desconhecido',
+      'gender': 'M',
+      'subject': 'DCM',
+    },
+    {
+      'name': 'Álvaro Delly',
+      'gender': 'M',
+      'subject': 'Química Geral'
+    }
+  ];
+
+  @override 
+  void initState(){
+    getClassroomById(widget.classroomId).then((value) => 
+      setState((){
+        _classroomName = value[0]["name"].toString();
+      })
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,138 +174,119 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                  Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      buildHeaderPartTwo("Coordenação de Informática"),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Coordenadores"),
-                              Text("Sala: 67 EDIF."),
-                            ],
-                          ),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: areaCoordinator.length,
-                            itemBuilder: (context, index){
-                              return _buildCard(areaCoordinator[index]);
-                            },
-                          ),
-                        ],
-                      ),
-                      //SizedBox(height: SizeConfig.heightMultiplier !* 2),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField(
-                                hint: Text("Curso"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
-                                ),
-                                dropdownColor: Colors.black,
-                                items: [
-                                  DropdownMenuItem(
-                                    value: Text("Nothing"),
-                                    child: Text("Nothing"),
-                                  )
-                                ],
-                                value: _courseValue,
-                                onChanged: (newValue){
-                                  setState(() {
-                                    _courseValue = newValue;
-                                  });
-                                }
-                              )
-                            )
-                          ),
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField(
-                                hint: Text("Classe"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
-                                ),
-                                dropdownColor: Colors.black,
-                                items:[
-                                  DropdownMenuItem(
-                                    value: Text("Nothing"),
-                                    child: Text("Nothing"),
-                                  )
-                                ],
-                                value: _gradeValue,
-                                onChanged: (newValue){
-                                  setState((){
-                                    _gradeValue = newValue;
-                                  });
-                                }
-                              )
-                            )
-                          ),
-                        ],
-                      ),
-                      DataTable(
-                        columns: [
-                          DataColumn(
-                            label: Text("Turmas"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("M"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("F"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("MF"),
-                            numeric: false,
+                          Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.brush_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId)));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStats(widget.classroomId)));
+                                },
+                              ),
+                            ],
                           )
-                        ],
-                        rows: [
-                          DataRow(
-                            cells: [
-                              DataCell(Text("10")),
-                              DataCell(Text("10")),
-                              DataCell(Text("10")),
-                              DataCell(Text("10"))
-                            ]
-                          ),
-                          
                         ]
                       ),
-                    ],
-                  ),
-                )
-                  ],
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                            DataTable(
+                              showBottomBorder: true,
+                              dividerThickness: 5,
+                              columnSpacing: SizeConfig.widthMultiplier !* 2.5,
+                              columns: [
+                                DataColumn(
+                                  label: Text(""),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Nome Completo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Sexo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Disciplina"),
+                                  numeric: false,
+                                ),
+                              ],
+                              rows: _fakeTeachers.map((e) => 
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                  ]
+                                )
+                              ).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]  
+                  )
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -321,34 +330,6 @@ class _ShowCoordinationState extends State<ShowCoordination> {
           },
         );
       },
-    );
-  }
-
-  Widget _buildCard(index){
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      color: Colors.white,
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-            ),
-            Text(index["coordinator"].toString()),
-            Text(index["job"].toString()),
-          ],
-        ),
-      ),
     );
   }
 }

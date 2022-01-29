@@ -154,7 +154,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !* 1.08,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Form(
                     key: _key,
@@ -283,9 +283,8 @@ class _EditProfileState extends State<EditProfile> {
       },
     );
   }
-}
 
-Widget buildTextFormFieldWithIcon(String hint, TextInputType type, TextEditingController controller, maxL, {icon}){
+  Widget buildTextFormFieldWithIcon(String hint, TextInputType type, TextEditingController controller, maxL, {icon}){
     return TextFormField(
       keyboardType: type,
       maxLines: maxL ? int.parse((SizeConfig.heightMultiplier !* .9).toInt().toString()) : null,
@@ -304,3 +303,4 @@ Widget buildTextFormFieldWithIcon(String hint, TextInputType type, TextEditingCo
       }
     );
   }
+}

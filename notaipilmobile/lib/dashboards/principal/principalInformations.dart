@@ -163,7 +163,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 40,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

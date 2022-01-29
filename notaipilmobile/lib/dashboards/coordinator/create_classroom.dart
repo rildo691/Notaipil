@@ -2,52 +2,39 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:intl/intl.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
-
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**User Interface */
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+class CreateClassroom extends StatefulWidget {
 
-/**Model */
-import 'package:notaipilmobile/register/model/responseModel.dart';
-
-class RegisterStudent extends StatefulWidget {
-
-  const RegisterStudent({ Key? key }) : super(key: key);
+  const CreateClassroom({ Key? key }) : super(key: key);
 
   @override
-  _RegisterStudentState createState() => _RegisterStudentState();
+  _CreateClassroomState createState() => _CreateClassroomState();
 }
 
-class _RegisterStudentState extends State<RegisterStudent> {
-
-  var _courseValue;
-  var _gradeValue;
-  var _genderValue;
-  var _date;
+class _CreateClassroomState extends State<CreateClassroom> {
 
   int _selectedIndex = 0;
 
-  TextEditingController _processNumberController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _biController = TextEditingController();
-  TextEditingController _birthdateController = TextEditingController();
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  TextEditingController _periodController = TextEditingController();
+  TextEditingController _roomController = TextEditingController();
 
-   @override
-   Widget build(BuildContext context) {
+  var _periodValue;
+  var _courseValue;
+  var _gradeValue;
+
+
+  @override
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -78,7 +65,7 @@ class _RegisterStudentState extends State<RegisterStudent> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Coordenador", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -150,41 +137,25 @@ class _RegisterStudentState extends State<RegisterStudent> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                  Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 20.0),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 25,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
+                  child: 
                       Form(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Lista de Estudantes"),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.widthMultiplier !* 10,
-                                    height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Color(0xFF0D89A4))
-                                  ),
-                                  onTap: (){
-                              
-                                  },
-                                )
+                                Text("Criar turma"),
                               ],
                             ),
                             SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5.5,
+                              height: SizeConfig.heightMultiplier !* 4,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,47 +224,16 @@ class _RegisterStudentState extends State<RegisterStudent> {
                             SizedBox(
                               height: SizeConfig.heightMultiplier !* 8,
                             ),
-                            buildTextFieldRegister("N.º de Processo", TextInputType.number, _processNumberController),
+                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
                             SizedBox(
-                              height: SizeConfig.heightMultiplier !* 2,
+                              height: SizeConfig.heightMultiplier !* 3,
                             ),
-                            buildTextFieldRegister("Nome Completo", TextInputType.text, _nameController),
+                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
                             SizedBox(
-                              height: SizeConfig.heightMultiplier !* 2,
-                            ),
-                            buildTextFieldRegister("N.º do Bilhete", TextInputType.text, _biController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 2,
-                            ),
-                            DateTimeField(
-                              decoration: InputDecoration(
-                                labelText: "Data de Nascimento",
-                                suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                labelStyle: TextStyle(color: Colors.white),
-                              ),
-                              controller: _birthdateController,
-                              format: DateFormat("yyyy-MM-dd"),
-                              style:  TextStyle(color: Colors.white),
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                  context: context,
-                                  locale: const Locale("pt"),
-                                  firstDate: DateTime(1900),
-                                  initialDate: DateTime.now(),
-                                  lastDate: DateTime.now(),
-                                ).then((date){
-                                  setState((){
-                                    _birthdateController.text = date.toString();
-                                    _date = date;
-                                  });
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 2,
+                              height: SizeConfig.heightMultiplier !* 3,
                             ),
                             DropdownButtonFormField(
-                              hint: Text("Sexo"),
+                              hint: Text("Período"),
                               style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -304,23 +244,46 @@ class _RegisterStudentState extends State<RegisterStudent> {
                               dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(
-                                  child: Text("Male"),
-                                  value: Text("M"),
+                                  child: Text("Nothing"),
+                                  value: Text("No value either"),
                                 )
                               ],
-                              value: _genderValue,
+                              value: _periodValue,
                               onChanged: (newValue){
                                 setState((){
-                                  _genderValue = newValue;
+                                  _periodValue = newValue;
                                 });
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Sexo' : null,
+                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
                             ),
                             SizedBox(
-                              height: SizeConfig.heightMultiplier !* 4,
+                              height: SizeConfig.heightMultiplier !* 5,
+                            ),
+                            Row(
+                              children: [
+                                ElevatedButton(
+                                  child: Text("Horário"),
+                                  style: ElevatedButton.styleFrom(
+                                    primary:  Color(0xFF0D89A4),
+                                    onPrimary: Colors.white,
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Roboto',
+                                      fontSize: 20.0,
+                                    ),
+                                  minimumSize: Size(0.0, 50.0),
+                                  ),
+                                  onPressed: (){
+                                
+                                  },
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 6,
                             ),
                             ElevatedButton(
-                              child: Text("Cadastrar"),
+                              child: Text("Concluir"),
                               style: ElevatedButton.styleFrom(
                                 primary:  Color(0xFF0D89A4),
                                 onPrimary: Colors.white,
@@ -332,18 +295,14 @@ class _RegisterStudentState extends State<RegisterStudent> {
                               minimumSize: Size(0.0, 50.0),
                               ),
                               onPressed: (){
-                                buildModal(context, false, "Cadasytado com sucesso");
+                                
                               },
                             )
-                          ],
-                        )
-                      )
-                    ],
-                  ),
-                )
-                  ],
+                          ]
+                        ),
+                      ),
+                  )
                 ),
-              ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -385,6 +344,6 @@ class _RegisterStudentState extends State<RegisterStudent> {
           },
         );
       },
-    );
+    );    
   }
 }

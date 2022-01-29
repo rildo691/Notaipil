@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -14,18 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complements */
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_classroom_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-
 /**User Interface */
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -36,12 +25,9 @@ import 'package:notaipilmobile/register/model/gradeModel.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 
 
-
 class ClassroomsPage extends StatefulWidget {
 
-  late int value;
-
-  ClassroomsPage(this.value);
+  const ClassroomsPage({ Key? key }) : super(key: key);
 
   @override
   _ClassroomsPageState createState() => _ClassroomsPageState();
@@ -74,39 +60,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   bool _classroomsExists = false;
 
   @override
-  void initState(){
-    super.initState();
-
-    setState((){
-      _selectedIndex = widget.value;
-    });
-
-    /*
-    getGrade().then((List<dynamic> value) =>
-      setState((){
-        grades = value;
-        _gradeValue = grades[3]["id"];
-        _gradeCode = grades[3]["name"] + "ª";
-      })
-    );
-
-    setState(() {
-      _value = widget.value["id"];
-      _stringValue = widget.value["area"];
-    });
-    
-    
-    getCoursesCode(widget.value["id"]).then((List<dynamic> value) => 
-      setState((){
-        courses = value;
-        _courseValue = courses[0]["id"];
-        _courseCode = courses[0]["name"];
-      })
-    );*/
-  }
-
-   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -137,7 +91,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Coordenador", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -154,28 +108,28 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -253,7 +207,31 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  buildHeaderPartTwo("Turmas"),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.widthMultiplier !* 35,
+                                          height: SizeConfig.heightMultiplier !* 6.3,
+                                          child: ElevatedButton(
+                                            child: Text("Criar Turma"),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Color(0xFF0D89A4),
+                                              onPrimary: Colors.white,
+                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                            ),
+                                            onPressed: (){
+                                              
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -487,8 +465,31 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  buildHeaderPartTwo("Turmas"),
-                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.widthMultiplier !* 35,
+                                          height: SizeConfig.heightMultiplier !* 6.3,
+                                          child: ElevatedButton(
+                                            child: Text("Criar Turma"),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Color(0xFF0D89A4),
+                                              onPrimary: Colors.white,
+                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                            ),
+                                            onPressed: (){
+                                              
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -597,8 +598,31 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  buildHeaderPartTwo("Turmas"),
-                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.widthMultiplier !* 35,
+                                          height: SizeConfig.heightMultiplier !* 6.3,
+                                          child: ElevatedButton(
+                                            child: Text("Criar Turma"),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Color(0xFF0D89A4),
+                                              onPrimary: Colors.white,
+                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                            ),
+                                            onPressed: (){
+                                              
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -732,7 +756,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
-                    label: 'Home',
+                    label: 'Home',                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
@@ -740,25 +764,11 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   ),
                 ],
                 currentIndex: _selectedIndex,
-                onTap:(int index){
+                onTap:(index){
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
@@ -791,4 +801,4 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
         ),
     ); 
   }
-}
+}  

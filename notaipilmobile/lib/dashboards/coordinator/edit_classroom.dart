@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -8,40 +7,38 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:notaipilmobile/parts/register.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/principal/select_coordinator_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/add_delete_student.dart';
 
-class SendInformationPage extends StatefulWidget {
+class EditClassroom extends StatefulWidget {
 
-  const SendInformationPage({ Key? key }) : super(key: key);
+  late String classroomId;
+  EditClassroom(this.classroomId);
 
   @override
-  _SendInformationPageState createState() => _SendInformationPageState();
+  _EditClassroomState createState() => _EditClassroomState();
 }
 
-class _SendInformationPageState extends State<SendInformationPage> {
+class _EditClassroomState extends State<EditClassroom> {
 
-  TextEditingController _subjectController = TextEditingController();
-  TextEditingController _messageController = TextEditingController();
-
-  GlobalKey<FormState> key = GlobalKey<FormState>();
-
+  String? _classroomName;
   int _selectedIndex = 0;
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _periodController = TextEditingController();
+  TextEditingController _roomController = TextEditingController();
+
+  var _periodValue;
+
+  @override
+  void initState(){
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,28 +89,28 @@ class _SendInformationPageState extends State<SendInformationPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -148,78 +145,115 @@ class _SendInformationPageState extends State<SendInformationPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 60,
+                  height: SizeConfig.screenHeight !- 110.7,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Form(
-                    key: key,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Enviar uma determinada informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: 
+                      Form(
+                        child: Column(
+                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text("Assunto:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                            buildTextFormField("Escreva um assunto", TextInputType.text, _subjectController, false),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Mensagem:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                            buildTextFormField("Escreva uma mensagem", TextInputType.multiline, _messageController, true),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: SizeConfig.widthMultiplier !* 27,
-                              height: SizeConfig.heightMultiplier !* 6.5,
-                              child: ElevatedButton(
-                                child: Text("Anexar"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                                ),
-                                onPressed: (){
-                                  if (key.currentState!.validate()){
-
-                                  }
-                                },
-                              )
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Editar Turma"),
+                                GestureDetector(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: SizeConfig.widthMultiplier !* 10,
+                                    height: SizeConfig.heightMultiplier !* 4,
+                                    child: Icon(Icons.person, color: Colors.white)
+                                  ),
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
+                                  },
+                                )
+                              ],
                             ),
-                            Container(
-                              width: SizeConfig.widthMultiplier !* 27,
-                              height: SizeConfig.heightMultiplier !* 6.5,
-                              child: ElevatedButton(
-                                child: Text("Enviar"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                                ),
-                                onPressed: (){
-                                  if (key.currentState!.validate()){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectCoordinatorPage()));
-                                  }
-                                },
-                              )
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 8,
                             ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ),
+                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 3,
+                            ),
+                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 3,
+                            ),
+                            DropdownButtonFormField(
+                              hint: Text("Período"),
+                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              dropdownColor: Colors.black,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text("Nothing"),
+                                  value: Text("No value either"),
+                                )
+                              ],
+                              value: _periodValue,
+                              onChanged: (newValue){
+                                setState((){
+                                  _periodValue = newValue;
+                                });
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
+                            ),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 5,
+                            ),
+                            Row(
+                              children: [
+                                ElevatedButton(
+                                  child: Text("Horário"),
+                                  style: ElevatedButton.styleFrom(
+                                    primary:  Color(0xFF0D89A4),
+                                    onPrimary: Colors.white,
+                                    textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Roboto',
+                                      fontSize: 20.0,
+                                    ),
+                                  minimumSize: Size(0.0, 50.0),
+                                  ),
+                                  onPressed: (){
+                                
+                                  },
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 6,
+                            ),
+                            ElevatedButton(
+                              child: Text("Concluir"),
+                              style: ElevatedButton.styleFrom(
+                                primary:  Color(0xFF0D89A4),
+                                onPrimary: Colors.white,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 20.0,
+                                ),
+                              minimumSize: Size(0.0, 50.0),
+                              ),
+                              onPressed: (){
+                                
+                              },
+                            )
+                          ]
+                        ),
+                      ),
+                  )
+                ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -254,27 +288,13 @@ class _SendInformationPageState extends State<SendInformationPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
           },
         );
       },
-    );
+    );  
   }
 }

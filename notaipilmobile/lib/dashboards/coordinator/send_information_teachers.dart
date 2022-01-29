@@ -14,32 +14,22 @@ import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/principal/select_coordinator_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/select_teachers_page.dart';
 
-class SendInformationPage extends StatefulWidget {
+class SendInformationTeachers extends StatefulWidget {
 
-  const SendInformationPage({ Key? key }) : super(key: key);
+  const SendInformationTeachers({ Key? key }) : super(key: key);
 
   @override
-  _SendInformationPageState createState() => _SendInformationPageState();
+  _SendInformationTeachersState createState() => _SendInformationTeachersState();
 }
 
-class _SendInformationPageState extends State<SendInformationPage> {
+class _SendInformationTeachersState extends State<SendInformationTeachers> {
 
   TextEditingController _subjectController = TextEditingController();
   TextEditingController _messageController = TextEditingController();
 
-  GlobalKey<FormState> key = GlobalKey<FormState>();
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   int _selectedIndex = 0;
 
@@ -92,28 +82,28 @@ class _SendInformationPageState extends State<SendInformationPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -153,7 +143,7 @@ class _SendInformationPageState extends State<SendInformationPage> {
                   height: SizeConfig.screenHeight !- 60,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Form(
-                    key: key,
+                    key: _key,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -190,7 +180,7 @@ class _SendInformationPageState extends State<SendInformationPage> {
                                   textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                 ),
                                 onPressed: (){
-                                  if (key.currentState!.validate()){
+                                  if (_key.currentState!.validate()){
 
                                   }
                                 },
@@ -207,8 +197,8 @@ class _SendInformationPageState extends State<SendInformationPage> {
                                   textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                 ),
                                 onPressed: (){
-                                  if (key.currentState!.validate()){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectCoordinatorPage()));
+                                  if (_key.currentState!.validate()){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectTeachersPage()));
                                   }
                                 },
                               )
@@ -254,21 +244,7 @@ class _SendInformationPageState extends State<SendInformationPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
