@@ -3,37 +3,38 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
+import 'package:intl/intl.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
-
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
-
-/**API Helper */
-import 'package:notaipilmobile/services/apiService.dart';
+import 'package:notaipilmobile/parts/register.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
-import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
-import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
 
-class GradesHistory extends StatefulWidget {
+/**User Interface */
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-  const GradesHistory({ Key? key }) : super(key: key);
+class ClassroomSubjectStats extends StatefulWidget {
+
+  const ClassroomSubjectStats({ Key? key }) : super(key: key);
 
   @override
-  _GradesHistoryState createState() => _GradesHistoryState();
+  _ClassroomSubjectStatsState createState() => _ClassroomSubjectStatsState();
 }
 
-class _GradesHistoryState extends State<GradesHistory> {
+class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
 
   int _selectedIndex = 0;
 
-  var _termValue;
+  String? _classroomName;
+
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,28 +85,21 @@ class _GradesHistoryState extends State<GradesHistory> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -148,84 +142,111 @@ class _GradesHistoryState extends State<GradesHistory> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      buildHeaderPartTwo("Histórico de notas"),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField(
-                                hint: Text("Trimestre"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
-                                ),
-                                dropdownColor: Colors.black,
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text("Nothing"),
-                                    value: Text("No value either"),
-                                  )
-                                ],
-                                value: _termValue,
-                                onChanged: (newValue){
-                                  setState((){
-                                    _termValue = newValue;
-                                  });
+                          Text("Estatistica", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
                                 },
-                                validator: (value) => value == null ? 'Preencha o campo Trimestre' : null,
                               ),
-                            ),
-                          ),
+                              IconButton(
+                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                },
+                              ),
+                            ],
+                          )
+                        ]
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(_classroomName != null ? _classroomName.toString() : "Teste"),
+                          Text("-----"),
+                      Text("Disciplina"),
                         ],
                       ),
-                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Estado:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
-                            ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Média:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
-                            ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
+                          Text("TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text("I"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected1 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = true;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                  });
+                                }
+                              ),
+                              TextButton(
+                                child: Text("II"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected2 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = true;
+                                    _selected3 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("III"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = true;
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
                       )
                     ]  
                   )
@@ -272,6 +293,6 @@ class _GradesHistoryState extends State<GradesHistory> {
           },
         );
       },
-    );  
+    );
   }
 }

@@ -1,48 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/add_delete_student.dart';
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
-class EditClassroom extends StatefulWidget {
+class TeacherStats extends StatefulWidget {
 
-  late String classroomId;
-  EditClassroom(this.classroomId);
+  const TeacherStats({ Key? key }) : super(key: key);
 
   @override
-  _EditClassroomState createState() => _EditClassroomState();
+  _TeacherStatsState createState() => _TeacherStatsState();
 }
 
-class _EditClassroomState extends State<EditClassroom> {
+class _TeacherStatsState extends State<TeacherStats> {
 
-  String? _classroomName;
   int _selectedIndex = 0;
-
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
-  TextEditingController _roomController = TextEditingController();
-
-  var _periodValue;
-
-  @override
-  void initState(){
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,115 +138,39 @@ class _EditClassroomState extends State<EditClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 110.7,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Editar Turma"),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.widthMultiplier !* 10,
-                                    height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Colors.white)
-                                  ),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 8,
-                            ),
-                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            DropdownButtonFormField(
-                              hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _periodValue,
-                              onChanged: (newValue){
-                                setState((){
-                                  _periodValue = newValue;
-                                });
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text("Horário"),
-                                  style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
-                                  ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Concluir"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
-                              ),
-                              onPressed: (){
-                                
-                              },
-                            )
-                          ]
-                        ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Professor", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                      Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(8.0),
+                        width: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                        height: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
                       ),
+                      Text("Bilhete: 007031348LA043", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Nome: " , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Sexo: " + "M", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Data de nascimento ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                      Text("Categoria: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Habilitações Literárias: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Tempo de serviço no IPIL: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Tempo de serviço na Educação: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Regime Laboral: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                      Text("E-mail: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                      Text("Contacto: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                    ]  
                   )
                 ),
+              ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -299,6 +212,6 @@ class _EditClassroomState extends State<EditClassroom> {
           },
         );
       },
-    );  
+    ); 
   }
 }

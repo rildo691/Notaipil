@@ -155,6 +155,9 @@ class _SettingsState extends State<Settings> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Definições", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                      SizedBox(
+                        height: SizeConfig.heightMultiplier !* 1.3,
+                      ),
                       Text("Ano Lectivo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                       Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
                         style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)

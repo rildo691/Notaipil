@@ -9,7 +9,6 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +21,13 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/responseModel.dart';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Complements */
+import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
+import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
+import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
+import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
 class RegisterStudent extends StatefulWidget {
 
@@ -78,7 +84,7 @@ class _RegisterStudentState extends State<RegisterStudent> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Coordenador", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -95,28 +101,28 @@ class _RegisterStudentState extends State<RegisterStudent> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -332,7 +338,7 @@ class _RegisterStudentState extends State<RegisterStudent> {
                               minimumSize: Size(0.0, 50.0),
                               ),
                               onPressed: (){
-                                buildModal(context, false, "Cadasytado com sucesso");
+                                buildModal(context, false, "Cadastrado com sucesso");
                               },
                             )
                           ],

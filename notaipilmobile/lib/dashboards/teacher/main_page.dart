@@ -1,48 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/add_delete_student.dart';
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
-import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
-import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+class MainPage extends StatefulWidget {
 
-class EditClassroom extends StatefulWidget {
-
-  late String classroomId;
-  EditClassroom(this.classroomId);
+  const MainPage({ Key? key }) : super(key: key);
 
   @override
-  _EditClassroomState createState() => _EditClassroomState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _EditClassroomState extends State<EditClassroom> {
+class _MainPageState extends State<MainPage> {
 
-  String? _classroomName;
   int _selectedIndex = 0;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
-  TextEditingController _roomController = TextEditingController();
-
-  var _periodValue;
-
-  @override
-  void initState(){
-    super.initState();
-  }
+  var areaCoordinator = [
+    {
+      'job': 'II10A',
+      'principal': 'TLP',
+    },
+    {
+      'job': 'CC10A',
+      'principal': 'TCC',
+    },
+    {
+      'job': 'MM10A',
+      'principal': 'DCM',
+    },    
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,28 +91,21 @@ class _EditClassroomState extends State<EditClassroom> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -149,115 +140,60 @@ class _EditClassroomState extends State<EditClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 110.7,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 7.0,
+                        mainAxisSpacing: 10.0,
+                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                        children: [
+                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
+                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
+                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
+                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Expanded(
                         child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Editar Turma"),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.widthMultiplier !* 10,
-                                    height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Colors.white)
-                                  ),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
-                                  },
-                                )
-                              ],
+                              children:[
+                                Text("Construção Civil"),
+                                Text("Disciplina"),
+                              ]
                             ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 8,
-                            ),
-                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            DropdownButtonFormField(
-                              hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _periodValue,
-                              onChanged: (newValue){
-                                setState((){
-                                  _periodValue = newValue;
-                                });
+                            ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: areaCoordinator.length,
+                              itemBuilder: (context, index){
+                                return Column(
+                                  children: [
+                                    _buildCardTwo(areaCoordinator[index]),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                  ],
+                                );
                               },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
                             ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text("Horário"),
-                                  style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
-                                  ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Concluir"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
-                              ),
-                              onPressed: (){
-                                
-                              },
-                            )
-                          ]
-                        ),
+                          ],
+                        )
                       ),
+                      
+                    ]  
                   )
                 ),
+              ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -300,5 +236,68 @@ class _EditClassroomState extends State<EditClassroom> {
         );
       },
     );  
+  }
+
+  Widget _buildCard(String s, String t, Color color) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: color,
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+            ),
+            SizedBox(width: 7.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+              ],
+            )
+          ],
+        ),
+      ),
+    );  
+  }
+
+  Widget _buildCardTwo(index){
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+            ),
+            Text(index["job"].toString()),
+            Text(index["principal"].toString()),
+          ],
+        ),
+      ),
+    );
   }
 }

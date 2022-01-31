@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/add_delete_student.dart';
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
-class EditClassroom extends StatefulWidget {
+class ShowAgendaState extends StatefulWidget {
 
-  late String classroomId;
-  EditClassroom(this.classroomId);
+  const ShowAgendaState({ Key? key }) : super(key: key);
 
   @override
-  _EditClassroomState createState() => _EditClassroomState();
+  _ShowAgendaStateState createState() => _ShowAgendaStateState();
 }
 
-class _EditClassroomState extends State<EditClassroom> {
+class _ShowAgendaStateState extends State<ShowAgendaState> {
 
-  String? _classroomName;
   int _selectedIndex = 0;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
-  TextEditingController _roomController = TextEditingController();
-
-  var _periodValue;
-
-  @override
-  void initState(){
-    super.initState();
-  }
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -149,115 +142,92 @@ class _EditClassroomState extends State<EditClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 110.7,
+                  height: SizeConfig.screenHeight !* 1.2,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Editar Turma"),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.widthMultiplier !* 10,
-                                    height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Colors.white)
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildHeaderPartTwo("Estado das minipautas"),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text("I"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected1 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 8,
-                            ),
-                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            DropdownButtonFormField(
-                              hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _periodValue,
-                              onChanged: (newValue){
-                                setState((){
-                                  _periodValue = newValue;
-                                });
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text("Horário"),
-                                  style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
-                                  ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Concluir"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
                                 ),
-                              minimumSize: Size(0.0, 50.0),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = true;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                  });
+                                }
                               ),
-                              onPressed: (){
-                                
-                              },
-                            )
-                          ]
-                        ),
-                      ),
-                  )
-                ),
+                              TextButton(
+                                child: Text("II"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected2 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = true;
+                                    _selected3 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("III"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = true;
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -299,6 +269,6 @@ class _EditClassroomState extends State<EditClassroom> {
           },
         );
       },
-    );  
+    );
   }
 }

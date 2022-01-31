@@ -12,6 +12,12 @@ import 'package:notaipilmobile/parts/navbar.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
+import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
+import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
+import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+
 class SelectClassroomsPage extends StatefulWidget {
 
   const SelectClassroomsPage({ Key? key }) : super(key: key);
@@ -23,6 +29,34 @@ class SelectClassroomsPage extends StatefulWidget {
 class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
   int _selectedIndex = 0;
+
+  var _fakeTeachers = [
+    {
+      'name': 'Carlos Capapelo',
+      'gender': 'M',
+      'subject': 'TCC'
+    },
+    {
+      'name': 'Telma Monteiro',
+      'gender': 'F',
+      'subject': 'Telecomunicações'
+    },
+    {
+      'name': 'Edson Viegas',
+      'gender': 'M',
+      'subject': 'TLP',
+    },
+    {
+      'name': 'Desconhecido',
+      'gender': 'M',
+      'subject': 'DCM',
+    },
+    {
+      'name': 'Álvaro Delly',
+      'gender': 'M',
+      'subject': 'Química Geral'
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -73,28 +107,28 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -137,7 +171,85 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                            DataTable(
+                              showBottomBorder: true,
+                              dividerThickness: 5,
+                              columnSpacing: SizeConfig.widthMultiplier !* 2.5,
+                              columns: [
+                                DataColumn(
+                                  label: Text(""),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Nome Completo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Sexo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Disciplina"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text(""),
+                                  numeric: false,
+                                ),
+                              ],
+                              rows: _fakeTeachers.map((e) => 
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                    GestureDetector(
+                                      child: Center(
+                                       child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
+                                      ),
+                                      onTap: (){
+                                        
+                                      },
+                                    )
+                                  ),
+                                  ]
+                                )
+                              ).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                       

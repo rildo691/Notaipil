@@ -38,7 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   fluttertoast: ^8.0.8
   email_validator: ^2.0.1
-  shared_preferences: ^0.5.8
+  shared_preferences: ^2.0.12
   http: ^0.13.4
   datetime_picker_formfield: ^2.0.0
   carousel_slider: ^4.0.0

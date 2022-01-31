@@ -9,22 +9,15 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
-/**API Helper */
-import 'package:notaipilmobile/services/apiService.dart';
-
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/show_classroom_schedule.dart';
-import 'package:notaipilmobile/dashboards/coordinator/show_classroom_stats.dart';
-import 'package:notaipilmobile/dashboards/coordinator/show_classroom_teachers.dart';
-import 'package:notaipilmobile/dashboards/coordinator/edit_classroom.dart';
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
-import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
-import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
 
 class ShowClassroomTeachers extends StatefulWidget {
 
   late String classroomId;
+
   ShowClassroomTeachers(this.classroomId);
 
   @override
@@ -65,13 +58,16 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
     }
   ];
 
-  @override 
+  @override
   void initState(){
+    super.initState();
+
     getClassroomById(widget.classroomId).then((value) => 
       setState((){
         _classroomName = value[0]["name"].toString();
       })
     );
+
   }
 
   @override
@@ -123,28 +119,21 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -179,7 +168,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
@@ -197,19 +186,13 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.brush_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
                                 },
@@ -217,92 +200,87 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                               IconButton(
                                 icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStats(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.classroomId)));
                                 },
                               ),
                             ],
-                          )
+                          ),
+                          
                         ]
                       ),
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            DataTable(
-                              showBottomBorder: true,
-                              dividerThickness: 5,
-                              
-                              columns: [
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Nome Completo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Sexo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Disciplina"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                DataTable(
+                                  dataRowColor: MaterialStateColor.resolveWith((states) => 
+                                    states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
+                                  ),
+                                  dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                  showBottomBorder: true,
+                                  dividerThickness: 5,
+                                  headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                  headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+                                    ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
+                                  ),
+                                  columnSpacing: SizeConfig.widthMultiplier !* 4,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text(""),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Nome"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Sexo"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Disciplina"),
+                                      numeric: false,
+                                    ),
+                                  ],
+                                  rows: _fakeTeachers.map((e) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(e['name'].toString(), textAlign: TextAlign.left)
+                                          ),
+                                          showEditIcon: false,
+                                          placeholder: false,
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                          ),
+                                          showEditIcon: false,
+                                          placeholder: false,
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(e['subject'].toString(), textAlign: TextAlign.left)
+                                          ),
+                                          showEditIcon: false,
+                                          placeholder: false,
+                                        ),
+                                      ]
+                                    )
+                                  ).toList(),
                                 ),
                               ],
-                              rows: _fakeTeachers.map((e) => 
-                                DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                    GestureDetector(
-                                      child: Center(
-                                       child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
-                                      ),
-                                      onTap: (){
-                                        
-                                      },
-                                    )
-                                  ),
-                                  ]
-                                )
-                              ).toList(),
                             ),
-                          ],
-                        ),
-                      ),
+                          ),
                     ]  
                   )
                 ),

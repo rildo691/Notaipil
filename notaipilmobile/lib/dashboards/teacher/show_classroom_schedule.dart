@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -7,41 +8,37 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
-
-/**API Helper */
-import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/add_delete_student.dart';
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
-import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
-import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
 
-class EditClassroom extends StatefulWidget {
+class ShowClassroomSchedule extends StatefulWidget {
 
   late String classroomId;
-  EditClassroom(this.classroomId);
+
+  ShowClassroomSchedule(this.classroomId);
 
   @override
-  _EditClassroomState createState() => _EditClassroomState();
+  _ShowClassroomScheduleState createState() => _ShowClassroomScheduleState();
 }
 
-class _EditClassroomState extends State<EditClassroom> {
+class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
-  String? _classroomName;
   int _selectedIndex = 0;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
-  TextEditingController _roomController = TextEditingController();
-
-  var _periodValue;
+  String? _classroomName;
 
   @override
   void initState(){
     super.initState();
+
+    getClassroomById(widget.classroomId).then((value) => 
+      setState((){
+        _classroomName = value[0]["name"].toString();
+      })
+    );
+
   }
 
   @override
@@ -93,28 +90,21 @@ class _EditClassroomState extends State<EditClassroom> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -149,115 +139,49 @@ class _EditClassroomState extends State<EditClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 110.7,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Editar Turma"),
-                                GestureDetector(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: SizeConfig.widthMultiplier !* 10,
-                                    height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Colors.white)
-                                  ),
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 8,
-                            ),
-                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            DropdownButtonFormField(
-                              hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                },
                               ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _periodValue,
-                              onChanged: (newValue){
-                                setState((){
-                                  _periodValue = newValue;
-                                });
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text("Horário"),
-                                  style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
-                                  ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Concluir"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
+                              IconButton(
+                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                },
                               ),
-                              onPressed: (){
-                                
-                              },
-                            )
-                          ]
-                        ),
+                              IconButton(
+                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.classroomId)));
+                                },
+                              ),
+                            ],
+                          )
+                        ]
                       ),
+                    ]  
                   )
                 ),
+              ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
@@ -299,6 +223,6 @@ class _EditClassroomState extends State<EditClassroom> {
           },
         );
       },
-    );  
+    );
   }
 }

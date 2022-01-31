@@ -18,6 +18,10 @@ import 'package:notaipilmobile/dashboards/coordinator/show_classroom_stats.dart'
 import 'package:notaipilmobile/dashboards/coordinator/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/coordinator/edit_classroom.dart';
 import 'package:notaipilmobile/dashboards/coordinator/student_stats.dart';
+import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
+import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
+import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
+import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
 class ShowClassroomPage extends StatefulWidget {
 
@@ -95,7 +99,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Coordenador", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -112,28 +116,28 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         //Navigator.push(context, MaterialPageRoute(builder: (context) => ))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(

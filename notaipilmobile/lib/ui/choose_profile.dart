@@ -93,7 +93,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                 ),
                                 onTap: (){
                                   if (data["name"] == "Aluno"){
-                                    Navigator.pushNamed(context, '/studentDashboard');
+                                    //Navigator.pushNamed(context, '/studentDashboard');
                                   } 
                                   else if (data["name"] == "Professor"){
 

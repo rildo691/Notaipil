@@ -3,37 +3,48 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
-
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
-import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
-import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/teacher/send_information.dart';
 
-class GradesHistory extends StatefulWidget {
+class Teacherinformtions extends StatefulWidget {
 
-  const GradesHistory({ Key? key }) : super(key: key);
+  const Teacherinformtions({ Key? key }) : super(key: key);
 
   @override
-  _GradesHistoryState createState() => _GradesHistoryState();
+  _TeacherinformtionsState createState() => _TeacherinformtionsState();
 }
 
-class _GradesHistoryState extends State<GradesHistory> {
+class _TeacherinformtionsState extends State<Teacherinformtions> {
+
+   var _fakeInformations = [
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+  ];
 
   int _selectedIndex = 0;
-
-  var _termValue;
 
   @override
   Widget build(BuildContext context) {
@@ -84,28 +95,21 @@ class _GradesHistoryState extends State<GradesHistory> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -148,84 +152,67 @@ class _GradesHistoryState extends State<GradesHistory> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      buildHeaderPartTwo("Histórico de notas"),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField(
-                                hint: Text("Trimestre"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
+                          Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          GestureDetector(
+                            child: Container(
+                              width: SizeConfig.widthMultiplier !* 35,
+                              height: SizeConfig.heightMultiplier !* 6.3,
+                              child: ElevatedButton(
+                                child: Text("Enviar"),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFF0D89A4),
+                                  onPrimary: Colors.white,
+                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                 ),
-                                dropdownColor: Colors.black,
-                                items: [
-                                  DropdownMenuItem(
-                                    child: Text("Nothing"),
-                                    value: Text("No value either"),
-                                  )
-                                ],
-                                value: _termValue,
-                                onChanged: (newValue){
-                                  setState((){
-                                    _termValue = newValue;
-                                  });
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SendInformation()));
                                 },
-                                validator: (value) => value == null ? 'Preencha o campo Trimestre' : null,
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
-                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Estado:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Enviadas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+                              ]
                             ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Média:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                            
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 50,
+                              child: ListView.builder(
+                              itemCount: _fakeInformations.length,
+                              itemBuilder: (context, index){
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  color: Color.fromARGB(255, 34, 42, 55),
+                                  child: ListTile(
+                                    title: Text(_fakeInformations[index]["mensagem"].toString(), style: TextStyle(color: Colors.white),),
+                                    leading: Icon(Icons.info_outline, color: Colors.yellow,),
+                                    trailing: Text(_fakeInformations[index]["prazo"].toString(), style: TextStyle(color: Colors.white),),
+                                    onTap: (){
+                                      buildModal(context, _fakeInformations[index]["prazo"], _fakeInformations[index]["mensagem"]);
+                                    },
+                                  ),
+                                );
+                              },
                             ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
+                            )
+                          ],
+                        ),
                       )
                     ]  
                   )
@@ -272,6 +259,41 @@ class _GradesHistoryState extends State<GradesHistory> {
           },
         );
       },
-    );  
+    );
+  }
+
+  Future<Widget>? buildModal(context, date, title){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(15.0),
+            width: SizeConfig.widthMultiplier !* 100,
+            height: SizeConfig.heightMultiplier !* 100,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(date.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text(title.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                ),
+                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                ),
+                Text("Ficheiros", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text("Para", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+              ],
+            ),
+          )
+        );
+      }
+    );
   }
 }
