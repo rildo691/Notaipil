@@ -15,24 +15,56 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**User Interface */
-import 'package:expansion_tile_card/expansion_tile_card.dart';
+/**Complements */
+import 'package:notaipilmobile/dashboards/student/student_grades.dart';
 
-class MainPage extends StatefulWidget {
+class ClassroomStudent extends StatefulWidget {
 
-  const MainPage({ Key? key }) : super(key: key);
+  const ClassroomStudent({ Key? key }) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _ClassroomStudentState createState() => _ClassroomStudentState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _ClassroomStudentState extends State<ClassroomStudent> {
 
   int _selectedIndex = 0;
 
-  var _selected1 = true;
-  var _selected2 = false;
-  var _selected3 = false;
+  var areaCoordinator = [
+    {
+      'number': 'N.º 1',
+      'student': 'Edson Jorge de Sousa Viegas',
+      'process': '40987',
+    },
+  ];
+
+  var _fakeTeachers = [
+    {
+      'name': 'Carlos Capapelo',
+      'gender': 'M',
+      'subject': 'TCC'
+    },
+    {
+      'name': 'Telma Monteiro',
+      'gender': 'F',
+      'subject': 'Telecomunicações'
+    },
+    {
+      'name': 'Edson Viegas',
+      'gender': 'M',
+      'subject': 'TLP',
+    },
+    {
+      'name': 'Desconhecido',
+      'gender': 'M',
+      'subject': 'DCM',
+    },
+    {
+      'name': 'Álvaro Delly',
+      'gender': 'M',
+      'subject': 'Química Geral'
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -140,137 +172,118 @@ class _MainPageState extends State<MainPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
-                        children: [
-                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
-                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
-                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
-                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                      Column(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Text("", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              TextButton(
-                                child: Text("I"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected1 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                              IconButton(
+                                icon: Icon(Icons.grade_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  setState(() {
-                                    _selected1 = true;
-                                    _selected2 = false;
-                                    _selected3 = false;
-                                  });
-                                }
-                              ),
-                              TextButton(
-                                child: Text("II"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected2 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = true;
-                                    _selected3 = false;
-                                  });
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrades()));
                                 },
                               ),
-                              TextButton(
-                                child: Text("III"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected3 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
-                                ),
+                              IconButton(
+                                icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = false;
-                                    _selected3 = true;
-                                  });
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
                                 },
                               ),
                             ],
                           )
+                        ]
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("PERÍODO: "),
+                          Text("SALA: "),
                         ],
                       ),
-                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Estado:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
-                            ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: areaCoordinator.length,
+                        itemBuilder: (context, index){
+                          return _buildCard(areaCoordinator[index]);
+                        },
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Média:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                            DataTable(
+                              dataRowColor: MaterialStateColor.resolveWith((states) => 
+                                states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
+                              ),
+                              dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              showBottomBorder: true,
+                              dividerThickness: 5,
+                              headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+                                ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
+                              ),
+                              columnSpacing: SizeConfig.widthMultiplier !* 2.5,
+                              columns: [
+                                DataColumn(
+                                  label: Text(""),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Nome Completo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Sexo"),
+                                  numeric: false,
+                                ),
+                                DataColumn(
+                                  label: Text("Disciplina"),
+                                  numeric: false,
+                                ),
+                              ],
+                              rows: _fakeTeachers.map((e) => 
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                    DataCell(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
+                                      ),
+                                      showEditIcon: false,
+                                      placeholder: false,
+                                    ),
+                                  ]
+                                )
+                              ).toList(),
                             ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
-                      )
+                          ],
+                        ),
+                      ),
                     ]  
                   )
                 ),
@@ -316,19 +329,19 @@ class _MainPageState extends State<MainPage> {
           },
         );
       },
-    );  
+    );
   }
 
-  Widget _buildCard(String s, String t, Color color) {
+  Widget _buildCard(index){
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(5.0),
       ),
-      color: color,
+      color: Colors.white,
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
@@ -337,17 +350,11 @@ class _MainPageState extends State<MainPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
             ),
-            SizedBox(width: 7.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
-              ],
-            )
+            Text(index["number"].toString()),
+            Text(index["student"].toString()),
+            Text(index["process"].toString()),
           ],
         ),
       ),

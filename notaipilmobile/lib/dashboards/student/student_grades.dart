@@ -18,21 +18,17 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**User Interface */
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
-class MainPage extends StatefulWidget {
+class StudentGrades extends StatefulWidget {
 
-  const MainPage({ Key? key }) : super(key: key);
+  const StudentGrades({ Key? key }) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _StudentGradesState createState() => _StudentGradesState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _StudentGradesState extends State<StudentGrades> {
 
   int _selectedIndex = 0;
-
-  var _selected1 = true;
-  var _selected2 = false;
-  var _selected3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -140,33 +136,50 @@ class _MainPageState extends State<MainPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
-                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
-                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
-                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
+                          Text("", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.grade_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                },
+                              ),
+                            ],
+                          )
+                        ]
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("PERÍODO: "),
+                          Text("SALA: "),
                         ],
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          Text("I TRIMESTRE: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           SizedBox(height: SizeConfig.heightMultiplier !* 3),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               TextButton(
-                                child: Text("I"),
+                                child: Text("10ª"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected1 ? Colors.white : Colors.black,
@@ -181,11 +194,12 @@ class _MainPageState extends State<MainPage> {
                                     _selected1 = true;
                                     _selected2 = false;
                                     _selected3 = false;
+                                    _selected4 = false;
                                   });
                                 }
                               ),
                               TextButton(
-                                child: Text("II"),
+                                child: Text("11ª"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected2 ? Colors.white : Colors.black,
@@ -201,11 +215,12 @@ class _MainPageState extends State<MainPage> {
                                     _selected1 = false;
                                     _selected2 = true;
                                     _selected3 = false;
+                                    _selected4 = false;
                                   });
                                 },
                               ),
                               TextButton(
-                                child: Text("III"),
+                                child: Text("12.ª"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected3 ? Colors.white : Colors.black,
@@ -221,6 +236,28 @@ class _MainPageState extends State<MainPage> {
                                     _selected1 = false;
                                     _selected2 = false;
                                     _selected3 = true;
+                                    _selected4 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("13.ª"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                    _selected4 = true;
                                   });
                                 },
                               ),
@@ -228,49 +265,6 @@ class _MainPageState extends State<MainPage> {
                           )
                         ],
                       ),
-                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Estado:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
-                            ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Média:"),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 2.5,
-                          ),
-                          OutlinedButton(
-                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
-                            ),
-
-                            onPressed: (){}, 
-                          ),
-                        ]
-                      )
                     ]  
                   )
                 ),
@@ -316,41 +310,6 @@ class _MainPageState extends State<MainPage> {
           },
         );
       },
-    );  
-  }
-
-  Widget _buildCard(String s, String t, Color color) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: color,
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-            ),
-            SizedBox(width: 7.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }
