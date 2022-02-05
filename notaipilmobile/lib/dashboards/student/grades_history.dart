@@ -15,24 +15,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**User Interface */
-import 'package:expansion_tile_card/expansion_tile_card.dart';
+class GradesHistory extends StatefulWidget {
 
-class MainPage extends StatefulWidget {
-
-  const MainPage({ Key? key }) : super(key: key);
+  const GradesHistory({ Key? key }) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _GradesHistoryState createState() => _GradesHistoryState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _GradesHistoryState extends State<GradesHistory> {
 
   int _selectedIndex = 0;
 
-  var _selected1 = true;
-  var _selected2 = false;
-  var _selected3 = false;
+  var _termValue;
+  var _classroomvalue;
 
   @override
   Widget build(BuildContext context) {
@@ -132,103 +128,80 @@ class _MainPageState extends State<MainPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  //color: Color.fromARGB(255, 34, 42, 55),
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
-                        children: [
-                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
-                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
-                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
-                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                      Column(
+                      buildHeaderPartTwo("Histórico de notas"),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("I TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                child: Text("PP"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected1 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          Container(
+                            width: SizeConfig.widthMultiplier !* 30,
+                            child: SizedBox(
+                              child: DropdownButtonFormField(
+                                hint: Text("Turma"),
+                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Color(0xFF202733),
+                                  hintStyle: TextStyle(color: Colors.white),
                                 ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = true;
-                                    _selected2 = false;
-                                    _selected3 = false;
-                                  });
-                                }
-                              ),
-                              TextButton(
-                                child: Text("PT"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected2 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
+                                dropdownColor: Colors.black,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text("Nothing"),
+                                    value: Text("No value either"),
                                   )
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = true;
-                                    _selected3 = false;
+                                ],
+                                value: _classroomvalue,
+                                onChanged: (newValue){
+                                  setState((){
+                                    _classroomvalue = newValue;
                                   });
                                 },
+                                validator: (value) => value == null ? 'Preencha o campo Turma' : null,
                               ),
-                              TextButton(
-                                child: Text("T"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected3 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
+                            ),
+                          ),
+                          Container(
+                            width: SizeConfig.widthMultiplier !* 30,
+                            child: SizedBox(
+                              child: DropdownButtonFormField(
+                                hint: Text("Trimestre"),
+                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Color(0xFF202733),
+                                  hintStyle: TextStyle(color: Colors.white),
                                 ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = false;
-                                    _selected3 = true;
+                                dropdownColor: Colors.black,
+                                items: [
+                                  DropdownMenuItem(
+                                    child: Text("Nothing"),
+                                    value: Text("No value either"),
+                                  )
+                                ],
+                                value: _termValue,
+                                onChanged: (newValue){
+                                  setState((){
+                                    _termValue = newValue;
                                   });
                                 },
+                                validator: (value) => value == null ? 'Preencha o campo Trimestre' : null,
                               ),
-                            ],
-                          )
+                            ),
+                          ),
                         ],
                       ),
+                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -316,41 +289,6 @@ class _MainPageState extends State<MainPage> {
           },
         );
       },
-    );  
-  }
-
-  Widget _buildCard(String s, String t, Color color) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: color,
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-            ),
-            SizedBox(width: 7.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }

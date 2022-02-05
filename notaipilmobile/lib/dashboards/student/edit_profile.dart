@@ -17,18 +17,6 @@ import 'dart:math';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complements */
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
-
 class EditProfile extends StatefulWidget {
 
   const EditProfile({ Key? key }) : super(key: key);
@@ -39,14 +27,14 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
 
+  int _selectedIndex = 0;
+
   GlobalKey<FormState> _key = GlobalKey<FormState>();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _currentPwdController = TextEditingController();
   TextEditingController _newPwdController = TextEditingController();
   TextEditingController _confirmateNewPwdController = TextEditingController();
-
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +43,7 @@ class _EditProfileState extends State<EditProfile> {
         return OrientationBuilder(
           builder: (context, orientation){
             SizeConfig().init(constraints, orientation);
+
             return Scaffold(
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
@@ -96,28 +85,21 @@ class _EditProfileState extends State<EditProfile> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -152,11 +134,11 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.08,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Form(
+                  child:Form(
                     key: _key,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +185,7 @@ class _EditProfileState extends State<EditProfile> {
                       ],
                     ),
                   )
-                )
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -239,27 +221,13 @@ class _EditProfileState extends State<EditProfile> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
           },
         );
       },
-    );  
+    );
   }
 }

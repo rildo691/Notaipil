@@ -1,52 +1,75 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/responseModel.dart';
-import 'dart:math';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**Complements */
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+class Entities extends StatefulWidget {
 
-class EditProfile extends StatefulWidget {
-
-  const EditProfile({ Key? key }) : super(key: key);
+  const Entities({ Key? key }) : super(key: key);
 
   @override
-  _EditProfileState createState() => _EditProfileState();
+  _EntitiesState createState() => _EntitiesState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _currentPwdController = TextEditingController();
-  TextEditingController _newPwdController = TextEditingController();
-  TextEditingController _confirmateNewPwdController = TextEditingController();
+class _EntitiesState extends State<Entities> {
 
   int _selectedIndex = 0;
+  int _count1 = 0;
+  int _count2 = 0;
+  int? _quantity;
+
+  var _fakeEntities = [
+    {
+      'job': 'Directora Geral',
+      'name': 'Philomene José Carlos',
+      'subject': 'Director',
+    },
+    {
+      'job': 'Subdirector Pedagógico',
+      'name': 'Milton da Silva',
+      'subject': 'Director',
+    },
+    {
+      'job': 'Subdirector Administrativo',
+      'name': 'Manuel Tomás',
+      'subject': 'Director',
+    },/*
+    {
+      'job': 'Coordenador de Área',
+      'name': 'Edson Viegas',
+      'subject': 'Coordenador',
+    },
+    {
+      'job': 'Coordenador de Curso',
+      'name': 'Olívia de Matos',
+      'subject': 'Coordenador',
+    },*/
+  ];
+
+  var _fakeClassrooms = [
+    {
+      'course': 'Técnico Desenhador Projectista',
+      'name': 'Informática',
+      'subject': 'TCC',
+    },
+    {
+      'course': 'Técnico Desenhador Projectista',
+      'name': 'Informática',
+      'subject': 'TCC',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +78,7 @@ class _EditProfileState extends State<EditProfile> {
         return OrientationBuilder(
           builder: (context, orientation){
             SizeConfig().init(constraints, orientation);
+
             return Scaffold(
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
@@ -96,28 +120,21 @@ class _EditProfileState extends State<EditProfile> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -152,58 +169,58 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.08,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 8),
-                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: ElevatedButton(
-                                child: Text("Guardar alterações"),
-                                style: ElevatedButton.styleFrom(
-                                  primary:  Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Roboto',
-                                    fontSize: 20.0,
-                                  ),
-                                  minimumSize: Size(0.0, 50.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      buildHeaderPartTwo("Entidades"),
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.0,
+                        mainAxisSpacing: 10.0,
+                        children: _fakeEntities.map<Widget>((data){
+                          return GestureDetector(
+                                child: Card(
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Container(
+                                      width: SizeConfig.widthMultiplier !* 10 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                      height: SizeConfig.heightMultiplier !* 4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                            height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          ),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
+                                          Text(data["job"].toString(), textAlign: TextAlign.center, style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                          Text(data["name"].toString(), textAlign: TextAlign.center, style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                        ],
+                                      ),
+                                    )
+                                  )
                                 ),
-                                onPressed: (){
-                                  if (_key.currentState!.validate()){
-                                    buildModal(context, false, "Palavra-passe alterada com sucesso");
-                                  }
+                                onTap: (){
+                                  
                                 },
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                              );
+                        }).toList()
+                      )  
+                    ]  
                   )
-                )
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -239,27 +256,13 @@ class _EditProfileState extends State<EditProfile> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
           },
         );
       },
-    );  
+    );
   }
 }

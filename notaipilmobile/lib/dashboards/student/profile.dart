@@ -1,50 +1,32 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/responseModel.dart';
-import 'dart:math';
+import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Sessions */
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
-import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/student/edit_profile.dart';
 
-class EditProfile extends StatefulWidget {
+class Profile extends StatefulWidget {
 
-  const EditProfile({ Key? key }) : super(key: key);
+  const Profile({ Key? key }) : super(key: key);
 
   @override
-  _EditProfileState createState() => _EditProfileState();
+  _ProfileState createState() => _ProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _currentPwdController = TextEditingController();
-  TextEditingController _newPwdController = TextEditingController();
-  TextEditingController _confirmateNewPwdController = TextEditingController();
+class _ProfileState extends State<Profile> {
 
   int _selectedIndex = 0;
 
@@ -55,6 +37,7 @@ class _EditProfileState extends State<EditProfile> {
         return OrientationBuilder(
           builder: (context, orientation){
             SizeConfig().init(constraints, orientation);
+
             return Scaffold(
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
@@ -96,28 +79,21 @@ class _EditProfileState extends State<EditProfile> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
@@ -152,58 +128,104 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.08,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Form(
-                    key: _key,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 8),
-                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                       SizedBox(height: SizeConfig.heightMultiplier !* 4,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          GestureDetector(
+                            child: Container(
                               alignment: Alignment.center,
-                              child: ElevatedButton(
-                                child: Text("Guardar alterações"),
-                                style: ElevatedButton.styleFrom(
-                                  primary:  Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Roboto',
-                                    fontSize: 20.0,
-                                  ),
-                                  minimumSize: Size(0.0, 50.0),
-                                ),
-                                onPressed: (){
-                                  if (_key.currentState!.validate()){
-                                    buildModal(context, false, "Palavra-passe alterada com sucesso");
-                                  }
-                                },
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                              width: SizeConfig.widthMultiplier !* 10,
+                              height: SizeConfig.heightMultiplier !* 4,
+                              child: Icon(Icons.brush_outlined, color: Colors.white)
+                            ),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                            },
+                          )
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 6,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                            height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 2.3 * double.parse(SizeConfig.textMultiplier.toString()) * 1,),
+                          ),
+                          SizedBox(width: SizeConfig.widthMultiplier !* 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Rildo William de Melo Franco", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                              Text("Director", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 8,),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.phone, color: Colors.white,),
+                              Text("996889295")
+                            ],
+                          ),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.mail_outline_rounded, color: Colors.white,),
+                              Text("rildowilliam2017@gmail.com")
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Nome Completo:"),
+                          Text("Sexo:"),
+                          Text("Data de nascimento:"),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("N.º de Processo:"),
+                          Text("N.º:"),
+                          Text("Turma:"),
+                          Text("Sala:"),
+                          Text("Período:"),
+                        ],
+                      ),
+                    ]  
                   )
-                )
+                ),
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -239,27 +261,13 @@ class _EditProfileState extends State<EditProfile> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  switch(index){
-                    case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
-                      break;
-                    case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
-                      break;
-                    case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
-                      break;
-                    case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
-                      break;
-                    default:
-                  }
+                  
                 },
               ),
             );
           },
         );
       },
-    );  
+    );
   }
 }

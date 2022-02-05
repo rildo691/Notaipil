@@ -17,6 +17,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/student/student_grades.dart';
+import 'package:notaipilmobile/dashboards/student/classroom_schedule.dart';
 
 class ClassroomStudent extends StatefulWidget {
 
@@ -41,8 +42,7 @@ class _ClassroomStudentState extends State<ClassroomStudent> {
   var _fakeTeachers = [
     {
       'name': 'Carlos Capapelo',
-      'gender': 'M',
-      'subject': 'TCC'
+      'gender': 'M',      'subject': 'TCC'
     },
     {
       'name': 'Telma Monteiro',
@@ -164,13 +164,13 @@ class _ClassroomStudentState extends State<ClassroomStudent> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,20 +190,23 @@ class _ClassroomStudentState extends State<ClassroomStudent> {
                               IconButton(
                                 icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomStudent()));
                                 },
                               ),
                             ],
                           )
                         ]
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("PERÍODO: "),
                           Text("SALA: "),
                         ],
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       ListView.builder(
                         shrinkWrap: true,
                         itemCount: areaCoordinator.length,

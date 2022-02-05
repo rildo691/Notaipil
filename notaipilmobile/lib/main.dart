@@ -17,6 +17,7 @@ import 'configs/size_config.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
 import 'package:notaipilmobile/dashboards/teacher/show_coordination.dart' as teacher;
+import 'package:notaipilmobile/dashboards/student/profile.dart' as student;
 
 
 void main() {
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (_) => /*Login()*/ teacher.ShowCoordination(),
+        '/': (_) => /*Login()*/ student.Profile(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),

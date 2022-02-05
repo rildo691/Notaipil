@@ -15,8 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-/**User Interface */
-import 'package:expansion_tile_card/expansion_tile_card.dart';
+/**Complements */
+import 'package:notaipilmobile/dashboards/student/student_grades.dart';
+import 'package:notaipilmobile/dashboards/student/classroom_schedule.dart';
 
 class StudentGrades extends StatefulWidget {
 
@@ -29,6 +30,38 @@ class StudentGrades extends StatefulWidget {
 class _StudentGradesState extends State<StudentGrades> {
 
   int _selectedIndex = 0;
+
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
+  var _selected4 = false;
+
+  var _fakeTeachers = [
+    {
+      'name': 'Matematica',
+      'misses': '7',
+      'category': 'Continua',
+      'state': 'Reprovado'
+    },
+    {
+      'name': 'Fisica',
+      'misses': '10',
+      'category': 'Continua',
+      'state': 'Aprovado'
+    },
+    {
+      'name': 'Quimica',
+      'misses': '1',
+      'category': 'Eliminatória',
+      'state': 'Crítico'
+    },
+    {
+      'name': 'FAI',
+      'misses': '15',
+      'category': 'Eliminatória',
+      'state': 'Aprovado'
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +167,7 @@ class _StudentGradesState extends State<StudentGrades> {
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,26 +181,29 @@ class _StudentGradesState extends State<StudentGrades> {
                               IconButton(
                                 icon: Icon(Icons.grade_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrades()));
                                 },
                               ),
                               IconButton(
                                 icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSchedule()));
                                 },
                               ),
                             ],
                           )
                         ]
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("PERÍODO: "),
                           Text("SALA: "),
                         ],
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 7),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -179,7 +215,7 @@ class _StudentGradesState extends State<StudentGrades> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               TextButton(
-                                child: Text("10ª"),
+                                child: Text("I"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected1 ? Colors.white : Colors.black,
@@ -199,7 +235,7 @@ class _StudentGradesState extends State<StudentGrades> {
                                 }
                               ),
                               TextButton(
-                                child: Text("11ª"),
+                                child: Text("II"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected2 ? Colors.white : Colors.black,
@@ -220,7 +256,7 @@ class _StudentGradesState extends State<StudentGrades> {
                                 },
                               ),
                               TextButton(
-                                child: Text("12.ª"),
+                                child: Text("III"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                   primary: _selected3 ? Colors.white : Colors.black,
@@ -240,30 +276,63 @@ class _StudentGradesState extends State<StudentGrades> {
                                   });
                                 },
                               ),
-                              TextButton(
-                                child: Text("13.ª"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected3 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = false;
-                                    _selected3 = false;
-                                    _selected4 = true;
-                                  });
-                                },
-                              ),
                             ],
                           )
                         ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Expanded(
+                        child: DataTable(
+                          columnSpacing: SizeConfig.widthMultiplier !* 5,
+                          columns: [
+                            DataColumn(
+                              label: Text("Disciplina"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Faltas"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Categoria"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Estado"),
+                              numeric: false,
+                            ),
+                          ],
+                          rows: _fakeTeachers.map((e) => 
+                            DataRow(
+                              cells: [
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(e["name"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e["misses"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(e["category"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e["state"].toString()),
+                                  )
+                                ),
+                              ]
+                            ),
+                          ).toList(),
+                        )
                       ),
                     ]  
                   )
