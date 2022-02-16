@@ -211,7 +211,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
@@ -255,6 +255,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   buildHeaderPartTwo("Turmas"),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -285,6 +286,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       getCoursesCode(newValue).then((value) => setState((){courses = value;}));
                                     }
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,6 +357,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                   DataTable(
                                     dataRowColor: MaterialStateColor.resolveWith((states) => 
                                       states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
@@ -431,6 +434,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       ),
                                     ).toList(),
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                   GestureDetector(
                                     child: Align(
                                       alignment: Alignment.centerRight,
@@ -489,7 +493,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   buildHeaderPartTwo("Turmas"),
-                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -599,7 +603,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   buildHeaderPartTwo("Turmas"),
-                                  SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),

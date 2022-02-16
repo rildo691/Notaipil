@@ -129,6 +129,25 @@ ApiService helper = ApiService();
     return subjects;
   }
 
+  Future<List<dynamic>> getSubjectByCourseAndGrade(course, grade) async{
+    var subjects = [];
+    var response = await helper.get("subject_course_grade/classrooms/$course/$grade");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "gradeId": r["gradeId"],
+        "courseId": r["courseId"],
+        "subjectId": r["subjectId"],
+        "subject": r["subject"],
+      };
+
+      subjects.add(map);
+    }
+
+    return subjects;
+  }
+
 
   Future<List<dynamic>> getCoursesName(areas) async{
     var courses = [];
@@ -304,12 +323,12 @@ ApiService helper = ApiService();
         var student = await helper.get("students/$studentProcess");
 
           Map<String, dynamic> map = {
-            "process": student["process"],
-            "fullName": student["personalData"]["fullName"],
-            "gender": student["personalData"]["gender"],
+            "process": student["data"]["process"],
+            "fullName": student["data"]["personalData"]["fullName"],
+            "gender": student["data"]["personalData"]["gender"],
           };
 
-          if (students.length < 5){
+          if (students.length < 3){
             students.add(map);
           }
       }
@@ -328,9 +347,9 @@ ApiService helper = ApiService();
         var student = await helper.get("students/$studentProcess");
 
           Map<String, dynamic> map = {
-            "process": student["process"],
-            "fullName": student["personalData"]["fullName"],
-            "gender": student["personalData"]["gender"],
+            "process": student["data"]["process"],
+            "fullName": student["data"]["personalData"]["fullName"],
+            "gender": student["data"]["personalData"]["gender"],
           };
 
           students.add(map);
@@ -350,7 +369,7 @@ ApiService helper = ApiService();
         var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
         var student = await helper.get("students/$studentProcess");
 
-        if (student["personalData"]["gender"] == "M"){
+        if (student["data"]["personalData"]["gender"] == "M"){
           male++;
         } else {
           female++;

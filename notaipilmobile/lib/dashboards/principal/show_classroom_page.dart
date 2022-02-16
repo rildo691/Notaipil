@@ -74,6 +74,11 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
     );
   }
 
+  Future<void> start() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -178,146 +183,173 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("PERÍODO:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                Text("SALA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                              ]
+                child: FutureBuilder(
+                  future: start(),
+                  builder: (context, snapshot){
+                    switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting: 
+                          return Container(
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
                             ),
-                            DataTable(
-                              dataRowColor: MaterialStateColor.resolveWith((states) => 
-                                states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                              ),
-                              dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              showBottomBorder: true,
-                              dividerThickness: 5,
-                              headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
-                              ),
-                              columnSpacing: SizeConfig.widthMultiplier !* 3,
-                              columns: [
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("N.º"),
-                                  numeric: true
-                                ),
-                                DataColumn(
-                                  label: Text("Proc."),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Nome Completo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Sexo"),
-                                  numeric: false,
-                                ),
-                              ],
-                              rows: students.map((e) => 
-                                DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text("1", textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: true,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(e['process'].toString(), textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: true,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                      onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal)));
-                                      }
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
+                          );
+                        default:
+                          if (snapshot.hasError)
+                            return Container();
+                          else {
+                            return 
+                            Container(
+                              padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 10.0),
+                              width: SizeConfig.screenWidth,
+                              height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 35 : SizeConfig.screenHeight : SizeConfig.screenHeight !* students.length / 25,
+                              color: Color.fromARGB(255, 34, 42, 55),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ]
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 7,),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("PERÍODO:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                            Text("SALA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                            Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                          ]
+                                        ),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 7,),
+                                        DataTable(
+                                          dataRowColor: MaterialStateColor.resolveWith((states) => 
+                                            states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
+                                          ),
+                                          dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          showBottomBorder: true,
+                                          dividerThickness: 5,
+                                          headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+                                            ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
+                                          ),
+                                          columnSpacing: SizeConfig.widthMultiplier !* 3,
+                                          columns: [
+                                            DataColumn(
+                                              label: Text(""),
+                                              numeric: false,
+                                            ),
+                                            DataColumn(
+                                              label: Text("N.º"),
+                                              numeric: true
+                                            ),
+                                            DataColumn(
+                                              label: Text("Proc."),
+                                              numeric: false,
+                                            ),
+                                            DataColumn(
+                                              label: Text("Nome Completo"),
+                                              numeric: false,
+                                            ),
+                                            DataColumn(
+                                              label: Text("Sexo"),
+                                              numeric: false,
+                                            ),
+                                          ],
+                                          rows: students.map((e) => 
+                                            DataRow(
+                                              cells: [
+                                                DataCell(
+                                                  Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                                ),
+                                                DataCell(
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text("1", textAlign: TextAlign.center)
+                                                  ),
+                                                  showEditIcon: false,
+                                                  placeholder: true,
+                                                ),
+                                                DataCell(
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                                                  ),
+                                                  showEditIcon: false,
+                                                  placeholder: true,
+                                                ),
+                                                DataCell(
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                                  ),
+                                                  showEditIcon: false,
+                                                  placeholder: false,
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal)));
+                                                  }
+                                                ),
+                                                DataCell(
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                                  ),
+                                                  showEditIcon: false,
+                                                  placeholder: false,
+                                                )
+                                              ]
+                                            )
+                                          ).toList(),
+                                        ),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 7,),
+                                        Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_", style: TextStyle(color: Colors.white)),
+                                      ]
                                     )
-                                  ]
-                                )
-                              ).toList(),
-                            ),
-                            Text("MASCULINOS: _${_maleQuant}_ FEMENINOS: _${_femaleQuant}_", style: TextStyle(color: Colors.white)),
-                          ]
-                        )
-                      )
-                    ]  
-                  )
-                ),
+                                  )
+                                ]  
+                              )
+                            );
+                          }
+                    }
+                  }
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

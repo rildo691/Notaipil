@@ -52,6 +52,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
   var classrooms = [];
   var gender = [];
   var filter = [];
+  var subjects = [];
 
   int _selectedIndex = 0;
 
@@ -164,7 +165,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                   //height: SizeConfig.screenHeight !* 1.2,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
-                    future: Future.wait([getAreaById(widget.coordinationId), getCoursesByArea(widget.coordinationId), getGrade(), getCoordinatiorsByArea(widget.coordinationId), getClassroomsByArea(widget.coordinationId), getStudentGenderByArea(widget.coordinationId)]),
+                    future: Future.wait([getAreaById(widget.coordinationId), getCoursesByArea(widget.coordinationId), getGrade(), getCoordinatiorsByArea(widget.coordinationId), getClassroomsByArea(widget.coordinationId), getStudentGenderByArea(widget.coordinationId), getSubjectByCourseAndGrade(_courseValue, _gradeValue)]),
                     builder: (context, snapshot){
                       switch(snapshot.connectionState){
                         case ConnectionState.none:
@@ -188,6 +189,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                             coordinators = (snapshot.data! as List)[3];
                             classrooms = (snapshot.data! as List)[4];
                             gender = (snapshot.data! as List)[5];
+                            subjects = (snapshot.data! as List)[6];
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -354,6 +356,56 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                       ]
                                     )
                                   ).toList(),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Text(_courseName == null ? "" : "Estatística do Curso $_courseName - $_gradeName classe"),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                DataTable(
+                                  columnSpacing: SizeConfig.widthMultiplier !* 37,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text(""),
+                                      numeric: false
+                                    ),
+                                    DataColumn(
+                                      label: Text("Total"),
+                                      numeric: false
+                                    )
+                                  ],
+                                  rows: [
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("DISCIPLINAS"),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(subjects.length.toString()),
+                                          )
+                                        ),
+                                      ]
+                                    ),
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("TURMAS"),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(classrooms.length.toString()),
+                                          )
+                                        ),
+                                      ]
+                                    ),
+                                  ],
                                 ),
                               ]
                             );
