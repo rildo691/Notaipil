@@ -18,11 +18,16 @@ import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
 
 class ShowClassroomStatistics extends StatefulWidget {
 
   late String classroomId;
-  ShowClassroomStatistics(this.classroomId);
+  late var principal = [];
+
+  ShowClassroomStatistics(this.classroomId, this.principal);
 
   @override
   _ShowClassroomStatisticsState createState() => _ShowClassroomStatisticsState();
@@ -75,14 +80,14 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -93,28 +98,28 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -169,19 +174,19 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                               IconButton(
                                 icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
                                 },
                               ),
                               IconButton(
                                 icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
                                 },
                               ),
                               IconButton(
                                 icon: Icon(Icons.trending_up_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
                                 },
                               ),
                             ],
@@ -215,7 +220,7 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
-                    label: 'Home',
+                    label: 'Home',                    
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
@@ -227,6 +232,21 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                   setState(() {
                     _selectedIndex = index;
                   });
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );

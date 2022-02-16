@@ -26,8 +26,10 @@ import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class SelectCoordinatorPage extends StatefulWidget {
+  late var principal = [];
+  late var information = [];
 
-  const SelectCoordinatorPage({ Key? key }) : super(key: key);
+  SelectCoordinatorPage(this.principal, this.information);
 
   @override
   _SelectCoordinatorPageState createState() => _SelectCoordinatorPageState();
@@ -39,39 +41,18 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
   DataTableSource _data = MyData();
 
   int _selectedIndex = 0;
+  int index = 0;
 
-   var areaCoordinator = [
-    {
-      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
-      'area': 'Construção Civil',
-      'coordinator': 'Carlos Capapelo',
-    },
-    {
-      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
-      'area': 'Electricidade, Electronica e Telecomunicações',
-      'coordinator': 'Telma Monteiro'
-    },
-    {
-      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
-      'area': 'Informática',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
-      'area': 'Mecânica',
-      'coordinator': 'Desconhecido'
-    },
-    {
-      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
-      'area': 'Química',
-      'coordinator': 'Álvaro Delly'
-    }
-  ];
-
+  var coordinators = [];
+  List<bool>? _selected;
 
   @override
   void initState(){
     super.initState();
+
+    setState((){
+      _selected = List<bool>.generate(5, (index) => false);
+    });
   }
 
   @override
@@ -105,14 +86,14 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -123,28 +104,28 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations( widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests( widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile( widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -183,50 +164,103 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Coordenador"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Área de Formação"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                          ),
-                          onPressed: (){},
-                        ),
-                      )
-                    ],
-                  ),
+                  child: FutureBuilder(
+                    future: getAllCoordinations(),
+                    builder:(context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
+                            ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+                            coordinators = (snapshot.data! as List);
+
+                            return 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                DataTable(
+                                  showCheckboxColumn: true,
+                                  columnSpacing: SizeConfig.widthMultiplier !* 9,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text(""),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Coordenador"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Área de F."),
+                                      numeric: false,
+                                    ),
+                                  ],
+                                  rows: List<DataRow>.generate(coordinators.length, (index) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(coordinators[index]["coordinator"]),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(coordinators[index]["areaName"]),
+                                          )
+                                        ),
+                                      ],
+                                      selected: _selected![index],
+                                      onSelectChanged: (bool? value){
+                                        _selected![index] = value!;
+                                        setState((){getAllCoordinations();});
+                                      }
+                                    )
+                                  ),
+                                ),  
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                Container(
+                                  width: SizeConfig.widthMultiplier !* 30,
+                                  height: SizeConfig.heightMultiplier !* 7,
+                                  child: ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                    ),
+                                    onPressed: (){},
+                                  ),
+                                )
+                              ],
+                            );
+                          }
+                      }
+                    }
+                  )
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -265,16 +299,16 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage( widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }

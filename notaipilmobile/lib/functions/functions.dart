@@ -6,6 +6,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Models */
 import 'package:notaipilmobile/register/model/areaModel.dart';
 import 'package:notaipilmobile/register/model/courseModel.dart';
+import 'package:notaipilmobile/register/model/courseModelNoArea.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
 import 'package:notaipilmobile/register/model/classroomModel.dart';
 import 'package:notaipilmobile/register/model/qualificationsModel.dart';
@@ -29,6 +30,105 @@ ApiService helper = ApiService();
 
     return areas;
   }
+
+  Future<List<dynamic>> getAreaById(area) async {
+    var areas = [];
+    var response = await helper.get("areas/$area");
+
+      Map<String, dynamic> map = {
+        "id": response["id"],
+        "name": response["name"],
+      };
+
+      areas.add(map);
+
+    return areas;
+  }
+
+  Future<List<dynamic>> getAllTeachers() async{
+    var teachers = [];
+    var response = await helper.get("teachers");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": AreaModel.fromJson(r).id.toString(),
+        "name": AreaModel.fromJson(r).name.toString(),
+      };
+
+      teachers.add(map);
+    }
+
+    return teachers;
+  }
+
+  Future<List<dynamic>> getAllCoordinations() async{
+    var coordinations = [];
+    var response = await helper.get("coordinations");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "areaId": r["areaId"],
+        "areaName": r["areaName"],
+        "coordinator": r["coordinator"],
+      };
+
+      coordinations.add(map);
+    }
+
+    return coordinations;
+  }
+
+  Future<List<dynamic>> getCoordinatiorsByArea(areaId) async{
+    var coordinators = [];
+    var response = await helper.get("coordinators/areas/$areaId");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "teacherAccountId": r["teacherAccountId"],
+        "courses": r["courses"],
+        "teacherAccount": r["teacherAccount"],
+      };
+
+      coordinators.add(map);
+    }
+
+    return coordinators;
+  }
+
+  Future<List<dynamic>> getStudentGenderByArea(area) async{
+    var studentGender = [];
+    var response = await helper.get("classrooms/statistic_gender/areas/${area}");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "name": r["name"],
+        "m": r["m"],
+        "f": r["f"],
+      };
+
+      studentGender.add(map);
+    }
+
+    return studentGender;
+  }
+
+  Future<List<dynamic>> getSubjectByArea(area) async{
+    var subjects = [];
+    var response = await helper.get("classrooms/subject_course_grade/areas/${area}");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": AreaModel.fromJson(r).id.toString(),
+        "name": AreaModel.fromJson(r).name.toString(),
+      };
+
+      subjects.add(map);
+    }
+
+    return subjects;
+  }
+
 
   Future<List<dynamic>> getCoursesName(areas) async{
     var courses = [];
@@ -65,6 +165,36 @@ ApiService helper = ApiService();
     return courses;
   }
 
+  Future<List<dynamic>> getCoursesByArea(area) async{
+    var courses = []; 
+    var response = await helper.get("courses/areas/$area");
+
+    for (var r in response){
+        Map<String, dynamic> map = {
+          "id": CourseModelNoArea.fromJson(r).id.toString(),
+          "code": CourseModelNoArea.fromJson(r).code.toString(),
+        };
+        courses.add(map);
+    }
+
+    return courses;
+  }
+
+  Future<List<dynamic>> getAllCourses() async{
+    var courses = [];
+    var response = await helper.get("courses");
+
+    for (var r in response){
+        Map<String, dynamic> map = {
+          "id": CourseModel.fromJson(r).id.toString(),
+          "name": CourseModel.fromJson(r).name.toString(),
+        };
+        courses.add(map);
+    }
+
+    return courses;
+  }
+
   Future<List<dynamic>> getGrade() async{
     var grades = [];
     var response = await helper.get("grades");
@@ -94,6 +224,41 @@ ApiService helper = ApiService();
         
         classrooms.add(map);
       }
+    }
+
+    return classrooms;
+  }
+
+  Future<List<dynamic>> getClassroomsByArea(area) async{
+    var classrooms = [];
+    var response = await helper.get("classrooms/areas/${area}");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": ClassroomModel.fromJson(r).id.toString(),
+        "name": ClassroomModel.fromJson(r).name.toString(),
+        "gradeId": ClassroomModel.fromJson(r).gradeId.toString(),
+        "courseId": ClassroomModel.fromJson(r).courseId
+      };
+
+      classrooms.add(map);
+    }
+
+    return classrooms;
+  }
+
+  Future<List<dynamic>> getAllClassrooms() async{
+    var classrooms = [];
+    var response = await helper.get("classrooms");
+
+    for (var r in response){
+      
+        Map<String, dynamic> map = {
+          "id": ClassroomModel.fromJson(r).id.toString(),
+          "name": ClassroomModel.fromJson(r).name.toString(),
+        };
+        
+        classrooms.add(map);
     }
 
     return classrooms;
@@ -197,6 +362,80 @@ ApiService helper = ApiService();
     return [male, female];
   }
 
+  Future<List<dynamic>> getAllStudents() async{
+    var students = [];
+    var response = await helper.get("students");
 
-  
+    for (var r in response){
 
+          Map<String, dynamic> map = {
+            "process": Student.fromJson(r).process,
+            "fullName": Student.fromJson(r).fullName,
+            "gender": Student.fromJson(r).gender,
+          };
+
+          students.add(map);
+    }
+
+    return students;
+  }
+
+  Future<List<dynamic>> getAdmissionRequests() async{
+    var requests = [];
+    var response = await helper.get("teacher_accounts/admission");
+
+    for (var r in response){
+
+          Map<String, dynamic> map = {
+            "id": r["id"],
+            "email": r["email"],
+            "telephone": r["telephone"],
+            "regime": r["regime"],
+            "ipilDate": r["ipilDate"],
+            "educationDate": r["educationDate"],
+            "category": r["category"],
+            "createdAt": r["createdAt"],
+            "personalData": r["personalData"],
+            "qualification": r["qualification"],
+          };
+
+          requests.add(map);
+    }
+
+    return requests;
+  }
+
+  Future<List<dynamic>> getPrincipal(userEmail) async{
+    var principal = [];
+    var response = await helper.get("directors");
+
+    for (var r in response){
+      if (r["teacherAccount"]["email"] == userEmail){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "title": r["title"],
+        };
+
+        principal.add(map);
+
+        var teacherAccountId = r["teacherAccount"]["id"];
+        var response2 = await helper.get("teacher_accounts/$teacherAccountId");
+
+        
+          Map<String, dynamic> map2 = {
+            "teacherId": response2["id"],
+            "email": response2["email"],
+            "telephone":response2["telephone"],
+            "regime": response2["regime"],
+            "ipilDate": response2["ipilDate"],
+            "educationDate": response2["educationDate"],
+            "category": response2["category"],
+            "personalData": response2["personalData"],
+            "qualification": response2["qualification"],
+        };
+
+        principal.add(map2);
+      }
+    }
+    return principal;
+  }

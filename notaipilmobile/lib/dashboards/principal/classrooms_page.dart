@@ -40,8 +40,9 @@ import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 class ClassroomsPage extends StatefulWidget {
 
   late int value;
+  late var principal = [];
 
-  ClassroomsPage(this.value);
+  ClassroomsPage(this.value, this.principal);
 
   @override
   _ClassroomsPageState createState() => _ClassroomsPageState();
@@ -136,14 +137,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -154,28 +155,28 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -436,7 +437,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       child: Text("Ver mais", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                     ),
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString())));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString(), widget.principal)));
                                     }
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
@@ -746,16 +747,16 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }

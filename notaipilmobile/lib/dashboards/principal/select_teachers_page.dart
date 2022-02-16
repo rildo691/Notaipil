@@ -26,8 +26,10 @@ import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class SelectTeachersPage extends StatefulWidget {
+  late var principal = [];
+  late var information = [];
 
-  const SelectTeachersPage({ Key? key }) : super(key: key);
+  SelectTeachersPage(this.principal, this.information);
 
   @override
   _SelectTeachersPageState createState() => _SelectTeachersPageState();
@@ -39,6 +41,8 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
   DataTableSource _data = MyData();
 
   int _selectedIndex = 0;
+
+  var teachers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +75,14 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -89,28 +93,28 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -149,50 +153,77 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text("Profile"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Coordenador"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Área de Formação"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                          ),
-                          onPressed: (){},
-                        ),
-                      )
-                    ],
-                  ),
+                  child: FutureBuilder(
+                    future: getAllTeachers(),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
+                            ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+                            
+                            teachers = (snapshot.data! as List);
+
+                            return 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                PaginatedDataTable(
+                                  source: _data,
+                                  rowsPerPage: 5,
+                                  columnSpacing: SizeConfig.widthMultiplier !* 11.5,
+                                  showCheckboxColumn: true,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("Profile"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Coordenador"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Área de Formação"),
+                                      numeric: false,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                Container(
+                                  width: SizeConfig.widthMultiplier !* 30,
+                                  height: SizeConfig.heightMultiplier !* 7,
+                                  child: ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                    ),
+                                    onPressed: (){},
+                                  ),
+                                )
+                              ],
+                            );
+                          }      
+                      }    
+                    },
+                  )
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -231,16 +262,16 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }

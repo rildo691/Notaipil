@@ -6,6 +6,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
 
@@ -30,7 +31,8 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class MainPage extends StatefulWidget {
 
-  const MainPage({ Key? key}) : super(key: key);
+  late var principal = [];
+  MainPage(this.principal);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -41,33 +43,12 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   var token;
-  var areaCoordinator = [
-    {
-      'id': '00a39c42-a2ac-40e0-bd8c-27d9df132e84',
-      'area': 'Construção Civil',
-      'coordinator': 'Carlos Capapelo',
-    },
-    {
-      'id': 'afc005b4-1e94-4c4d-8483-d5544543a2f0',
-      'area': 'Electricidade, Electronica e Telecomunicações',
-      'coordinator': 'Telma Monteiro'
-    },
-    {
-      'id': 'a939b90d-7f77-448d-9809-262517c1858b',
-      'area': 'Informática',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'id': '3ca61a85-87c9-43f1-8894-a0bb5d90cfd7',
-      'area': 'Mecânica',
-      'coordinator': 'Desconhecido'
-    },
-    {
-      'id': '38441be4-cc36-45c5-b6ab-a4d8e74b125d',
-      'area': 'Química',
-      'coordinator': 'Álvaro Delly'
-    }
-  ];
+  var students = [];
+  var teachers = [];
+  var courses = [];
+  var classrooms = [];
+  var coordinators = [];
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   ApiService helper = ApiService();  
 
@@ -90,10 +71,8 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState(){
     super.initState();
-    //verifyUser();
 
-    setState(() {
-    });
+    print(widget.principal);
   }
 
    @override
@@ -105,6 +84,7 @@ class _MainPageState extends State<MainPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -114,7 +94,9 @@ class _MainPageState extends State<MainPage> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -127,14 +109,14 @@ class _MainPageState extends State<MainPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -145,28 +127,28 @@ class _MainPageState extends State<MainPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -205,42 +187,71 @@ class _MainPageState extends State<MainPage> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
-                        children: [
-                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
-                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
-                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
-                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                      Expanded(
-                        child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: areaCoordinator.length,
-                        itemBuilder: (context, index){
-                          return Column(
-                            children: [
-                              _buildCoordinatorCard(areaCoordinator[index]),
-                              SizedBox(height: SizeConfig.heightMultiplier !* 2,)
-                            ],
+                  child: FutureBuilder(
+                    future: Future.wait([getAllCourses(), getAllClassrooms(), getAllTeachers(), getAllStudents(), getAllCoordinations()]),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                                strokeWidth: 5.0,
+                              ),
                           );
-                        },
-                      ),
-                      ),
-                    ]  
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+                            courses = (snapshot.data! as List)[0];
+                            classrooms = (snapshot.data! as List)[1];
+                            teachers = (snapshot.data! as List)[2];
+                            students = (snapshot.data! as List)[3];
+                            coordinators = (snapshot.data! as List)[4];
+
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GridView.count(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 7.0,
+                                  mainAxisSpacing: 10.0,
+                                  childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                                  children: [
+                                    _buildCard("Cursos", courses.length.toString(), Color.fromARGB(255, 0, 191, 252)),
+                                    _buildCard("Turmas", classrooms.length.toString(), Color.fromARGB(255, 241, 188, 109)),
+                                    _buildCard("Professores", teachers.length.toString(), Color.fromARGB(255, 13, 137, 164)),
+                                    _buildCard("Estudantes", students.length.toString(), Color.fromARGB(255, 225, 106, 128)),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: coordinators.length,
+                                    itemBuilder: (context, index){
+                                      return Column(
+                                        children: [
+                                          _buildCoordinatorCard(coordinators[index]),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                      }
+                    },
                   )
                 ),
               ),
@@ -280,16 +291,16 @@ class _MainPageState extends State<MainPage> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }
@@ -345,7 +356,7 @@ class _MainPageState extends State<MainPage> {
         child: Icon(Icons.account_circle_outlined, color: Colors.white,),
       ),
       title: Text(index["coordinator"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-      subtitle: Text("Área de Formação de " + index["area"].toString(), style: TextStyle(color: Colors.black)),
+      subtitle: Text("Área de Formação de " + index["areaName"].toString(), style: TextStyle(color: Colors.black)),
       children: [
         Divider(
           thickness: 1.0,
@@ -368,8 +379,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination()));
-                //Navigator.push(context, MaterialPageRoute(builder: (_) => ClassroomsPage({"id": index['id'], "area": index['area']})));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(index["areaId"], widget.principal)));
               },
               child: Column(
                 children: <Widget>[

@@ -29,8 +29,9 @@ import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 class ShowAgendaState extends StatefulWidget {
 
   late int index;
+  late var principal = [];
 
-  ShowAgendaState(this.index);
+  ShowAgendaState(this.index, this.principal);
 
   @override
   _ShowAgendaStateState createState() => _ShowAgendaStateState();
@@ -54,28 +55,8 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
     });
   }
 
-  var areas = [
-    {
-      'id': '1',
-      'name': 'Construção Civil',
-    },
-    {
-      'id': '2',
-      'name': 'Electricidade, Electrónica e Telecomunicações',
-    },
-    {
-      'id': '3',
-      'name': 'Informática',
-    },
-    {
-      'id': '4',
-      'name': 'Mecânica',
-    },
-    {
-      'id': '5',
-      'name': 'Química',
-    },
-  ];
+  var areas = [];
+  var classrooms = [];
 
   @override
   Widget build(BuildContext context) {
@@ -108,14 +89,14 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -126,28 +107,28 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -184,109 +165,172 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: classrooms == null ? SizeConfig.screenHeight : SizeConfig.screenHeight !* classrooms.length / 20,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartTwo("Estado das minipautas"),
-                      DropdownButtonFormField<String>(
-                        hint: Text("Área de Formação"),
-                        style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            filled: true,
-                            fillColor: Color(0xFF202733),
-                          ),
-                        dropdownColor: Colors.black,
-                        items: areas.map((e) => 
-                          DropdownMenuItem<String>(
-                            value: e["id"],
-                            child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
-                          )
-                        ).toList(),
-                        value: _value,
-                        onChanged: (newValue){
-                          setState(() {
-                            _value = newValue;
-                          });
-                        },
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                child: Text("I"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected1 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                  child: FutureBuilder(
+                    future: Future.wait([getClassroomsByArea(_value), getAreas()]),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
+                            ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            classrooms = (snapshot.data! as List)[0];
+                            areas = (snapshot.data! as List)[1];
+
+                            return 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildHeaderPartTwo("Estado das minipautas"),
+                                DropdownButtonFormField<String>(
+                                  hint: Text("Área de Formação"),
+                                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                    ),
+                                  dropdownColor: Colors.black,
+                                  items: areas.map((e) => 
+                                    DropdownMenuItem<String>(
+                                      value: e["id"],
+                                      child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
+                                    )
+                                  ).toList(),
+                                  value: _value,
+                                  onChanged: (newValue){
+                                    classrooms.clear();
+                                    setState(() {
+                                      _value = newValue;
+                                      getClassroomsByArea(_value);
+                                    });
+                                  },
                                 ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = true;
-                                    _selected2 = false;
-                                    _selected3 = false;
-                                  });
-                                }
-                              ),
-                              TextButton(
-                                child: Text("II"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected2 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                          child: Text("I"),
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected1 ? Colors.white : Colors.black,
+                                            backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                            textStyle: TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = true;
+                                              _selected2 = false;
+                                              _selected3 = false;
+                                            });
+                                          }
+                                        ),
+                                        TextButton(
+                                          child: Text("II"),
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected2 ? Colors.white : Colors.black,
+                                            backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.bold
+                                            )
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = true;
+                                              _selected3 = false;
+                                            });
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("III"),
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected3 ? Colors.white : Colors.black,
+                                            backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.bold
+                                            )
+                                          ),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = false;
+                                              _selected3 = true;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = true;
-                                    _selected3 = false;
-                                  });
-                                },
-                              ),
-                              TextButton(
-                                child: Text("III"),
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected3 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
-                                ),
-                                onPressed: (){
-                                  setState(() {
-                                    _selected1 = false;
-                                    _selected2 = false;
-                                    _selected3 = true;
-                                  });
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    ],
+                                DataTable(
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("TURMAS"),
+                                      numeric: false,
+                                    ),
+                                    /*
+                                    DataColumn(
+                                      label: Text("MINIPAUTAS"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("PROGRESSO"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("ESTADO"),
+                                      numeric: false,
+                                    )*/
+                                  ],
+                                  rows: classrooms.map((e) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(e["name"].toString())
+                                          ),
+                                        )
+                                      ]
+                                    )
+                                  ).toList(),
+                                )
+                              ],
+                            );
+                          }
+                      }
+                    },
                   ),
                 )
               ),
@@ -326,16 +370,16 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }

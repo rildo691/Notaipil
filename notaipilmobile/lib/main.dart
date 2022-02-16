@@ -16,6 +16,7 @@ import 'configs/size_config.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
+import 'package:notaipilmobile/dashboards/principal/main_page.dart' as principal;
 import 'package:notaipilmobile/dashboards/teacher/show_coordination.dart' as teacher;
 import 'package:notaipilmobile/dashboards/student/profile.dart' as student;
 
@@ -34,9 +35,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'NotaIPIL',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        hintColor: Colors.white,
-        primaryColor: Colors.white,
+//        primarySwatch: Colors.white as MaterialColor,
+        hintColor: Colors.black,
+        primaryColor: Colors.black,
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF0D89A4)),
@@ -45,7 +46,10 @@ class MyApp extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF0D89A4))
           ),
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: TextStyle(color: Colors.black),
+        ),
+        textTheme: TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
         ),
         dataTableTheme: DataTableThemeData(
           dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
@@ -57,11 +61,11 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (_) => /*Login()*/ student.Profile(),
+        '/': (_) => Login(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
-        '/principalDashboard': (_) => MainPage(),
+        /*'/principalDashboard': (_) => /*MainPage()*/,*/
         '/coordinatorDashboard': (_) => coordinator.MainPage(),
       },
     );

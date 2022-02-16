@@ -36,7 +36,6 @@ class ApiService{
   Future<dynamic> get(String url) async{
     var response = await http.get(
       Uri.parse(_baseUrl + url),
-      
     );
     var responseJson = _responseStatus(response);
     return responseJson;

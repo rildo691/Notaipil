@@ -7,6 +7,7 @@ import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -15,7 +16,6 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /**User Interface */
-
 import 'choose_profile.dart';
 
 /**Model */
@@ -39,6 +39,7 @@ class _LoginState extends State<Login> {
   TextEditingController _passwordController = TextEditingController();
 
   var token;
+  var user;
 
   Future signIn(String email, String pass) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -46,14 +47,24 @@ class _LoginState extends State<Login> {
       'email': email,
       'password': pass
     };
-    var response = await helper.postWithoutToken("users/login", body);
+    String userEmail;
+
+    var response = await helper.postWithoutToken("users/authenticate", body);
     
     if (!response["error"] && response["user"]["typesAccounts"].length < 2){
       //sharedPreferences.setString("$email", response['token']);
       if (response["user"]["typesAccounts"][0]["name"] == "Director"){
-        Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MainPage()),
-        (Route<dynamic> route) => false);
+        userEmail = response["user"]["email"];
+
+        getPrincipal(userEmail).then((value) {
+          Map<String, dynamic> map = {
+            'token': response["token"]
+          };
+          value.add(map);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => MainPage(value)),
+            (Route<dynamic> route) => false);
+        });
       } else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Professor"){
@@ -76,7 +87,7 @@ class _LoginState extends State<Login> {
     setState((){
       token = preferences.getString('token');
     });
-    token == null ? Navigator.pushNamed(context, '/') : Navigator.pushNamed(context, '/dashboard');
+    //token == null ? Navigator.pushNamed(context, '/') : Navigator.pushNamed(context, '/dashboard');
   }
 
   @override

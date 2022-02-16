@@ -12,7 +12,9 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
-import 'dart:math';
+
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -31,7 +33,8 @@ import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class EditProfile extends StatefulWidget {
 
-  const EditProfile({ Key? key }) : super(key: key);
+  late var principal = [];
+  EditProfile(this.principal);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -45,8 +48,20 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _currentPwdController = TextEditingController();
   TextEditingController _newPwdController = TextEditingController();
   TextEditingController _confirmateNewPwdController = TextEditingController();
+  TextEditingController _codeController = TextEditingController();
 
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState((){
+      _phoneController.text = widget.principal[1]["telephone"];
+      _emailController.text = widget.principal[1]["email"];
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +93,14 @@ class _EditProfileState extends State<EditProfile> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -96,28 +111,28 @@ class _EditProfileState extends State<EditProfile> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations()))
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                         },
                       ),
                       ListTile(
@@ -154,7 +169,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.08,
+                  height: SizeConfig.screenHeight !- 25,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Form(
                     key: _key,
@@ -192,8 +207,24 @@ class _EditProfileState extends State<EditProfile> {
                                   minimumSize: Size(0.0, 50.0),
                                 ),
                                 onPressed: (){
-                                  if (_key.currentState!.validate()){
-                                    buildModal(context, false, "Palavra-passe alterada com sucesso");
+                                  //buildModal(context, "Foi enviado um código de confirmação para o seu e-mail. Coloque-o abaixo para guardar as alterações.", _codeController);
+                                  if (_phoneController.text != widget.principal[1]["telephone"] || _emailController.text != widget.principal[1]["email"]){
+
+                                  }
+                                  if (_currentPwdController.text.isNotEmpty){
+                                    if (_newPwdController.text.isNotEmpty){
+                                      if (_confirmateNewPwdController.text != _newPwdController.text){
+                                        Fluttertoast.showToast(
+                                          msg: "Confirmação da palavra-passe não coincide com a nova palavra-passe.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+
+                                      }
+                                    }
                                   }
                                 },
                               ),
@@ -241,16 +272,16 @@ class _EditProfileState extends State<EditProfile> {
                   });
                   switch(index){
                     case 0:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.principal)));
                       break;
                     case 1:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(index, widget.principal)));
                       break;
                     case 2:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
                       break;
                     case 3:
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index,)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
                       break;
                     default:
                   }
@@ -262,4 +293,44 @@ class _EditProfileState extends State<EditProfile> {
       },
     );  
   }
+
+  Future<Widget>? buildModal(context, message, controller){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .55,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                buildTextFieldRegister("Código de confirmação", TextInputType.text, controller,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+                    
+                  },
+                )
+              ]
+            ),
+          )
+        );
+      }
+    );
+}
 }
