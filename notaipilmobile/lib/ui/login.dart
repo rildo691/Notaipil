@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
                                   fontFamily: 'Roboto',
                                   fontSize: 20.0,
                                 ),
-                              minimumSize: Size(0.0, 50.0),
+                                minimumSize: Size(0.0, 50.0),
                               ),
                               onPressed: (){
                                 if (_formKey.currentState!.validate()){

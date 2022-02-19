@@ -73,6 +73,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   String? _classroomId;
 
   bool _classroomsExists = false;
+  bool _clicked = false;
 
   @override
   void initState(){
@@ -401,7 +402,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text("1", textAlign: TextAlign.center)
+                                              child: Text(e["number"].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: true,
@@ -409,7 +410,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                                              child: Text(e["student"]['process'].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: true,
@@ -417,7 +418,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                              child: Text(e["student"]["personalData"]['fullName'].toString(), textAlign: TextAlign.left)
                                             ),
                                             showEditIcon: false,
                                             placeholder: false,
@@ -425,7 +426,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                              child: Text(e["student"]["personalData"]['gender'].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: false,
@@ -438,10 +439,12 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   GestureDetector(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: Text("Ver mais", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                      child: Text("Ver mais", style: TextStyle(color: !_clicked ? Colors.grey : Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                     ),
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString(), widget.principal)));
+                                      if (_clicked){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString(), widget.principal)));
+                                      }
                                     }
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
@@ -787,6 +790,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             ),
             onPressed: (){
               setState((){
+                _clicked = true;
                 setState((){_classroomId = classroomId;});
                 students.clear();
                 getClassroomStudent(_classroomId).then((value) => students = value);

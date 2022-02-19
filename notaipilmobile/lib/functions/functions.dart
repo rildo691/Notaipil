@@ -51,8 +51,8 @@ ApiService helper = ApiService();
 
     for (var r in response){
       Map<String, dynamic> map = {
-        "id": AreaModel.fromJson(r).id.toString(),
-        "name": AreaModel.fromJson(r).name.toString(),
+        "id": r["id"],
+        "name": r["name"],
       };
 
       teachers.add(map);
@@ -61,7 +61,37 @@ ApiService helper = ApiService();
     return teachers;
   }
 
-  Future<List<dynamic>> getAllCoordinations() async{
+  Future<List<dynamic>> getTeachersByClassroom(classroom) async{
+    var teachers = [];
+    var response = await helper.get("teacher_classrooms");
+
+    for (var r in response){
+      if(r["classroomId"] == classroom){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "responsible": r["responsible"],
+          "classroom": r["classroom"],
+          "subjectCourseGrade": r["subjectCourseGrade"],
+          "teacher": r["teacher"],
+        };
+
+        teachers.add(map);
+
+        var response2 = await helper.get("subjects/${r["subjectCourseGrade"]["subjectId"]}");
+
+        Map<String, dynamic> map2 = {
+          "subjectId": response2["id"],
+          "subjectName": response2["name"],
+        };
+
+        teachers.add(map2);
+      }
+    }
+
+    return teachers;
+  }
+
+  Future<List<dynamic>> getAllCoordinations({value}) async{
     var coordinations = [];
     var response = await helper.get("coordinations");
 
@@ -113,14 +143,32 @@ ApiService helper = ApiService();
     return studentGender;
   }
 
+  Future<List<dynamic>> getSubjectById(subject) async{
+    var subjects = [];
+    var response = await helper.get("subject/${subject}");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "name": r["name"],
+        "category": r["category"],
+        "code": r["code"],
+      };
+
+      subjects.add(map);
+    }
+
+    return subjects;
+  }
+
   Future<List<dynamic>> getSubjectByArea(area) async{
     var subjects = [];
     var response = await helper.get("classrooms/subject_course_grade/areas/${area}");
 
     for (var r in response){
       Map<String, dynamic> map = {
-        "id": AreaModel.fromJson(r).id.toString(),
-        "name": AreaModel.fromJson(r).name.toString(),
+        "id": r["id"],
+        "name": r["name"],
       };
 
       subjects.add(map);
@@ -290,6 +338,8 @@ ApiService helper = ApiService();
         Map<String, dynamic> map = {
           "id": response["id"],
           "name": response["name"],
+          "room": response["room"],
+          "period": response["period"],
         };
 
         classroom.add(map);
@@ -315,22 +365,18 @@ ApiService helper = ApiService();
 
   Future<List<dynamic>> getClassroomStudent(classroom) async{
     var students = [];
-    var response = await helper.get("classroom_students");
+    var response = await helper.get("classroom_students/students/${classroom}");
 
     for (var r in response){
-      if (ClassroomStudentModel.fromJson(r).classroomId == classroom){
-        var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
-        var student = await helper.get("students/$studentProcess");
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "number": r["number"],
+        "student": r["student"],
+        "classroom": r["classroom"]
+      };
 
-          Map<String, dynamic> map = {
-            "process": student["data"]["process"],
-            "fullName": student["data"]["personalData"]["fullName"],
-            "gender": student["data"]["personalData"]["gender"],
-          };
-
-          if (students.length < 3){
-            students.add(map);
-          }
+      if (students.length < 3){
+        students.add(map);
       }
     }
 
@@ -339,21 +385,18 @@ ApiService helper = ApiService();
 
   Future<List<dynamic>> getAllClassroomStudents(classroom) async{
     var students = [];
-    var response = await helper.get("classroom_students");
+    var response = await helper.get("classroom_students/students/${classroom}");
 
     for (var r in response){
-      if (ClassroomStudentModel.fromJson(r).classroomId == classroom){
-        var studentProcess = ClassroomStudentModel.fromJson(r).studentId;
-        var student = await helper.get("students/$studentProcess");
 
-          Map<String, dynamic> map = {
-            "process": student["data"]["process"],
-            "fullName": student["data"]["personalData"]["fullName"],
-            "gender": student["data"]["personalData"]["gender"],
-          };
-
-          students.add(map);
-      }
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "number": r["number"],
+        "student": r["student"],
+        "classroom": r["classroom"]
+      };
+      
+      students.add(map);
     }
 
     return students;

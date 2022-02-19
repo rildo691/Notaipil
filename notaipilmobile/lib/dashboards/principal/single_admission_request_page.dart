@@ -25,24 +25,27 @@ import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
-import 'package:notaipilmobile/dashboards/principal/single_admission_request_page.dart';
 
-class AdmissionRequests extends StatefulWidget {
+class SingleAdmissionRequestPage extends StatefulWidget {
+
   late var principal = [];
-  AdmissionRequests(this.principal);
+  late var request;
+
+  SingleAdmissionRequestPage(this.principal, this.request);
 
   @override
-  _AdmissionRequestsState createState() => _AdmissionRequestsState();
+  _SingleAdmissionRequestPageState createState() => _SingleAdmissionRequestPageState();
 }
 
-class _AdmissionRequestsState extends State<AdmissionRequests> {
-
-  TextEditingController _nameController = TextEditingController();
+class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage> {
 
   bool? value = false;
   int _selectedIndex = 0;
 
-  var requests = [];
+  Future<void> start() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +157,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
-                    future: getAdmissionRequests(),
+                    future: start(),
                     builder: (context, snapshot){
                       switch(snapshot.connectionState){
                         case ConnectionState.none:
@@ -172,65 +175,76 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                           if (snapshot.hasError){
                             return Container();
                           } else {
-                            requests = (snapshot.data! as List);
 
                             return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              //crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 buildHeaderPartTwo("Pedidos de adesão"),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 10),
-                                _buildTextFormField("Pesquise o n.º do bilhete", TextInputType.text, _nameController),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 12),
-                                DataTable(
-                                  columnSpacing: SizeConfig.widthMultiplier !* 7,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text("Nome"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Bilhete"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Data"),
-                                      numeric: false
-                                    )
-                                  ],
-                                  rows: requests.map((e) => 
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(e["personalData"]["fullName"].toString()),
-                                          ),
-                                          onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
-                                          }
-                                        ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(e["personalData"]["bi"].toString()),
-                                          ),
-                                          onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
-                                          }
-                                        ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(e["createdAt"].toString().substring(0, 10)),
-                                          ),
-                                          onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
-                                          }
-                                        ),
-                                      ],
-                                    )
-                                  ).toList()
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(widget.request["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 ),
+                                Text("Bilhete: " + widget.request["personalData"]["bi"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Nome: " + widget.request["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Sexo: " + widget.request["personalData"]["gender"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Data de nascimento: " + widget.request["personalData"]["birthdate"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                Text("Categoria: " + widget.request["category"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Habilitações Literárias: " + widget.request["qualification"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Tempo de serviço no IPIL: " + widget.request["ipilDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Tempo de serviço na Educação: " + widget.request["educationDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Regime Laboral: " + widget.request["regime"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                Text("E-mail: " + widget.request["email"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Contacto: " + widget.request["telephone"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text("Aceitar"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF00AD96),
+                                        onPrimary: Colors.white,
+                                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                        minimumSize: Size(40.0, 40.0),
+                                      ),
+                                      onPressed: () async{
+                                        Map<String, dynamic> body = {
+                                          "bi": widget.request["bi"],
+                                          "fullName": widget.request["personalData"]["fullName"],
+                                          "birthdate": widget.request["personalData"]["birthdate"],
+                                          "gender": widget.request["personalData"]["gender"],
+                                          "email": widget.request["email"], 
+                                          "telephone": widget.request["telephone"], 
+                                          "qualificationId": widget.request["qualification"]["id"], 
+                                          "regime": widget.request["regime"],
+                                          "ipilDate": widget.request["ipilDate"], 
+                                          "educationDate": widget.request["educationDate"], 
+                                          "category": widget.request["category"]
+                                        };
+
+                                        var response = await helper.postWithoutToken("teacher_accounts", body);
+
+                                        _buildAcceptAdmissionModal("Pedido de adesão aceite com sucesso", widget.request);
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text("Recusar"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFFE00028),
+                                        onPrimary: Colors.white,
+                                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                        minimumSize: Size(40.0, 40.0),
+                                      ),
+                                      onPressed: (){
+                                        _builRejectAdmissionModal("Tem certeza que pretende eliminar esse pedido?", widget.request);
+                                      },
+                                    ),
+                                  ],
+                                )
                               ],
                             );
                           }
@@ -297,22 +311,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
-  }
-
-  Future<Widget>? _buildSingleAdmissionRequestModal(index){
+  Future<Widget>? _builRejectAdmissionModal(message, e){
     showDialog(
       context: context,
       builder: (context){
@@ -323,124 +322,71 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
           backgroundColor: Color(0xFF202733),
           child: Container(
             padding: EdgeInsets.all(20.0),
-            width: SizeConfig.screenWidth !* 15,
+            width: SizeConfig.widthMultiplier !* 100,
             height: SizeConfig.heightMultiplier !* 100,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(index["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Bilhete: " + index["personalData"]["bi"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Nome: " + index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Sexo: " + index["personalData"]["gender"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Data de nascimento: " + index["personalData"]["birthdate"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Text("Categoria: " + index["category"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Habilitações Literárias: " + index["qualification"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Tempo de serviço no IPIL: " + index["ipilDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Tempo de serviço na Educação: " + index["educationDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Regime Laboral: " + index["regime"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Text("E-mail: " + index["email"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Contacto: " + index["telephone"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      child: Text("Aceitar"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF00AD96),
-                        onPrimary: Colors.white,
-                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        minimumSize: Size(40.0, 40.0),
-                      ),
-                      onPressed: (){
-                                  
-                      },
-                    ),
-                    ElevatedButton(
-                      child: Text("Recusar"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE00028),
-                        onPrimary: Colors.white,
-                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        minimumSize: Size(40.0, 40.0),
-                      ),
-                      onPressed: (){
-                        
-                      },
-                    ),
-                  ],
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+                    var response = helper.delete("teacher_accounts", e["id"]);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
+                  },
                 )
               ]
-            ),
+            )
           ),
         );
       }
     );
   }
-}
 
-class Admission{
-  String? name;
-  String? title;
-  String? date;
-  bool selected = false;
-
-  Admission(this.name, this.title, this.date);
-}
-
-class MyData extends DataTableSource{
-  bool? _value = false;
-  final _data = List.generate(
-    200,
-    (index) => {
-      Admission(index.toString(), "Name $index", "Item $index")
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow? getRow(int index) {
-    Admission ad = _data.elementAt(index) as Admission;
-    
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-        DataCell(Text(""),
-          onTap: (){
-          
-        }),
-        DataCell(Text(ad.name.toString(), style: TextStyle(color: Colors.white)),
-          onTap: (){
-          
-        }),
-        DataCell(Text(ad.title.toString(), style: TextStyle(color: Colors.white)),
-          onTap: (){
-          
-        }),
-        DataCell(
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(ad.date.toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
+  Future<Widget>? _buildAcceptAdmissionModal(message, e){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          onTap: (){
-
-          }
-        ),
-      ],
-      onSelectChanged: (value){
-        _value = value;
-        notifyListeners();
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.widthMultiplier !* 100,
+            height: SizeConfig.heightMultiplier !* 100,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
+                  },
+                )
+              ]
+            )
+          ),
+        );
       }
     );
-  }  
+  }
 }

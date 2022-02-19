@@ -10,6 +10,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+
+/**Models */
+import 'package:notaipilmobile/register/model/classroomModel.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
@@ -50,6 +53,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
   var courses = [];
   var grades = [];
   var classrooms = [];
+  var classroomsFilter = [];
   var gender = [];
   var filter = [];
   var subjects = [];
@@ -400,7 +404,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                         DataCell(
                                           Align(
                                             alignment: Alignment.center,
-                                            child: Text(classrooms.length.toString()),
+                                            child: Text(filter.length.toString()),
                                           )
                                         ),
                                       ]

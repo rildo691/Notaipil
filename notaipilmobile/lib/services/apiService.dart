@@ -68,10 +68,10 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> delete(String url, String token, String id) async{
+  Future<dynamic> delete(String url, String id, {String? token}) async{
     var response = await http.delete(
       Uri.parse(_baseUrl + url + "$id"),
-      headers: {'x-access-token': 'Bearer ' + token,}
+      headers: {/*'x-access-token': 'Bearer ' + token,*/'Content-type': 'application/json; charset=utf-8',}
     );
     var responseJson = _responseStatus(response);
     return responseJson;

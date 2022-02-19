@@ -46,6 +46,8 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
   var coordinators = [];
   List<bool>? _selected;
 
+  bool _changing = false;
+
   @override
   void initState(){
     super.initState();
@@ -192,7 +194,24 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                               children: [
                                 Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+                                  controller: _nameController,
+                                  onChanged: (value){
+                                    setState((){
+                                      _changing = true;
+                                      
+                                    });
+                                  },
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 DataTable(
                                   showCheckboxColumn: true,

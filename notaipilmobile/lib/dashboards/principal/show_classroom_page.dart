@@ -253,8 +253,8 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text("PERÍODO:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                            Text("SALA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                            Text("PERÍODO: " + classroom[0]["period"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                            Text("SALA: " + classroom[0]["room"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                             Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                           ]
                                         ),
@@ -302,7 +302,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                 DataCell(
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text("1", textAlign: TextAlign.center)
+                                                    child: Text(e["number"].toString(), textAlign: TextAlign.center)
                                                   ),
                                                   showEditIcon: false,
                                                   placeholder: true,
@@ -310,7 +310,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                 DataCell(
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                                                    child: Text(e["student"]['process'].toString(), textAlign: TextAlign.center)
                                                   ),
                                                   showEditIcon: false,
                                                   placeholder: true,
@@ -318,18 +318,18 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                 DataCell(
                                                   Align(
                                                     alignment: Alignment.centerLeft,
-                                                    child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                                    child: Text(e["student"]["personalData"]['fullName'].toString(), textAlign: TextAlign.left)
                                                   ),
                                                   showEditIcon: false,
                                                   placeholder: false,
                                                   onTap: (){
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal)));
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e)));
                                                   }
                                                 ),
                                                 DataCell(
                                                   Align(
                                                     alignment: Alignment.center,
-                                                    child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                                    child: Text(e["student"]["personalData"]['gender'].toString(), textAlign: TextAlign.center)
                                                   ),
                                                   showEditIcon: false,
                                                   placeholder: false,

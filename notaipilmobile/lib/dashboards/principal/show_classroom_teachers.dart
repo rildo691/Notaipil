@@ -67,6 +67,9 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
     }
   ];
 
+  var teachers = [];
+  var filter = [];
+
   @override
   void initState(){
 
@@ -182,122 +185,145 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            DataTable(
-                              dataRowColor: MaterialStateColor.resolveWith((states) => 
-                                states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                              ),
-                              dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              showBottomBorder: true,
-                              dividerThickness: 5,
-                              headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
-                              ),
-                              columnSpacing: SizeConfig.widthMultiplier !* 2.5,
-                              columns: [
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Nome Completo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Sexo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Disciplina"),
-                                  numeric: false,
-                                ),
-                              ],
-                              rows: _fakeTeachers.map((e) => 
-                                DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                child: FutureBuilder(
+                  future: getTeachersByClassroom(widget.classroomId),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if(snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          teachers = (snapshot.data! as List);
+                          
+                          if (filter.length == 0){
+                            for (int i = 0; i < 3; i++){
+                              filter.add({'teacher': teachers[0], 'subject': teachers[1]});
+                            }
+                          }
+
+                          return Container( 
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
+                            width: SizeConfig.screenWidth,
+                            height: filter.length > 7 && filter.length < 13 ? SizeConfig.screenHeight !* filter.length / 8 : filter.length > 13 && filter.length < 22 ? SizeConfig.screenHeight !* filter.length / 9 - filter.length / .2 : filter.length > 22 ? SizeConfig.screenHeight !* filter.length / 10.5 -  filter.length / .15 : SizeConfig.screenHeight !- filter.length / .1,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
+                                    
                                   ]
-                                )
-                              ).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]  
-                  )
-                ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                       SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                                      DataTable(
+                                        columnSpacing: SizeConfig.widthMultiplier !* 7.5,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(""),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Nome"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Sexo"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Disciplina"),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: filter.map((e) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"])
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["gender"])
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(e["subject"]["subjectName"])
+                                                )
+                                              ),
+                                              
+                                            ]
+                                          )
+                                        ).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ]  
+                            )
+                          );
+                        }
+                    }
+                  }
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
