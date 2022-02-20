@@ -38,6 +38,8 @@ class _ProfileState extends State<Profile> {
 
   int _selectedIndex = 0;
 
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -47,6 +49,7 @@ class _ProfileState extends State<Profile> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -56,7 +59,9 @@ class _ProfileState extends State<Profile> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),

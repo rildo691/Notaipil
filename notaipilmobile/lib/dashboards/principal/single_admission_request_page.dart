@@ -40,7 +40,10 @@ class SingleAdmissionRequestPage extends StatefulWidget {
 class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage> {
 
   bool? value = false;
+
   int _selectedIndex = 0;
+
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   Future<void> start() async {
     await Future.delayed(Duration(seconds: 3));
@@ -56,6 +59,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -65,7 +69,9 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -177,9 +183,12 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                           } else {
 
                             return Column(
-                              //crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildHeaderPartTwo("Pedidos de adesão"),
+                                Center(
+                                  child: buildHeaderPartTwo("Pedidos de adesão"),
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 10),
                                 Align(
                                   alignment: Alignment.centerRight,
@@ -227,6 +236,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                         };
 
                                         var response = await helper.postWithoutToken("teacher_accounts", body);
+                                        var response2 = await helper.delete("teacher_accounts/", widget.request["id"]);
 
                                         _buildAcceptAdmissionModal("Pedido de adesão aceite com sucesso", widget.request);
                                       },
@@ -322,8 +332,8 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
           backgroundColor: Color(0xFF202733),
           child: Container(
             padding: EdgeInsets.all(20.0),
-            width: SizeConfig.widthMultiplier !* 100,
-            height: SizeConfig.heightMultiplier !* 100,
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -331,7 +341,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                 Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
                 Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
-                  child: Text("OK"),
+                  child: Text("Sim"),
                   style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(0, 209, 255, 0.49),
                     onPrimary: Colors.white,
@@ -339,7 +349,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
-                    var response = helper.delete("teacher_accounts", e["id"]);
+                    var response = helper.delete("teacher_accounts/", e["id"]);
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
                   },
                 )
@@ -362,8 +372,8 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
           backgroundColor: Color(0xFF202733),
           child: Container(
             padding: EdgeInsets.all(20.0),
-            width: SizeConfig.widthMultiplier !* 100,
-            height: SizeConfig.heightMultiplier !* 100,
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,

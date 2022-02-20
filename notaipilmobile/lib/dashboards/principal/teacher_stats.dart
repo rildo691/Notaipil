@@ -40,6 +40,12 @@ class _TeacherStatsState extends State<TeacherStats> {
 
   int _selectedIndex = 0;
 
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  Future<void> start() async{
+    await Future.delayed(Duration(seconds: 3));
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -49,6 +55,7 @@ class _TeacherStatsState extends State<TeacherStats> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -58,7 +65,9 @@ class _TeacherStatsState extends State<TeacherStats> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -144,38 +153,74 @@ class _TeacherStatsState extends State<TeacherStats> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Professor", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(8.0),
-                        width: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                        height: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
-                      ),
-                      Text("Bilhete: 007031348LA043", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Nome: " , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Sexo: " + "M", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Data de nascimento ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      Text("Categoria: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Habilitações Literárias: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Tempo de serviço no IPIL: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Tempo de serviço na Educação: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Regime Laboral: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Text("E-mail: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                      Text("Contacto: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                    ],
-                  ),
+                child: FutureBuilder(
+                  future: start(),
+                  builder: (context, snapshot){
+                    switch (snapshot.connectionState){
+                      case ConnectionState.waiting:
+                      case ConnectionState.none:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+                          return
+                           Container(
+                            padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Professor", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Center(
+                                  child: 
+                                    Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(8.0),
+                                    width: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                    height: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
+                                    child: Icon(Icons.account_circle_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 17),
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                Text("Bilhete: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Nome: " , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Sexo: " , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Data de nascimento: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
+                                Text("Categoria: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Habilitações Literárias: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Tempo de serviço no IPIL: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Tempo de serviço na Educação: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                Text("Regime Laboral: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
+                                Text("E-mail: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Contacto: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              ],
+                            ),
+                          );
+                        }
+                    }
+                  }
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(

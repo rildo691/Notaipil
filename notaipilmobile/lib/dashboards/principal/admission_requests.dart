@@ -39,6 +39,8 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
 
   TextEditingController _nameController = TextEditingController();
 
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   bool? value = false;
   int _selectedIndex = 0;
 
@@ -53,6 +55,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -62,7 +65,9 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -183,6 +188,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 12),
                                 DataTable(
                                   columnSpacing: SizeConfig.widthMultiplier !* 7,
+                                  dataRowHeight: SizeConfig.heightMultiplier !* 9.5,
                                   columns: [
                                     DataColumn(
                                       label: Text("Nome"),
@@ -201,12 +207,15 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                     DataRow(
                                       cells: [
                                         DataCell(
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(e["personalData"]["fullName"].toString()),
+                                          Padding(
+                                            padding: EdgeInsets.all(5.0),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(e["personalData"]["fullName"].toString()),
+                                            ),
                                           ),
                                           onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
                                           }
                                         ),
                                         DataCell(
@@ -215,7 +224,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                             child: Text(e["personalData"]["bi"].toString()),
                                           ),
                                           onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
                                           }
                                         ),
                                         DataCell(
@@ -224,7 +233,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                             child: Text(e["createdAt"].toString().substring(0, 10)),
                                           ),
                                           onTap: (){
-                                            SingleAdmissionRequestPage(widget.principal, e);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
                                           }
                                         ),
                                       ],

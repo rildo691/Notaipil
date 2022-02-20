@@ -41,6 +41,7 @@ class _SendInformationPageState extends State<SendInformationPage> {
   TextEditingController _messageController = TextEditingController();
 
   GlobalKey<FormState> key = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
 
@@ -53,6 +54,7 @@ class _SendInformationPageState extends State<SendInformationPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -62,7 +64,9 @@ class _SendInformationPageState extends State<SendInformationPage> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _scaffoldKey.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),

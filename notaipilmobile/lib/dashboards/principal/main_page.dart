@@ -48,6 +48,7 @@ class _MainPageState extends State<MainPage> {
   var courses = [];
   var classrooms = [];
   var coordinators = [];
+  
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   ApiService helper = ApiService();  
@@ -71,8 +72,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState(){
     super.initState();
-
-    print(widget.principal);
   }
 
    @override

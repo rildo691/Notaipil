@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
@@ -22,7 +23,9 @@ import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 class EditClassroom extends StatefulWidget {
 
   late String classroomId;
-  EditClassroom(this.classroomId);
+  late var coordinator = [];
+
+  EditClassroom(this.classroomId, this.coordinator);
 
   @override
   _EditClassroomState createState() => _EditClassroomState();
@@ -32,16 +35,46 @@ class _EditClassroomState extends State<EditClassroom> {
 
   String? _classroomName;
   int _selectedIndex = 0;
+  String? _areaId;
 
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
   TextEditingController _roomController = TextEditingController();
+  TextEditingController _placeController = TextEditingController();
 
   var _periodValue;
+  var coursesLength;
+  var area = [];
+  var classroom = [];
 
   @override
   void initState(){
     super.initState();
+
+    getClassroomById(widget.classroomId).then((value) => 
+      setState((){
+        classroom = value;
+        _nameController.text = value[0]["name"].toString();
+        _roomController.text = value[0]["room"].toString();
+        _placeController.text = value[0]["place"].toString();
+        _periodValue = value[0]["period"].toString();
+      })
+    );
+
+    setState(() {
+      _areaId = widget.coordinator[0]["courses"][0]["areaId"];
+    });
+
+    getAreaById(widget.coordinator[0]["courses"][0]["areaId"]).then((value) =>
+      setState((){
+        area = value;
+      })
+    );
+
+    getCoursesByArea(widget.coordinator[0]["courses"][0]["areaId"]).then((value) => 
+      setState((){
+        coursesLength = value.length;
+      })
+    );
   }
 
   @override
@@ -75,14 +108,14 @@ class _EditClassroomState extends State<EditClassroom> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${area[0]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${area[0]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -93,28 +126,28 @@ class _EditClassroomState extends State<EditClassroom> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.coordinator)))
                         },
                       ),
                       ListTile(
@@ -156,7 +189,6 @@ class _EditClassroomState extends State<EditClassroom> {
                   child: 
                       Form(
                         child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,7 +203,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                     child: Icon(Icons.person, color: Colors.white)
                                   ),
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.coordinator)));
                                   },
                                 )
                               ],
@@ -187,6 +219,10 @@ class _EditClassroomState extends State<EditClassroom> {
                             SizedBox(
                               height: SizeConfig.heightMultiplier !* 3,
                             ),
+                            buildTextFieldRegister("Localização", TextInputType.text, _placeController),
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 3,
+                            ),
                             DropdownButtonFormField(
                               hint: Text("Período"),
                               style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -199,9 +235,17 @@ class _EditClassroomState extends State<EditClassroom> {
                               dropdownColor: Colors.black,
                               items: [
                                 DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
+                                  child: Text("Manhã"),
+                                  value: "Manhã",
+                                ),
+                                DropdownMenuItem(
+                                  child: Text("Tarde"),
+                                  value: "Tarde",
+                                ),
+                                DropdownMenuItem(
+                                  child: Text("Noite"),
+                                  value: "Tarde",
+                                ),
                               ],
                               value: _periodValue,
                               onChanged: (newValue){
@@ -249,8 +293,15 @@ class _EditClassroomState extends State<EditClassroom> {
                                 ),
                               minimumSize: Size(0.0, 50.0),
                               ),
-                              onPressed: (){
-                                
+                              onPressed: () async{
+                                Map<String, dynamic> body = {
+                                  "room": _roomController.text,
+                                  "period": _periodValue.toString(),
+                                  "place": _placeController.toString(),
+                                };
+
+                                var response = await helper.patch("classrooms/", widget.classroomId, body);
+                                buildConfirmationModal("Alterações feitas com sucesso.");
                               },
                             )
                           ]
@@ -300,5 +351,44 @@ class _EditClassroomState extends State<EditClassroom> {
         );
       },
     );  
+  }
+
+  Future<Widget>? buildConfirmationModal(message){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));
+                  },
+                )
+              ]
+            )
+          ),
+        );
+      }
+    );
   }
 }

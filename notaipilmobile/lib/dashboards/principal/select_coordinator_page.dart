@@ -38,7 +38,10 @@ class SelectCoordinatorPage extends StatefulWidget {
 class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
 
   TextEditingController _nameController = TextEditingController();
+
   DataTableSource _data = MyData();
+
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
   int index = 0;
@@ -66,6 +69,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -75,7 +79,9 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),

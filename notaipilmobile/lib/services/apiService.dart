@@ -77,13 +77,13 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> patch(String url, String token, String id, Map body) async{
+  Future<dynamic> patch(String url, String id, Map body, {String? token}) async{
     var response = await http.patch(
       Uri.parse(_baseUrl + url + "$id"),
       headers: {
         'Content-type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
-        'x-access-token': 'Bearer ' + token,
+        /*'x-access-token': 'Bearer ' + token,*/
       },
       body: json.encode(body)
     );

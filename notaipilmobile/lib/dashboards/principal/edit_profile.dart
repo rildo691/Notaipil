@@ -52,6 +52,8 @@ class _EditProfileState extends State<EditProfile> {
 
   int _selectedIndex = 0;
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +73,7 @@ class _EditProfileState extends State<EditProfile> {
           builder: (context, orientation){
             SizeConfig().init(constraints, orientation);
             return Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -80,7 +83,9 @@ class _EditProfileState extends State<EditProfile> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _scaffoldKey.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -208,8 +213,19 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                                 onPressed: (){
                                   //buildModal(context, "Foi enviado um código de confirmação para o seu e-mail. Coloque-o abaixo para guardar as alterações.", _codeController);
-                                  if (_phoneController.text != widget.principal[1]["telephone"] || _emailController.text != widget.principal[1]["email"]){
-
+                                  if (_phoneController.text != widget.principal[1]["telephone"] && _emailController.text != widget.principal[1]["email"]){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_phoneController.text != widget.principal[1]["telephone"]){
+                                    Map<String, dynamic> body = {
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_emailController.text != widget.principal[1]["email"]){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                    };
                                   }
                                   if (_currentPwdController.text.isNotEmpty){
                                     if (_newPwdController.text.isNotEmpty){
@@ -294,7 +310,7 @@ class _EditProfileState extends State<EditProfile> {
     );  
   }
 
-  Future<Widget>? buildModal(context, message, controller){
+  Future<Widget>? buildModal(context, message, controller, body){
     showDialog(
       context: context,
       builder: (context){

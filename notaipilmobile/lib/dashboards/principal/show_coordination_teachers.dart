@@ -40,9 +40,12 @@ class ShowCoordinationTeachers extends StatefulWidget {
 class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
 
   DataTableSource _data = MyData();
+
   TextEditingController _nameController = TextEditingController();
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
+
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState(){
@@ -62,6 +65,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -71,7 +75,9 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -279,7 +285,7 @@ class MyData extends DataTableSource{
       DataCell(
         Align(
           alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
+          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white)),
         )
       ),
     ],

@@ -67,8 +67,10 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
 
   ApiService helper = ApiService();
 
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
   int _currentPos = 0;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   String? _classroomId;
 
@@ -116,6 +118,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -124,8 +127,10 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: 20.0),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -218,7 +223,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
                     future: Future.wait([getAreas(), getCoursesCode(_value), getGrade(), getClassroom(_courseValue, _gradeValue), getClassroomStudent(_classroomId)]),
-                    //stream: _getData(),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:

@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
         /*'/principalDashboard': (_) => /*MainPage()*/,*/
-        '/coordinatorDashboard': (_) => coordinator.MainPage(),
+        //'/coordinatorDashboard': (_) => coordinator.MainPage(),
       },
     );
   }

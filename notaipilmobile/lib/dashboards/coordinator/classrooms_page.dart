@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -29,11 +28,15 @@ import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.da
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 
 
 class ClassroomsPage extends StatefulWidget {
 
-  const ClassroomsPage({ Key? key }) : super(key: key);
+  late var coordinator = [];
+
+  ClassroomsPage(this.coordinator);
 
   @override
   _ClassroomsPageState createState() => _ClassroomsPageState();
@@ -55,15 +58,40 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   var _gradeCode;
   var _studentClassroom = [];
   var fullData = [];
-
+  var coursesLength;
+  var area = [];
+  
   ApiService helper = ApiService();
 
   int _currentPos = 0;
   int _selectedIndex = 0;
 
   String? _classroomId;
+  String? _areaId;
 
   bool _classroomsExists = false;
+  bool _clicked = false;
+  
+  @override
+  void initState(){
+    super.initState();
+
+    setState(() {
+      _areaId = widget.coordinator[0]["courses"][0]["areaId"];
+    });
+
+    getAreaById(widget.coordinator[0]["courses"][0]["areaId"]).then((value) =>
+      setState((){
+        area = value;
+      })
+    );
+
+    getCoursesByArea(widget.coordinator[0]["courses"][0]["areaId"]).then((value) => 
+      setState((){
+        coursesLength = value.length;
+      })
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +124,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${area[0]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${area[0]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -114,28 +142,28 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
                         title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
                         title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.coordinator)))
                         },
                       ),
                       ListTile(
@@ -176,7 +204,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
                     future: Future.wait([getAreas(), getCoursesCode(_value), getGrade(), getClassroom(_courseValue, _gradeValue), getClassroomStudent(_classroomId)]),
-                    //stream: _getData(),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:
@@ -268,6 +295,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       getCoursesCode(newValue).then((value) => setState((){courses = value;}));
                                     }
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -338,6 +366,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                   DataTable(
                                     dataRowColor: MaterialStateColor.resolveWith((states) => 
                                       states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
@@ -381,7 +410,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text("1", textAlign: TextAlign.center)
+                                              child: Text(e["number"].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: true,
@@ -389,7 +418,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text(e['process'].toString(), textAlign: TextAlign.center)
+                                              child: Text(e["student"]['process'].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: true,
@@ -397,7 +426,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text(e['fullName'].toString(), textAlign: TextAlign.left)
+                                              child: Text(e["student"]["personalData"]['fullName'].toString(), textAlign: TextAlign.left)
                                             ),
                                             showEditIcon: false,
                                             placeholder: false,
@@ -405,7 +434,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           DataCell(
                                             Align(
                                               alignment: Alignment.center,
-                                              child: Text(e['gender'].toString(), textAlign: TextAlign.center)
+                                              child: Text(e["student"]["personalData"]['gender'].toString(), textAlign: TextAlign.center)
                                             ),
                                             showEditIcon: false,
                                             placeholder: false,
@@ -417,10 +446,12 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   GestureDetector(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: Text("Ver mais", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                      child: Text("Ver mais", style: TextStyle(color: !_clicked ? Colors.grey : Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                     ),
                                     onTap: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString())));
+                                      if(_clicked){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(_classroomId.toString(), widget.coordinator)));
+                                      }
                                     }
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
@@ -774,7 +805,21 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.coordinator)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
+                      break;
+                    case 2:
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      break;
+                    case 3:
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );
@@ -798,6 +843,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             ),
             onPressed: (){
               setState((){
+                _clicked = true;
                 setState((){_classroomId = classroomId;});
                 students.clear();
                 getClassroomStudent(_classroomId).then((value) => students = value);

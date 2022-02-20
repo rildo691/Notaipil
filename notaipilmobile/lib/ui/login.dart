@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -20,6 +19,10 @@ import 'choose_profile.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/responseModel.dart';
+
+/**Complements */
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
 
 
 
@@ -44,8 +47,8 @@ class _LoginState extends State<Login> {
   Future signIn(String email, String pass) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map body = {
-      'email': email,
-      'password': pass
+      'email': email.toString().trim(),
+      'password': pass.toString().trim(),
     };
     String userEmail;
 
@@ -65,17 +68,29 @@ class _LoginState extends State<Login> {
             MaterialPageRoute(builder: (context) => MainPage(value)),
             (Route<dynamic> route) => false);
         });
-      } else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
+      } else if (response["user"]["typesAccounts"][0]["name"] == "Coordenador"){
+        userEmail = response["user"]["email"];
+
+        getCoordinator(userEmail).then((value) {
+          Map<String, dynamic> map = {
+            'token': response["token"]
+          };
+          value.add(map); 
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => coordinator.MainPage(value)), (route) => false);
+        });
+
+      }else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Professor"){
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Educador"){
 
       }
-    } else if (!response["error"] && response["user"]["typesAccounts"].length>= 2) {
+    } else if (!response["error"] && response["user"]["typesAccounts"].length >= 2) {
       //sharedPreferences.setString("$email", response['token']);
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => Chooseprofile(response["user"]["typesAccounts"])),
+        MaterialPageRoute(builder: (context) => Chooseprofile(response["user"]["typesAccounts"], response)),
         (Route<dynamic> route) => false);
     } else {
       buildModal(context, response["error"], "Credenciais inválidas, por favor tente novamente.");

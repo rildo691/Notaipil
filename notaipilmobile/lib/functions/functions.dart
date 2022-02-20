@@ -52,7 +52,7 @@ ApiService helper = ApiService();
     for (var r in response){
       Map<String, dynamic> map = {
         "id": r["id"],
-        "name": r["name"],
+        "teacherAccount": r["teacherAccount"],
       };
 
       teachers.add(map);
@@ -121,6 +121,32 @@ ApiService helper = ApiService();
       };
 
       coordinators.add(map);
+    }
+
+    return coordinators;
+  }
+
+  Future<List<dynamic>> getCoordinator(userEmail) async{
+    var coordinators = [];
+    var response = await helper.get("coordinators");
+
+    for (var r in response){
+      if (r["teacherAccount"]["email"] == userEmail){
+
+        var teacherAccountId = r["teacherAccountId"];
+        var response2 = await helper.get("teacher_accounts/$teacherAccountId");
+
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "teacherAccountId": r["teacherAccountId"],
+          "courses": r["courses"],
+          "teacherAccount": r["teacherAccount"],
+          "personalData": response2["personalData"],
+          "qualification": response2["qualification"],
+        };
+
+        coordinators.add(map);
+      }
     }
 
     return coordinators;
@@ -340,6 +366,8 @@ ApiService helper = ApiService();
           "name": response["name"],
           "room": response["room"],
           "period": response["period"],
+          "code": response["code"],
+          "place": response["place"],
         };
 
         classroom.add(map);
@@ -494,10 +522,26 @@ ApiService helper = ApiService();
             "category": response2["category"],
             "personalData": response2["personalData"],
             "qualification": response2["qualification"],
-        };
+          };
 
         principal.add(map2);
       }
+    }
+    return principal;
+  }
+
+   Future<List<dynamic>> getAllPrincipals() async{
+    var principal = [];
+    var response = await helper.get("directors");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "title": r["title"],
+        "teacherAccount": r["teacherAccount"],
+      };
+
+      principal.add(map);
     }
     return principal;
   }

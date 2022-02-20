@@ -40,11 +40,13 @@ class ShowAgendaState extends StatefulWidget {
 class _ShowAgendaStateState extends State<ShowAgendaState> {
 
   var _value;
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
 
   var _selected1 = true;
   var _selected2 = false;
   var _selected3 = false;
+
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState(){
@@ -71,6 +73,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _key,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -80,7 +83,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _key.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -187,15 +192,15 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                           return Container();
                         } else {
 
-                          classrooms = (snapshot.data! as List)[1];
-                          areas = (snapshot.data! as List)[2];
+                          classrooms = (snapshot.data! as List)[0];
+                          areas = (snapshot.data! as List)[1];
 
                           return 
                           
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
+                            height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

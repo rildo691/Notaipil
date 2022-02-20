@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Dashboards */
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
+
 class Chooseprofile extends StatefulWidget {
 
   late var _typeAccounts = [];
+  late var response;
 
-  Chooseprofile(this._typeAccounts);
+  Chooseprofile(this._typeAccounts, this.response);
 
   @override
   _ChooseprofileState createState() => _ChooseprofileState();
@@ -100,7 +106,29 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                   } else if (data["name"] == "Encarregado") {
 
                                   } else if (data["name"] == "Director"){
-                                    Navigator.pushNamed(context, '/principalDashboard');
+                                    var userEmail = widget.response["user"]["email"];
+
+                                    getPrincipal(userEmail).then((value) {
+                                      Map<String, dynamic> map = {
+                                        'token': widget.response["token"]
+                                      };
+                                      value.add(map);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) => MainPage(value)),
+                                        (Route<dynamic> route) => false);
+                                    });
+                                  } else if (data["name"] == "Coordenador"){
+                                    var userEmail = widget.response["user"]["email"];
+
+                                    getCoordinator(userEmail).then((value) {
+                                      Map<String, dynamic> map = {
+                                        'token': widget.response["token"]
+                                      };
+                                      value.add(map); 
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) => coordinator.MainPage(value)), (route) => false);
+                                    });
+                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(principal)));
                                   }
                                 },
                               );
