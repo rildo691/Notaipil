@@ -19,7 +19,6 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
 class ShowAgendaState extends StatefulWidget {
   late var coordinator = [];
@@ -95,7 +94,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${area[0]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${area[0]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -113,13 +112,6 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList(widget.coordinator)))
                         },
                       ),
                       ListTile(
@@ -167,7 +159,20 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
+                child: FutureBuilder(
+                  future: ,
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container();
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          return 
+                          Container(
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !* 1.2,
@@ -252,6 +257,10 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       )
                     ],
                   ),
+                )
+                        }
+                    }
+                  }
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(

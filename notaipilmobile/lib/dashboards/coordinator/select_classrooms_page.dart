@@ -17,7 +17,6 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
-import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
 class SelectClassroomsPage extends StatefulWidget {
   late var coordinator = [];
@@ -98,7 +97,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                     children: [
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${area[0]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${area[0]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -116,13 +115,6 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Estudantes', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsList(widget.coordinator)))
                         },
                       ),
                       ListTile(
@@ -201,7 +193,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
                           return
                           Container(
-                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 10.0),
                             width: SizeConfig.screenWidth,
                             height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
@@ -212,7 +204,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                 Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 DropdownButtonFormField<String>(
-                                  hint: Text("Cursos"),
+                                  hint: Text("Cursos", textAlign: TextAlign.center, ),
                                   style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -240,7 +232,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 DataTable(
                                   showCheckboxColumn: true,
-                                  columnSpacing: SizeConfig.widthMultiplier !* 7,
+                                  columnSpacing: SizeConfig.widthMultiplier !* 27,
                                   columns: [
                                     DataColumn(
                                       label: Text("TURMAS"),

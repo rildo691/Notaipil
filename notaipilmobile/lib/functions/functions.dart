@@ -152,6 +152,43 @@ ApiService helper = ApiService();
     return coordinators;
   }
 
+  Future<List<dynamic>> getCoordinatorAndArea(userEmail) async{
+    var coordinators = [];
+    var response = await helper.get("coordinators");
+
+    for (var r in response){
+      if (r["teacherAccount"]["email"] == userEmail){
+
+        var teacherAccountId = r["teacherAccountId"];
+        var response2 = await helper.get("teacher_accounts/$teacherAccountId");
+
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "teacherAccountId": r["teacherAccountId"],
+          "courses": r["courses"],
+          "teacherAccount": r["teacherAccount"],
+          "personalData": response2["personalData"],
+          "qualification": response2["qualification"],
+        };
+
+        coordinators.add(map);
+
+        var response3 = await helper.get("areas/${r["courses"][0]["areaId"]}");
+
+        Map<String, dynamic> map2 = {
+        "id": response3["id"],
+        "name": response3["name"],
+      };
+
+        coordinators.add(map2);
+      }
+    }
+
+    return coordinators;
+  }
+
+  
+
   Future<List<dynamic>> getStudentGenderByArea(area) async{
     var studentGender = [];
     var response = await helper.get("classrooms/statistic_gender/areas/${area}");

@@ -119,8 +119,9 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                     });
                                   } else if (data["name"] == "Coordenador"){
                                     var userEmail = widget.response["user"]["email"];
+                                    var area;
 
-                                    getCoordinator(userEmail).then((value) {
+                                    getCoordinatorAndArea(userEmail).then((value) {
                                       Map<String, dynamic> map = {
                                         'token': widget.response["token"]
                                       };
