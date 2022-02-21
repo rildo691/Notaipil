@@ -30,6 +30,7 @@ import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/create_classroom.dart';
 
 
 class ClassroomsPage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   ApiService helper = ApiService();
 
   int _currentPos = 0;
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   String? _classroomId;
   String? _areaId;
@@ -257,7 +258,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                               textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                             ),
                                             onPressed: (){
-                                              
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
                                             },
                                           ),
                                         ),
@@ -282,6 +283,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ).toList(),
                                     value: _value,
                                     onChanged: (newValue){
+                                      print("clicked");
                                       courses.clear();         
                                       classrooms.clear();
                                       students.clear();
@@ -519,7 +521,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                               textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                             ),
                                             onPressed: (){
-                                              
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
                                             },
                                           ),
                                         ),
@@ -652,7 +654,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                               textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                             ),
                                             onPressed: (){
-                                              
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
                                             },
                                           ),
                                         ),

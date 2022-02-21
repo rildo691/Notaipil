@@ -273,6 +273,20 @@ ApiService helper = ApiService();
     return courses;
   }
 
+  Future<List<dynamic>> getCourseById(course) async{
+    var courses = []; 
+    var response = await helper.get("courses/$course");
+
+        Map<String, dynamic> map = {
+          "id": CourseModelNoArea.fromJson(response).id.toString(),
+          "code": CourseModelNoArea.fromJson(response).code.toString(),
+        };
+
+        courses.add(map);
+
+        return courses;
+  }
+
   Future<List<dynamic>> getAllCourses() async{
     var courses = [];
     var response = await helper.get("courses");
@@ -302,6 +316,20 @@ ApiService helper = ApiService();
     }
 
     return grades;
+  }
+
+  Future<List<dynamic>> getGradeById(grade) async{
+    var grades = [];
+    var response = await helper.get("grades/$grade");
+
+      Map<String, dynamic> map = {
+        "id": GradeModel.fromJson(response).id.toString(),
+        "name": GradeModel.fromJson(response).name.toString(),
+      };
+
+      grades.add(map);
+      return grades;
+    
   }
     
   Future<List<dynamic>> getClassroom(course, grade) async{
@@ -373,6 +401,25 @@ ApiService helper = ApiService();
         classroom.add(map);
 
     return classroom;
+  }
+
+  Future<List<dynamic>> getClassroomsByCourse(course) async{
+    var classrooms = [];
+    var response = await helper.get("classrooms");
+
+    for (var r in response){
+      if (r["courseId"] == course){
+        Map<String, dynamic> map = {
+          "id": ClassroomModel.fromJson(r).id.toString(),
+          "name": ClassroomModel.fromJson(r).name.toString(),
+          "grade": r["grade"],
+        };
+        
+        classrooms.add(map);
+      }
+    }
+
+    return classrooms;
   }
 
   Future<List<dynamic>> getQualifications() async{
@@ -450,6 +497,20 @@ ApiService helper = ApiService();
     }
 
     return [male, female];
+  }
+
+  Future<List<dynamic>> getClassroomGender(classroom) async{
+    var gender = [];
+    var response = await helper.get("classrooms/statistic_gender/classrooms/${classroom}");
+
+    Map<String, dynamic> map = {
+      "m": response["m"],
+      "f": response["f"]
+    };
+
+    gender.add(map);
+
+    return gender;
   }
 
   Future<List<dynamic>> getAllStudents() async{

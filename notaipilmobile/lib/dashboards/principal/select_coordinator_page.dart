@@ -39,8 +39,6 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
 
   TextEditingController _nameController = TextEditingController();
 
-  DataTableSource _data = MyData();
-
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
@@ -360,39 +358,4 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
       controller: controller,
     );
   }
-}
-
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
 }

@@ -90,8 +90,6 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
         coursesLength = value.length;
       })
     );
-
-    print(classroom);
   }
 
   Future<void> start() async{
@@ -295,7 +293,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                       headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
                                         ? Color(0xFF00D1FF) : Color(0xFF00D1FF)
                                       ),
-                                      columnSpacing: SizeConfig.widthMultiplier !* 3,
+                                      columnSpacing: SizeConfig.widthMultiplier !* 2,
                                       columns: [
                                         DataColumn(
                                           label: Text(""),

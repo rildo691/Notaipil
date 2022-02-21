@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -17,6 +18,7 @@ import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.da
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
+import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 
 class CreateClassroom extends StatefulWidget {
 
@@ -32,15 +34,21 @@ class _CreateClassroomState extends State<CreateClassroom> {
 
   int _selectedIndex = 0;
 
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _periodController = TextEditingController();
+  TextEditingController _codeController = TextEditingController();
   TextEditingController _roomController = TextEditingController();
 
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   var _periodValue;
+  var _placeValue;
   var _courseValue;
   var _gradeValue;
   var coursesLength;
+  var _courseCode;
+  var _gradeCode;
   var area = [];
+  var courses = [];
+  var grades = [];
 
   String? _areaId;
   
@@ -171,169 +179,268 @@ class _CreateClassroomState extends State<CreateClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 40.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 25,
+                  height: SizeConfig.screenHeight !* 1.07,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        child: Column(
-                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Criar turma"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 4,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: SizeConfig.widthMultiplier !* 30,
-                                  child: SizedBox(
-                                    child: DropdownButtonFormField(
-                                      hint: Text("Curso"),
-                                      style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        filled: true,
-                                        fillColor: Color(0xFF202733),
-                                        hintStyle: TextStyle(color: Colors.white),
-                                      ),
-                                      dropdownColor: Colors.black,
-                                      items: [
-                                        DropdownMenuItem(
-                                          child: Text("Nothing"),
-                                          value: Text("No value either"),
-                                        )
-                                      ],
-                                      value: _courseValue,
-                                      onChanged: (newValue){
-                                        setState((){
-                                          _courseValue = newValue;
-                                        });
-                                      },
-                                      validator: (value) => value == null ? 'Preencha o campo Curso' : null,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: SizeConfig.widthMultiplier !* 30,
-                                  child: SizedBox(
-                                    child: DropdownButtonFormField(
-                                      hint: Text("Classe"),
-                                      style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        filled: true,
-                                        fillColor: Color(0xFF202733),
-                                        hintStyle: TextStyle(color: Colors.white),
-                                      ),
-                                      dropdownColor: Colors.black,
-                                      items: [
-                                        DropdownMenuItem(
-                                          child: Text("Nothing"),
-                                          value: Text("No value either"),
-                                        )
-                                      ],
-                                      value: _courseValue,
-                                      onChanged: (newValue){
-                                        setState((){
-                                          _courseValue = newValue;
-                                        });
-                                      },
-                                      validator: (value) => value == null ? 'Preencha o campo Classe' : null,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 8,
-                            ),
-                            buildTextFieldRegister("Nome", TextInputType.text, _nameController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Sala", TextInputType.number, _roomController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            DropdownButtonFormField(
-                              hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _periodValue,
-                              onChanged: (newValue){
-                                setState((){
-                                  _periodValue = newValue;
-                                });
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text("Horário"),
-                                  style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
-                                  ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Concluir"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
-                              ),
-                              onPressed: (){
-                                
-                              },
+                  child: FutureBuilder(
+                    future: Future.wait([getCoursesByArea(_areaId), getGrade()]),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
                             )
-                          ]
-                        ),
-                      ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            courses = (snapshot.data! as List)[0];
+                            grades = (snapshot.data! as List)[1];
+                            
+                            return
+                             Form(
+                              key: _key,
+                              child: Column(
+                                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Criar turma"),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 4,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField(
+                                            hint: Text("Curso"),
+                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: courses.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["code"].toString()),
+                                              )
+                                            ).toList(),
+                                            value: _courseValue,
+                                            onChanged: (newValue){
+                                              setState((){
+                                                _courseValue = newValue;
+                                                getCourseById(_courseValue).then((value) => setState((){_courseCode = value[0]["code"];}));
+                                              });
+                                            },
+                                            validator: (value) => value == null ? 'Preencha o campo Curso' : null,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: SizeConfig.widthMultiplier !* 30,
+                                        child: SizedBox(
+                                          child: DropdownButtonFormField(
+                                            hint: Text("Classe"),
+                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Color(0xFF202733),
+                                              hintStyle: TextStyle(color: Colors.white),
+                                            ),
+                                            dropdownColor: Colors.black,
+                                            items: grades.map((e) => 
+                                              DropdownMenuItem<String>(
+                                                value: e["id"],
+                                                child: Text(e["name"].toString() + "ª"),
+                                              )
+                                            ).toList(),
+                                            value: _gradeValue,
+                                            onChanged: (newValue){
+                                              setState((){
+                                                _gradeValue = newValue;
+                                                getGradeById(_gradeValue).then((value) => setState((){_gradeCode = value[0]["name"];}));
+                                              });
+                                            },
+                                            validator: (value) => value == null ? 'Preencha o campo Classe' : null,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 8,
+                                  ),
+                                  TextFormField(
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      prefix: Text(_courseCode != null && _gradeCode != null ? _courseCode.toString() + _gradeCode.toString() : "", style: TextStyle(color: Colors.white),),
+                                      labelText: "Código",
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    obscureText: true,
+                                    enableSuggestions: false,
+                                    autocorrect: false,
+                                    controller: _codeController,
+                                    validator: (String? value){
+                                      return "Preencha o campo Código";
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  buildTextFieldRegister("Sala", TextInputType.number, _roomController),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  DropdownButtonFormField(
+                                    hint: Text("Localização"),
+                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    dropdownColor: Colors.black,
+                                    items: [
+                                      DropdownMenuItem(
+                                        child: Text("Edifício"),
+                                        value: "Edifício",
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text("Pavilhões"),
+                                        value: "Pavilhões",
+                                      )
+                                    ],
+                                    value: _placeValue,
+                                    onChanged: (newValue){
+                                      setState((){
+                                        _placeValue = newValue;
+                                      });
+                                    },
+                                    validator: (value) => value == null ? 'Preencha o campo Localização' : null,
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  DropdownButtonFormField(
+                                    hint: Text("Período"),
+                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    dropdownColor: Colors.black,
+                                    items: [
+                                      DropdownMenuItem(
+                                        child: Text("Manhã"),
+                                        value: "Manhã",
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text("Tarde"),
+                                        value: "Tarde",
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text("Noite"),
+                                        value: "Noite",
+                                      ),
+                                    ],
+                                    value: _periodValue,
+                                    onChanged: (newValue){
+                                      setState((){
+                                        _periodValue = newValue;
+                                      });
+                                    },
+                                    validator: (value) => value == null ? 'Preencha o campo Período' : null,
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text("Horário"),
+                                        style: ElevatedButton.styleFrom(
+                                          primary:  Color(0xFF0D89A4),
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                        minimumSize: Size(0.0, 50.0),
+                                        ),
+                                        onPressed: (){
+                                      
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 6,
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Concluir"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary:  Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 20.0,
+                                      ),
+                                    minimumSize: Size(0.0, 50.0),
+                                    ),
+                                    onPressed: () async{
+                                      if (_key.currentState!.validate()){
+                                        Map<String, dynamic> body = {
+                                          "room": _roomController.text,
+                                          "code": _codeController.text,
+                                          "period": _periodValue.toString(),
+                                          "place": _placeValue.toString(),
+                                          "gradeId": _gradeValue.toString(),
+                                          "courseId": _courseValue.toString(),
+                                        };
+
+                                        var response = await helper.postWithoutToken("classrooms", body);
+                                        
+                                      }
+                                    },
+                                  )
+                                ]
+                              ),
+                            );
+                          }
+                      }
+                    },
+                  ) 
+                      
                   )
                 ),
               bottomNavigationBar: BottomNavigationBar(
@@ -379,4 +486,43 @@ class _CreateClassroomState extends State<CreateClassroom> {
       },
     );    
   }
+
+  Future<Widget>? buildModal(context, message){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
+                  },
+                )
+              ]
+            ),
+          )
+        );
+      }
+    );
+  }   
 }

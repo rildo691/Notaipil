@@ -39,9 +39,9 @@ class _EditClassroomState extends State<EditClassroom> {
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _roomController = TextEditingController();
-  TextEditingController _placeController = TextEditingController();
 
   var _periodValue;
+  var _placeValue;
   var coursesLength;
   var area = [];
   var classroom = [];
@@ -55,7 +55,7 @@ class _EditClassroomState extends State<EditClassroom> {
         classroom = value;
         _nameController.text = value[0]["name"].toString();
         _roomController.text = value[0]["room"].toString();
-        _placeController.text = value[0]["place"].toString();
+        _placeValue = value[0]["place"].toString();
         _periodValue = value[0]["period"].toString();
       })
     );
@@ -182,9 +182,9 @@ class _EditClassroomState extends State<EditClassroom> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 10.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 110.7,
+                  height: SizeConfig.screenHeight !- 60,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: 
                       Form(
@@ -203,7 +203,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                     child: Icon(Icons.person, color: Colors.white)
                                   ),
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.coordinator)));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.classroomId, widget.coordinator)));
                                   },
                                 )
                               ],
@@ -219,7 +219,34 @@ class _EditClassroomState extends State<EditClassroom> {
                             SizedBox(
                               height: SizeConfig.heightMultiplier !* 3,
                             ),
-                            buildTextFieldRegister("Localização", TextInputType.text, _placeController),
+                            DropdownButtonFormField(
+                              hint: Text("Localização"),
+                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Color(0xFF202733),
+                                hintStyle: TextStyle(color: Colors.white),
+                              ),
+                              dropdownColor: Colors.black,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text("Edifício"),
+                                  value: "Edifício",
+                                ),
+                                DropdownMenuItem(
+                                  child: Text("Pavilhões"),
+                                  value: "Pavilhões",
+                                )
+                              ],
+                              value: _placeValue,
+                              onChanged: (newValue){
+                                setState((){
+                                  _periodValue = newValue;
+                                });
+                              },
+                              validator: (value) => value == null ? 'Preencha o campo Localização' : null,
+                            ),
                             SizedBox(
                               height: SizeConfig.heightMultiplier !* 3,
                             ),
@@ -244,7 +271,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                 ),
                                 DropdownMenuItem(
                                   child: Text("Noite"),
-                                  value: "Tarde",
+                                  value: "Noite",
                                 ),
                               ],
                               value: _periodValue,
@@ -297,7 +324,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                 Map<String, dynamic> body = {
                                   "room": _roomController.text,
                                   "period": _periodValue.toString(),
-                                  "place": _placeController.toString(),
+                                  "place": _placeValue.toString(),
                                 };
 
                                 var response = await helper.patch("classrooms/", widget.classroomId, body);

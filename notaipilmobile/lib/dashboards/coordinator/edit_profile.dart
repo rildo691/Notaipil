@@ -14,6 +14,9 @@ import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -54,6 +57,8 @@ class _EditProfileState extends State<EditProfile> {
 
     setState(() {
       _areaId = widget.coordinator[0]["courses"][0]["areaId"];
+      _phoneController.text = widget.coordinator[0]["teacherAccount"]["telephone"];
+      _emailController.text = widget.coordinator[0]["teacherAccount"]["email"];
     });
 
     getAreaById(widget.coordinator[0]["courses"][0]["areaId"]).then((value) =>
@@ -175,7 +180,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.08,
+                  height: SizeConfig.screenHeight !- 25,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Form(
                     key: _key,
@@ -213,8 +218,34 @@ class _EditProfileState extends State<EditProfile> {
                                   minimumSize: Size(0.0, 50.0),
                                 ),
                                 onPressed: (){
-                                  if (_key.currentState!.validate()){
-                                    buildModal(context, false, "Alterções feitas com sucesso");
+                                  if (_phoneController.text != widget.coordinator[0]["teacherAccount"]["telephone"] && _emailController.text != widget.coordinator[0]["teacherAccount"]["email"]){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_phoneController.text != widget.coordinator[0]["teacherAccount"]["telephone"]){
+                                    Map<String, dynamic> body = {
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_emailController.text != widget.coordinator[0]["teacherAccount"]["email"]){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                    };
+                                  }
+                                  if (_currentPwdController.text.isNotEmpty){
+                                    if (_newPwdController.text.isNotEmpty){
+                                      if (_confirmateNewPwdController.text != _newPwdController.text){
+                                        Fluttertoast.showToast(
+                                          msg: "Confirmação da palavra-passe não coincide com a nova palavra-passe.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+
+                                      }
+                                    }
                                   }
                                 },
                               ),

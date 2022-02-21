@@ -20,9 +20,10 @@ import 'package:notaipilmobile/dashboards/coordinator/students_list.dart';
 
 class AddDeleteStudent extends StatefulWidget {
 
+  late String classroomId;
   late var coordinator = [];
 
-  AddDeleteStudent(this.coordinator);
+  AddDeleteStudent(this.classroomId, this.coordinator);
 
   @override
   _AddDeleteStudentState createState() => _AddDeleteStudentState();
@@ -33,7 +34,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
   int _selectedIndex = 0;
   bool _value = false;
 
-  List<bool> selected = List<bool>.generate(2, (index) => false);
+  List<bool>? _selected;
 
   TextEditingController _processController = TextEditingController();
   TextEditingController _numberController = TextEditingController();
@@ -42,6 +43,8 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
 
   var coursesLength;
   var area = [];
+  var students = [];
+  var gender = [];
 
   @override
   void initState(){
@@ -62,6 +65,10 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
         coursesLength = value.length;
       })
     );
+  }
+
+  Future<void> start() async{
+    await Future.delayed(Duration(seconds: 3));
   }
   
 
@@ -170,170 +177,185 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 30.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Estudante"),
-                          GestureDetector(
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: SizeConfig.widthMultiplier !* 10,
-                              height: SizeConfig.heightMultiplier !* 4,
-                              child: Icon(Icons.person, color:  Color(0xFF0D89A4))
-                            ),
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.coordinator)));
-                            },
+                child: FutureBuilder(
+                  future: Future.wait([getAllClassroomStudents(widget.classroomId), getClassroomGender(widget.classroomId)]),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0
                           )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          DataTable(
-                            showBottomBorder: true,
-                            dividerThickness: 5,
-                            showCheckboxColumn: true,
-                            columnSpacing: SizeConfig.widthMultiplier !* 4,
-                            onSelectAll: (newValue){
-                              setState(() {
-                            
-                              });
-                            },
-                            columns: [
-                              DataColumn(
-                                label: Text(""),
-                                numeric: false
-                              ),
-                              DataColumn(
-                                label: Text(""),
-                                numeric: false
-                              ),
-                              DataColumn(
-                                label: Text("N.º"),
-                                numeric: false
-                              ),
-                              DataColumn(
-                                label: Text("Nome Completo"),
-                                numeric: false
-                              ),
-                              DataColumn(
-                                label: Text(""),
-                                numeric: false
-                              ),
-                            ],
-                            rows: [
-                              DataRow(
-                                cells: [
-                                  DataCell(
-                                    Text("")
-                                  ),
-                                  DataCell(
-                                    Center(
-                                      child: Icon(Icons.account_circle_outlined, color: Colors.white,),
-                                    )
-                              ),
-                                  DataCell(
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text("1")
-                                    )
-                                  ),
-                                  DataCell(
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Rildo William de Melo Franco")
-                                    )
-                                  ),
-                                  DataCell(
-                                    Center(
-                                      child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
-                                    )
-                                  ),
-                                ],
-                                onSelectChanged: (value){
-                                  setState(() {
-                                    selected[0] = value!;
-                                  });
-                                },
-                                selected: selected[0],
-                              ),
-                              DataRow(
-                                cells: [
-                              DataCell(
-                                    Text("")
-                                  ),
-                                  DataCell(
-                                    Center(
-                                      child: Icon(Icons.account_circle_outlined, color: Colors.white,),
-                                    )
-                                  ),
-                              DataCell(
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text("1")
-                                    )
-                                  ),
-                                  DataCell(
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Rildo William de Melo Franco")
-                                    )
-                                  ),
-                                  DataCell(
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          students = (snapshot.data! as List)[0];
+                          gender = (snapshot.data! as List)[1];
+
+                          return 
+                          Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 30.0),
+                            width: SizeConfig.screenWidth,
+                            height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 50 : SizeConfig.screenHeight !* students.length / 6 : SizeConfig.screenHeight !* students.length / 25,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("Estudante"),
                                     GestureDetector(
-                                      child: Center(
-                                       child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: SizeConfig.widthMultiplier !* 10,
+                                        height: SizeConfig.heightMultiplier !* 4,
+                                        child: Icon(Icons.person, color:  Color(0xFF0D89A4))
                                       ),
                                       onTap: (){
-                                        buildDeleteModal(context, "Tem certeza que pretende eliminar esse estudante dessa turma?");
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.classroomId, widget.coordinator)));
                                       },
                                     )
-                                  ),
-                                ],
-                                onSelectChanged: (value){
-                                  setState(() {
-                                    _value = value!;
-                                  });
-                                },
-                                selected: true,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: SizeConfig.heightMultiplier !* 4,
-                          ),
-                          GestureDetector(
-                            child: Container(
-                              width: SizeConfig.screenWidth !- 30,
-                              height: SizeConfig.heightMultiplier !* 8,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text("Adicionar estudante"),
-                                  Icon(Icons.add_circle_outline_outlined, color: Colors.white)
-                                ],
-                              )
-                            ),  
-                            onTap: (){
-                              buildAddModal(context, "Inserir aluno");
-                            },
-                          )
-                        ],
-                      )
-                    ]  
-                  )
-                ),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 12),
+                                Column(
+                                  children: [
+                                    DataTable(
+                                      showBottomBorder: true,
+                                      dividerThickness: 5,
+                                      showCheckboxColumn: true,
+                                      columnSpacing: SizeConfig.widthMultiplier !* 2,
+                                      onSelectAll: (newValue){
+                                        setState(() {
+                                      
+                                        });
+                                      },
+                                      columns: [
+                                        DataColumn(
+                                          label: Text(""),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text("N.º"),
+                                          numeric: true
+                                        ),
+                                        DataColumn(
+                                          label: Text("Proc."),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text("Nome Completo"),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text("Sexo"),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text(""),
+                                          numeric: false,
+                                        ),
+                                      ],
+                                      rows: students.map((e) => 
+                                        DataRow(
+                                          cells: [
+                                            DataCell(
+                                              Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(e["number"].toString(), textAlign: TextAlign.center)
+                                              ),
+                                              showEditIcon: false,
+                                              placeholder: true,
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(e["student"]['process'].toString(), textAlign: TextAlign.center)
+                                              ),
+                                              showEditIcon: false,
+                                              placeholder: true,
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(e["student"]["personalData"]['fullName'].toString(), textAlign: TextAlign.left)
+                                              ),
+                                              showEditIcon: false,
+                                              placeholder: false,
+                                              onTap: (){
+                                                //Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e)));
+                                              }
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(e["student"]["personalData"]['gender'].toString(), textAlign: TextAlign.center)
+                                              ),
+                                              showEditIcon: false,
+                                              placeholder: false,
+                                            ),
+                                            DataCell(
+                                              GestureDetector(
+                                                child: Center(
+                                                child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
+                                                ),
+                                                onTap: (){
+                                                  buildDeleteModal(context, "Tem certeza que pretende eliminar esse estudante dessa turma?", e);
+                                                },
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ).toList(),
+                                    ),
+                                    SizedBox(
+                                      height: SizeConfig.heightMultiplier !* 3,
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                        width: SizeConfig.screenWidth !- 30,
+                                        height: SizeConfig.heightMultiplier !* 8,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text("Adicionar estudante"),
+                                            Icon(Icons.add_circle_outline_outlined, color: Colors.white)
+                                          ],
+                                        )
+                                      ),  
+                                      onTap: (){
+                                        buildAddModal(context, "Inserir aluno");
+                                      },
+                                    ),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 7,),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("MASCULINOS: _${gender[0]["m"]}_ FEMENINOS: _${gender[0]["f"]}_", style: TextStyle(color: Colors.white)),
+                                    )
+                                  ],
+                                )
+                              ]  
+                            )
+                          );
+                        }
+                    }
+                  }
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -379,7 +401,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
     );    
   }
 
-  Future<Widget>? buildDeleteModal(context, message){
+  Future<Widget>? buildDeleteModal(context, message, student){
     showDialog(
       context: context,
       builder: (context){
@@ -417,7 +439,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           },
                         ),
                         ElevatedButton(
-                          child: Text("Nao"),
+                          child: Text("Não"),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
                             onPrimary: Colors.white,

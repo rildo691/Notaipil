@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/register.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -31,38 +32,18 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
   int _selectedIndex = 0;
 
-  var _fakeTeachers = [
-    {
-      'name': 'Carlos Capapelo',
-      'gender': 'M',
-      'subject': 'TCC'
-    },
-    {
-      'name': 'Telma Monteiro',
-      'gender': 'F',
-      'subject': 'Telecomunicações'
-    },
-    {
-      'name': 'Edson Viegas',
-      'gender': 'M',
-      'subject': 'TLP',
-    },
-    {
-      'name': 'Desconhecido',
-      'gender': 'M',
-      'subject': 'DCM',
-    },
-    {
-      'name': 'Álvaro Delly',
-      'gender': 'M',
-      'subject': 'Química Geral'
-    }
-  ];
-
   String? _areaId;
 
+  TextEditingController _nameController = TextEditingController();
+
+  List<bool>? _selected;
+  bool _firstTime = true;
+
   var coursesLength;
+  var _courseValue;
   var area = [];
+  var classrooms = [];
+  var courses = [];
 
   @override
   void initState(){
@@ -189,97 +170,133 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                            DataTable(
-                              showBottomBorder: true,
-                              dividerThickness: 5,
-                              columnSpacing: SizeConfig.widthMultiplier !* 2.5,
-                              columns: [
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Nome Completo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Sexo"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text("Disciplina"),
-                                  numeric: false,
-                                ),
-                                DataColumn(
-                                  label: Text(""),
-                                  numeric: false,
-                                ),
-                              ],
-                              rows: _fakeTeachers.map((e) => 
-                                DataRow(
-                                  cells: [
-                                    DataCell(
-                                      Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                child: FutureBuilder(
+                  future: Future.wait([getCoursesByArea(_areaId), getClassroomsByCourse(_courseValue)]),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          courses = (snapshot.data! as List)[0];
+                          classrooms = (snapshot.data! as List)[1];
+
+                          if (_firstTime){
+                            _selected = List<bool>.generate(classrooms.length, (index) => false);
+                            _firstTime = false;
+                          }
+
+                          return
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                            width: SizeConfig.screenWidth,
+                            height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                DropdownButtonFormField<String>(
+                                  hint: Text("Cursos"),
+                                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
                                     ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['name'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
+                                  dropdownColor: Colors.black,
+                                  items: courses.map((e) => 
+                                    DropdownMenuItem<String>(
+                                      value: e["id"],
+                                      child: Text(e["code"].toString())
+                                    )
+                                  ).toList(), 
+                                  value: _courseValue,
+                                  onChanged: (newValue){
+                                    setState((){
+                                      _courseValue = newValue;
+                                      _firstTime = true;
+                                      getClassroomsByCourse(_courseValue);
+                                    });
+                                  },
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                DataTable(
+                                  showCheckboxColumn: true,
+                                  columnSpacing: SizeConfig.widthMultiplier !* 7,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("TURMAS"),
+                                      numeric: false
                                     ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text(e['gender'].toString(), textAlign: TextAlign.center)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(e['subject'].toString(), textAlign: TextAlign.left)
-                                      ),
-                                      showEditIcon: false,
-                                      placeholder: false,
-                                    ),
-                                    DataCell(
-                                    GestureDetector(
-                                      child: Center(
-                                       child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
-                                      ),
-                                      onTap: (){
-                                        
-                                      },
+                                    DataColumn(
+                                      label: Text("CLASSE"),
+                                      numeric: false,
+                                    )
+                                  ],
+                                  rows: List<DataRow>.generate(classrooms.length, (index) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(classrooms[index]["name"])
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(classrooms[index]["grade"]["name"] + "ª")
+                                          )
+                                        ),
+                                      ],
+                                      selected: _selected![index],
+                                      onSelectChanged: (bool? value){
+                                        _selected![index] = value!;
+                                        setState((){
+                                          getClassroomsByCourse(_courseValue);
+                                        });
+                                      }
                                     )
                                   ),
-                                  ]
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                Container(
+                                  width: SizeConfig.widthMultiplier !* 30,
+                                  height: SizeConfig.heightMultiplier !* 7,
+                                  child: ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                    ),
+                                    onPressed: (){},
+                                  ),
                                 )
-                              ).toList(),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                      
+                              ],
+                            ),    
+                          );
+                        } 
+                    }
+                  }
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(

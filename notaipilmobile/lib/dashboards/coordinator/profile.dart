@@ -171,14 +171,14 @@ class _ProfileState extends State<Profile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 100,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: SizeConfig.heightMultiplier !* 1,),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 4,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,9 +214,9 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Rildo William de Melo Franco", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text("Director", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${area[0]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${area[0]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),)
                             ],
                           ),
                         ],
@@ -229,7 +229,8 @@ class _ProfileState extends State<Profile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(Icons.phone, color: Colors.white,),
-                              Text("996889295")
+                              SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                              Text(widget.coordinator[0]["teacherAccount"]["telephone"])
                             ],
                           ),
                           SizedBox(height: SizeConfig.heightMultiplier !* 3),
@@ -238,20 +239,23 @@ class _ProfileState extends State<Profile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(Icons.mail_outline_rounded, color: Colors.white,),
-                              Text("rildowilliam2017@gmail.com")
+                              SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                              Text(widget.coordinator[0]["teacherAccount"]["email"])
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 30),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 25),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Categoria:"),
-                          Text("Cargo:"),
-                          Text("Tempo de serviço no IPIL:"),
-                          Text("Tempo de serviço na Educação:"),
+                          Text("Categoria: " + widget.coordinator[0]["teacherAccount"]["category"]),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                          //Text("Cargo: "),
+                          Text("Tempo de serviço no IPIL: " + widget.coordinator[0]["teacherAccount"]["ipilDate"]),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                          Text("Tempo de serviço na Educação: " + widget.coordinator[0]["teacherAccount"]["educationDate"]),
                         ],
                       )
                     ]  

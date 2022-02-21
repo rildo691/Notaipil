@@ -185,10 +185,8 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
                           teachers = (snapshot.data! as List);
                           
-                          if (filter.length == 0){
-                            for (int i = 0; i < 3; i++){
-                              filter.add({'teacher': teachers[0], 'subject': teachers[1]});
-                            }
+                          if (filter.length == 0){                            
+                            filter.add({'teacher': teachers[0], 'subject': teachers[1]});                            
                           }
 
                           return Container( 
@@ -238,7 +236,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                       SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                                      SizedBox(height: SizeConfig.heightMultiplier !* 10,),
                                       DataTable(
                                         columnSpacing: SizeConfig.widthMultiplier !* 7.5,
                                         columns: [
