@@ -367,8 +367,8 @@ class _MainPageState extends State<MainPage> {
         ),
         ButtonBar(
           alignment: MainAxisAlignment.spaceAround,
-          buttonHeight: 52.0,
-          buttonMinWidth: 90.0,
+          buttonHeight: SizeConfig.heightMultiplier !* .5,
+          buttonMinWidth: SizeConfig.widthMultiplier !* .5,
           children: [
             
             TextButton(

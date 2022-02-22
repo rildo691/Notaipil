@@ -21,7 +21,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
 import 'package:notaipilmobile/register/model/courseModel.dart';
 import 'package:notaipilmobile/register/model/gradeModel.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
@@ -30,6 +29,10 @@ import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/create_classroom.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 
 
 class ClassroomsPage extends StatefulWidget {
@@ -110,7 +113,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: 20.0),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){},
                   )
                 ],
@@ -807,10 +810,10 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
                       break;
                     case 2:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.coordinator)));
                       break;
                     case 3:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(widget.coordinator)));
                       break;
                     default:
                   }

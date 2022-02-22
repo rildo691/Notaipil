@@ -19,6 +19,10 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 
 class Settings extends StatefulWidget {
   late var coordinator = [];
@@ -267,7 +271,7 @@ class _SettingsState extends State<Settings> {
                   )
                 ),
               ),
-              bottomNavigationBar: BottomNavigationBar(
+             bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 backgroundColor: Color(0xFF151717),
                 elevation: 1,
@@ -301,7 +305,21 @@ class _SettingsState extends State<Settings> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.coordinator)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.coordinator)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(widget.coordinator)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );

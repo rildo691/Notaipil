@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/coordinator/teacher_stats.dart';
+import 'package:notaipilmobile/dashboards/principal/teacher_stats.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
@@ -22,9 +24,13 @@ import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
-import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
+import 'package:notaipilmobile/dashboards/principal/teacher_stats.dart' as principal;
+
+/**User Interface */
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class ShowCoordinationTeachers extends StatefulWidget {
 
@@ -39,21 +45,20 @@ class ShowCoordinationTeachers extends StatefulWidget {
 
 class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
 
-  DataTableSource _data = MyData();
-
   TextEditingController _nameController = TextEditingController();
 
   int _selectedIndex = 2;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  var teachers = [];
+  var qualification;
+
   @override
   void initState(){
     super.initState();
 
-    setState(() {
-      _selectedIndex = widget.index;
-    });
+    getAllTeachers().then((value) => setState((){teachers = value;}));
   }
 
    @override
@@ -168,35 +173,58 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartTwo("Professores"),
-                      buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
-                      
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 14.2,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text(""),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Nome Completo"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Bilhete"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  child: FutureBuilder(
+                    future: getQualificationsByArray(teachers),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              strokeWidth: 5.0
+                            ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            qualification = (snapshot.data! as List);
+
+                            return
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildHeaderPartTwo("Professores"),
+                                buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                                SizedBox(
+                                  height: SizeConfig.heightMultiplier !* 60,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: teachers.length,
+                                    itemBuilder: (context, index){
+                                      //getQualificationsById(teachers[index]["teacherAccount"]["qualificationId"]).then((value) => setState((){qualification = value;}));
+                                      return Column(
+                                        children: [
+                                          _buildTeacherCard(teachers[index], qualification[index]),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                        ]
+                                      );
+                                    },
+                                  ),
+                                )
+                              ],
+                            );
+                          }
+                      }
+                    }
+                  )
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -256,39 +284,63 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
       },
     );
   }
-}
 
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white)),
-        )
+  Widget _buildTeacherCard(index, qualification){
+    return ExpansionTileCard(
+      baseColor: Colors.white,//Color(0xFF1F2734),
+      expandedColor: Colors.white,//Color(0xFF1F2734),
+      leading: CircleAvatar(
+        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
       ),
-    ],
-  );
-  }  
+      title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+      subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: Colors.black)),
+      children: [
+        Divider(
+          thickness: 1.0,
+          height: 2.0,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Bilhete de identidade: " + index["teacherAccount"]["personalData"]["bi"]),
+                Text("Regime: " + index["teacherAccount"]["regime"]),
+                Text("Grau académico: " + qualification["name"]),
+              ],
+            ),
+          )
+        ),
+        ButtonBar(
+          alignment: MainAxisAlignment.spaceAround,
+          buttonHeight: SizeConfig.heightMultiplier !* .5,
+          buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => principal.TeacherStats(widget.principal, index, qualification)));
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(Icons.swap_vert),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  ),
+                  Text('Ver Professor'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

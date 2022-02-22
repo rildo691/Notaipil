@@ -23,6 +23,7 @@ import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
 
 class ShowCoordination extends StatefulWidget {
   late var coordinator = [];
@@ -49,7 +50,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
   var subjects = [];
   var filter = [];
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   String? _areaId;
 
@@ -474,10 +475,10 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
                       break;
                     case 2:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.coordinator)));
                       break;
                     case 3:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(widget.coordinator)));
                       break;
                     default:
                   }

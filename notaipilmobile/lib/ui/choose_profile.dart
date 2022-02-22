@@ -117,6 +117,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                         MaterialPageRoute(builder: (context) => MainPage(value)),
                                         (Route<dynamic> route) => false);
                                     });
+
                                   } else if (data["name"] == "Coordenador"){
                                     var userEmail = widget.response["user"]["email"];
                                     var area;
@@ -129,7 +130,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                       Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(builder: (context) => coordinator.MainPage(value)), (route) => false);
                                     });
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(principal)));
+                                    
                                   }
                                 },
                               );

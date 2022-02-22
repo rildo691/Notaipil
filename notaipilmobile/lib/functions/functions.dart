@@ -187,8 +187,6 @@ ApiService helper = ApiService();
     return coordinators;
   }
 
-  
-
   Future<List<dynamic>> getStudentGenderByArea(area) async{
     var studentGender = [];
     var response = await helper.get("classrooms/statistic_gender/areas/${area}");
@@ -467,6 +465,23 @@ ApiService helper = ApiService();
       Map<String, dynamic> map = {
         "id": QualificationsModel.fromJson(r).id,
         "name": QualificationsModel.fromJson(r).name,
+      };
+
+      qualifications.add(map);
+    }
+
+    return qualifications;
+  }
+
+  Future<List<dynamic>> getQualificationsByArray(teachers) async{
+    var qualifications = [];
+
+    for (var t in teachers){
+      var response = await helper.get("qualifications/${t["teacherAccount"]["qualificationId"]}");
+
+      Map<String, dynamic> map = {
+        "id": QualificationsModel.fromJson(response).id,
+        "name": QualificationsModel.fromJson(response).name,
       };
 
       qualifications.add(map);

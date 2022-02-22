@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -22,6 +21,8 @@ import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.da
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
+import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 
 /**User Interface */
 import 'package:expansion_tile_card/expansion_tile_card.dart';
@@ -280,10 +281,10 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
                       break;
                     case 2:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.coordinator)));
                       break;
                     case 3:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(widget.coordinator)));
                       break;
                     default:
                   }

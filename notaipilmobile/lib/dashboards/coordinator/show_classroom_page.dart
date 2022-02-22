@@ -25,6 +25,8 @@ import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
 
 class ShowClassroomPage extends StatefulWidget {
   late String classroomId;
@@ -428,10 +430,10 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
                       break;
                     case 2:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordinationTeachers(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.coordinator)));
                       break;
                     case 3:
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(index, widget.principal)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAgendaState(widget.coordinator)));
                       break;
                     default:
                   }
