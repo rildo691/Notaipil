@@ -43,6 +43,9 @@ dependencies:
   datetime_picker_formfield: ^2.0.0
   carousel_slider: ^4.0.0
   expansion_tile_card: ^1.1.0
+  flappy_search_bar: ^1.4.1
+  open_file: ^3.2.1
+  file_picker: ^4.4.0
 
 dev_dependencies:
   flutter_test:

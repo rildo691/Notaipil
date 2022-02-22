@@ -12,24 +12,21 @@ class StudentAccountModel {
     StudentAccountModel({
         this.bilhete,
         this.email,
-        this.emailEducator,
-        this.telephoneEducator,
+        this.telephone,
         this.process,
         this.classroomId,
     });
 
     String? bilhete;
     String? email;
-    String? emailEducator;
-    String? telephoneEducator;
+    String? telephone;
     int? process;
     String? classroomId;
 
     factory StudentAccountModel.fromJson(Map<String, dynamic> json) => StudentAccountModel(
         bilhete: json["bilhete"],
         email: json["email"],
-        emailEducator: json["email_educator"],
-        telephoneEducator: json["telephone_educator"],
+        telephone: json["telephone_educator"],
         process: json["process"],
         classroomId: json["classroomId"],
     );
@@ -37,8 +34,7 @@ class StudentAccountModel {
     Map<String, dynamic> toJson() => {
         "bilhete": bilhete,
         "email": email,
-        "email_educator": emailEducator,
-        "telephone_educator": telephoneEducator,
+        "telephone": telephone,
         "process": process,
         "classroomId": classroomId,
     };

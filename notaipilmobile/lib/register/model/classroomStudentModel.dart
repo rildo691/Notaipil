@@ -10,19 +10,23 @@ String classroomStudentModelToJson(ClassroomStudentModel data) => json.encode(da
 
 class ClassroomStudentModel {
     ClassroomStudentModel({
+        this.number,
         this.studentId,
         this.classroomId,
     });
 
+    int?  number;
     int? studentId;
     String? classroomId;
 
     factory ClassroomStudentModel.fromJson(Map<String, dynamic> json) => ClassroomStudentModel(
+        number: json["number"],
         studentId: json["studentId"],
         classroomId: json["classroomId"],
     );
 
     Map<String, dynamic> toJson() => {
+        "number": number,
         "studentId": studentId,
         "classroomId": classroomId,
     };

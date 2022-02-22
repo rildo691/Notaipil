@@ -120,11 +120,8 @@ class _SecondPageState extends State<SecondPage> {
                                   }).toList(),
                                   value: _value,
                                   onChanged: (newValue){
+                                    _value = newValue.toString();
                                     courses.clear();
-                                    areas.clear();
-                                    setState(() {
-                                      _value = newValue.toString();
-                                    });
                                     getCoursesName(newValue.toString()).then((List<dynamic> value) => 
                                       setState((){
                                         courses = value;
@@ -152,10 +149,8 @@ class _SecondPageState extends State<SecondPage> {
                                   }).toList(),
                                   value: _value2,
                                   onChanged: (newValue){
+                                    _value2 = newValue.toString();
                                     courses.clear();
-                                    setState(() {
-                                      _value2 = newValue.toString();
-                                    });
                                   },
                                   validator: (value) => value == null ? 'Preencha o campo Curso' : null,
                                 ),

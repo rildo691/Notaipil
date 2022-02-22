@@ -27,6 +27,10 @@ import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 import 'package:notaipilmobile/dashboards/principal/single_admission_request_page.dart';
 
+/**User Interface */
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+
+
 class AdmissionRequests extends StatefulWidget {
   late var principal = [];
   AdmissionRequests(this.principal);
@@ -186,60 +190,20 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 10),
                                 _buildTextFormField("Pesquise o n.º do bilhete", TextInputType.text, _nameController),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 12),
-                                DataTable(
-                                  columnSpacing: SizeConfig.widthMultiplier !* 7,
-                                  dataRowHeight: SizeConfig.heightMultiplier !* 9.5,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text("Nome"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Bilhete"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Data"),
-                                      numeric: false
-                                    )
-                                  ],
-                                  rows: requests.map((e) => 
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Padding(
-                                            padding: EdgeInsets.all(5.0),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(e["personalData"]["fullName"].toString()),
-                                            ),
-                                          ),
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
-                                          }
-                                        ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(e["personalData"]["bi"].toString()),
-                                          ),
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
-                                          }
-                                        ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(e["createdAt"].toString().substring(0, 10)),
-                                          ),
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
-                                          }
-                                        ),
-                                      ],
-                                    )
-                                  ).toList()
-                                ),
+                                SizedBox(
+                                  height: SizeConfig.heightMultiplier !* 49.4,
+                                  child: ListView.builder(
+                                    itemCount: requests.length,
+                                    itemBuilder: (context, index){
+                                      return Column(
+                                        children: [
+                                          _buildAdmissionCard(requests[index]),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                        ]
+                                      );
+                                    },
+                                  )
+                                )
                               ],
                             );
                           }
@@ -321,135 +285,61 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
     );
   }
 
-  Future<Widget>? _buildSingleAdmissionRequestModal(index){
-    showDialog(
-      context: context,
-      builder: (context){
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          backgroundColor: Color(0xFF202733),
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            width: SizeConfig.screenWidth !* 15,
-            height: SizeConfig.heightMultiplier !* 100,
+  Widget _buildAdmissionCard(index){
+    return ExpansionTileCard(
+      baseColor: Colors.white,//Color(0xFF1F2734),
+      expandedColor: Colors.white,//Color(0xFF1F2734),
+      leading: CircleAvatar(
+        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
+      ),
+      title: Text(index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+      subtitle: Text(index["email"].toString(), style: TextStyle(color: Colors.black)),
+      children: [
+        Divider(
+          thickness: 1.0,
+          height: 2.0,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(index["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Bilhete: " + index["personalData"]["bi"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Nome: " + index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Sexo: " + index["personalData"]["gender"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Data de nascimento: " + index["personalData"]["birthdate"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Text("Categoria: " + index["category"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Habilitações Literárias: " + index["qualification"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Tempo de serviço no IPIL: " + index["ipilDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Tempo de serviço na Educação: " + index["educationDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Regime Laboral: " + index["regime"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Text("E-mail: " + index["email"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Contacto: " + index["telephone"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      child: Text("Aceitar"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF00AD96),
-                        onPrimary: Colors.white,
-                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        minimumSize: Size(40.0, 40.0),
-                      ),
-                      onPressed: (){
-                                  
-                      },
-                    ),
-                    ElevatedButton(
-                      child: Text("Recusar"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE00028),
-                        onPrimary: Colors.white,
-                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        minimumSize: Size(40.0, 40.0),
-                      ),
-                      onPressed: (){
-                        
-                      },
-                    ),
-                  ],
-                )
-              ]
+                Text("Bilhete de identidade: " + index["personalData"]["bi"]),
+                Text("Data: " + index["createdAt"]),
+              ],
             ),
-          ),
-        );
-      }
-    );
-  }
-}
-
-class Admission{
-  String? name;
-  String? title;
-  String? date;
-  bool selected = false;
-
-  Admission(this.name, this.title, this.date);
-}
-
-class MyData extends DataTableSource{
-  bool? _value = false;
-  final _data = List.generate(
-    200,
-    (index) => {
-      Admission(index.toString(), "Name $index", "Item $index")
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow? getRow(int index) {
-    Admission ad = _data.elementAt(index) as Admission;
-    
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-        DataCell(Text(""),
-          onTap: (){
-          
-        }),
-        DataCell(Text(ad.name.toString(), style: TextStyle(color: Colors.white)),
-          onTap: (){
-          
-        }),
-        DataCell(Text(ad.title.toString(), style: TextStyle(color: Colors.white)),
-          onTap: (){
-          
-        }),
-        DataCell(
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(ad.date.toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-          ),
-          onTap: (){
-
-          }
+          )
+        ),
+        ButtonBar(
+          alignment: MainAxisAlignment.spaceAround,
+          buttonHeight: SizeConfig.heightMultiplier !* .5,
+          buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
+              },
+              child: Column(
+                children: <Widget>[
+                  Icon(Icons.swap_vert),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                  ),
+                  Text('Avaliar Pedido'),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
-      onSelectChanged: (value){
-        _value = value;
-        notifyListeners();
-      }
     );
-  }  
+  }
 }

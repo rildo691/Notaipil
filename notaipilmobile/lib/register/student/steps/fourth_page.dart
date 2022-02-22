@@ -38,7 +38,7 @@ class _FourthPageState extends State<FourthPage> {
 
   TextEditingController _emailAluno = TextEditingController();
   TextEditingController _emailEncarregado = TextEditingController();
-  TextEditingController _telefoneEncarregado = TextEditingController();
+  TextEditingController _telefone = TextEditingController();
 
   late StudentModel? newStudent;
   late Student student;
@@ -51,8 +51,7 @@ class _FourthPageState extends State<FourthPage> {
 
   var model;
 
-  Future registerUser(classroomBody, studentAccountBody) async{
-    var classroomStudentResponse = await helper.postWithoutToken("classroom_students", classroomBody);
+  Future registerUser(studentAccountBody) async{
     var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
     buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], route: !studentAccountResponse["error"] ? '/' : null);
   }
@@ -64,11 +63,11 @@ class _FourthPageState extends State<FourthPage> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       newStudent = ModalRoute.of(context)?.settings.arguments as StudentModel;
 
-      if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null && newStudent?.telefoneEncarregado != null){
+      if (newStudent?.emailAluno != null && newStudent?.emailEncarregado!= null && newStudent?.telefone != null){
         setState((){
           _emailAluno.text = newStudent!.emailAluno.toString();
           _emailEncarregado.text = newStudent!.emailEncarregado.toString();
-          _telefoneEncarregado.text = newStudent!.telefoneEncarregado.toString();
+          _telefone.text = newStudent!.telefone.toString();
         });
       }
     });
@@ -115,9 +114,7 @@ class _FourthPageState extends State<FourthPage> {
                               children: [
                                 buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailAluno),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                buildTextFieldRegister("E-mail do Encarregado", TextInputType.emailAddress, _emailEncarregado),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                buildTextFieldRegister("Telefone do Encarregado", TextInputType.number, _telefoneEncarregado),
+                                buildTextFieldRegister("Telefone", TextInputType.number, _telefone),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Container(
                                   padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -139,7 +136,7 @@ class _FourthPageState extends State<FourthPage> {
                                           ),
                                         ),
                                         onTap: (){
-                                          var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                          var model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefone: _telefone.text);
                                           Navigator.pushNamed(context, '/third', arguments: model);
                                         },
                                       ),
@@ -158,22 +155,17 @@ class _FourthPageState extends State<FourthPage> {
                                         ),
                                         onTap: (){
                                           setState(() {
-                                            model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefoneEncarregado: _telefoneEncarregado.text);
+                                            model = newStudent?.copyWith(emailAluno: _emailAluno.text, emailEncarregado: _emailEncarregado.text, telefone: _telefone.text);
                                           });
 
-                                          classroomStudent = ClassroomStudentModel(
-                                            studentId: model!.numeroProcesso,
-                                            classroomId: model.turma
-                                          );
                                           studentAccount = StudentAccountModel(
                                             bilhete: model.numeroBI, 
                                             email: model.emailAluno, 
-                                            emailEducator: model.emailEncarregado,
-                                            telephoneEducator: model.telefoneEncarregado,
+                                            telephone: model.telefone,
                                             process: model.numeroProcesso,
                                             classroomId: model.turma,
                                           );       
-                                            if (_telefoneEncarregado.text.length > 9 || _telefoneEncarregado.text.length < 9){
+                                            if (_telefone.text.length > 9 || _telefone.text.length < 9){
                                             Fluttertoast.showToast(
                                               msg: "Número de telefone deve possuir 9 dígitos.",
                                               toastLength: Toast.LENGTH_LONG,
@@ -185,7 +177,7 @@ class _FourthPageState extends State<FourthPage> {
                                             _isValid = true;
                                           }
                                             if (_formKey.currentState!.validate() && _isValid){
-                                            registerUser(classroomStudent.toJson(), studentAccount.toJson()); 
+                                            registerUser(studentAccount.toJson()); 
                                           }
                                         },
                                       )

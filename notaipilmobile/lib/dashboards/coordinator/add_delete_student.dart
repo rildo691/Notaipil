@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+import 'package:intl/intl.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -12,6 +14,11 @@ import 'package:notaipilmobile/parts/register.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
+import 'package:notaipilmobile/register/model/student.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
@@ -20,6 +27,10 @@ import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
+import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
+
+/**User Interface */
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class AddDeleteStudent extends StatefulWidget {
 
@@ -41,6 +52,16 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
 
   TextEditingController _processController = TextEditingController();
   TextEditingController _numberController = TextEditingController();
+  TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _numeroBIController = TextEditingController();
+  TextEditingController _birthdate = TextEditingController();
+
+  
+  ClassroomStudentModel classroomStudent = ClassroomStudentModel();
+  Student studentAccount = Student();
+
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  GlobalKey<FormState> _key2 = GlobalKey<FormState>();
 
   String? _areaId;
 
@@ -48,6 +69,8 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
   var area = [];
   var students = [];
   var gender = [];
+  var student;
+  var _genderValue;
 
   @override
   void initState(){
@@ -201,7 +224,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 30.0),
                             width: SizeConfig.screenWidth,
-                            height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 50 : SizeConfig.screenHeight !* students.length / 6 : SizeConfig.screenHeight !* students.length / 25,
+                            height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 50 : SizeConfig.screenHeight !* students.length / 6 : SizeConfig.screenHeight !* ((students.length * 10)/60),
                             color: Color.fromARGB(255, 34, 42, 55),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -485,42 +508,264 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,
             height: SizeConfig.screenHeight !* .5,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(message, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
-                    IconButton(
-                      icon: Icon(Icons.close, color: Colors.white),
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                    )
-                  ]
-                ),
-                buildTextFieldRegister("Processo", TextInputType.number, _processController),
-                buildTextFieldRegister("N.º", TextInputType.number, _numberController),
-                ElevatedButton(
-                  child: Text("Concluir"),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(0, 209, 255, 0.49),
-                    onPrimary: Colors.white,
-                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
-                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+            child: Form(
+              key: _key,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(message, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                      )
+                    ]
                   ),
-                  onPressed: (){
-                    
-                  },
-                ),
-              ]
+                  buildTextFieldRegister("Processo", TextInputType.number, _processController),
+                  buildTextFieldRegister("N.º", TextInputType.number, _numberController),
+                  ElevatedButton(
+                    child: Text("Concluir"),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color.fromRGBO(0, 209, 255, 0.49),
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                      minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                    ),
+                    onPressed: () async{
+                      if (_key.currentState!.validate()){
+                        var response = await helper.get("students/${_processController.text}");
+            
+                        Map<String, dynamic> map = {
+                          'data': response["data"],
+                          'error': response["error"],
+                          'status': response["status"]
+                        };
+                        
+                      setState((){
+                          student = map;
+                        });
+              
+                        if (student["error"] == false){
+                          classroomStudent = ClassroomStudentModel(
+                            number: int.parse(_numberController.text),
+                            studentId: int.parse(_processController.text),
+                            classroomId: widget.classroomId
+                          );
+                          
+                          var response = await helper.postWithoutToken("classroom_students", classroomStudent.toJson());
+                          Navigator.pop(context);
+                          buildModalMaterialPage(context, response["error"], message, MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));
+                        } else {
+                          Navigator.pop(context);
+                          buildQuestionModal(context, student["error"], "Esse estudante não existe. Deseja cadastrá-lo?");
+                        }
+                      }
+                    },
+                  ),
+                ]
+              ),
             ),
           )
         );
       }
     );
   }
+
+  Future<Widget>? buildRegisterModal(BuildContext context, message){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* 3,
+            height: SizeConfig.screenHeight !* 3,
+            child: Form(
+              key: _key2,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(message, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                        IconButton(
+                          icon: Icon(Icons.close, color: Colors.white),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        )
+                      ]
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 5,
+                    ),
+                    buildTextFieldRegister("Processo", TextInputType.number, _processController),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 4,
+                    ),
+                    buildTextFieldRegister("Nome completo", TextInputType.text, _fullNameController),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 4,
+                    ),
+                    buildTextFieldRegister("Bilhete de identidade", TextInputType.text, _numeroBIController),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 4,
+                    ),
+                    DateTimeField(
+                      decoration: InputDecoration(
+                        labelText: "Data de Nascimento",
+                        suffixIcon: Icon(Icons.event_note, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
+                      controller: _birthdate,
+                      format: DateFormat("yyyy-MM-dd"),
+                      style:  TextStyle(color: Colors.white),
+                      onShowPicker: (BuildContext context, currentValue) {
+                        return showDatePicker(
+                          context: context,
+                          locale: const Locale("pt"),
+                          firstDate: DateTime(1900),
+                          initialDate: DateTime.now(),
+                          lastDate: DateTime.now(),
+                        ).then((date){
+                          setState((){
+                            _birthdate.text = date.toString();
+                          });
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 4,
+                    ),
+                    DropdownButtonFormField(
+                      hint: Text("Sexo"),
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Color(0xFF202733),
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      dropdownColor: Colors.black,
+                      items: [
+                        DropdownMenuItem(child: Text("Masculino"), value: "M",),
+                        DropdownMenuItem(child: Text("Feminino"), value: "F",),
+                      ],
+                      value: _genderValue,
+                      onChanged: (newValue){
+                        _genderValue= newValue.toString();
+                      },
+                      validator: (value) => value == null ? 'Preencha o campo Sexo' : null,
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier !* 5,
+                    ),
+                    ElevatedButton(
+                      child: Text("Concluir"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(0, 209, 255, 0.49),
+                        onPrimary: Colors.white,
+                        textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                        minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                      ),
+                      onPressed: () async{
+                        
+                        studentAccount = Student(
+                          bi: _numeroBIController.text,
+                          birthdate: _birthdate.text,
+                          fullName: _fullNameController.text,
+                          gender: _genderValue.toString(),
+                          process: int.parse(_processController.text),
+                        );
+                          
+                        var response = await helper.postWithoutToken("students", studentAccount.toJson());
+                        Navigator.pop(context);
+                        buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));
+                      },
+                    ),
+                  ]
+                ),
+              ),
+            ),
+          )
+        );
+      }
+    );
+  }
+
+  Future<Widget>? buildQuestionModal(context, error, message){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ButtonBar(
+                      children: [
+                        ElevatedButton(
+                          child: Text("Sim"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromRGBO(0, 209, 255, 0.49),
+                            onPrimary: Colors.white,
+                            textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                            minimumSize: Size(SizeConfig.widthMultiplier !* 32, SizeConfig.heightMultiplier !* 6.5)
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                            buildRegisterModal(context, "Cadastrar Aluno");
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text("Não"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                            onPrimary: Colors.white,
+                            textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                            minimumSize: Size(SizeConfig.widthMultiplier !* 32, SizeConfig.heightMultiplier !* 6.5)
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ]
+            ),
+          )
+        );
+      }
+    );
+  } 
 }

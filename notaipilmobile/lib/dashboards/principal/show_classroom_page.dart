@@ -212,7 +212,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                             Container(
                               padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 10.0),
                               width: SizeConfig.screenWidth,
-                              height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 35 : SizeConfig.screenHeight : SizeConfig.screenHeight !* students.length / 25,
+                              height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 50 : SizeConfig.screenHeight !* students.length / 6 : SizeConfig.screenHeight !* ((students.length * 10)/60),
                               color: Color.fromARGB(255, 34, 42, 55),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

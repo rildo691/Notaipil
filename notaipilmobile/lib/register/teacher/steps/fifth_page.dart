@@ -41,8 +41,6 @@ class _FifthPageState extends State<FifthPage> {
   void initState() {
     super.initState();
 
-    
-      
         WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
         newTeacher = ModalRoute.of(context)?.settings.arguments as TeacherModel;
 

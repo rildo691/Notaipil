@@ -60,13 +60,21 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''), // English, no country code
+        Locale('es', ''), // Spanish, no country code
+        Locale('pt', ''),
+      ],
       routes: {
         '/': (_) => Login(),
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
-        /*'/principalDashboard': (_) => /*MainPage()*/,*/
-        //'/coordinatorDashboard': (_) => coordinator.MainPage(),
       },
     );
   }

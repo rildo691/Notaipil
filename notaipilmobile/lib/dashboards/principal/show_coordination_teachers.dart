@@ -207,6 +207,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                                   child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.vertical,
+                                    physics: BouncingScrollPhysics(),
                                     itemCount: teachers.length,
                                     itemBuilder: (context, index){
                                       //getQualificationsById(teachers[index]["teacherAccount"]["qualificationId"]).then((value) => setState((){qualification = value;}));

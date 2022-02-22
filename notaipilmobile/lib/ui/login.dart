@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
   var user;
 
   Future signIn(String email, String pass) async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map body = {
       'email': email.toString().trim(),
       'password': pass.toString().trim(),
