@@ -8,7 +8,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/register/model/responseModel.dart';
+
+/**Model */
+import 'package:notaipilmobile/register/model/classroomModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -40,6 +42,8 @@ class _CreateClassroomState extends State<CreateClassroom> {
   TextEditingController _roomController = TextEditingController();
 
   GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  ClassroomModel? classroom;
 
   var _periodValue;
   var _placeValue;
@@ -414,16 +418,16 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                     ),
                                     onPressed: () async{
                                       if (_key.currentState!.validate()){
-                                        Map<String, dynamic> body = {
-                                          "room": _roomController.text,
-                                          "code": _codeController.text,
-                                          "period": _periodValue.toString(),
-                                          "place": _placeValue.toString(),
-                                          "gradeId": _gradeValue.toString(),
-                                          "courseId": _courseValue.toString(),
-                                        };
-
-                                        var response = await helper.postWithoutToken("classrooms", body);
+                                        classroom = ClassroomModel(
+                                          room: _roomController.text,
+                                          code: _codeController.text,
+                                          period: _periodValue.toString(),
+                                          place: _placeValue.toString(),
+                                          gradeId: _gradeValue.toString(),
+                                          courseId: _courseValue.toString()
+                                        );
+                                      
+                                        var response = await helper.postWithoutToken("classrooms", classroom!.toJson());
                                         
                                       }
                                     },
