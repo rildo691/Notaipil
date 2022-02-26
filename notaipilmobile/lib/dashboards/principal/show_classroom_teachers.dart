@@ -192,7 +192,8 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           return Container( 
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
                             width: SizeConfig.screenWidth,
-                            height: filter.length > 7 && filter.length < 13 ? SizeConfig.screenHeight !* filter.length / 8 : filter.length > 13 && filter.length < 22 ? SizeConfig.screenHeight !* filter.length / 9 - filter.length / .2 : filter.length > 22 ? SizeConfig.screenHeight !* filter.length / 10.5 -  filter.length / .15 : SizeConfig.screenHeight !- filter.length / .1,
+                            /*height: filter.length > 7 && filter.length < 13 ? SizeConfig.screenHeight !* filter.length / 8 : filter.length > 13 && filter.length < 22 ? SizeConfig.screenHeight !* filter.length / 9 - filter.length / .2 : filter.length > 22 ? SizeConfig.screenHeight !* filter.length / 10.5 -  filter.length / .15 : SizeConfig.screenHeight !- filter.length / .1,*/
+                            height: SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
                             child: Column(
                               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,57 +238,64 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                     children: [
                                       Text("PROFESSORES", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 10,),
-                                      DataTable(
-                                        columnSpacing: SizeConfig.widthMultiplier !* 7.5,
-                                        columns: [
-                                          DataColumn(
-                                            label: Text(""),
-                                            numeric: false,
-                                          ),
-                                          DataColumn(
-                                            label: Text("Nome"),
-                                            numeric: false,
-                                          ),
-                                          DataColumn(
-                                            label: Text("Sexo"),
-                                            numeric: false,
-                                          ),
-                                          DataColumn(
-                                            label: Text("Disciplina"),
-                                            numeric: false,
-                                          ),
-                                        ],
-                                        rows: filter.map((e) => 
-                                          DataRow(
-                                            cells: [
-                                              DataCell(
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                      Expanded(
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          children: [
+                                              DataTable(
+                                              columnSpacing: SizeConfig.widthMultiplier !* 7.5,
+                                              columns: [
+                                                DataColumn(
+                                                  label: Text(""),
+                                                  numeric: false,
+                                                ),
+                                                DataColumn(
+                                                  label: Text("Nome"),
+                                                  numeric: false,
+                                                ),
+                                                DataColumn(
+                                                  label: Text("Sexo"),
+                                                  numeric: false,
+                                                ),
+                                                DataColumn(
+                                                  label: Text("Disciplina"),
+                                                  numeric: false,
+                                                ),
+                                              ],
+                                              rows: filter.map((e) => 
+                                                DataRow(
+                                                  cells: [
+                                                    DataCell(
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                                      )
+                                                    ),
+                                                    DataCell(
+                                                      Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"])
+                                                      )
+                                                    ),
+                                                    DataCell(
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["gender"])
+                                                      )
+                                                    ),
+                                                    DataCell(
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: Text(e["subject"]["subjectName"])
+                                                      )
+                                                    ),
+                                                    
+                                                  ]
                                                 )
-                                              ),
-                                              DataCell(
-                                                Align(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"])
-                                                )
-                                              ),
-                                              DataCell(
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["gender"])
-                                                )
-                                              ),
-                                              DataCell(
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(e["subject"]["subjectName"])
-                                                )
-                                              ),
-                                              
-                                            ]
-                                          )
-                                        ).toList(),
+                                              ).toList(),
+                                            ),
+                                          ]
+                                        ),
                                       ),
                                     ],
                                   ),

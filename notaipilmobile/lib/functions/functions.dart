@@ -677,3 +677,7 @@ ApiService helper = ApiService();
     }
     return principal;
   }
+
+  void signOut(){
+    
+  }

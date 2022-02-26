@@ -237,7 +237,6 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                                     physics: BouncingScrollPhysics(),
                                     itemCount: teachers.length,
                                     itemBuilder: (context, index){
-                                      //getQualificationsById(teachers[index]["teacherAccount"]["qualificationId"]).then((value) => setState((){qualification = value;}));
                                       return Column(
                                         children: [
                                           _buildTeacherCard(teachers[index], qualification[index]),

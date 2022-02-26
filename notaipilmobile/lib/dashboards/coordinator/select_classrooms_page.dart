@@ -199,7 +199,8 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                           Container(
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 10.0),
                             width: SizeConfig.screenWidth,
-                            height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
+                            /*height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,*/
+                            height: SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -234,43 +235,50 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                DataTable(
-                                  showCheckboxColumn: true,
-                                  columnSpacing: SizeConfig.widthMultiplier !* 27,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text("TURMAS"),
-                                      numeric: false
-                                    ),
-                                    DataColumn(
-                                      label: Text("CLASSE"),
-                                      numeric: false,
-                                    )
-                                  ],
-                                  rows: List<DataRow>.generate(classrooms.length, (index) => 
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(classrooms[index]["name"])
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children:[ 
+                                      DataTable(
+                                        showCheckboxColumn: true,
+                                        columnSpacing: SizeConfig.widthMultiplier !* 27,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text("TURMAS"),
+                                            numeric: false
+                                          ),
+                                          DataColumn(
+                                            label: Text("CLASSE"),
+                                            numeric: false,
+                                          )
+                                        ],
+                                        rows: List<DataRow>.generate(classrooms.length, (index) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(classrooms[index]["name"])
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(classrooms[index]["grade"]["name"] + "ª")
+                                                )
+                                              ),
+                                            ],
+                                            selected: _selected![index],
+                                            onSelectChanged: (bool? value){
+                                              _selected![index] = value!;
+                                              setState((){
+                                                getClassroomsByCourse(_courseValue);
+                                              });
+                                            }
                                           )
                                         ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(classrooms[index]["grade"]["name"] + "ª")
-                                          )
-                                        ),
-                                      ],
-                                      selected: _selected![index],
-                                      onSelectChanged: (bool? value){
-                                        _selected![index] = value!;
-                                        setState((){
-                                          getClassroomsByCourse(_courseValue);
-                                        });
-                                      }
-                                    )
+                                      ),
+                                    ]  
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3.5),

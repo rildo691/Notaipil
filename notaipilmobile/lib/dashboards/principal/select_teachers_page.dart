@@ -45,13 +45,26 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   TextEditingController _nameController = TextEditingController();
 
-  bool isLoaded = false;
+  bool isFull = false;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  List<bool>? _selected;
 
   int _selectedIndex = 0;
 
   var teachers = [];
+
+  @override
+  void initState(){
+    super.initState();
+
+    getAllTeachers().then((value) => setState((){teachers = value.toList();}));
+  }
+
+  Future<void> start() async{
+    await Future.delayed(Duration(seconds: 3));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,19 +174,19 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
-                    future: getAllTeachers(),
+                    future: start(),
                     builder: (context, snapshot){
                       switch(snapshot.connectionState){
                         case ConnectionState.waiting:
                         case ConnectionState.none:
                           return Container(
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
+                            height: SizeConfig.screenHeight !* 2,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
@@ -185,7 +198,10 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                             return Container();
                           } else {
 
-                            teachers = (snapshot.data! as List);
+                            if (!isFull){
+                              _selected = List<bool>.generate(teachers.length, (index) => false);
+                              isFull = true;
+                            }
                             
                             return 
                             Column(
@@ -193,54 +209,94 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                ListView(
-                                  children: [
-                                    DataTable(
-                                      columns: [
-                                        DataColumn(
-                                          label: Text(""),
-                                          numeric: false,
-                                        ),
-                                        DataColumn(
-                                          label: Text("Professores"),
-                                          numeric: false,
-                                        ),
-                                        DataColumn(
-                                          label: Text("Bilhete de identidade"),
-                                          numeric: false,
-                                        ),
-                                      ],
-                                      rows: teachers.map((e) => 
-                                        DataRow(
-                                          cells: [
-                                            DataCell(
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Icon(Icons.account_circle_outlined, color: Colors.white),
-                                              )
-                                            ),
-                                            DataCell(
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(e["teacherAccount"]["personalData"]["fullName"].toString())
-                                              )
-                                            ),
-                                            DataCell(
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(e["teacherAccount"]["personalData"]["bi"].toString())
-                                              )
-                                            )
-                                          ]
-                                        )
-                                      ).toList(),
-                                    )
-                                  ],
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    _filter(value);
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      getAllTeachers().then((value) => setState((){teachers = value;}));
+                                      setState((){
+                                        isFull = false;
+                                      });
+                                    }
+                                  },
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      DataTable(
+                                        showCheckboxColumn: true,
+                                        columnSpacing: SizeConfig.widthMultiplier !* 3,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(""),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Professores"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("B.I."),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(teachers.length, (index) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(teachers[index]["teacherAccount"]["personalData"]["fullName"].toString())
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(teachers[index]["teacherAccount"]["personalData"]["bi"].toString())
+                                                )
+                                              )
+                                            ],
+                                            selected: _selected![index],
+                                            onSelectChanged: (bool? value){
+                                              _selected![index] = value!;
+                                              setState(() {
+                                                getAllTeachers();
+                                              });
+                                            }
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 Container(
                                   width: SizeConfig.widthMultiplier !* 30,
                                   height: SizeConfig.heightMultiplier !* 7,
@@ -334,39 +390,11 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
       controller: controller,
     );
   }
-}
 
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
+  _filter(value){
+    getAllTeachersByName(value).then((value) => setState((){teachers = value;}));
+    setState(() {
+      isFull = false;
+    });
+  }
 }

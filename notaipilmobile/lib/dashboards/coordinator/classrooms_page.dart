@@ -199,7 +199,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
-                    future: Future.wait([getAreas(), getCoursesCode(_value), getGrade(), getClassroom(_courseValue, _gradeValue), getClassroomStudent(_classroomId)]),
+                    future: Future.wait([getAreas(), getCoursesCode(_areaId), getGrade(), getClassroom(_courseValue, _gradeValue), getClassroomStudent(_classroomId)]),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:
@@ -261,8 +261,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ],
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                  DropdownButtonFormField<String>(
-                                    hint: Text("Área de Formação"),
+                                  /*DropdownButtonFormField<String>(
+                                    hint: Text("Curso"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
@@ -270,7 +270,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         fillColor: Color(0xFF202733),
                                       ),
                                     dropdownColor: Colors.black,
-                                    items: areas.map((e) => 
+                                    items: courses.map((e) => 
                                       DropdownMenuItem<String>(
                                         value: e["id"],
                                         child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
@@ -278,8 +278,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ).toList(),
                                     value: _value,
                                     onChanged: (newValue){
-                                      print("clicked");
-                                      courses.clear();         
                                       classrooms.clear();
                                       students.clear();
                                       _courseValue = null;
@@ -289,9 +287,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       setState(() {
                                         _value = newValue.toString();
                                       });
-                                      getCoursesCode(newValue).then((value) => setState((){courses = value;}));
                                     }
-                                  ),
+                                  ),*/
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -524,7 +521,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ],
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                  DropdownButtonFormField<String>(
+                                  /*DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
@@ -551,7 +548,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       });
                                       getCoursesCode(newValue).then((value) => setState((){courses = value;}));
                                     }
-                                  ),
+                                  ),*/
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -657,7 +654,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ],
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                  DropdownButtonFormField<String>(
+                                  /*DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                       decoration: InputDecoration(
@@ -684,7 +681,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                       });
                                       getCoursesCode(newValue).then((value) => setState((){courses = value;}));
                                     }
-                                  ),
+                                  ),*/
                                   SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
