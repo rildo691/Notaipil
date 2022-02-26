@@ -25,17 +25,11 @@ class SizeConfig {  //Responsive class
       if (screenWidth !< 450) {  // Device is smartphone
         isMobilePortrait = true;
       }
-
-      print(screenWidth);
-      print(screenHeight);
     } else {                                    // Landscape mode
       screenWidth = constraints.maxWidth; // Actual height will be width in landscape
       screenHeight = constraints.maxHeight; // and vice versa
       isPortrait = false;
       isMobilePortrait = false;
-
-      print(screenWidth);
-      print(screenHeight);
     }
 
     // Calculate blocks

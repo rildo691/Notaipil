@@ -51,6 +51,8 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  final FocusNode currentFocus = FocusNode();
+
   var teachers = [];
   var qualification;
 
@@ -58,7 +60,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
   void initState(){
     super.initState();
 
-    getAllTeachers().then((value) => setState((){teachers = value;}));
+    getAllTeachers().then((value) => setState((){teachers = value.toList();}));
   }
 
    @override
@@ -201,7 +203,32 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 buildHeaderPartTwo("Professores"),
-                                buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    _filter(value);
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      getAllTeachers().then((value) => setState((){teachers = value;}));
+                                    }
+                                  },
+                                ),
                                 SizedBox(
                                   height: SizeConfig.heightMultiplier !* 60,
                                   child: ListView.builder(
@@ -343,5 +370,9 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
         ),
       ],
     );
+  }
+
+  _filter(value){
+    getAllTeachersByName(value).then((value) => setState((){teachers = value;}));
   }
 }

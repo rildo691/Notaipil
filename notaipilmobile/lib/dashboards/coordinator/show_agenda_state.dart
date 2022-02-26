@@ -194,7 +194,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                             color: Color.fromARGB(255, 34, 42, 55),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 buildHeaderPartTwo("Estado das minipautas"),
                                 Column(

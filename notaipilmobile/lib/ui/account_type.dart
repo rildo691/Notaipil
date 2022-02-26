@@ -35,9 +35,17 @@ class AccountType extends StatelessWidget {
                           buildHeaderPartTwo("Tipo de Conta"),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               _buildAccountButton(context, "Professor", '/teacher'),
                               _buildAccountButton(context, "Aluno", '/student')
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              _buildAccountButton(context, "Encarregado", '/educator'),
                             ],
                           ),
                           Container(

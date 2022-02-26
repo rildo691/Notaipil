@@ -10,6 +10,7 @@ import 'package:notaipilmobile/ui/choose_profile.dart';
 /**Registers */
 import 'package:notaipilmobile/register/student/student_register.dart';
 import 'package:notaipilmobile/register/teacher/teacher_register.dart';
+import 'package:notaipilmobile/register/educator/educator_register.dart';
 
 /**Configurations */
 import 'configs/size_config.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/type': (_) => const AccountType(),
         '/student': (_) => StudentRegister(),
         '/teacher': (_) => TeacherRegister(),
+        '/educator': (_) => EducatorRegister(),
       },
     );
   }

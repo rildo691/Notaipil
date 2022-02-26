@@ -11,6 +11,7 @@ String classroomModelToJson(ClassroomModel data) => json.encode(data.toJson());
 class ClassroomModel {
     ClassroomModel({
         this.id,
+        this.name,
         this.room,
         this.code,
         this.period,
@@ -20,6 +21,7 @@ class ClassroomModel {
     });
 
     String? id;
+    String? name;
     String? room;
     String? code;
     String? period;
@@ -29,6 +31,7 @@ class ClassroomModel {
 
     factory ClassroomModel.fromJson(Map<String, dynamic> json) => ClassroomModel(
         id: json["id"],
+        name: json["name"],
         room: json["room"],
         code: json["code"],
         period: json["period"],

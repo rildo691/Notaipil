@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,6 +16,7 @@ import 'dart:math';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
+import 'package:http/http.dart' as http;
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
@@ -24,6 +29,7 @@ import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
+
 
 class SelectTeachersPage extends StatefulWidget {
   late var principal = [];
@@ -39,7 +45,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   TextEditingController _nameController = TextEditingController();
 
-  DataTableSource _data = MyData();
+  bool isLoaded = false;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -178,9 +184,9 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                           if (snapshot.hasError){
                             return Container();
                           } else {
-                            
-                            teachers = (snapshot.data! as List);
 
+                            teachers = (snapshot.data! as List);
+                            
                             return 
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,24 +196,48 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                PaginatedDataTable(
-                                  source: _data,
-                                  rowsPerPage: 5,
-                                  columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                                  showCheckboxColumn: true,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text("Profile"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Coordenador"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Área de Formação"),
-                                      numeric: false,
-                                    ),
+                                ListView(
+                                  children: [
+                                    DataTable(
+                                      columns: [
+                                        DataColumn(
+                                          label: Text(""),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text("Professores"),
+                                          numeric: false,
+                                        ),
+                                        DataColumn(
+                                          label: Text("Bilhete de identidade"),
+                                          numeric: false,
+                                        ),
+                                      ],
+                                      rows: teachers.map((e) => 
+                                        DataRow(
+                                          cells: [
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                              )
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(e["teacherAccount"]["personalData"]["fullName"].toString())
+                                              )
+                                            ),
+                                            DataCell(
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(e["teacherAccount"]["personalData"]["bi"].toString())
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ).toList(),
+                                    )
                                   ],
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3.5),

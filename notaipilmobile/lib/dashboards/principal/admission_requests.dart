@@ -325,7 +325,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                 ),
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, e)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SingleAdmissionRequestPage(widget.principal, index)));
               },
               child: Column(
                 children: <Widget>[

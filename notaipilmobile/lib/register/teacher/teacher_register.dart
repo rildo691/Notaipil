@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notaipilmobile/register/student/steps/first_page.dart';
 
 /**Steps to complete the task */
 import 'package:notaipilmobile/register/teacher/steps/first_page.dart' as teacher;
@@ -7,9 +6,6 @@ import 'package:notaipilmobile/register/teacher/steps/second_page.dart' as teach
 import 'package:notaipilmobile/register/teacher/steps/third_page.dart' as teacher;
 import 'package:notaipilmobile/register/teacher/steps/fourth_page.dart' as teacher;
 import 'package:notaipilmobile/register/teacher/steps/fifth_page.dart' as teacher;
-
-/**Configurations */
-import 'package:notaipilmobile/configs/size_config.dart';
 
 class TeacherRegister extends StatefulWidget {
 
