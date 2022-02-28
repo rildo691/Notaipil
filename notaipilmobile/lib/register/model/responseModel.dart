@@ -20,7 +20,7 @@ Future<Widget>? buildModal(context, error, message, {route}){
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
                 Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("OK"),
@@ -59,7 +59,7 @@ Future<Widget>? buildModalMaterialPage(context, error, message, MaterialPageRout
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
                 Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("OK"),
@@ -80,3 +80,4 @@ Future<Widget>? buildModalMaterialPage(context, error, message, MaterialPageRout
       }
     );
 } 
+

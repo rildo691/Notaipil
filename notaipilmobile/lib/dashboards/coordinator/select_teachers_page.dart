@@ -34,11 +34,12 @@ class SelectTeachersPage extends StatefulWidget {
 class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   TextEditingController _nameController = TextEditingController();
-  DataTableSource _data = MyData();
 
   int _selectedIndex = 0;
 
   String? _areaId;
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var coursesLength;
   var area = [];
@@ -73,6 +74,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -82,7 +84,9 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _scaffoldKey.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -174,26 +178,6 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text("Profile"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Nome"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Bilhete"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
                       Container(
                         width: SizeConfig.widthMultiplier !* 30,
@@ -270,39 +254,4 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
       },
     );  
   }
-}
-
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": "Item $index"
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
 }

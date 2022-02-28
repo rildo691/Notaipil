@@ -21,6 +21,7 @@ class TeacherAccountModel {
         this.ipilDate,
         this.educationDate,
         this.category,
+        this.avatar,
     });
 
     String? bi;
@@ -34,6 +35,7 @@ class TeacherAccountModel {
     DateTime? ipilDate;
     DateTime? educationDate;
     String? category;
+    String? avatar;
 
     factory TeacherAccountModel.fromJson(Map<String, dynamic> json) => TeacherAccountModel(
         bi: json["bi"],
@@ -47,6 +49,7 @@ class TeacherAccountModel {
         ipilDate: DateTime.parse(json["ipilDate"]),
         educationDate: DateTime.parse(json["educationDate"]),
         category: json["category"],
+        avatar: json["avatar"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,6 +64,6 @@ class TeacherAccountModel {
         "ipilDate": "${ipilDate!.year.toString().padLeft(4, '0')}-${ipilDate!.month.toString().padLeft(2, '0')}-${ipilDate!.day.toString().padLeft(2, '0')}",
         "educationDate": "${educationDate!.year.toString().padLeft(4, '0')}-${educationDate!.month.toString().padLeft(2, '0')}-${educationDate!.day.toString().padLeft(2, '0')}",
         "category": category,
-
+        "avatar": avatar,
     };
 }

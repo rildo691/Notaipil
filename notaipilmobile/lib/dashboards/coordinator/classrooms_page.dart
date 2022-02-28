@@ -66,6 +66,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
   
   ApiService helper = ApiService();
 
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   int _currentPos = 0;
   int _selectedIndex = 1;
 
@@ -105,6 +107,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
+              key: _scaffoldKey,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -114,7 +117,9 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   IconButton(
                     padding: EdgeInsets.only(right: 20.0),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    onPressed: (){
+                      _scaffoldKey.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -261,35 +266,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     ],
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                  /*DropdownButtonFormField<String>(
-                                    hint: Text("Curso"),
-                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        filled: true,
-                                        fillColor: Color(0xFF202733),
-                                      ),
-                                    dropdownColor: Colors.black,
-                                    items: courses.map((e) => 
-                                      DropdownMenuItem<String>(
-                                        value: e["id"],
-                                        child: Text(e["name"].toString().length > 35 ? e["name"].toString().substring(0, 38) + "..." : e["name"].toString())
-                                      )
-                                    ).toList(),
-                                    value: _value,
-                                    onChanged: (newValue){
-                                      classrooms.clear();
-                                      students.clear();
-                                      _courseValue = null;
-                                      _gradeValue = null;   
-                                      _classroomId = null;   
-                                      _classroomsExists = false;                     
-                                      setState(() {
-                                        _value = newValue.toString();
-                                      });
-                                    }
-                                  ),*/
-                                  SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,

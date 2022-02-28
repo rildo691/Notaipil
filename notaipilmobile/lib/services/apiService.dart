@@ -91,7 +91,35 @@ class ApiService{
     return responseJson;
   }
 
-  dynamic _responseStatus(http.Response response){
+  Future<dynamic> postMultipart(String url, Map body, {String? token}) async{
+    var request = await http.MultipartRequest("POST", Uri.parse(_baseUrl + url));
+
+    request.headers.addAll({"Content-Type": "multipart/form-data"});
+
+    request.fields["bi"] = body["bi"];
+    request.fields["fullName"] = body["fullName"];
+    request.fields["birthdate"] = body["birthdate"];
+    request.fields["gender"] = body["gender"];
+    request.fields["email"] = body["email"];
+    request.fields["telephone"] = body["telephone"];
+    request.fields["qualificationId"] = body["qualificationId"];
+    request.fields["regime"] = body["regime"];
+    request.fields["ipilDate"] = body["ipilDate"];
+    request.fields["educationDate"] = body["educationDate"];
+    request.fields["category"] = body["category"];
+
+    request.files.add(await http.MultipartFile.fromPath('avatar', body["avatar"]));
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    final responseData = json.decode(responsed.body);
+    
+    if (response.statusCode == 200){
+      return responseData;
+    } 
+  }
+
+  dynamic _responseStatus(response){
     switch (response.statusCode) {
       case 200:
         var responseJson = json.decode(response.body);

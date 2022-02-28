@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -45,9 +51,13 @@ class _FourthPageState extends State<FourthPage> {
   TextEditingController _tempoEd = TextEditingController();
   TextEditingController _photo = TextEditingController();
 
+  File? image;
+
   Future registerTeacher(body) async{
-    var teacherResponse = await helper.postWithoutToken("teacher_accounts", body);
-    buildModal(context, teacherResponse["error"], teacherResponse["message"], route: !teacherResponse["error"] ? '/' : null);
+    /*var teacherResponse = await helper.postWithoutToken("teacher_accounts", body);
+    buildModal(context, teacherResponse["error"], teacherResponse["message"], route: !teacherResponse["error"] ? '/' : null);*/
+    var request = await helper.postMultipart("teacher_accounts", body);
+    buildModal(context, request["error"], request["message"], route: !request["error"] ? '/' : null);
   }
 
   @override
@@ -179,7 +189,7 @@ class _FourthPageState extends State<FourthPage> {
                                     }
                                   },
                                   onTap: (){
-                                    
+                                    _showOptions(context);
                                   },
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
@@ -224,7 +234,7 @@ class _FourthPageState extends State<FourthPage> {
                                         ),
                                         onTap: (){
                                           setState((){
-                                            model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao);
+                                            model = newTeacher?.copyWith(tempoServicoIpil: _tempoServicoIpil, tempoServicoEducacao: _tempoServicoEducacao, avatar: _photo.text);
                                           });
                                             _teacherAccount = TeacherAccountModel(
                                             bi: model?.numeroBI,
@@ -237,12 +247,13 @@ class _FourthPageState extends State<FourthPage> {
                                             regime: model?.regimeLaboral,
                                             ipilDate: model?.tempoServicoIpil,
                                             educationDate: model?.tempoServicoEducacao,
-                                            category: model?.categoria
+                                            category: model?.categoria,
+                                            avatar: model?.avatar,
                                           );
-                                            if (_formKey.currentState!.validate()){
+
+                                          if (_formKey.currentState!.validate()){
                                             registerTeacher(_teacherAccount.toJson());
                                           } else {
-                                            
                                             _buildErrorModal(model);
                                           }
                                         }
@@ -313,6 +324,25 @@ class _FourthPageState extends State<FourthPage> {
     );
   }
 
+  Future _pickImage(source) async{
+    Navigator.pop(context);
+    try{
+      final image = await ImagePicker().pickImage(source: source);
+
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      
+      setState((){
+        this.image = imageTemporary;
+        _photo.text = this.image!.path;
+      });
+
+    } on PlatformException catch (e){
+      print('Falha ao carregar a imagem: $e');
+    }
+  }
+
   Future<Widget>? _buildErrorModal(model){
     showDialog(
       context: context,
@@ -351,4 +381,89 @@ class _FourthPageState extends State<FourthPage> {
       }
     );
   }
-}
+
+   _showOptions(contex){
+    /*if (Platform.isIOS){
+      return showCupertinoModalPopup(
+        context: context, 
+        builder: (context) {
+          return CupertinoActionSheet(
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text("Abrir câmera"),
+                onPressed: (){}
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Escolher da galeria"),
+                onPressed: (){}
+              ),
+            ],
+          );
+        }
+      );
+    } else {*/
+      showModalBottomSheet(
+        context: context, 
+        builder: (context){
+          return BottomSheet(
+            builder: (context){
+              return Container(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          child: Icon(Icons.camera_alt_outlined, color: Colors.black),
+                        ),
+                        TextButton(
+                          child: Text("Abrir câmera"),
+                          style: TextButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                            ),
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.camera);
+                          }
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Container(
+                          child: Icon(Icons.photo_library_outlined, color: Colors.black),
+                        ),
+                        TextButton(
+                          child: Text("Escolher da galeria"),
+                          style: TextButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                            ),
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.gallery);
+                          }
+                        ),
+                      ]
+                    )
+                  ]
+                )
+              );
+            },
+            onClosing: (){},
+          );
+        }
+      );
+    }
+  }
+/*}*/

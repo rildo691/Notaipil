@@ -10,6 +10,7 @@ class TeacherModel{
   String? numeroBI;
   DateTime? tempoServicoIpil;
   DateTime? tempoServicoEducacao;
+  String? avatar;
   
   TeacherModel({
     this.nome,
@@ -22,7 +23,8 @@ class TeacherModel{
     this.categoria,
     this.numeroBI,
     this.tempoServicoIpil,
-    this.tempoServicoEducacao
+    this.tempoServicoEducacao,
+    this.avatar,
   });
 
   TeacherModel copyWith({    
@@ -36,7 +38,8 @@ class TeacherModel{
     String? categoria,
     String? numeroBI,
     DateTime? tempoServicoIpil,
-    DateTime? tempoServicoEducacao
+    DateTime? tempoServicoEducacao,
+    String? avatar,
   }) {
     return TeacherModel(
       nome: nome ?? this.nome,
@@ -49,7 +52,8 @@ class TeacherModel{
       categoria: categoria ?? this.categoria,
       numeroBI: numeroBI ?? this.numeroBI,
       tempoServicoIpil: tempoServicoIpil ?? this.tempoServicoIpil,
-      tempoServicoEducacao: tempoServicoEducacao ?? this.tempoServicoEducacao
+      tempoServicoEducacao: tempoServicoEducacao ?? this.tempoServicoEducacao,
+      avatar: avatar ?? this.avatar
     );
   }
   
