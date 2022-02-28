@@ -43,6 +43,7 @@ class _FourthPageState extends State<FourthPage> {
 
   TextEditingController _tempoIpil = TextEditingController();
   TextEditingController _tempoEd = TextEditingController();
+  TextEditingController _photo = TextEditingController();
 
   Future registerTeacher(body) async{
     var teacherResponse = await helper.postWithoutToken("teacher_accounts", body);
@@ -156,6 +157,29 @@ class _FourthPageState extends State<FourthPage> {
                                         _tempoServicoEducacao = date;
                                       });
                                     });
+                                  },
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  readOnly: true,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Carregar fotografia",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _photo,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Carregue uma fotografia";
+                                    }
+                                  },
+                                  onTap: (){
+                                    
                                   },
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
