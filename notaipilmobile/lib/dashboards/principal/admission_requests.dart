@@ -165,49 +165,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                   child: FutureBuilder(
                     future: getAdmissionRequests(),
                     builder: (context, snapshot){
-                      switch(snapshot.connectionState){
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return Container(
-                            width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
-                              strokeWidth: 5.0,
-                            ),
-                          );
-                        default:
-                          if (snapshot.hasError){
-                            return Container();
-                          } else {
-                            requests = (snapshot.data! as List);
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                buildHeaderPartTwo("Pedidos de adesão"),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 10),
-                                _buildTextFormField("Pesquise o n.º do bilhete", TextInputType.text, _nameController),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 12),
-                                SizedBox(
-                                  height: SizeConfig.heightMultiplier !* 49.4,
-                                  child: ListView.builder(
-                                    itemCount: requests.length,
-                                    itemBuilder: (context, index){
-                                      return Column(
-                                        children: [
-                                          _buildAdmissionCard(requests[index]),
-                                          SizedBox(height: SizeConfig.heightMultiplier !* 2,)
-                                        ]
-                                      );
-                                    },
-                                  )
-                                )
-                              ],
-                            );
-                          }
-                      }
+                      cz
                     },
                   )
                 )
