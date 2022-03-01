@@ -56,6 +56,8 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
   var teachers = [];
   var qualification;
 
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+
   @override
   void initState(){
     super.initState();
@@ -316,8 +318,8 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
     return ExpansionTileCard(
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
-      leading: CircleAvatar(
-        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
+      leading: ClipOval(
+        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
       ),
       title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: Colors.black)),

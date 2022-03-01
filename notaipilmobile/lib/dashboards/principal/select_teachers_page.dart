@@ -55,6 +55,8 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   var teachers = [];
 
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+
   @override
   void initState(){
     super.initState();
@@ -265,10 +267,11 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                           DataRow(
                                             cells: [
                                               DataCell(
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(Icons.account_circle_outlined, color: Colors.white),
-                                                )
+                                                Center(
+                                                  child: ClipOval(
+                                                    child: teachers[index]["teacherAccount"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
+                                                  ),
+                                                ),
                                               ),
                                               DataCell(
                                                 Align(

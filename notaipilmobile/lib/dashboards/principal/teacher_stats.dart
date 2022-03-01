@@ -44,6 +44,8 @@ class _TeacherStatsState extends State<TeacherStats> {
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+
   Future<void> start() async{
     await Future.delayed(Duration(seconds: 3));
   }
@@ -187,13 +189,8 @@ class _TeacherStatsState extends State<TeacherStats> {
                               children: [
                                 Text("Professor", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                 Center(
-                                  child: 
-                                    Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.all(8.0),
-                                    width: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    height: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    child: Icon(Icons.account_circle_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 17),
+                                  child: ClipOval(
+                                    child: widget.teacher["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(_baseImageUrl + widget.teacher["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3.5),

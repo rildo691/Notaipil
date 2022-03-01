@@ -46,7 +46,10 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   bool? value = false;
+
   int _selectedIndex = 0;
+  
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 
   var requests = [];
 
@@ -289,8 +292,8 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
     return ExpansionTileCard(
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
-      leading: CircleAvatar(
-        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
+      leading: ClipOval(
+        child: index["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
       ),
       title: Text(index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text(index["email"].toString(), style: TextStyle(color: Colors.black)),

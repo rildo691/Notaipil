@@ -24,7 +24,7 @@ class ApiService{
     return responseJson;
   }
 
-  Future<dynamic> getOne(String url, String, token, String id) async{
+  Future<dynamic> getOne(String url, String token, String id) async{
     var response = await http.get(
       Uri.parse(_baseUrl + url + "$id"),
       headers: {'x-access-token': 'Bearer ' + token},

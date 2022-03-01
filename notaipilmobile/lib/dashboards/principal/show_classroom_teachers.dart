@@ -41,6 +41,8 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+
   var teachers = [];
   var filter = [];
 
@@ -266,10 +268,11 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                                 DataRow(
                                                   cells: [
                                                     DataCell(
-                                                      Align(
-                                                        alignment: Alignment.center,
-                                                        child: Icon(Icons.account_circle_outlined, color: Colors.white),
-                                                      )
+                                                      Center(
+                                                        child: ClipOval(
+                                                          child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
+                                                        ),
+                                                      ),
                                                     ),
                                                     DataCell(
                                                       Align(

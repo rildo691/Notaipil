@@ -45,6 +45,8 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+
   Future<void> start() async {
     await Future.delayed(Duration(seconds: 3));
   }
@@ -160,7 +162,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                 child: Container(
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !* 1.15,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
                     future: start(),
@@ -189,25 +191,32 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                 Center(
                                   child: buildHeaderPartTwo("Pedidos de adesão"),
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 10),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Text(widget.request["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                Center(
+                                  child: ClipOval(
+                                    child: widget.request["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(_baseImageUrl + widget.request["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                 Text("Bilhete: " + widget.request["personalData"]["bi"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Nome: " + widget.request["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Sexo: " + widget.request["personalData"]["gender"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Data de nascimento: " + widget.request["personalData"]["birthdate"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 Text("Categoria: " + widget.request["category"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Habilitações Literárias: " + widget.request["qualification"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Tempo de serviço no IPIL: " + widget.request["ipilDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Tempo de serviço na Educação: " + widget.request["educationDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Regime Laboral: " + widget.request["regime"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 Text("E-mail: " + widget.request["email"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                 Text("Contacto: " + widget.request["telephone"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,11 +241,12 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                           "regime": widget.request["regime"],
                                           "ipilDate": widget.request["ipilDate"], 
                                           "educationDate": widget.request["educationDate"], 
-                                          "category": widget.request["category"]
+                                          "category": widget.request["category"],
+                                          "avatar": widget.request["avatar"],
                                         };
 
                                         var response = await helper.postWithoutToken("teacher_accounts", body);
-                                        var response2 = await helper.delete("teacher_accounts/", widget.request["id"]);
+                                        //var response2 = await helper.delete("teacher_accounts/", widget.request["id"]);
 
                                         _buildAcceptAdmissionModal("Pedido de adesão aceite com sucesso", widget.request);
                                       },
@@ -378,7 +388,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
                 Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("OK"),

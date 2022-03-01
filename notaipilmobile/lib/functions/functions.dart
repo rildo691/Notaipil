@@ -619,11 +619,13 @@ ApiService helper = ApiService();
             "createdAt": r["createdAt"],
             "personalData": r["personalData"],
             "qualification": r["qualification"],
-          };
+            "avatar": r["avatar"],
+          };          
 
           requests.add(map);
     }
 
+    requests.removeAt(4);
     return requests;
   }
 
