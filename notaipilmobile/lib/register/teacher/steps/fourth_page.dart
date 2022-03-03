@@ -325,13 +325,12 @@ class _FourthPageState extends State<FourthPage> {
   }
 
   Future _pickImage(source) async{
-    Navigator.pop(context);
     try{
       final image = await ImagePicker().pickImage(source: source);
 
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      var imageTemporary = File(image.path);
       
       setState((){
         this.image = imageTemporary;

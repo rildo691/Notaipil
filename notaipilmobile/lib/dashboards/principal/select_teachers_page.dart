@@ -269,7 +269,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                               DataCell(
                                                 Center(
                                                   child: ClipOval(
-                                                    child: teachers[index]["teacherAccount"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
+                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
                                                   ),
                                                 ),
                                               ),

@@ -43,6 +43,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
   List<bool>? _selected;
   bool _firstTime = true;
+  bool isFull = false;
 
   var coursesLength;
   var _courseValue;
@@ -193,7 +194,11 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                         } else {
 
                           courses = (snapshot.data! as List)[0];
-                          classrooms = (snapshot.data! as List)[1];
+
+                          if (!isFull){
+                            classrooms = (snapshot.data! as List)[1];
+                            isFull = true;
+                          }
 
                           if (_firstTime){
                             _selected = List<bool>.generate(classrooms.length, (index) => false);
@@ -238,7 +243,36 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                   },
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    _filter(_courseValue, value);
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      getClassroomsByCourse(_courseValue).then((value) => setState((){classrooms = value;}));
+                                      setState((){
+                                        _firstTime = true;
+                                        isFull = true;
+                                      });
+                                    }
+                                  },
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Expanded(
                                   child: ListView(
@@ -364,5 +398,13 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
         );
       },
     );
+  }
+
+  _filter(_courseValue, value){
+    getClassroomsByCourseAndName(_courseValue, value).then((value) => setState((){classrooms = value;}));
+    setState(() {
+      _firstTime = true;
+      isFull = true;
+    });
   }
 }

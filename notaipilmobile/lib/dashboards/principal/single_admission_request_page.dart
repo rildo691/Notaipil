@@ -245,7 +245,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                           "avatar": widget.request["avatar"],
                                         };
 
-                                        var response = await helper.postWithoutToken("teacher_accounts", body);
+                                        var response = await helper.postMultipart("teacher_accounts", body);
                                         //var response2 = await helper.delete("teacher_accounts/", widget.request["id"]);
 
                                         _buildAcceptAdmissionModal("Pedido de adesão aceite com sucesso", widget.request);

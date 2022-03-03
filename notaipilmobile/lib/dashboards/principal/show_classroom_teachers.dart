@@ -187,8 +187,10 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
                           teachers = (snapshot.data! as List);
                           
-                          if (filter.length == 0){                            
-                            filter.add({'teacher': teachers[0], 'subject': teachers[1]});                            
+                          if (filter.length == 0){  
+                            if (teachers.length != 0){
+                              filter.add({'teacher': teachers[0], 'subject': teachers[1]});                            
+                            }                          
                           }
 
                           return Container( 

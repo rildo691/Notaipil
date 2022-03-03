@@ -135,9 +135,9 @@ class _SecondPageState extends State<SecondPage> {
                                             }).toList(),
                                             value: _value,
                                             onChanged: (newValue){
-                                              _value = newValue.toString();
                                               courses.clear();
-                                              getCoursesCode(newValue);
+                                              setState((){_value = newValue;});
+                                              setState((){getCoursesCode(newValue);});
                                             },
                                             validator: (value) => value == null ? 'Preencha o campo Área de Formação' : null,
                                           ),
@@ -155,7 +155,7 @@ class _SecondPageState extends State<SecondPage> {
                                             items: courses.map((e) {
                                               return new DropdownMenuItem<String>(
                                                 value: e["id"].toString(),
-                                                child: Text(e["name"].toString())
+                                                child: Text(e["code"].toString())
                                               );
                                             }).toList(),
                                             value: _value2,

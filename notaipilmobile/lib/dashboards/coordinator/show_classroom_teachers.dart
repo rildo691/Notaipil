@@ -42,40 +42,12 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   String? _classroomName;
   String? _areaId;
+  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   var coursesLength;
   var area = [];
-
-  var _fakeTeachers = [
-    {
-      'name': 'Carlos Capapelo',
-      'gender': 'M',
-      'subject': 'TCC'
-    },
-    {
-      'name': 'Telma Monteiro',
-      'gender': 'F',
-      'subject': 'Telecomunicações'
-    },
-    {
-      'name': 'Edson Viegas',
-      'gender': 'M',
-      'subject': 'TLP',
-    },
-    {
-      'name': 'Desconhecido',
-      'gender': 'M',
-      'subject': 'DCM',
-    },
-    {
-      'name': 'Álvaro Delly',
-      'gender': 'M',
-      'subject': 'Química Geral'
-    }
-  ];
-
   var teachers = [];
   var filter = [];
 
@@ -230,7 +202,9 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           teachers = (snapshot.data! as List);
 
                           if (filter.length == 0){
-                            filter.add({'teacher': teachers[0], 'subject': teachers[1]});
+                            if (teachers.length != 0){
+                              filter.add({'teacher': teachers[0], 'subject': teachers[1]});
+                            }
                           }
 
                           return 
@@ -316,10 +290,11 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                                 DataRow(
                                                   cells: [
                                                     DataCell(
-                                                      Align(
-                                                        alignment: Alignment.center,
-                                                        child: Icon(Icons.account_circle_outlined, color: Colors.white),
-                                                      )
+                                                      Center(
+                                                        child: ClipOval(
+                                                          child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
+                                                        ),
+                                                      ),
                                                     ),
                                                     DataCell(
                                                       Align(
