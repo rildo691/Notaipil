@@ -23,6 +23,7 @@ import 'package:notaipilmobile/register/model/responseModel.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart' as teacher;
 
 
 
@@ -83,6 +84,16 @@ class _LoginState extends State<Login> {
       }else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Professor"){
+        userEmail = response["user"]["email"];
+
+        getSingleTeacher(userEmail).then((value) {
+          Map<String, dynamic> map = {
+            'token': response['token']
+          };
+          value.add(map);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => teacher.MainPage(value)), (route) => false);
+        });
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Educador"){
 

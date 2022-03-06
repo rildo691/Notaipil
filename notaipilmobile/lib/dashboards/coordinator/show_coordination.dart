@@ -7,8 +7,7 @@ import 'package:intl/intl.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/register.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
 /**Sessions */
@@ -508,13 +507,8 @@ class _ShowCoordinationState extends State<ShowCoordination> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+            ClipOval(
+              child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
             ),
             Text(index["teacherAccount"]["personalData"]["fullName"].toString()),
             SizedBox(width: SizeConfig.widthMultiplier !* 13),

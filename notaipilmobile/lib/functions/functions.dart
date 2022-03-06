@@ -61,6 +61,24 @@ ApiService helper = ApiService();
     return teachers;
   }
 
+  Future<List<dynamic>> getSingleTeacher(userEmail) async{
+    var teachers = [];
+    var response = await helper.get("teachers");
+
+    for (var r in response){
+      if (r["teacherAccount"]["email"] == userEmail){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "teacherAccount": r["teacherAccount"],
+        };
+
+        teachers.add(map);
+      }
+    }
+
+    return teachers;
+  }
+
   Future<List<dynamic>> getAllTeachersByName(name) async{
     var teachers = [];
     var response = await helper.get("teachers");
@@ -78,6 +96,176 @@ ApiService helper = ApiService();
     }
 
     return teachers;
+  }
+
+  Future<List<dynamic>> getTeachersClassrooms(id) async{
+    var teachers = [];
+    var courses = [];
+    var areas = [];
+    var response = await helper.get("teacher_classrooms");
+    var quantity = 0;
+
+    for (var r in response){
+
+      if (r["teacher"]["id"].toString() == id){
+        var response2 = await helper.get("subject_course_grade/${r["subjectCourseGrade"]["id"]}");
+
+        Map<String, dynamic> map = {
+          "subjectCourseGrade": response2,
+          "classroom": r["classroom"],
+        };
+
+        teachers.add(map);
+      }
+    }
+
+    return teachers;
+  }
+
+  Future<List<dynamic>> getTeachersAreasAndCourses(id) async{
+    var courses = [];
+    var areas = [];
+    var result = [];
+    var response = await helper.get("teacher_classrooms");
+
+    for (var r in response){
+      if (r["teacher"]["id"].toString() == id){
+        if (!courses.contains(r["subjectCourseGrade"]["courseId"])){
+          courses.add(r["subjectCourseGrade"]["courseId"]);
+
+          var resp = await helper.get("courses/${r["subjectCourseGrade"]["courseId"]}");
+
+          if (!areas.contains(resp["area"]["name"])){
+            areas.add(resp["area"]["name"]);
+          }
+        }
+      }
+    }
+
+    Map<String, dynamic> map2 = {
+      'courses': courses,
+      'areas': areas,
+    };
+
+    result.add(map2);
+
+    return result;
+
+  }
+
+  Future<List<dynamic>> getTeachersStudentsQuantity(id) async{    
+    var students = [];
+    var quantity = 0;
+    var response = await helper.get("teacher_classrooms");
+
+    for (var r in response){
+      if (r["teacher"]["id"].toString() == id){
+        var response3 = await helper.get("classrooms/statistic_gender/classrooms/${r["classroom"]["id"]}");
+
+        quantity += (int.parse(response3["m"].toString()) + int.parse(response3["f"].toString()));  
+      }
+    }
+
+    Map<String, dynamic> map = {
+      'quantity': quantity.toString(),
+    };
+
+    students.add(map);
+
+    return students;
+
+  }
+
+  Future<List<dynamic>> getTeachersClassroomsOrganizedByArea(id, List<dynamic> areas) async{    
+    var response = await helper.get("teacher_classrooms");
+    var result = [];
+    var courseClassroomsCC = [];
+    var courseClassroomsQUI = [];
+    var courseClassroomsMEC = [];
+    var courseClassroomsINF = [];
+    var courseClassroomsELEC = [];
+
+    int cont = 0;
+    int cont2 = 0;
+    int i = 0;
+
+    var areasList = List<dynamic>.generate(areas.length, (index) => 0);
+    var classrooms = List<dynamic>.generate(areas.length, (index) => 0);
+    
+      for (var a in areas){
+        for (var r in response){
+          if (r["teacher"]["id"].toString() == id){
+            var resp = await helper.get("courses/${r["subjectCourseGrade"]["courseId"]}");
+            if (resp["area"]["id"] == a["id"]){
+              cont++;
+            }
+          }
+        }
+
+        
+        for (var respons in response){
+          if (respons["teacher"]["id"].toString() == id){
+            var resp = await helper.get("courses/${respons["subjectCourseGrade"]["courseId"]}");
+            if (resp["area"]["id"] == a["id"]){
+              var res = await helper.get("subject_course_grade/${respons["subjectCourseGrade"]["id"]}");
+              Map<String, dynamic> map = {
+                'subjectCourseGrade': res,
+                'classroom': respons["classroom"],
+              };
+
+              if (a["name"].toString().toUpperCase().contains("CIVIL")){
+                courseClassroomsCC.add(map);
+              } else if (a["name"].toString().toUpperCase().contains("INF")){
+                courseClassroomsINF.add(map);
+              } else if (a["name"].toString().toUpperCase().contains("QU")){
+                courseClassroomsQUI.add(map);
+              } else if (a["name"].toString().toUpperCase().contains("MEC")){
+                courseClassroomsMEC.add(map);
+              } else if (a["name"].toString().toUpperCase().contains("ELEC")){
+                courseClassroomsELEC.add(map);
+              }
+            }
+          }
+        }
+      }
+
+      for (int i = 0; i < areas.length; i++){
+        if (areas[i]["name"].toString().toUpperCase().contains("CIVIL")){
+          areasList[i] = courseClassroomsCC;
+        } else if (areas[i]["name"].toString().toUpperCase().contains("INF")){
+          areasList[i] = courseClassroomsINF;
+        } else if (areas[i]["name"].toString().toUpperCase().contains("QU")){
+          areasList[i] = courseClassroomsQUI;
+        } else if (areas[i]["name"].toString().toUpperCase().contains("MEC")){
+          areasList[i] = courseClassroomsMEC;
+        } else if (areas[i]["name"].toString().toUpperCase().contains("ELEC")){
+          areasList[i] = courseClassroomsELEC;
+        }
+      }
+
+    return areasList;
+
+    /*for (var r in response){
+      if (r["teacher"]["id"].toString() == id){
+        var resp = await helper.get("courses/${r["subjectCourseGrade"]["courseId"]}");
+        if (resp["area"]["id"] == area){
+          cont++;
+        }
+      };
+    }
+
+    for (var r in response){
+      if (r["teacher"]["id"].toString() == id){
+        var resp = await helper.get("courses/${r["subjectCourseGrade"]["courseId"]}");
+        if (resp["area"]["id"] == area){
+          var res = await helper.get("subject_course_grade/${r["subjectCourseGrade"]["id"]}");
+          Map<String, dynamic> map = {
+            'subjectCourseGrade': res,
+            'classroom': res["classroom"],
+          };
+        }
+      };
+    }*/
   }
 
   Future<List<dynamic>> getTeachersByClassroom(classroom) async{
@@ -673,6 +861,7 @@ ApiService helper = ApiService();
             "ipilDate": response2["ipilDate"],
             "educationDate": response2["educationDate"],
             "category": response2["category"],
+            "avatar": response2["avatar"],
             "personalData": response2["personalData"],
             "qualification": response2["qualification"],
           };

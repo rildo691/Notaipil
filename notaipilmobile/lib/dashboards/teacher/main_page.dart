@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -17,7 +18,9 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 class MainPage extends StatefulWidget {
 
-  const MainPage({ Key? key }) : super(key: key);
+  late var teacher = [];
+
+  MainPage(this.teacher);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -41,6 +44,17 @@ class _MainPageState extends State<MainPage> {
       'principal': 'DCM',
     },    
   ];
+
+  var classrooms = [];
+  var students = [];
+  var areasAndCourses = [];
+  var areas = [];
+  var data = [];
+
+  @override
+  void initState(){
+    getAreas().then((value) => setState((){areas = value;}));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +87,14 @@ class _MainPageState extends State<MainPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -139,59 +153,102 @@ class _MainPageState extends State<MainPage> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7.0,
-                        mainAxisSpacing: 10.0,
-                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
-                        children: [
-                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
-                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
-                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
-                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              children:[
-                                Text("Construção Civil"),
-                                Text("Disciplina"),
-                              ]
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: areaCoordinator.length,
-                              itemBuilder: (context, index){
-                                return Column(
+                child: FutureBuilder(
+                  future: Future.wait([getTeachersClassrooms(widget.teacher[0]["id"]), getTeachersAreasAndCourses(widget.teacher[0]["id"]), getTeachersStudentsQuantity(widget.teacher[0]["id"]), getTeachersClassroomsOrganizedByArea(widget.teacher[0]["id"], areas)]),
+                  builder: (context, snapshot){
+                    switch (snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          classrooms = (snapshot.data! as List)[0];
+                          areasAndCourses = (snapshot.data! as List)[1];
+                          students = (snapshot.data! as List)[2];
+                          data = (snapshot.data! as List)[3];
+
+                          return 
+                          Container(
+                            padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GridView.count(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 7.0,
+                                  mainAxisSpacing: 10.0,
+                                  childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
                                   children: [
-                                    _buildCardTwo(areaCoordinator[index]),
-                                    SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                    _buildCard("Turmas", classrooms.length.toString(), Color.fromARGB(255, 0, 191, 252)),
+                                    _buildCard("Alunos", students[0]["quantity"].toString(), Color.fromARGB(255, 241, 188, 109)),
+                                    _buildCard("Áreas", areasAndCourses[0]["areas"].length.toString(), Color.fromARGB(255, 13, 137, 164)),
+                                    _buildCard("Cursos", areasAndCourses[0]["courses"].length.toString(), Color.fromARGB(255, 225, 106, 128)),
                                   ],
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      ),
-                      
-                    ]  
-                  )
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: areas.length,
+                                    itemBuilder: (context, index){
+                                      return Column(
+                                        children: [
+                                          _buildClassroomsTables(areas[index], index),
+                                          SizedBox(height: data[index].length > 0 ? SizeConfig.heightMultiplier !* 5 : 0),
+                                        ]
+                                      );
+                                    },
+                                  ),  
+                                ),
+                                /*Expanded(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children:[
+                                          Text("Construção Civil"),
+                                          Text("Disciplina"),
+                                        ]
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        physics: BouncingScrollPhysics(),
+                                        itemCount: areaCoordinator.length,
+                                        itemBuilder: (context, index){
+                                          return Column(
+                                            children: [
+                                              _buildCardTwo(areaCoordinator[index]),
+                                              SizedBox(height: SizeConfig.heightMultiplier !* 2,)
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                ),*/
+                              ]  
+                            )
+                          );
+                        }
+                    }
+                  },
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -300,4 +357,41 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  Widget _buildClassroomsTables(indexArea, pos){
+      if (data[pos].length > 0){
+        return DataTable(
+          columnSpacing: SizeConfig.widthMultiplier !* 30,
+          columns: [
+            DataColumn(
+              label: Text(indexArea["name"].toString()),
+              numeric: false,
+            ),
+            DataColumn(
+              label: Text("Disciplina"),
+              numeric: false,
+            ),
+          ],
+          rows: List<DataRow>.generate(data[pos].length, (index) => 
+            DataRow(
+              cells: [
+                DataCell(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(data[pos].length != 0 ? data[pos][index]["subjectCourseGrade"]["subject"]["name"] : ""),
+                  ),
+                ),
+                DataCell(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(data[pos].length != 0 ? data[pos][index]["classroom"]["name"] : ""),
+                  ),
+                ),
+              ]
+            )
+          )
+        );
+      }
+      return Container();
+  }  
 }

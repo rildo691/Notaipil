@@ -11,6 +11,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Dashboards */
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart' as teacher;
 
 class Chooseprofile extends StatefulWidget {
 
@@ -102,6 +103,16 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                     //Navigator.pushNamed(context, '/studentDashboard');
                                   } 
                                   else if (data["name"] == "Professor"){
+                                    var userEmail = widget.response["user"]["email"];
+
+                                    getSingleTeacher(userEmail).then((value) {
+                                      Map<String, dynamic> map = {
+                                        'token': widget.response['token']
+                                      };
+                                      value.add(map);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) => teacher.MainPage(value)), (route) => false);
+                                    });
 
                                   } else if (data["name"] == "Encarregado") {
 

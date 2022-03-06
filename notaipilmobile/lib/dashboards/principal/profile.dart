@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -16,13 +17,10 @@ import 'package:notaipilmobile/services/apiService.dart';
 import 'package:notaipilmobile/dashboards/principal/edit_profile.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
-import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class Profile extends StatefulWidget {
@@ -179,13 +177,10 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                            height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                          Center(
+                            child: ClipOval(
+                              child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                             ),
-                            child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 2.3 * double.parse(SizeConfig.textMultiplier.toString()) * 1,),
                           ),
                           SizedBox(width: SizeConfig.widthMultiplier !* 10),
                           Column(

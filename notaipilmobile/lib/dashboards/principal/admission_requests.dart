@@ -7,9 +7,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/responseModel.dart';
-import 'dart:math';
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -48,8 +46,6 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
   bool? value = false;
 
   int _selectedIndex = 0;
-  
-  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 
   var requests = [];
 
@@ -293,7 +289,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
       leading: ClipOval(
-        child: index["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+        child: index["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
       ),
       title: Text(index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text(index["email"].toString(), style: TextStyle(color: Colors.black)),

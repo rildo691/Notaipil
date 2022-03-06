@@ -12,7 +12,8 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'dart:math';
+import 'package:notaipilmobile/parts/variables.dart';
+
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -54,8 +55,6 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
   int _selectedIndex = 0;
 
   var teachers = [];
-
-  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 
   @override
   void initState(){
@@ -269,7 +268,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                               DataCell(
                                                 Center(
                                                   child: ClipOval(
-                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
+                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
                                                   ),
                                                 ),
                                               ),
