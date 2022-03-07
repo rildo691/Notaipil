@@ -16,6 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
+
 class MainPage extends StatefulWidget {
 
   late var teacher = [];
@@ -29,21 +32,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
-
-  var areaCoordinator = [
-    {
-      'job': 'II10A',
-      'principal': 'TLP',
-    },
-    {
-      'job': 'CC10A',
-      'principal': 'TCC',
-    },
-    {
-      'job': 'MM10A',
-      'principal': 'DCM',
-    },    
-  ];
 
   var classrooms = [];
   var students = [];
@@ -285,7 +273,19 @@ class _MainPageState extends State<MainPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.teacher)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
+                      break;
+                    case 2:
+                      
+                    case 3:
+                      
+                    default:
+                  }
                 },
               ),
             );
@@ -378,13 +378,13 @@ class _MainPageState extends State<MainPage> {
                 DataCell(
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(data[pos].length != 0 ? data[pos][index]["subjectCourseGrade"]["subject"]["name"] : ""),
+                    child: Text(data[pos].length != 0 ? data[pos][index]["classroom"]["name"] : ""),
                   ),
                 ),
                 DataCell(
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(data[pos].length != 0 ? data[pos][index]["classroom"]["name"] : ""),
+                    child: Text(data[pos].length != 0 ? data[pos][index]["subjectCourseGrade"]["subject"]["name"] : ""),
                   ),
                 ),
               ]

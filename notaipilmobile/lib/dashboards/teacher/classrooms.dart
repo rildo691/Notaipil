@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,9 +13,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
-class Classrooms extends StatefulWidget {
+/**Complements */
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 
-  const Classrooms({ Key? key }) : super(key: key);
+class Classrooms extends StatefulWidget {
+  
+  late var teacher = [];
+
+  Classrooms(this.teacher);
 
   @override
   _ClassroomsState createState() => _ClassroomsState();
@@ -24,12 +28,21 @@ class Classrooms extends StatefulWidget {
 
 class _ClassroomsState extends State<Classrooms> {
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   int _count1 = 0;
   int _count2 = 0;
   int? _quantity;
+  int j = 0;
 
-  var _courseValue;
+  var _areaValue;
+  var areas = [];
+  var data = [];
+  var courses = [];
+  var classrooms = [];
+
+  bool _built = false;
+  bool _equal = false;
+
   var _fakeClassrooms = [
     {
       'course': 'Técnico Desenhador Projectista',
@@ -99,14 +112,14 @@ class _ClassroomsState extends State<Classrooms> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -168,101 +181,130 @@ class _ClassroomsState extends State<Classrooms> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.5,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartTwo("Turmas"),
-                      DropdownButtonFormField(
-                        hint: Text("Curso"),
-                        style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Color(0xFF202733),
-                          hintStyle: TextStyle(color: Colors.white),
-                        ),
-                        dropdownColor: Colors.black,
-                        items:[
-                          DropdownMenuItem(
-                            value: Text("Nothing"),
-                            child: Text("Nothing"),
-                          )
-                        ],
-                        value: _courseValue,
-                        onChanged: (newValue){
-                          setState((){
-                            _courseValue = newValue;
-                          });
-                        },
-                      ),
-                      GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
-                        children: _fakeClassrooms.map((data){
-                          for(var r in _fakeClassrooms){
-                            if (r["course"] == data["course"]){
-                              _count1++;
-                            }
-                          }
-                          
-                            _quantity = _count1;
-                            _count1 = 0;
-                            _count2++;
-                          
+                  child:FutureBuilder(
+                    future: Future.wait([getAreas(), getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue), getCoursesName(_areaValue)]),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
 
-                          if (_quantity == _count2){
-                          
-                              _quantity = 0;
-                              _count1 = 0;
-                              _count2 = 0;
-                          
-                          }
-                          return Column(
-                            children: [
-                              Text(_count2 == 1 ? "${data["course"]}" : ""),
-                              GestureDetector(
-                                child: Card(
-                                  color: Color(0xFF222A37),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Container(
-                                      width: SizeConfig.widthMultiplier !* 10 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                      height: SizeConfig.heightMultiplier !* 2.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                            height: SizeConfig.imageSizeMultiplier !* 2 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          ),
-                                          SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
-                                          Text(data["name"].toString(), style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                          Text(data["subject"].toString(), style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                        ],
-                                      ),
-                                    )
+                            areas = (snapshot.data! as List)[0];
+                            data = (snapshot.data! as List)[1];
+                            courses = (snapshot.data! as List)[2];
+
+                            return 
+                             Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildHeaderPartTwo("Turmas"),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                DropdownButtonFormField(
+                                  hint: Text("Área de Formação"),
+                                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    hintStyle: TextStyle(color: Colors.white),
                                   ),
+                                  dropdownColor: Colors.black,
+                                  items: areas.map((e) => 
+                                    DropdownMenuItem(
+                                      child: Text(e["name"].toString()),
+                                      value: e["id"],
+                                    )
+                                  ).toList(),
+                                  value: _areaValue,
+                                  onChanged: (newValue){
+                                    setState((){
+                                      _areaValue = newValue;
+                                    });
+                                    setState((){getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue);});
+                                  },
                                 ),
-                                onTap: (){
-                                  
-                                },
-                              )
-                            ],
-                          );
-                        }).toList()
-                      )  
-                    ]  
-                  )
+                                SizedBox(height: SizeConfig.heightMultiplier !* 12,),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: data.length,
+                                    itemBuilder: (context, index){
+                                      if (index < courses.length){
+                                        classrooms.clear();
+                                        for (var d in data){
+                                          if (d["course"] == courses[index]["name"]){
+                                            classrooms.add(d);
+                                          }
+                                        }
+
+                                        if (classrooms.length > 0){
+                                          return Column(
+                                            children: [
+                                              Text(courses[index]["name"].toString()),
+                                              SizedBox(height: SizeConfig.heightMultiplier !* 3,),
+                                              GridView.count(
+                                                shrinkWrap: true,
+                                                crossAxisCount: 2,
+                                                crossAxisSpacing: 10.0,
+                                                mainAxisSpacing: 10.0,
+                                                children: classrooms.map((e) => 
+                                                  GestureDetector(
+                                                    child: Container(
+                                                      child: Card(
+                                                        color: Color(0xFF0D89A4),
+                                                        child: Padding(
+                                                          padding: EdgeInsets.all(10.0),
+                                                          child: Column(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Text(e["classroom"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                                              SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                                              Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    onTap: (){
+                                                      
+                                                    },
+                                                  )
+                                                ).toList(),
+                                              ),
+                                            ]
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      }
+                                      else {
+                                        return Container();
+                                      }
+                                    },
+                                  )
+                                )
+                              ]  
+                            );
+                          }
+                      }
+                    }
+                  ),
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -299,7 +341,19 @@ class _ClassroomsState extends State<Classrooms> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.teacher)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
+                      break;
+                    case 2:
+                      
+                    case 3:
+                      
+                    default:
+                  }
                 },
               ),
             );
@@ -307,5 +361,9 @@ class _ClassroomsState extends State<Classrooms> {
         );
       },
     );  
+  }
+
+   void _buildTeacherClassrooms(courses){
+    
   }
 }
