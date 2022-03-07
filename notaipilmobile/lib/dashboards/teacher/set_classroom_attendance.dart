@@ -14,15 +14,19 @@ import 'package:notaipilmobile/parts/register.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/teacher/student_absence.dart';
 
 /**User Interface */
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
+
 class SetClassroomAttendance extends StatefulWidget {
 
+  late var teacher = [];
   late String classroomId;
+  late var subject;
 
-  SetClassroomAttendance(this.classroomId);
+  SetClassroomAttendance(this.teacher, this.classroomId, this.subject);
 
   @override
   _SetClassroomAttendanceState createState() => _SetClassroomAttendanceState();
@@ -38,16 +42,21 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
   TextEditingController _classDescription = TextEditingController();
   TextEditingController _classTime = TextEditingController();
 
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   @override
   void initState(){
     super.initState();
-  /*
-    getClassroomById(widget.classroomId).then((value) => 
+
+   getClassroomById(widget.classroomId).then((value) => 
       setState((){
         _classroomName = value[0]["name"].toString();
       })
-    );*/
+    );
+  }
 
+  Future<void> start() async{
+    await Future.delayed(Duration(seconds: 3));
   }
 
   @override
@@ -147,109 +156,139 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 95,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Marcação de Presença",),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
-                                },
+                child: FutureBuilder(
+                  future: start(),
+                  builder: (context, snapshot){
+                    switch (snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container(); 
+                        } else {
+                          return
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight !- 90,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Form(
+                              key: _key,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Marcação de Presença", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit_calendar, color:  Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ]
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 8,
+                                  ),
+                                  Align( alignment: Alignment.centerLeft, child: Text(_classroomName != null ? _classroomName.toString() : "Nulo")),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 1.5,
+                                  ),
+                                  Align(alignment: Alignment.centerLeft, child: Text(widget.subject["name"].toString())),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 8,
+                                  ),
+                                  DateTimeField(
+                                    decoration: InputDecoration(
+                                      labelText: "Data da aula",
+                                      suffixIcon: Icon(Icons.event_note, color: Colors.white),
+                                      labelStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    controller: _data,
+                                    format: DateFormat("yyyy-MM-dd"),
+                                    style:  TextStyle(color: Colors.white),
+                                    onShowPicker: (context, currentValue) {
+                                      return showDatePicker(
+                                        context: context,
+                                        locale: const Locale("pt"),
+                                        firstDate: DateTime(1900),
+                                        initialDate: DateTime.now(),
+                                        lastDate: DateTime.now(),
+                                      ).then((date){
+                                        setState((){
+                                          _data.text = date.toString();
+                                        });
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  buildTextFieldRegister("Descrição da aula", TextInputType.text, _classDescription),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  buildTextFieldRegister("Tempos dados", TextInputType.number, _classTime),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 6,
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary:  Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 20.0,
+                                      ),
+                                      minimumSize: Size(0.0, 50.0),
+                                    ),
+                                    onPressed: (){
+                                      if (_key.currentState!.validate()){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => StudentAbsence(widget.teacher, widget.classroomId, widget.subject)));
+                                      }
+                                    },
+                                  )
+                                ],
                               ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.classroomId)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 8,
-                      ),
-                      Text(_classroomName != null ? _classroomName.toString() : "Nulo"),
-                      Text("Disciplina"),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 8,
-                      ),
-                            DateTimeField(
-                              decoration: InputDecoration(
-                                labelText: "Data da aula",
-                                suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                labelStyle: TextStyle(color: Colors.white),
-                              ),
-                              controller: _data,
-                              format: DateFormat("yyyy-MM-dd"),
-                              style:  TextStyle(color: Colors.white),
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                  context: context,
-                                  locale: const Locale("pt"),
-                                  firstDate: DateTime(1900),
-                                  initialDate: DateTime.now(),
-                                  lastDate: DateTime.now(),
-                                ).then((date){
-                                  setState((){
-                                    _data.text = date.toString();
-                                  });
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Descrição da aula", TextInputType.text, _classDescription),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("Tempos dados", TextInputType.number, _classTime),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 6,
-                            ),
-                            ElevatedButton(
-                              child: Text("Confirmar"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
-                              ),
-                              onPressed: (){
-                                
-                              },
                             )
-                          ],
-                        ),
-                      )
-                ),
+                          );
+                        }
+                    }
+                  }
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

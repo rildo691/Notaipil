@@ -18,9 +18,11 @@ import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart'
 
 class StudentAbsence extends StatefulWidget {
 
+  late var teacher = [];
   late String classroomId;
+  late var subject;
 
-  StudentAbsence(this.classroomId);
+  StudentAbsence(this.teacher, this.classroomId, this.subject);
 
   @override
   _StudentAbsenceState createState() => _StudentAbsenceState();
@@ -35,6 +37,9 @@ class _StudentAbsenceState extends State<StudentAbsence> {
   GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   var _value;
+  var students = [];
+
+  int i = 0;
 
   @override
   void initState(){
@@ -150,211 +155,245 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 50,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                      Form(
-                        key: _key,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Marcação de Presença", ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.classroomId)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 7,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            child: Text("Nº"),
-                            radius: 50,
-                          ),
-                          
-                          Text("Aluno"),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 5,
-                      ),
-                            DropdownButtonFormField(
-                              hint: Text("..."),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
-                              ),
-                              dropdownColor: Colors.black,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Nothing"),
-                                  value: Text("No value either"),
-                                )
-                              ],
-                              value: _value,
-                              onChanged: (newValue){
-                                setState((){
-                                  _value = newValue;
-                                });
-                              },
-                              validator: (value) => value == null ? 'Preencha o campo Período' : null,
+                  child: FutureBuilder(
+                    future: getAllClassroomStudents(widget.classroomId),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
                             ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  child: Text("0"),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                    minimumSize: Size(60.0, 50.0),
-                                  ),
-                                  onPressed: (){
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
 
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text("1"),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                    minimumSize: Size(60.0, 50.0),
+                            students = (snapshot.data! as List);
+                            return 
+                            Form(
+                              key: _key,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Marcação de Presença", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit_calendar, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ]
                                   ),
-                                  onPressed: (){
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 7,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        child: Text("Nº " + students[i]["number"].toString()),
+                                        radius: 50,
+                                      ),  
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier !* 2,
+                                      ),
+                                      Text(students[i]["student"]["personalData"]["fullName"].toString()),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 5,
+                                  ),
+                                  DropdownButtonFormField(
+                                    hint: Text("..."),
+                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      hintStyle: TextStyle(color: Colors.white),
+                                    ),
+                                    dropdownColor: Colors.black,
+                                    items: [
+                                      DropdownMenuItem(
+                                        child: Text("Nothing"),
+                                        value: Text("No value either"),
+                                      )
+                                    ],
+                                    value: _value,
+                                    onChanged: (newValue){
+                                      setState((){
+                                        _value = newValue;
+                                      });
+                                    },
+                                    validator: (value) => value == null ? 'Preencha o campo Período' : null,
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text("0"),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                          primary:  Color(0xFF0D89A4),
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                          minimumSize: Size(60.0, 50.0),
+                                        ),
+                                        onPressed: (){
 
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text("2"),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                    minimumSize: Size(60.0, 50.0),
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("1"),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                          primary:  Color(0xFF0D89A4),
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                          minimumSize: Size(60.0, 50.0),
+                                        ),
+                                        onPressed: (){
+
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("2"),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                          primary:  Color(0xFF0D89A4),
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                          minimumSize: Size(60.0, 50.0),
+                                        ),
+                                        onPressed: (){
+                                      
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text("3"),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                          primary:  Color(0xFF0D89A4),
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                          minimumSize: Size(60.0, 50.0),
+                                        ),
+                                        onPressed: (){
+                                      
+                                        },
+                                      )
+                                    ],
                                   ),
-                                  onPressed: (){
-                                
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text("3"),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                    primary:  Color(0xFF0D89A4),
-                                    onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                    minimumSize: Size(60.0, 50.0),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 13,
                                   ),
-                                  onPressed: (){
-                                
-                                  },
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 13,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  child: Container(
-                                    width: SizeConfig.screenWidth !* .32,
-                                    height: SizeConfig.heightMultiplier !* 6,
-                                    color: Colors.grey,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
-                                        SizedBox(width: 8.0),
-                                        Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: (){
-                                          
-                                  },
-                                ),
-                                GestureDetector(
-                                  child: Container(
-                                    width: SizeConfig.screenWidth !* .32,
-                                    height: SizeConfig.heightMultiplier !* 6,
-                                    color: Color.fromRGBO(0, 209, 255, 0.49),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                        SizedBox(width: 8.0),
-                                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    _buildModal();
-                                  },
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: i == 0 ? Colors.grey : Color.fromRGBO(0, 209, 255, 0.49),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              SizedBox(width: 8.0),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          if (i > 0){
+                                            setState(() {
+                                              i--;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Colors.grey,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              SizedBox(width: 8.0),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          if (i <= students.length - 2){
+                                            _buildModal();
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                      }
+                    },
+                  )
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -429,7 +468,12 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
-                    
+                    setState((){
+                      if (i <= students.length-2){
+                        i++;
+                      }
+                      Navigator.pop(context);
+                    });
                   },
                 )
               ]

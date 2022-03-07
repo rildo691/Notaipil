@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/variables.dart';
+import 'package:notaipilmobile/functions/functions.dart';
+
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/show_classroom_schedule.dart';
@@ -40,8 +42,6 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
   String? _classroomName;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-
-  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 
   var teachers = [];
   var filter = [];
@@ -196,11 +196,9 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           return Container( 
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
                             width: SizeConfig.screenWidth,
-                            /*height: filter.length > 7 && filter.length < 13 ? SizeConfig.screenHeight !* filter.length / 8 : filter.length > 13 && filter.length < 22 ? SizeConfig.screenHeight !* filter.length / 9 - filter.length / .2 : filter.length > 22 ? SizeConfig.screenHeight !* filter.length / 10.5 -  filter.length / .15 : SizeConfig.screenHeight !- filter.length / .1,*/
                             height: SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
                             child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Row(
@@ -272,7 +270,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                                     DataCell(
                                                       Center(
                                                         child: ClipOval(
-                                                          child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(_baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
+                                                          child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
                                                         ),
                                                       ),
                                                     ),

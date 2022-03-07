@@ -11,7 +11,9 @@ import 'package:notaipilmobile/parts/navbar.dart';
 
 class Schedule extends StatefulWidget {
 
-  const Schedule({ Key? key }) : super(key: key);
+  late var teacher = [];
+
+  Schedule(this.teacher);
 
   @override
   _ScheduleState createState() => _ScheduleState();
@@ -19,7 +21,7 @@ class Schedule extends StatefulWidget {
 
 class _ScheduleState extends State<Schedule> {
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   Widget build(BuildContext context) {

@@ -15,6 +15,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_page.dart';
 
 class Classrooms extends StatefulWidget {
   
@@ -39,47 +40,6 @@ class _ClassroomsState extends State<Classrooms> {
   var data = [];
   var courses = [];
   var classrooms = [];
-
-  bool _built = false;
-  bool _equal = false;
-
-  var _fakeClassrooms = [
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'CP10A',
-      'subject': 'TCC',
-    },
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'CP10B',
-      'subject': 'TCC',
-    },
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'CP10C',
-      'subject': 'TCC',
-    },
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'CP10A',
-      'subject': 'TCC',
-    },
-    {
-      'course': 'Técnico de Obras',
-      'name': 'CC10A',
-      'subject': 'FAI',
-    },
-    {
-      'course': 'Técnico de Obras',
-      'name': 'CC10B',
-      'subject': 'FAI',
-    },
-    {
-      'course': 'Técnico de Obras',
-      'name': 'CC10C',
-      'subject': 'FAI',
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +196,7 @@ class _ClassroomsState extends State<Classrooms> {
                                     setState((){
                                       _areaValue = newValue;
                                     });
-                                    setState((){getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue);});
+                                    getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue);
                                   },
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 12,),
@@ -262,13 +222,17 @@ class _ClassroomsState extends State<Classrooms> {
                                                 crossAxisCount: 2,
                                                 crossAxisSpacing: 10.0,
                                                 mainAxisSpacing: 10.0,
+                                                childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
                                                 children: classrooms.map((e) => 
                                                   GestureDetector(
-                                                    child: Container(
-                                                      child: Card(
-                                                        color: Color(0xFF0D89A4),
-                                                        child: Padding(
-                                                          padding: EdgeInsets.all(10.0),
+                                                    child: Card(
+                                                      color: Color(0xFF0D89A4),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(5.0),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(10.0),
+                                                        child: Container(
                                                           child: Column(
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -278,11 +242,11 @@ class _ClassroomsState extends State<Classrooms> {
                                                               Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                                             ],
                                                           ),
-                                                        ),
+                                                        )
                                                       ),
                                                     ),
                                                     onTap: (){
-                                                      
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.teacher, e["classroom"]["id"], e["subjectCourseGrade"]["subject"])));
                                                     },
                                                   )
                                                 ).toList(),

@@ -18,6 +18,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
+import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -41,6 +42,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState(){
+    super.initState();
+    
     getAreas().then((value) => setState((){areas = value;}));
   }
 
@@ -281,7 +284,8 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
                       break;
                     case 2:
-                      
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                      break;
                     case 3:
                       
                     default:
