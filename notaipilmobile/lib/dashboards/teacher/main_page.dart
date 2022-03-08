@@ -19,6 +19,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -208,32 +209,6 @@ class _MainPageState extends State<MainPage> {
                                     },
                                   ),  
                                 ),
-                                /*Expanded(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children:[
-                                          Text("Construção Civil"),
-                                          Text("Disciplina"),
-                                        ]
-                                      ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        physics: BouncingScrollPhysics(),
-                                        itemCount: areaCoordinator.length,
-                                        itemBuilder: (context, index){
-                                          return Column(
-                                            children: [
-                                              _buildCardTwo(areaCoordinator[index]),
-                                              SizedBox(height: SizeConfig.heightMultiplier !* 2,)
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                ),*/
                               ]  
                             )
                           );
@@ -287,7 +262,8 @@ class _MainPageState extends State<MainPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
                       break;
                     case 3:
-                      
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
+                      break;
                     default:
                   }
                 },

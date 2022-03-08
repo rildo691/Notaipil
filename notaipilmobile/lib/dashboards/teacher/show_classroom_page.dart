@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/teacher/students_stats.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
@@ -312,7 +313,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                       showEditIcon: false,
                                                       placeholder: false,
                                                       onTap: (){
-                                                        //Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e)));
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsStats(widget.teacher, e, )));
                                                       }
                                                     ),
                                                     DataCell(

@@ -14,13 +14,18 @@ import 'package:notaipilmobile/parts/register.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/teacher/student_grade.dart';
 
 /**User Interface */
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class ClassroomSubjectStats extends StatefulWidget {
 
-  const ClassroomSubjectStats({ Key? key }) : super(key: key);
+  late var teacher = [];
+  late var classroom;
+  late var subject;
+
+  ClassroomSubjectStats(this.teacher, this.classroom, this.subject);
 
   @override
   _ClassroomSubjectStatsState createState() => _ClassroomSubjectStatsState();
@@ -67,14 +72,14 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -139,42 +144,43 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Estatistica", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Text("Estatistica", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.stacked_line_chart_sharp, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats(widget.teacher, widget.classroom, widget.subject)));
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.text_snippet_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade(widget.teacher, widget.classroom, widget.subject)));
                                 },
                               ),
                             ],
                           )
                         ]
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(_classroomName != null ? _classroomName.toString() : "Teste"),
+                          Text(widget.classroom["name"].toString()),
                           Text("-----"),
-                      Text("Disciplina"),
+                          Text(widget.subject["name"].toString()),
                         ],
                       ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 12,),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,

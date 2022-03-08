@@ -14,8 +14,11 @@ import 'package:notaipilmobile/dashboards/teacher/classroom_subject_stats.dart';
 import 'package:notaipilmobile/dashboards/teacher/student_grade.dart';
 
 class AgendaPage extends StatefulWidget {
+  late var teacher = [];
+  late var classroom;
+  late var subject;
 
-  const AgendaPage({ Key? key }) : super(key: key);
+  AgendaPage(this.teacher, this.classroom, this.subject);
 
   @override
   _AgendaPageState createState() => _AgendaPageState();
@@ -56,14 +59,14 @@ class _AgendaPageState extends State<AgendaPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -128,28 +131,27 @@ class _AgendaPageState extends State<AgendaPage> {
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Minipautas"),
+                          Text("Minipautas",style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.icecream, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.stacked_line_chart_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats(widget.teacher, widget.classroom, widget.subject)));
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.icecream, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.text_snippet_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade(widget.teacher, widget.classroom, widget.subject)));
                                 },
                               ),
                             ],
@@ -157,8 +159,10 @@ class _AgendaPageState extends State<AgendaPage> {
 
                         ]
                       ),
-                      Text("Turma"),
-                      Text("Disciplina"),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 10,),
+                      Align(alignment: Alignment.centerLeft, child: Text(widget.classroom["name"].toString())),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 1,),
+                      Align(alignment: Alignment.centerLeft, child: Text(widget.subject["name"])),
                     ]  
                   )
                 ),

@@ -9,6 +9,11 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
+import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
+
 class Schedule extends StatefulWidget {
 
   late var teacher = [];
@@ -54,14 +59,14 @@ class _ScheduleState extends State<Schedule> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -133,7 +138,7 @@ class _ScheduleState extends State<Schedule> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Horário"),
+                          Text("Horário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                           GestureDetector(
                             child: Container(
                               width: SizeConfig.screenWidth !* .32,
@@ -141,8 +146,9 @@ class _ScheduleState extends State<Schedule> {
                               color: Color.fromRGBO(0, 209, 255, 0.49),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                  Icon(Icons.cloud_upload, color: Colors.white, size: 25.0,),
                                   SizedBox(width: 8.0),
                                   Text("Upload", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
                                 ],
@@ -192,6 +198,21 @@ class _ScheduleState extends State<Schedule> {
                   setState(() {
                     _selectedIndex = index;
                   });
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.teacher)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
+                      break;
+                    default:
+                  }
                   
                 },
               ),

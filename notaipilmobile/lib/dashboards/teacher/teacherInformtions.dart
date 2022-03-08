@@ -17,7 +17,9 @@ import 'package:notaipilmobile/dashboards/teacher/send_information.dart';
 
 class Teacherinformtions extends StatefulWidget {
 
-  const Teacherinformtions({ Key? key }) : super(key: key);
+  late var teacher = [];
+
+  Teacherinformtions(this.teacher);
 
   @override
   _TeacherinformtionsState createState() => _TeacherinformtionsState();
@@ -77,14 +79,14 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/dashboards/teacher/teacherInformtions.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:intl/intl.dart';
 
@@ -14,13 +15,18 @@ import 'package:notaipilmobile/parts/register.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
+import 'package:notaipilmobile/dashboards/teacher/classroom_subject_stats.dart';
 
 /**User Interface */
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class StudentGrade extends StatefulWidget {
 
-  const StudentGrade({ Key? key }) : super(key: key);
+  late var teacher = [];
+  late var classroom;
+  late var subject;
+
+  StudentGrade(this.teacher, this.classroom, this.subject);
 
   @override
   _StudentGradeState createState() => _StudentGradeState();
@@ -29,23 +35,21 @@ class StudentGrade extends StatefulWidget {
 class _StudentGradeState extends State<StudentGrade> {
 
   int _selectedIndex = 0;
+  int i = 0;
 
-  String? _classroomName;
+  double? media = 0.0;
 
   TextEditingController _firstTestController = TextEditingController();
   TextEditingController _secondTestController = TextEditingController();
   TextEditingController _macController = TextEditingController();
 
+  var students = [];
+
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   @override
   void initState(){
     super.initState();
-
-    /*getClassroomById(widget.classroomId).then((value) => 
-      setState((){
-        _classroomName = value[0]["name"].toString();
-      })
-    );*/
-
   }
 
   @override
@@ -79,14 +83,14 @@ class _StudentGradeState extends State<StudentGrade> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -97,7 +101,7 @@ class _StudentGradeState extends State<StudentGrade> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
                       ),
                       ListTile(
@@ -148,139 +152,255 @@ class _StudentGradeState extends State<StudentGrade> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.13,
+                  height: SizeConfig.screenHeight !* 1.1,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Lançar notas"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  //Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 2,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(_classroomName != null ? _classroomName.toString() : "Nulo"),
-                      Text("Disciplina",),
-                      Text("Trimestre",),
-                        ],
-                      ),
-                      Form(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 7,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            child: Text("Nº"),
-                            radius: 50,
-                          ),
-                          
-                          Text("Aluno"),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier !* 5,
-                      ),
-                            buildTextFieldRegister("MAC", TextInputType.number, _macController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
+                  child: FutureBuilder(
+                    future: getAllClassroomStudents(widget.classroom["id"]),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              strokeWidth: 5.0,
                             ),
-                            buildTextFieldRegister("PP", TextInputType.number, _firstTestController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            buildTextFieldRegister("PT", TextInputType.number, _secondTestController),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 3,
-                            ),
-                            Text("Média: 0,0"),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 9,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  child: Container(
-                                    width: SizeConfig.screenWidth !* .32,
-                                    height: SizeConfig.heightMultiplier !* 6,
-                                    color: Colors.grey,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
-                                        SizedBox(width: 8.0),
-                                        Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                      ],
-                                    ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            students = (snapshot.data! as List);
+
+                            return 
+                            Form(
+                              key: _key,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text("Lançar notas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.stacked_line_chart_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats(widget.teacher, widget.classroom, widget.subject)));
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.text_snippet_outlined, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            onPressed: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade(widget.teacher, widget.classroom, widget.subject)));
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                  onTap: (){
-                                          
-                                  },
-                                ),
-                                GestureDetector(
-                                  child: Container(
-                                    width: SizeConfig.screenWidth !* .32,
-                                    height: SizeConfig.heightMultiplier !* 6,
-                                    color: Color.fromRGBO(0, 209, 255, 0.49),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                        SizedBox(width: 8.0),
-                                        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
-                                      ],
-                                    ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(widget.classroom["name"].toString()),
+                                      Text("-----"),
+                                      Text(widget.subject["name"].toString()),
+                                    ],
                                   ),
-                                  onTap: () {
-                                    
-                                  },
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ]
-                  )  
+                                  Align(alignment: Alignment.centerLeft, child: Text("II Trimestre")),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        child: Text("Nº " + students[i]["number"].toString()),
+                                        radius: 50,
+                                      ),  
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier !* 2,
+                                      ),
+                                      Text(students[i]["student"]["personalData"]["fullName"].toString()),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 5,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      labelText: "MAC",
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller: _macController,
+                                    validator: (String? value){
+                                      if (value!.isEmpty){
+                                        return "Preencha o campo MAC";
+                                      }
+                                    },
+                                    onChanged: (String? value){
+                                      if (_macController.text.length <= 2){
+                                        
+                                      }
+                                    }
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      labelText: "PP",
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller: _firstTestController,
+                                    validator: (String? value){
+                                      if (value!.isEmpty){
+                                        return "Preencha o campo PP";
+                                      }
+                                    },
+                                    onChanged: (String? value){
+                                      if (_firstTestController.text.length <= 2){
+                                        
+                                      }
+                                    }
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 3,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      labelText: "PT",
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      filled: true,
+                                      fillColor: Color(0xFF202733),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller: _secondTestController,
+                                    validator: (String? value){
+                                      if (value!.isEmpty){
+                                        return "Preencha o campo PT";
+                                      }
+                                    },
+                                    onChanged: (String? value){
+                                      if (_secondTestController.text.length <= 2){
+                                        
+                                      }
+                                    }
+                                  ),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 7,
+                                  ),
+                                  Text("Média: " + media.toString()),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 7,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: i == 0 ? Colors.grey : Color.fromRGBO(0, 209, 255, 0.49),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              SizedBox(width: 8.0),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          if (i > 0){
+                                            setState(() {
+                                              i--;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                      GestureDetector(
+                                        child: Container(
+                                          width: SizeConfig.screenWidth !* .32,
+                                          height: SizeConfig.heightMultiplier !* 6,
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Colors.grey,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              SizedBox(width: 8.0),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          if (_key.currentState!.validate()){
+                                            if (_macController.text.length <= 2 && _firstTestController.text.length <= 2 && _secondTestController.text.length <= 2){
+                                              if ((double.parse(_macController.text) >= 0 && double.parse(_macController.text) <= 20) &&
+                                                (double.parse(_firstTestController.text) >= 0 && double.parse(_firstTestController.text) <= 20) &&
+                                                (double.parse(_secondTestController.text) >= 0 && double.parse(_secondTestController.text) <= 20)){
+                                                  if (i <= students.length-2){
+                                                    setState((){
+                                                      i++;
+                                                      _macController.text = "";
+                                                      _firstTestController.text = "";
+                                                      _secondTestController.text = "";
+                                                    });
+                                                  }
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                  msg: "Notas devem variar de 0 a 20.",
+                                                  toastLength: Toast.LENGTH_LONG,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                ).toString();
+                                              }
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                msg: "Notas devem conter entre 1 a 2 caracteres.",
+                                                toastLength: Toast.LENGTH_LONG,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                gravity: ToastGravity.BOTTOM,
+                                              ).toString();
+                                            }
+                                          } 
+                                        }
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )
+                            );
+                          }
+                      }
+                    },
+                  )
+                  
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(

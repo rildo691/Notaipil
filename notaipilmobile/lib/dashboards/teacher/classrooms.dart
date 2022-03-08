@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +16,8 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_page.dart';
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
+import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 
 class Classrooms extends StatefulWidget {
   
@@ -30,9 +32,6 @@ class Classrooms extends StatefulWidget {
 class _ClassroomsState extends State<Classrooms> {
 
   int _selectedIndex = 1;
-  int _count1 = 0;
-  int _count2 = 0;
-  int? _quantity;
   int j = 0;
 
   var _areaValue;
@@ -313,9 +312,11 @@ class _ClassroomsState extends State<Classrooms> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
                       break;
                     case 2:
-                      
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                      break;
                     case 3:
-                      
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
+                      break;
                     default:
                   }
                 },
@@ -325,9 +326,5 @@ class _ClassroomsState extends State<Classrooms> {
         );
       },
     );  
-  }
-
-   void _buildTeacherClassrooms(courses){
-    
   }
 }
