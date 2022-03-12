@@ -8,6 +8,9 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -109,14 +112,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
             return Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                title: Text("NotaIPIL", style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: appBarColor,
                 elevation: 0,
                 centerTitle: true,
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: 20.0),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    icon: Icon(Icons.account_circle, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){
                       _scaffoldKey.currentState!.openDrawer();
                     },
@@ -126,7 +129,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 34, 42, 55),
+                    color: drawerColor,
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,

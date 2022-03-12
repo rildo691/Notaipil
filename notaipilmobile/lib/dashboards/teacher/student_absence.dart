@@ -11,10 +11,20 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_classroom_page.dart';
 
 class StudentAbsence extends StatefulWidget {
 
@@ -35,9 +45,17 @@ class _StudentAbsenceState extends State<StudentAbsence> {
   String? _classroomName;
 
   GlobalKey<FormState> _key = GlobalKey<FormState>();
+  GlobalKey<FormFieldState> _dropdownKey = GlobalKey<FormFieldState>();
+  GlobalKey<FormFieldState> _textfieldKey = GlobalKey<FormFieldState>();
+
+  TextEditingController _faultNumber = TextEditingController();
+
+  ApiService helper = ApiService();
 
   var _value;
   var students = [];
+
+  var faults = [];
 
   int i = 0;
 
@@ -235,7 +253,8 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                     height: SizeConfig.heightMultiplier !* 5,
                                   ),
                                   DropdownButtonFormField(
-                                    hint: Text("..."),
+                                    hint: Text("Tipo de falta"),
+                                    key: _dropdownKey,
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
@@ -246,9 +265,13 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                     dropdownColor: Colors.black,
                                     items: [
                                       DropdownMenuItem(
-                                        child: Text("Nothing"),
-                                        value: Text("No value either"),
-                                      )
+                                        child: Text("Normal"),
+                                        value: "Normal"
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text("Disciplinar"),
+                                        value: "Disciplinar"
+                                      ),
                                     ],
                                     value: _value,
                                     onChanged: (newValue){
@@ -260,7 +283,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                   ),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 5,
-                                  ),
+                                  ),/*
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -334,6 +357,19 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                         },
                                       )
                                     ],
+                                  ),*/
+                                  TextFormField(
+                                    key: _textfieldKey,
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(color: Colors.black),
+                                    decoration: InputDecoration(
+                                      labelText: "N.º de faltas",
+                                      labelStyle: TextStyle(color: Colors.black),
+                                      filled: true,
+                                      fillColor: fillColor,
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    controller: _faultNumber,
                                   ),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 13,
@@ -369,19 +405,34 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Colors.grey,
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Color.fromRGBO(0, 209, 255, 0.49),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
                                               SizedBox(width: 8.0),
                                               Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
                                             ],
                                           ),
                                         ),
-                                        onTap: () {
+                                        onTap: () async{
                                           if (i <= students.length - 2){
-                                            _buildModal();
+                                            _buildModal(i);
+                                          } else {
+                                            Map<String, dynamic> map = {
+                                              "number": students[i]["number"],
+                                              "fault": _faultNumber.text,
+                                              "description": _value.toString(),
+                                              "teacherInClassroomId": widget.teacher[0]["id"],
+                                              "classroomStudentId": students[i]["id"]
+                                            };
+
+                                            setState((){
+                                              faults.add(map);
+                                            });
+
+                                            var response = await helper.postWithoutToken("presences", faults);
+                                            buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.teacher, widget.classroomId, widget.subject)));                                         
                                           }
                                         },
                                       )
@@ -440,7 +491,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
     );
   }
 
-  Future<Widget>? _buildModal(){
+  Future<Widget>? _buildModal(id){
     showDialog(
       context: context,
       builder: (context){
@@ -468,7 +519,22 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
+                    Map<String, dynamic> map = {
+                      "number": students[id]["number"],
+                      "fault": _faultNumber.text,
+                      "description": _value.toString(),
+                      "teacherInClassroomId": widget.teacher[0]["id"],
+	                    "classroomStudentId": students[id]["id"]
+                    };
+
                     setState((){
+                      if (_faultNumber.text.isNotEmpty){
+                        faults.add(map);
+                      }
+
+                      _textfieldKey.currentState!.reset();
+                      _dropdownKey.currentState!.reset();
+
                       if (i <= students.length-2){
                         i++;
                       }

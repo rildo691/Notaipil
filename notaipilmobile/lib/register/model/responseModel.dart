@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 
 Future<Widget>? buildModal(context, error, message, {route}){
     showDialog(
@@ -11,7 +12,7 @@ Future<Widget>? buildModal(context, error, message, {route}){
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: backgroundColor,
           child: Container(
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,
@@ -21,7 +22,7 @@ Future<Widget>? buildModal(context, error, message, {route}){
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
-                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("OK"),
                   style: ElevatedButton.styleFrom(
@@ -50,7 +51,7 @@ Future<Widget>? buildModalMaterialPage(context, error, message, MaterialPageRout
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: backgroundColor,
           child: Container(
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,
@@ -60,7 +61,7 @@ Future<Widget>? buildModalMaterialPage(context, error, message, MaterialPageRout
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
-                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("OK"),
                   style: ElevatedButton.styleFrom(

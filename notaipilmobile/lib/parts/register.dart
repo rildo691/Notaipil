@@ -4,17 +4,18 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 
 Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador, {Icon? icon}){
   return TextFormField(
     keyboardType: type,
-    style: TextStyle(color: Colors.white),
+    style: TextStyle(color: Colors.black),
     decoration: InputDecoration(
       prefixIcon: icon,
       labelText: hint,
-      labelStyle: TextStyle(color: Colors.white),
+      labelStyle: TextStyle(color: Colors.black),
       filled: true,
-      fillColor: Color(0xFF202733),
+      fillColor: fillColor,
       border: OutlineInputBorder(),
     ),
     controller: controlador,
@@ -51,7 +52,7 @@ Widget buildDropdownFormField(String hint, String? _value){
     decoration: InputDecoration(
       border: OutlineInputBorder(),
       filled: true,
-      fillColor: Color(0xFF202733),
+      fillColor: Colors.white,
       hintStyle: TextStyle(color: Colors.white),
     ),
     items: [

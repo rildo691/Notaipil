@@ -5,6 +5,9 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
@@ -60,7 +63,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 35.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +78,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                             children: widget._typeAccounts.map<Widget>((data){
                               return GestureDetector(
                                 child: Card(
-                                  color: Color(0xFF222A37),
+                                  color: backgroundColor,
                                   child: Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Container(
@@ -89,7 +92,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                             ),
-                                            child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            child: Icon(Icons.account_circle, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                           ),
                                           SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
                                           Text(data["name"], style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
@@ -149,7 +152,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                           ),
                           SizedBox(height: SizeConfig.heightMultiplier !* 1.7,),
                           Container(
-                            child: Icon(Icons.power_settings_new_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1)
+                            child: Icon(Icons.power_settings_new_sharp, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1)
                           ),
                         ],  
                       ),
@@ -157,46 +160,6 @@ class _ChooseprofileState extends State<Chooseprofile> {
                   ]
                 )
               ),
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Color(0xFF151717),
-                elevation: 1,
-                mouseCursor: SystemMouseCursors.grab,
-                selectedFontSize: 15,
-                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
-                selectedItemColor: Color(0xFF0D89A4),
-                unselectedItemColor: Colors.grey,
-                unselectedLabelStyle: TextStyle(color: Colors.grey),
-                items: const <BottomNavigationBarItem> [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                onTap:(index){
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-              )
             );
           }
         );
@@ -211,6 +174,16 @@ class _ChooseprofileState extends State<Chooseprofile> {
         child: Padding(
           padding: EdgeInsets.all(10.0),
           child: Container(
+            decoration: BoxDecoration(
+              boxShadow:const [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 10,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0)
+                ),
+              ],                
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

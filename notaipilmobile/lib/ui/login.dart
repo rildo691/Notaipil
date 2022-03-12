@@ -8,6 +8,9 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -143,7 +146,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,7 +166,7 @@ class _LoginState extends State<Login> {
                             ElevatedButton(
                               child: Text("Entrar"),
                               style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
+                                primary:  borderAndButtonColor,
                                 onPrimary: Colors.white,
                                 textStyle: TextStyle(
                                   color: Colors.white,
@@ -185,10 +188,10 @@ class _LoginState extends State<Login> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Não possui uma conta?", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                             SizedBox(width: 10.0,),
                             GestureDetector(
-                              child: Text("Cadastre-se", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap:(){
                                 Navigator.pushNamed(context, '/type');
                               }
@@ -214,12 +217,12 @@ class _LoginState extends State<Login> {
       keyboardType: type,
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+        labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
         filled: true,
-        fillColor: Color(0xFF202733),
+        fillColor: fillColor,
         border: OutlineInputBorder(),
       ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+      style: TextStyle(color: letterColor, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
     );
   }
@@ -228,15 +231,15 @@ class _LoginState extends State<Login> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+        labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
         filled: true,
-        fillColor: Color(0xFF202733),
+        fillColor: fillColor,
         border: OutlineInputBorder(),
       ),
       obscureText: true,
       enableSuggestions: false,
       autocorrect: false,
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+      style: TextStyle(color: letterColor, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
     );
   }

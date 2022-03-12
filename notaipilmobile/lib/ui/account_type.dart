@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Fucntions*/
 import 'package:notaipilmobile/parts/header.dart';
 
@@ -26,7 +29,7 @@ class AccountType extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +54,7 @@ class AccountType extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.only(top: 130.0),
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.pushNamed(context, '/');
                               }
@@ -75,9 +78,9 @@ class AccountType extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.account_circle, color: Colors.white, size: 25.0),
+          Icon(Icons.account_circle, color: iconColor, size: 25.0),
           SizedBox(width: 10,),
-          Text(text, style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.w200), textAlign: TextAlign.center)
+          Text(text, style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.w400), textAlign: TextAlign.center)
         ],
       ),
       onTap: (){

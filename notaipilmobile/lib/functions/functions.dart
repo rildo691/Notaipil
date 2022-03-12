@@ -797,6 +797,23 @@ ApiService helper = ApiService();
     return students;
   }
 
+  Future<List<dynamic>> getStudentsFaults(studentId) async{
+    var response = await helper.get("presences/statistic_classroom_student/${studentId}");
+    var presences = [];
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        'name': r["name"],
+        "quarterId": r["quarterId"],
+        "faults": r["faults"],
+      };
+
+      presences.add(map);
+    }
+
+    return presences;
+  }
+
   Future<List<dynamic>> getAdmissionRequests() async{
     var requests = [];
     var response = await helper.get("teacher_accounts/admission");
@@ -878,4 +895,22 @@ ApiService helper = ApiService();
 
   void signOut(){
     
+  }
+
+  Future<List<dynamic>> getQuarter() async{
+    var response = await helper.get("quarters");
+    var quarters = [];
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "name": r["name"],
+        "isActive": r["isActive"],
+		    "permission": r["permission"],
+      };
+
+      quarters.add(map);
+    }
+
+    return quarters;
   }

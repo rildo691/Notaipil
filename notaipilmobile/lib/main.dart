@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'NotaIPIL',
       theme: ThemeData(
-//        primarySwatch: Colors.white as MaterialColor,
         hintColor: Colors.black,
         primaryColor: Colors.black,
         inputDecorationTheme: InputDecorationTheme(
@@ -50,7 +49,7 @@ class MyApp extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.black),
         ),
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
+          bodyText1: TextStyle(color: Colors.black),
         ),
         dataTableTheme: DataTableThemeData(
           dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),

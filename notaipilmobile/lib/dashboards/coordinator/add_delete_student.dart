@@ -7,9 +7,10 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:intl/intl.dart';
 
 /**Functions */
-import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -27,7 +28,6 @@ import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/coordinator/classrooms_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
-import 'package:notaipilmobile/dashboards/coordinator/show_classroom_page.dart';
 
 /**User Interface */
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -111,14 +111,15 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
             return Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                title: Text("NotaIPIL", style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: appBarColor,
                 elevation: 0,
                 centerTitle: true,
+                iconTheme: IconThemeData(color: Colors.black),
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    icon: Icon(Icons.account_circle, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){
                       _scaffoldKey.currentState!.openDrawer();
                     },
@@ -128,14 +129,14 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 34, 42, 55),
+                    color: drawerColor,
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: letterColor),),
+                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: letterColor),),
                         currentAccountPicture: new CircleAvatar(
                           child: Icon(Icons.account_circle_outlined),
                         ),
@@ -145,38 +146,38 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           ),
                         ],
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: drawerColor,
                         ),
                       ),
                       ListTile(
-                        leading: Icon(Icons.notifications, color: Colors.white,),
-                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.notifications, color: iconColor,),
+                        title: Text('Informações', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.account_circle, color: Colors.white,),
-                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.account_circle, color: iconColor,),
+                        title: Text('Perfil', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.settings, color: Colors.white,),
-                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.settings, color: iconColor,),
+                        title: Text('Definições', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
-                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.power_settings_new_sharp, color: iconColor,),
+                        title: Text('Sair', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
                       ),
                       ListTile(
-                        leading: Icon(Icons.help_outline, color: Colors.white,),
-                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.help_outline, color: iconColor,),
+                        title: Text('Ajuda', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
                         trailing: ClipOval(
                           child: Container(
@@ -230,7 +231,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                             width: SizeConfig.screenWidth,
                             /*height: students.length < 7 ? students.length < 5 ? SizeConfig.screenHeight !- students.length * 50 : SizeConfig.screenHeight !* students.length / 6 : SizeConfig.screenHeight !* ((students.length * 10)/60),*/
                             height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -363,7 +364,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text("Adicionar estudante"),
-                                        Icon(Icons.add_circle_outline_outlined, color: Colors.white)
+                                        Icon(Icons.add_circle_outline_outlined, color: iconColor)
                                       ],
                                     )
                                   ),  
@@ -374,7 +375,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7,),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("MASCULINOS: _${gender[0]["m"]}_ FEMENINOS: _${gender[0]["f"]}_", style: TextStyle(color: Colors.white)),
+                                  child: Text("MASCULINOS: _${gender[0]["m"]}_ FEMENINOS: _${gender[0]["f"]}_", style: TextStyle(color: letterColor)),
                                 )                                   
                               ]  
                             )
@@ -450,7 +451,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: backgroundColor,
           child: Container(
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,
@@ -460,7 +461,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
-                Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
