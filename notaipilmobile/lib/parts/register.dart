@@ -9,11 +9,11 @@ import 'package:notaipilmobile/parts/variables.dart';
 Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingController controlador, {Icon? icon}){
   return TextFormField(
     keyboardType: type,
-    style: TextStyle(color: Colors.black),
+    style: TextStyle(color: letterColor),
     decoration: InputDecoration(
       prefixIcon: icon,
       labelText: hint,
-      labelStyle: TextStyle(color: Colors.black),
+      labelStyle: TextStyle(color: letterColor),
       filled: true,
       fillColor: fillColor,
       border: OutlineInputBorder(),
@@ -72,7 +72,7 @@ Widget buildBackButton(context, String route, ){
     child: Container(
       width: SizeConfig.screenWidth !* .32,
       height: SizeConfig.heightMultiplier !* 6,
-      color: Color.fromRGBO(0, 209, 255, 0.49),
+      color: borderAndButtonColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,7 +94,7 @@ Widget buildForwardButton(context, String route){
     child: Container(
       width: SizeConfig.screenWidth !* .32,
       height: SizeConfig.heightMultiplier !* 6,
-      color: Color.fromRGBO(0, 209, 255, 0.49),
+      color: borderAndButtonColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -116,7 +116,7 @@ Widget buildMiddleNavigator(context, active, String route, bool width){
     child: Container(
       width: SizeConfig.widthMultiplier !* 15,
       height: SizeConfig.heightMultiplier !* .4,
-      color: active? Colors.white : Colors.grey,
+      color: active? letterColor : Colors.grey,
     ),
     onTap: (){
       Navigator.pushNamed(context, route);
@@ -127,7 +127,7 @@ Widget buildMiddleNavigator(context, active, String route, bool width){
     child: Container(
       width: SizeConfig.widthMultiplier !* 20,
       height: SizeConfig.heightMultiplier !* .4,
-      color: active? Colors.white : Colors.grey,
+      color: active? letterColor : Colors.grey,
     ),
     onTap: (){
       Navigator.pushNamed(context, route);

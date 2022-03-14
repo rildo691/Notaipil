@@ -7,6 +7,9 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/register/model/studentModel.dart';
@@ -72,7 +75,7 @@ class _SecondPageState extends State<SecondPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: FutureBuilder(
                         future: Future.wait([getAreas(), getCoursesCode(_value)]),
                         builder: (context, snapshot){
@@ -84,7 +87,7 @@ class _SecondPageState extends State<SecondPage> {
                                 height: SizeConfig.screenHeight,
                                 alignment: Alignment.center,
                                 child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                                  valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                                   strokeWidth: 5.0,
                                 ),
                               );
@@ -119,12 +122,12 @@ class _SecondPageState extends State<SecondPage> {
                                         children: [
                                           DropdownButtonFormField<String>(
                                             hint: Text("Área de Formação"),
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(color: letterColor),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor),
                                             ),
                                             dropdownColor: Colors.black,
                                             items: areas.map((e) {
@@ -144,12 +147,12 @@ class _SecondPageState extends State<SecondPage> {
                                           SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                           DropdownButtonFormField(
                                             hint: Text("Curso"),
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(color: letterColor),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor),
                                             ),
                                             dropdownColor: Colors.black,
                                             items: courses.map((e) {
@@ -174,7 +177,7 @@ class _SecondPageState extends State<SecondPage> {
                                                   child: Container(
                                                     width: SizeConfig.screenWidth !* .32,
                                                     height: SizeConfig.heightMultiplier !* 6,
-                                                    color: Color.fromRGBO(0, 209, 255, 0.49),
+                                                    color: borderAndButtonColor,
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,7 +197,7 @@ class _SecondPageState extends State<SecondPage> {
                                                   child: Container(
                                                     width: SizeConfig.screenWidth !* .32,
                                                     height: SizeConfig.heightMultiplier !* 6,
-                                                    color: Color.fromRGBO(0, 209, 255, 0.49),
+                                                    color: borderAndButtonColor,
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
@@ -219,7 +222,7 @@ class _SecondPageState extends State<SecondPage> {
                                     ),
                                     Container(
                                       child: GestureDetector(
-                                        child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                        child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                         onTap: (){
                                           Navigator.of(context, rootNavigator: true).pushNamed('/');
                                         }
@@ -240,9 +243,5 @@ class _SecondPageState extends State<SecondPage> {
         );
       },
     );
-  }
-
-  void buildItems(){
-
   }
 }

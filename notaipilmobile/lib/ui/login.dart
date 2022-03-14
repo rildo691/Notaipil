@@ -188,10 +188,10 @@ class _LoginState extends State<Login> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                             SizedBox(width: 10.0,),
                             GestureDetector(
-                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap:(){
                                 Navigator.pushNamed(context, '/type');
                               }
@@ -220,7 +220,6 @@ class _LoginState extends State<Login> {
         labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
         filled: true,
         fillColor: fillColor,
-        border: OutlineInputBorder(),
       ),
       style: TextStyle(color: letterColor, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
@@ -234,7 +233,6 @@ class _LoginState extends State<Login> {
         labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
         filled: true,
         fillColor: fillColor,
-        border: OutlineInputBorder(),
       ),
       obscureText: true,
       enableSuggestions: false,

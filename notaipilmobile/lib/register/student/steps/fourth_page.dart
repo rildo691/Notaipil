@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
@@ -12,7 +15,6 @@ import 'package:notaipilmobile/register/model/studentModel.dart';
 import 'package:notaipilmobile/register/model/studentAccountModel.dart';
 import 'package:notaipilmobile/register/model/classroomStudentModel.dart';
 import 'package:notaipilmobile/register/model/student.dart';
-import 'package:notaipilmobile/register/model/typeAccountModel.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**User Interface */
@@ -89,7 +91,7 @@ class _FourthPageState extends State<FourthPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 25.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,7 +127,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -144,7 +146,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -176,7 +178,7 @@ class _FourthPageState extends State<FourthPage> {
                                           } else {
                                             _isValid = true;
                                           }
-                                            if (_formKey.currentState!.validate() && _isValid){
+                                          if (_formKey.currentState!.validate() && _isValid){
                                             registerUser(studentAccount.toJson()); 
                                           }
                                         },
@@ -189,7 +191,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

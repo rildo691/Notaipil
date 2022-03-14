@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/educatorModel.dart';
+import 'package:notaipilmobile/register/model/educator.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -28,9 +33,12 @@ class _FourthPageState extends State<FourthPage> {
   var model;
 
   EducatorModel? newEducator;
+  late Educator educator;
 
   TextEditingController _processo = TextEditingController();
   TextEditingController _numeroBiAluno = TextEditingController();
+
+  ApiService helper = ApiService();
 
   @override
   void initState(){
@@ -49,6 +57,11 @@ class _FourthPageState extends State<FourthPage> {
         });
   }
 
+  Future registerUser(educatorBody) async{
+    var educatorResponse = await helper.postWithoutToken("educators", educatorBody);
+    buildModal(context, educatorResponse["error"], educatorResponse["message"], route: !educatorResponse["error"] ? '/' : null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -65,7 +78,7 @@ class _FourthPageState extends State<FourthPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,10 +89,10 @@ class _FourthPageState extends State<FourthPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              buildMiddleNavigator(context, false, '/one', true),
-                              buildMiddleNavigator(context, false, '/two', true),
-                              buildMiddleNavigator(context, false, '/three', true),
-                              buildMiddleNavigator(context, true, '/four', true),
+                              buildMiddleNavigator(context, false, '/one', false),
+                              buildMiddleNavigator(context, false, '/two', false),
+                              buildMiddleNavigator(context, false, '/three', false),
+                              buildMiddleNavigator(context, true, '/four', false),
                             ],
                           ),
                           Form(
@@ -88,9 +101,9 @@ class _FourthPageState extends State<FourthPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                buildTextFieldRegister("N.º do Bilhete de Identidade do Aluno", TextInputType.text, _numeroBiAluno),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 buildTextFieldRegister("N.º de Processo do Aluno", TextInputType.number, _processo),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                buildTextFieldRegister("N.º do Bilhete de Identidade do Aluno", TextInputType.text, _numeroBiAluno),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                 Container(
                                   padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -101,7 +114,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +134,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -133,11 +146,22 @@ class _FourthPageState extends State<FourthPage> {
                                         ),
                                         onTap: (){
                                           setState((){
-                                            model = newEducator?.copyWith(numeroBiAluno: _numeroBiAluno.text, numeroProcessoAluno: _processo.text);
+                                            model = newEducator?.copyWith(numeroProcessoAluno: _processo.text, numeroBiAluno: _numeroBiAluno.text);
                                           });
+                                          
+                                          educator = Educator(
+                                            bi: model.numeroBI,
+                                            fullName: model.nome,
+                                            gender: model.sexo,
+                                            birthdate: model.dataNascimento,
+                                            email: model.email,
+                                            telephone: model.telefone,
+                                            studentId: int.parse(model!.numeroProcessoAluno.toString()),
+                                            studentBi: model.numeroBiAluno
+                                          );
 
                                           if (_formKey.currentState!.validate()){
-                                            
+                                            registerUser(educator.toJson());
                                           }
                                         }
                                       )
@@ -149,7 +173,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

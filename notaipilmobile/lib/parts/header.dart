@@ -21,7 +21,7 @@ Widget buildHeaderPartOne(){
 
 Widget buildHeaderPartTwo(String text){
   return Container(
-    child: Text(text, style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto', fontWeight: FontWeight.w200), textAlign: TextAlign.center), 
+    child: Text(text, style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100), textAlign: TextAlign.center), 
   );
 }
 

@@ -5,8 +5,8 @@ class EducatorModel{
   DateTime? dataNascimento;
   String? email;
   String? telefone;
-  String? numeroBiAluno;
   String? numeroProcessoAluno;
+  String? numeroBiAluno;
   
   EducatorModel({
     this.numeroBI,
@@ -15,8 +15,8 @@ class EducatorModel{
     this.dataNascimento,
     this.email,
     this.telefone,
-    this.numeroBiAluno,
     this.numeroProcessoAluno,
+    this.numeroBiAluno,
   });
 
   EducatorModel copyWith({    
@@ -26,8 +26,8 @@ class EducatorModel{
     DateTime? dataNascimento,
     String? email,
     String? telefone,
-    String? numeroBiAluno,
     String? numeroProcessoAluno,
+    String? numeroBiAluno,
   }) {
     return EducatorModel(
       numeroBI: numeroBI ?? this.numeroBI,
@@ -36,8 +36,8 @@ class EducatorModel{
       dataNascimento: dataNascimento ?? this.dataNascimento,
       email: email ?? this.email,
       telefone: telefone ?? this.telefone,
-      numeroBiAluno: numeroBiAluno ?? this.numeroBiAluno,
       numeroProcessoAluno: numeroProcessoAluno ?? this.numeroProcessoAluno,
+      numeroBiAluno: numeroBiAluno ?? this.numeroBiAluno,
     );
   }
   

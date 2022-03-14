@@ -54,7 +54,7 @@ class AccountType extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.only(top: 130.0),
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontFamily: 'Roboto', fontWeight: FontWeight.w400, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.pushNamed(context, '/');
                               }

@@ -9,11 +9,12 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/teacherModel.dart';
@@ -123,12 +124,12 @@ class _FourthPageState extends State<FourthPage> {
                                 DateTimeField(
                                   decoration: InputDecoration(
                                     labelText: "Tempo de Serviço no IPIL",
-                                    suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    suffixIcon: Icon(Icons.event_note, color: iconColor),
+                                    labelStyle: TextStyle(color: letterColor),
                                   ),
                                   controller: _tempoIpil,
                                   format: DateFormat("yyyy-MM-dd"),
-                                  style:  TextStyle(color: Colors.white),
+                                  style:  TextStyle(color: letterColor),
                                   onShowPicker: (context, currentValue) {
                                     return showDatePicker(
                                       context: context,
@@ -148,12 +149,12 @@ class _FourthPageState extends State<FourthPage> {
                                 DateTimeField(
                                   decoration: InputDecoration(
                                     labelText: "Tempo de Serviço na Educação",
-                                    suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    suffixIcon: Icon(Icons.event_note, color: iconColor),
+                                    labelStyle: TextStyle(color: letterColor),
                                   ),
                                   controller: _tempoEd,
                                   format: DateFormat("yyyy-MM-dd"),
-                                  style:  TextStyle(color: Colors.white),
+                                  style:  TextStyle(color: letterColor),
                                   onShowPicker: (context, currentValue) {
                                     return showDatePicker(
                                       context: context,
@@ -174,12 +175,12 @@ class _FourthPageState extends State<FourthPage> {
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   readOnly: true,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: letterColor),
                                   decoration: InputDecoration(
                                     labelText: "Carregar fotografia",
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    labelStyle: TextStyle(color: letterColor),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
+                                    fillColor: fillColor,
                                     border: OutlineInputBorder(),
                                   ),
                                   controller:  _photo,
@@ -202,7 +203,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,7 +223,7 @@ class _FourthPageState extends State<FourthPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -266,7 +267,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }
@@ -350,7 +351,7 @@ class _FourthPageState extends State<FourthPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: backgroundColor,
           child: Container(
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,

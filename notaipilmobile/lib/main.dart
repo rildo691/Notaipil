@@ -7,6 +7,9 @@ import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
 import 'package:notaipilmobile/ui/choose_profile.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Registers */
 import 'package:notaipilmobile/register/student/student_register.dart';
 import 'package:notaipilmobile/register/teacher/teacher_register.dart';
@@ -36,27 +39,29 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'NotaIPIL',
       theme: ThemeData(
-        hintColor: Colors.black,
-        primaryColor: Colors.black,
+        hintColor: letterColor,
+        primaryColor: letterColor,
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF0D89A4)),
+            borderSide: BorderSide(color: Color(0xFF0D89B0)),
             borderRadius: BorderRadius.circular(5.0)
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF0D89A4))
+            borderSide: BorderSide(color: Color(0xFF0D89B0))
           ),
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle: TextStyle(color: letterColor),
+          filled: true,
+          fillColor: fillColor,
         ),
         textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.black),
+          bodyText1: TextStyle(color: letterColor),
         ),
         dataTableTheme: DataTableThemeData(
           dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
-          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color(0xFF0D89A4) : Color(0xFF0D89A4)),
+          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? borderAndButtonColor : borderAndButtonColor),
           headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ?  SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null) ,
           dividerThickness: 5,
-          dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ? SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null),
+          dataTextStyle: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ? SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null),
         ),
       ),
       debugShowCheckedModeBanner: false,

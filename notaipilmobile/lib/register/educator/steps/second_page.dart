@@ -5,6 +5,9 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:intl/intl.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Configurations */
 import 'package:notaipilmobile/configs/size_config.dart';
 
@@ -66,7 +69,7 @@ class _SecondPageState extends State<SecondPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,10 +80,10 @@ class _SecondPageState extends State<SecondPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              buildMiddleNavigator(context, false, '/one', true),
-                              buildMiddleNavigator(context, true, '/two', true),
-                              buildMiddleNavigator(context, false, '/three', true),
-                              buildMiddleNavigator(context, false, '/four', true),
+                              buildMiddleNavigator(context, false, '/one', false),
+                              buildMiddleNavigator(context, true, '/two', false),
+                              buildMiddleNavigator(context, false, '/three', false),
+                              buildMiddleNavigator(context, false, '/four', false),
                             ],
                           ),
                           Form(
@@ -91,12 +94,12 @@ class _SecondPageState extends State<SecondPage> {
                               children: [
                                 DropdownButtonFormField(
                                   hint: Text("Sexo"),
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: letterColor),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    fillColor: fillColor,
+                                    hintStyle: TextStyle(color: letterColor),
                                   ),
                                   dropdownColor: Colors.black,
                                   items: [
@@ -115,12 +118,12 @@ class _SecondPageState extends State<SecondPage> {
                                 DateTimeField(
                                   decoration: InputDecoration(
                                     labelText: "Data de Nascimento",
-                                    suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    suffixIcon: Icon(Icons.event_note, color: iconColor),
+                                    labelStyle: TextStyle(color: letterColor),
                                   ),
                                   controller: _dataNascimento,
                                   format: DateFormat("yyyy-MM-dd"),
-                                  style:  TextStyle(color: Colors.white),
+                                  style:  TextStyle(color: letterColor),
                                   onShowPicker: (context, currentValue) {
                                     return showDatePicker(
                                       context: context,
@@ -145,7 +148,7 @@ class _SecondPageState extends State<SecondPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -165,7 +168,7 @@ class _SecondPageState extends State<SecondPage> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -190,7 +193,7 @@ class _SecondPageState extends State<SecondPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }
