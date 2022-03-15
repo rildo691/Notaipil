@@ -205,6 +205,10 @@ class _SelectStudentsState extends State<SelectStudents> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){

@@ -372,6 +372,10 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){

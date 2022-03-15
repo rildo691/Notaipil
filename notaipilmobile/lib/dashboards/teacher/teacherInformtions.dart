@@ -248,6 +248,10 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){

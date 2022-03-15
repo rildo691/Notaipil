@@ -192,6 +192,10 @@ class _ScheduleState extends State<Schedule> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){

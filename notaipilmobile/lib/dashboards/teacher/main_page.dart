@@ -245,6 +245,10 @@ class _MainPageState extends State<MainPage> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){
