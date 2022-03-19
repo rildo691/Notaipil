@@ -6,6 +6,12 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/functions/functions.dart';
+
+/**variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
+/**Model */
 import 'package:notaipilmobile/register/model/areaModel.dart';
 
 /**Sessions */
@@ -16,7 +22,10 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 class ShowCoordination extends StatefulWidget {
 
-  const ShowCoordination({ Key? key }) : super(key: key);
+  late var teacher = [];
+  late String coordinationId;
+
+  ShowCoordination(this.teacher, this.coordinationId);
 
   @override
   _ShowCoordinationState createState() => _ShowCoordinationState();
@@ -26,49 +35,19 @@ class _ShowCoordinationState extends State<ShowCoordination> {
 
   var _courseValue;
   var _gradeValue;
+  var _gradeName;
+  var _courseName;
+   var area = [];
+  var coordinators = [];
+  var courses = [];
+  var grades = [];
+  var classrooms = [];
+  var classroomsFilter = [];
+  var gender = [];
+  var filter = [];
+  var subjects = [];
 
   int _selectedIndex = 0;
-
-  var areaCoordinator = [
-    {
-      'job': 'Coordenador de Área',
-      'coordinator': 'Edson Viegas',
-    },
-    {
-      'job': 'Coordenador de Curso',
-      'coordinator': 'Olívia de Matos',
-    },
-  ];
-
-  var courses = [
-    {
-      'id': '1',
-      'code': 'IG'
-    },
-    {
-      'id': '2',
-      'code': 'II'
-    }
-  ];
-
-  var grades = [
-    {
-      'id': '1',
-      'code': '10'
-    },
-    {
-      'id': '2',
-      'code': '11'
-    },
-    {
-      'id': '3',
-      'code': '12'
-    },
-    {
-      'id': '4',
-      'code': '13'
-    }
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,14 +80,14 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -168,103 +147,259 @@ class _ShowCoordinationState extends State<ShowCoordination> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.5,
+                  /*height: SizeConfig.screenHeight !* 1.5,*/
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartTwo("Coordenação de Informática"),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("Coordenadores"),
-                              Text("Sala: 67 EDIF."),
-                            ],
-                          ),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 2),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: areaCoordinator.length,
-                            itemBuilder: (context, index){
-                              return _buildCard(areaCoordinator[index]);
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField<String>(
-                                hint: Text("Curso"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
+                  child: FutureBuilder(
+                    future: Future.wait([getAreaById(widget.coordinationId), getCoursesByArea(widget.coordinationId), getGrade(), getCoordinatiorsByArea(widget.coordinationId), getClassroomsByArea(widget.coordinationId), getStudentGenderByArea(widget.coordinationId), getSubjectByCourseAndGrade(_courseValue, _gradeValue)]),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                                strokeWidth: 5.0,
+                              ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+                            area = (snapshot.data! as List)[0];
+                            courses = (snapshot.data! as List)[1];
+                            grades = (snapshot.data! as List)[2];
+                            coordinators = (snapshot.data! as List)[3];
+                            classrooms = (snapshot.data! as List)[4];
+                            gender = (snapshot.data! as List)[5];
+                            subjects = (snapshot.data! as List)[6];
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildHeaderPartTwo("Coordenação de " + area[0]["name"].toString()),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 11),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Coordenadores"),
+                                        Text(""),
+                                      ],
+                                    ),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 2.5),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: coordinators.length,
+                                      itemBuilder: (context, index){
+                                        return _buildCard(coordinators[index]);
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                dropdownColor: Colors.black,
-                                items: courses.map((e) => 
-                                  DropdownMenuItem<String>(
-                                    value: e["id"],
-                                    child: Text(e["code"].toString()),
-                                  )
-                                ).toList(),
-                                value: _courseValue,
-                                onChanged: (newValue){
-                                  setState(() {
-                                    _courseValue = newValue;
-                                  });
-                                }
-                              )
-                            )
-                          ),
-                          Container(
-                            width: SizeConfig.widthMultiplier !* 30,
-                            child: SizedBox(
-                              child: DropdownButtonFormField<String>(
-                                hint: Text("Classe"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: SizeConfig.widthMultiplier !* 30,
+                                      child: SizedBox(
+                                        child: DropdownButtonFormField<String>(
+                                          hint: Text("Curso"),
+                                          style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            filled: true,
+                                            fillColor: Color(0xFF202733),
+                                            hintStyle: TextStyle(color: Colors.white),
+                                          ),
+                                          dropdownColor: Colors.black,
+                                          items: courses.map((e) => 
+                                            DropdownMenuItem<String>(
+                                              value: e["id"],
+                                              child: Text(e["code"].toString()),
+                                            )
+                                          ).toList(),
+                                          value: _courseValue,
+                                          onChanged: (newValue){
+                                            setState(() {
+                                              _courseValue = newValue;
+                                              for (int i = 0; i < courses.length; i++){
+                                                if (courses[i]["id"] == _courseValue){
+                                                  setState((){
+                                                    _courseName = courses[i]["code"];
+                                                  });
+                                                }
+                                              }
+                                            });
+                                          }
+                                        )
+                                      )
+                                    ),
+                                    Container(
+                                      width: SizeConfig.widthMultiplier !* 30,
+                                      child: SizedBox(
+                                        child: DropdownButtonFormField<String>(
+                                          hint: Text("Classe"),
+                                          style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            filled: true,
+                                            fillColor: Color(0xFF202733),
+                                            hintStyle: TextStyle(color: Colors.white),
+                                          ),
+                                          dropdownColor: Colors.black,
+                                          items: grades.map((e) => 
+                                            DropdownMenuItem<String>(
+                                              value: e["id"],
+                                              child: Text(e["name"].toString() + "ª"),
+                                            )
+                                          ).toList(),
+                                          value: _gradeValue,
+                                          onChanged: (newValue){
+                                            filter.clear();
+                                            setState((){
+                                              _gradeValue = newValue;
+                                            });
+                                            for (int i = 0; i < classrooms.length; i++){
+                                              if (classrooms[i]["courseId"] == _courseValue && classrooms[i]["gradeId"] == newValue){
+                                                setState((){
+                                                  filter.add({"name": classrooms[i]["name"], "m": gender[i]["m"], "f": gender[i]["f"]});
+                                                });
+                                              }
+                                            }
+                                            for (int i = 0; i < grades.length; i++){
+                                                if (grades[i]["id"] == newValue){
+                                                  setState((){
+                                                    _gradeName = grades[i]["name"] + "ª";
+                                                  });
+                                                }
+                                              }
+                                            //getClassroom(_courseValue, newValue);
+                                          }
+                                        )
+                                      )
+                                    ),
+                                  ],
                                 ),
-                                dropdownColor: Colors.black,
-                                items: grades.map((e) => 
-                                  DropdownMenuItem<String>(
-                                    value: e["id"],
-                                    child: Text(e["name"].toString() + "ª"),
-                                  )
-                                ).toList(),
-                                value: _gradeValue,
-                                onChanged: (newValue){
-                                  setState((){
-                                    _gradeValue = newValue;
-                                  });
-                                  //getClassroom(_courseValue, newValue);
-                                }
-                              )
-                            )
-                          ),
-                        ],
-                      ),
-                    ]  
-                  )
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Text(_gradeValue == null ? "" : "Estatística da $_gradeName classe - $_courseName"),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                DataTable(
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("TURMAS"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("M"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("F"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("MF"),
+                                      numeric: false,
+                                    ),
+                                  ],
+                                  rows: filter.map((e) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(e["name"], style: TextStyle(color: Colors.white)),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(e["m"].toString(), style: TextStyle(color: Colors.white)),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(e["f"].toString(), style: TextStyle(color: Colors.white)),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text((int.parse(e["m"].toString()) + int.parse(e["f"].toString())).toString(), style: TextStyle(color: Colors.white)),
+                                          )
+                                        ),
+                                      ]
+                                    )
+                                  ).toList(),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Text(_courseName == null ? "" : "Estatística do Curso $_courseName - $_gradeName classe"),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                DataTable(
+                                  columnSpacing: SizeConfig.widthMultiplier !* 37,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text(""),
+                                      numeric: false
+                                    ),
+                                    DataColumn(
+                                      label: Text("Total"),
+                                      numeric: false
+                                    )
+                                  ],
+                                  rows: [
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("DISCIPLINAS"),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(subjects.length.toString()),
+                                          )
+                                        ),
+                                      ]
+                                    ),
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text("TURMAS"),
+                                          )
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(filter.length.toString()),
+                                          )
+                                        ),
+                                      ]
+                                    ),
+                                  ],
+                                ),
+                              ]
+                            );
+                          }
+                      }
+                    },
+                  ),
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -299,6 +434,10 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
                 ],
                 currentIndex: _selectedIndex,
                 onTap:(index){
@@ -324,19 +463,14 @@ class _ShowCoordinationState extends State<ShowCoordination> {
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+            ClipOval(
+              child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 13) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
             ),
-            Text(index["coordinator"].toString()),
-            Text(index["job"].toString()),
+            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+            Text(index["teacherAccount"]["personalData"]["fullName"].toString()),
+            SizedBox(width: SizeConfig.widthMultiplier !* 9.5),
+            Text(index["teacherAccount"]["personalData"]["gender"] == "M" ? index["courses"].length == courses.length ? "Coordenador da Área" : "Coordenador do curso de " + index["courses"][0]["code"] : index["courses"].length == courses.length ? "Coordenadora da Área" : "Coordenadora do curso de " + index["courses"][0]["code"])
           ],
         ),
       ),

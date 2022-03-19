@@ -116,7 +116,26 @@ class _FourthPageState extends State<FourthPage> {
                               children: [
                                 buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailAluno),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                buildTextFieldRegister("Telefone", TextInputType.number, _telefone),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(color: letterColor),
+                                  decoration: InputDecoration(
+                                    labelText: "Telefone",
+                                    labelStyle: TextStyle(color: letterColor),
+                                    filled: true,
+                                    fillColor: fillColor,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller: _telefone,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Telefone";
+                                    } 
+                                    if (value.toString().length > 9 || value.toString().length < 9){
+                                      return "Número de telefone deve possuir 9 dígitos";
+                                    }
+                                  }
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Container(
                                   padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -167,18 +186,7 @@ class _FourthPageState extends State<FourthPage> {
                                             process: model.numeroProcesso,
                                             classroomId: model.turma,
                                           );       
-                                            if (_telefone.text.length > 9 || _telefone.text.length < 9){
-                                            Fluttertoast.showToast(
-                                              msg: "Número de telefone deve possuir 9 dígitos.",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                              gravity: ToastGravity.BOTTOM,
-                                            ).toString();
-                                          } else {
-                                            _isValid = true;
-                                          }
-                                          if (_formKey.currentState!.validate() && _isValid){
+                                          if (_formKey.currentState!.validate()){
                                             registerUser(studentAccount.toJson()); 
                                           }
                                         },

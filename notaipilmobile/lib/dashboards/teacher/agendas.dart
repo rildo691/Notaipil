@@ -8,6 +8,9 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,8 +76,8 @@ class _AgendasState extends State<Agendas> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
@@ -143,7 +146,7 @@ class _AgendasState extends State<Agendas> {
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child:FutureBuilder(
-                    future: Future.wait([getAreas(), getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue), getCoursesName(_areaValue)]),
+                    future: Future.wait([getTeacherAreas(widget.teacher[0]["id"]), getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue), getCoursesName(_areaValue)]),
                     builder: (context, snapshot){
                       switch(snapshot.connectionState){
                         case ConnectionState.none:

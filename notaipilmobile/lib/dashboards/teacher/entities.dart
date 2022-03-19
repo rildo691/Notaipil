@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,9 +18,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
+/**Complements */
+import 'package:notaipilmobile/dashboards/teacher/show_coordination.dart';
+
 class Entities extends StatefulWidget {
 
-  const Entities({ Key? key }) : super(key: key);
+  late var teacher = [];
+
+  Entities(this.teacher);
 
   @override
   _EntitiesState createState() => _EntitiesState();
@@ -26,18 +35,7 @@ class _EntitiesState extends State<Entities> {
 
   int _selectedIndex = 0;
 
-  var _fakeClassrooms = [
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'Informática',
-      'subject': 'TCC',
-    },
-    {
-      'course': 'Técnico Desenhador Projectista',
-      'name': 'Informática',
-      'subject': 'TCC',
-    },
-  ];
+  var coordinations = [];
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +68,14 @@ class _EntitiesState extends State<Entities> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -139,49 +137,65 @@ class _EntitiesState extends State<Entities> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.5,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Coordenações"),
-                      GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10.0,
-                        mainAxisSpacing: 10.0,
-                        children: _fakeClassrooms.map((data){
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                child: Card(
-                                  color: Color(0xFF222A37),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Container(
-                                      width: SizeConfig.widthMultiplier !* 10 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                      height: SizeConfig.heightMultiplier !* 2.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text(data["name"].toString(), style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                        ],
+                  child: FutureBuilder(
+                    future: getTeachersCoordinations(widget.teacher[0]["id"]),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container();
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            coordinations = (snapshot.data! as List);
+
+                            return 
+                            Column(
+                              children: [
+                                Text("Coordenações"),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3,),
+                                GridView.count(
+                                  shrinkWrap: true,
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10.0,
+                                  mainAxisSpacing: 10.0,
+                                  childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                                  children: coordinations.map((e) => 
+                                    GestureDetector(
+                                      child: Card(
+                                        color: Color(0xFF0D89A4),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5.0),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Container(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Text(e["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),                                                
+                                              ],
+                                            ),
+                                          )
+                                        ),
                                       ),
+                                      onTap: (){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(widget.teacher, e["id"])));
+                                      },
                                     )
-                                  ),
+                                  ).toList(),
                                 ),
-                                onTap: (){
-                                  
-                                },
-                              )
-                            ],
-                          );
-                        }).toList()
-                      )  
-                    ]  
-                  )
+                              ]
+                            );
+                          }
+                      }
+                    },
+                  ),
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(

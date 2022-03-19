@@ -100,10 +100,7 @@ ApiService helper = ApiService();
 
   Future<List<dynamic>> getTeachersClassrooms(id) async{
     var teachers = [];
-    var courses = [];
-    var areas = [];
     var response = await helper.get("teacher_classrooms");
-    var quantity = 0;
 
     for (var r in response){
 
@@ -120,6 +117,28 @@ ApiService helper = ApiService();
     }
 
     return teachers;
+  }
+
+  Future<List<dynamic>> getTeacherInClassroom(teacherId, classroomId) async{
+    var teacherInClassroom = [];
+    var response = await helper.get("teacher_classrooms");
+
+    for (var r in response){
+
+      if (r["teacher"]["id"].toString() == teacherId && r["classroom"]["id"] == classroomId){
+
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "subjectCourseGrade": r["subjectCourseGrade"],
+          "classroom": r["classroom"],
+          "teacher": r["teacher"]
+        };
+
+        teacherInClassroom.add(map);
+      }
+    }
+
+    return teacherInClassroom;
   }
 
   Future<List<dynamic>> getTeachersAreasAndCourses(id) async{
@@ -286,6 +305,24 @@ ApiService helper = ApiService();
     return teachers;
   }
 
+  Future<List<dynamic>> getTeachersCoordinations(id) async{
+    var coordinations = [];
+    var response = await helper.get("teacher_classrooms/areas/teacher/all/$id");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "name": r["name"],
+        'createdAt': r["createdAt"],
+        "updatedAt": r["updatedAt"],
+      };
+
+      coordinations.add(map);
+    }
+
+    return coordinations;
+  }
+
   Future<List<dynamic>> getAllCoordinations({value}) async{
     var coordinations = [];
     var response = await helper.get("coordinations");
@@ -302,6 +339,23 @@ ApiService helper = ApiService();
 
     return coordinations;
   }
+
+    Future<List<dynamic>> getTeacherAreas(teacherId) async{
+    var areas = [];
+    var response = await helper.get("teacher_classrooms/areas/teacher/all/$teacherId");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "name": r["name"],
+        "isActive": r["isActive"],
+      };
+      areas.add(map);
+    }
+
+    return areas;
+  }
+
 
   Future<List<dynamic>> getCoordinatiorsByArea(areaId) async{
     var coordinators = [];
@@ -910,6 +964,25 @@ ApiService helper = ApiService();
       };
 
       quarters.add(map);
+    }
+
+    return quarters;
+  }
+
+  Future<List<dynamic>> getActiveQuarter() async{
+    var response = await helper.get("quarters");
+    var quarters = [];
+
+    for (var r in response){
+      if (r["isActive"] == true){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "name": r["name"],
+          "isActive": r["isActive"],
+		      "permission": r["permission"],
+        };
+        quarters.add(map);
+      }
     }
 
     return quarters;

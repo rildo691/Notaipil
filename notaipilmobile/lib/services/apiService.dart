@@ -91,6 +91,20 @@ class ApiService{
     return responseJson;
   }
 
+  Future<dynamic> patchWithoutId(String url, Map body, {String? token}) async{
+    var response = await http.patch(
+      Uri.parse(_baseUrl + url),
+      /*headers: {
+        'Content-type': 'application/json; charset=utf-8',
+        'Accept': 'application/json',
+        /*'x-access-token': 'Bearer ' + token,*/
+      },*/
+      body: json.encode(body)
+    );
+    var responseJson = _responseStatus(response);
+    return responseJson;
+  }
+
   Future<dynamic> postMultipart(String url, Map body, {String? token}) async{
     var request = await http.MultipartRequest("POST", Uri.parse(_baseUrl + url));
 

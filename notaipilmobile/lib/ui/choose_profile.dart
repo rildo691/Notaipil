@@ -60,7 +60,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                 child: Stack(
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 35.0),
+                      padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 35.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
                       color: backgroundColor,
@@ -70,15 +70,27 @@ class _ChooseprofileState extends State<Chooseprofile> {
                         children: [
                           buildHeaderPartOne(),
                           buildHeaderPartTwo("Escolha o seu perfil"),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ClipOval(
+                                child: widget.response["user"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + widget.response["user"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+                              ),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                              Text(widget.response["user"]["userName"], style: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                            ],
+                          ),
                           GridView.count(
                             shrinkWrap: true,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10.0,
-                            mainAxisSpacing: 10.0,
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 5.0,
+                            childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 7,
                             children: widget._typeAccounts.map<Widget>((data){
                               return GestureDetector(
                                 child: Card(
-                                  color: backgroundColor,
+                                  color: borderAndButtonColor,
                                   child: Padding(
                                     padding: EdgeInsets.all(10.0),
                                     child: Container(
@@ -86,16 +98,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            width: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                            height: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Icon(Icons.account_circle, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          ),
-                                          SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
-                                          Text(data["name"], style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                          Text(data["name"], style: TextStyle(color: backgroundColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                         ],
                                       ),
                                     )

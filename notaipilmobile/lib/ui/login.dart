@@ -233,6 +233,13 @@ class _LoginState extends State<Login> {
         labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
         filled: true,
         fillColor: fillColor,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF0D89B0)),
+          borderRadius: BorderRadius.circular(5.0)
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF0D89B0))
+        ),
       ),
       obscureText: true,
       enableSuggestions: false,

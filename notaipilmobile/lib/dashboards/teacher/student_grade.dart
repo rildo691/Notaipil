@@ -12,6 +12,12 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
+/**Model */
+import 'package:notaipilmobile/register/model/studentGradeModel.dart';
+
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
@@ -44,8 +50,17 @@ class _StudentGradeState extends State<StudentGrade> {
   TextEditingController _macController = TextEditingController();
 
   var students = [];
+  List<Datum> grades = [];
+  var quarter = [];
+  var teacher = [];
 
   GlobalKey<FormState> _key = GlobalKey<FormState>();
+  GlobalKey<FormFieldState> _macKey = GlobalKey<FormFieldState>();
+  GlobalKey<FormFieldState> _ppKey = GlobalKey<FormFieldState>();
+  GlobalKey<FormFieldState> _ptKey = GlobalKey<FormFieldState>();
+
+  StudentGradeModel studentGradeModel = StudentGradeModel();
+  Datum datum = Datum();
 
   @override
   void initState(){
@@ -85,8 +100,8 @@ class _StudentGradeState extends State<StudentGrade> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
@@ -152,10 +167,10 @@ class _StudentGradeState extends State<StudentGrade> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.1,
+                  //height: SizeConfig.screenHeight !* 1.13999,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
-                    future: getAllClassroomStudents(widget.classroom["id"]),
+                    future: Future.wait([getAllClassroomStudents(widget.classroom["id"]), getActiveQuarter(), getTeacherInClassroom(widget.teacher[0]["id"], widget.classroom["id"])]),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:
@@ -175,7 +190,9 @@ class _StudentGradeState extends State<StudentGrade> {
                             return Container();
                           } else {
 
-                            students = (snapshot.data! as List);
+                            students = (snapshot.data! as List)[0];
+                            quarter = (snapshot.data! as List)[1];
+                            teacher = (snapshot.data! as List)[2];
 
                             return 
                             Form(
@@ -250,13 +267,11 @@ class _StudentGradeState extends State<StudentGrade> {
                                     validator: (String? value){
                                       if (value!.isEmpty){
                                         return "Preencha o campo MAC";
+                                      } 
+                                      if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
+                                        return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
                                     },
-                                    onChanged: (String? value){
-                                      if (_macController.text.length <= 2){
-                                        
-                                      }
-                                    }
                                   ),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 3,
@@ -276,12 +291,10 @@ class _StudentGradeState extends State<StudentGrade> {
                                       if (value!.isEmpty){
                                         return "Preencha o campo PP";
                                       }
-                                    },
-                                    onChanged: (String? value){
-                                      if (_firstTestController.text.length <= 2){
-                                        
+                                      if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
+                                        return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
-                                    }
+                                    },
                                   ),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 3,
@@ -301,12 +314,10 @@ class _StudentGradeState extends State<StudentGrade> {
                                       if (value!.isEmpty){
                                         return "Preencha o campo PT";
                                       }
-                                    },
-                                    onChanged: (String? value){
-                                      if (_secondTestController.text.length <= 2){
-                                        
+                                      if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
+                                        return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
-                                    }
+                                    },
                                   ),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 7,
@@ -346,47 +357,24 @@ class _StudentGradeState extends State<StudentGrade> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Colors.grey,
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Color.fromRGBO(0, 209, 255, 0.49),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
                                               SizedBox(width: 8.0),
                                               Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
                                             ],
                                           ),
                                         ),
-                                        onTap: () {
+                                        onTap: () async{
                                           if (_key.currentState!.validate()){
-                                            if (_macController.text.length <= 2 && _firstTestController.text.length <= 2 && _secondTestController.text.length <= 2){
-                                              if ((double.parse(_macController.text) >= 0 && double.parse(_macController.text) <= 20) &&
-                                                (double.parse(_firstTestController.text) >= 0 && double.parse(_firstTestController.text) <= 20) &&
-                                                (double.parse(_secondTestController.text) >= 0 && double.parse(_secondTestController.text) <= 20)){
-                                                  if (i <= students.length-2){
-                                                    setState((){
-                                                      i++;
-                                                      _macController.text = "";
-                                                      _firstTestController.text = "";
-                                                      _secondTestController.text = "";
-                                                    });
-                                                  }
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                  msg: "Notas devem variar de 0 a 20.",
-                                                  toastLength: Toast.LENGTH_LONG,
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.white,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                ).toString();
-                                              }
+                                            if (i <= students.length-2){
+                                              setState((){
+                                                _buildModal(i);
+                                              });
                                             } else {
-                                              Fluttertoast.showToast(
-                                                msg: "Notas devem conter entre 1 a 2 caracteres.",
-                                                toastLength: Toast.LENGTH_LONG,
-                                                backgroundColor: Colors.red,
-                                                textColor: Colors.white,
-                                                gravity: ToastGravity.BOTTOM,
-                                              ).toString();
+                                              _buildFinalModal(i);
                                             }
                                           } 
                                         }
@@ -448,6 +436,120 @@ class _StudentGradeState extends State<StudentGrade> {
           },
         );
       },
+    );
+  }
+
+  Future<Widget>? _buildModal(id){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text("Clique OK para confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: (){
+
+                    datum = Datum (
+                      mac: int.parse(_macController.text.toString()),
+                      pp: int.parse(_firstTestController.text.toString()),
+                      pt: int.parse(_secondTestController.text.toString()),
+                      quarterId: quarter[0]["id"],
+                      teacherInClassroomId: teacher[0]["id"],
+                      classroomStudentId: students[0]["id"],
+                    );
+
+                    setState((){
+                      grades.add(datum);
+
+                      _macController.text = "";
+                      _firstTestController.text = "";
+                      _secondTestController.text = "";
+
+                      if (i <= students.length-2){
+                        i++;
+                      }
+                      Navigator.pop(context);
+                    });
+                  },
+                )
+              ]
+            ),
+          )
+        ); 
+      }
+    );
+  }
+
+  Future<dynamic>? _buildFinalModal(id) async{
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          backgroundColor: Color(0xFF202733),
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            width: SizeConfig.screenWidth !* .8,
+            height: SizeConfig.screenHeight !* .4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Text("Clique OK para confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                ElevatedButton(
+                  child: Text("OK"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    onPrimary: Colors.white,
+                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
+                  ),
+                  onPressed: () async{
+                    datum = Datum (
+                      mac: int.parse(_macController.text.toString()),
+                      pp: int.parse(_firstTestController.text.toString()),
+                      pt: int.parse(_secondTestController.text.toString()),
+                      quarterId: quarter[0]["id"],
+                      teacherInClassroomId: teacher[0]["id"],
+                      classroomStudentId: students[0]["id"],
+                    );
+
+
+                    grades.add(datum);
+
+                    Navigator.pop(context);
+
+                    studentGradeModel.data = grades;
+                    var response = await helper.patchWithoutId("mini_agendas", studentGradeModel.toJson());                    
+                  },
+                )
+              ]
+            ),
+          )
+        ); 
+      }
     );
   }
 }

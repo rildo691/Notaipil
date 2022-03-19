@@ -18,6 +18,7 @@ import 'package:notaipilmobile/dashboards/teacher/student_absence.dart';
 
 /**User Interface */
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 
 
 class SetClassroomAttendance extends StatefulWidget {
@@ -92,8 +93,8 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
@@ -232,12 +233,12 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                                   DateTimeField(
                                     decoration: InputDecoration(
                                       labelText: "Data da aula",
-                                      suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                      labelStyle: TextStyle(color: Colors.white),
+                                      suffixIcon: Icon(Icons.event_note, color: iconColor),
+                                      labelStyle: TextStyle(color: letterColor),
                                     ),
                                     controller: _data,
                                     format: DateFormat("yyyy-MM-dd"),
-                                    style:  TextStyle(color: Colors.white),
+                                    style:  TextStyle(color: letterColor),
                                     onShowPicker: (context, currentValue) {
                                       return showDatePicker(
                                         context: context,

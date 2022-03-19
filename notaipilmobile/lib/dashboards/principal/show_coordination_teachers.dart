@@ -6,7 +6,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/dashboards/coordinator/teacher_stats.dart';
 import 'package:notaipilmobile/dashboards/principal/teacher_stats.dart';
 import 'package:notaipilmobile/functions/functions.dart';
-
+ 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
@@ -319,7 +319,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
       leading: ClipOval(
-        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
       ),
       title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: Colors.black)),
