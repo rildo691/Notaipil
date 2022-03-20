@@ -8,6 +8,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:jiffy/jiffy.dart';
+
+/**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
@@ -37,6 +40,9 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  late var ipilTimeYear = Jiffy(now).diff(widget.principal[1]["ipilDate"], Units.YEAR);
+  late var educationTimeYear = Jiffy(now).diff(widget.principal[1]["educationDate"], Units.YEAR);
 
   @override
   Widget build(BuildContext context) {
@@ -188,50 +194,137 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "DIRECTOR GERAL" : "DIRECTORA GERAL" : widget.principal[1]["personalData"]["gender"] == "M" ? "SUB-DIRECTOR " + widget.principal[0]["title"] : "SUB-DIRECTORA " + widget.principal[0]["title"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 7,),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(height: SizeConfig.heightMultiplier !* 13,),
+                      Container(
+                        width: SizeConfig.screenWidth,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 20.0,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7.0),
+                          color: backgroundColor,
+                        ),
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.phone, color: Colors.white,),
-                              SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                              Text(widget.principal[1]["telephone"])
+                              Text("Dados pessoais", style: TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.cake_rounded, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text("Nascido aos " + widget.principal[1]["personalData"]["birthdate"]),
+                                ]
+                              ),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.perm_contact_cal_rounded, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text("B.I. nº: " + widget.principal[1]["personalData"]["bi"]),
+                                ]
+                              )
                             ],
                           ),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(Icons.mail_outline_rounded, color: Colors.white,),
-                              SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                              Text(widget.principal[1]["email"])
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 25),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Categoria: " + widget.principal[1]["category"]),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                          Text("Regime: " + widget.principal[1]["regime"]),
-//                        Text("Cargo: " + widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"]),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                          Text("Tempo de serviço no IPIL: " + widget.principal[1]["ipilDate"]),
-                          SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                          Text("Tempo de serviço na Educação: " + widget.principal[1]["educationDate"]),
-                        ],
-                      )
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Container(
+                        width: SizeConfig.screenWidth,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 20.0,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7.0),
+                          color: backgroundColor,
+                        ),
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Tempo de serviço", style: TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.cast_for_education, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos"),
+                                ]
+                              ),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.co_present_rounded, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos" ),
+                                ]
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Container(
+                        width: SizeConfig.screenWidth,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            new BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 20.0,
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(7.0),
+                          color: backgroundColor,
+                        ),
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text("Contactos", style: TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.contact_phone, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text(widget.principal[1]["telephone"].toString()),
+                                ]
+                              ),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.contact_mail, color: iconColor),
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                  Text(widget.principal[1]["email"]),
+                                ]
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ), 
                 )

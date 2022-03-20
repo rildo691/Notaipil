@@ -34,12 +34,7 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
 
   late var ipilTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.YEAR);
-  late var ipilTimeMonth = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.MONTH);
-  late var ipilTimeDay = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.DAY);
   late var educationTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.YEAR);
-  late var educationTimeMonth = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.MONTH);
-  late var educationTimeDay = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.DAY);
-
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +249,6 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cast_for_education, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  //Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos" + " " + ipilTimeMonth.toString() + " " + "meses" + " " + ipilTimeDay.toString() + " " + "dias"),
                                   Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos"),
                                 ]
                               ),
@@ -265,7 +259,6 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.co_present_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  //Text("No MED há " + educationTimeYear.toString() + " " + "anos" + " " + educationTimeMonth.toString() + " " + "meses" + " " + educationTimeDay.toString() + " " + "dias"),
                                   Text("No MED há " + educationTimeYear.toString() + " " + "anos" ),
                                 ]
                               )
