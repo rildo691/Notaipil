@@ -11,3 +11,4 @@ final Color appBarColor = Colors.white;
 final Color drawerColor = Colors.white;
 final Color borderAndButtonColor = Color(0xFF0D89B0);
 final Color iconColor = Colors.black;
+final DateTime now = DateTime.now();

@@ -23,6 +23,7 @@ import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
 import 'package:notaipilmobile/dashboards/teacher/entities.dart';
+import 'package:notaipilmobile/dashboards/teacher/profile.dart';
 
 class MainPage extends StatefulWidget {
 
@@ -107,7 +108,7 @@ class _MainPageState extends State<MainPage> {
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
                         },
                       ),
                       ListTile(

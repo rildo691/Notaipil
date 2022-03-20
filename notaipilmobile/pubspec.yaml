@@ -47,6 +47,7 @@ dependencies:
   open_file: ^3.2.1
   file_picker: ^4.4.0
   image_picker: ^0.8.4+10
+  jiffy: ^5.0.0
 
 dev_dependencies:
   flutter_test:
