@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/functions/functions.dart';
+import 'package:notaipilmobile/parts/register.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
+
+/**User Interface */
+import 'package:fluttertoast/fluttertoast.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -30,6 +35,14 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
 
   int _selectedIndex = 0;
+
+  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _currentPwdController = TextEditingController();
+  TextEditingController _newPwdController = TextEditingController();
+  TextEditingController _confirmateNewPwdController = TextEditingController();
+  TextEditingController _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -133,37 +146,79 @@ class _EditProfileState extends State<EditProfile> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Horário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                          GestureDetector(
-                            child: Container(
-                              width: SizeConfig.screenWidth !* .32,
-                              height: SizeConfig.heightMultiplier !* 6,
-                              color: Color.fromRGBO(0, 209, 255, 0.49),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.cloud_upload, color: Colors.white, size: 25.0,),
-                                  SizedBox(width: 8.0),
-                                  Text("Upload", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
-                                ],
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 8),
+                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: ElevatedButton(
+                                child: Text("Guardar alterações"),
+                                style: ElevatedButton.styleFrom(
+                                  primary:  Color(0xFF0D89A4),
+                                  onPrimary: Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Roboto',
+                                    fontSize: 20.0,
+                                  ),
+                                  minimumSize: Size(0.0, 50.0),
+                                ),
+                                onPressed: (){
+                                  //buildModal(context, "Foi enviado um código de confirmação para o seu e-mail. Coloque-o abaixo para guardar as alterações.", _codeController);
+                                  if (_phoneController.text != widget.teacher[0]["teacherAccount"]["telephone"] && _emailController.text != widget.teacher[0]["teacherAccount"]["email"].toString()){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_phoneController.text != widget.teacher[0]["teacherAccount"]["telephone"].toString()){
+                                    Map<String, dynamic> body = {
+                                      "telephone": _phoneController.text,
+                                    };
+                                  } else if (_emailController.text != widget.teacher[0]["teacherAccount"]["telephone"].toString()){
+                                    Map<String, dynamic> body = {
+                                      "email": _emailController.text,
+                                    };
+                                  }
+                                  if (_currentPwdController.text.isNotEmpty){
+                                    if (_newPwdController.text.isNotEmpty){
+                                      if (_confirmateNewPwdController.text != _newPwdController.text){
+                                        Fluttertoast.showToast(
+                                          msg: "Confirmação da palavra-passe não coincide com a nova palavra-passe.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+
+                                      }
+                                    }
+                                  }
+                                },
                               ),
-                            ),
-                            onTap: () {
-                                    
-                            },
-                          )
-                        ]
-                      ),
-                    ]  
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ),
               ),

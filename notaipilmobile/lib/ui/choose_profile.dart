@@ -169,43 +169,4 @@ class _ChooseprofileState extends State<Chooseprofile> {
       },
     );
   }
-
-  Widget _buildCard(String text){
-    return GestureDetector(
-      child: Card(
-        color: Color(0xFF222A37),
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow:const [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 10,
-                  spreadRadius: 0,
-                  offset: Offset(0, 0)
-                ),
-              ],                
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                  height: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 3 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                ),
-                SizedBox(height: SizeConfig.heightMultiplier !* 2.3),
-                Text(text, style: TextStyle(color: Color(0xFF00D1FF), fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-              ],
-            ),
-          )
-        )
-      ),
-    );
-  }
 }

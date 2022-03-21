@@ -305,6 +305,22 @@ ApiService helper = ApiService();
     return teachers;
   }
 
+  Future<List<dynamic>> getAllClassroomsTeachers(classroomId) async{
+    var teachers = [];
+    var response = await helper.get("teacher_classrooms/classrooms/${classroomId}");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "teacher": r["teacher"],
+        "subject": r["subject"]
+      };
+
+      teachers.add(map);
+    }
+
+    return teachers;
+  }
+
   Future<List<dynamic>> getTeachersCoordinations(id) async{
     var coordinations = [];
     var response = await helper.get("teacher_classrooms/areas/teacher/all/$id");

@@ -11,6 +11,14 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
+
+/**Model */
+import 'package:notaipilmobile/register/model/teacher.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -45,7 +53,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
-  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+  Teacher teacher = Teacher();
 
   Future<void> start() async {
     await Future.delayed(Duration(seconds: 3));
@@ -199,7 +207,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Center(
                                   child: ClipOval(
-                                    child: widget.request["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(_baseImageUrl + widget.request["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
+                                    child: widget.request["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.request["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7),
@@ -230,24 +238,12 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                         minimumSize: Size(40.0, 40.0),
                                       ),
                                       onPressed: () async{
-                                        Map<String, dynamic> body = {
-                                          "bi": widget.request["bi"],
-                                          "fullName": widget.request["personalData"]["fullName"],
-                                          "birthdate": widget.request["personalData"]["birthdate"],
-                                          "gender": widget.request["personalData"]["gender"],
-                                          "email": widget.request["email"], 
-                                          "telephone": widget.request["telephone"], 
-                                          "qualificationId": widget.request["qualification"]["id"], 
-                                          "regime": widget.request["regime"],
-                                          "ipilDate": widget.request["ipilDate"], 
-                                          "educationDate": widget.request["educationDate"], 
-                                          "category": widget.request["category"],
-                                          "avatar": widget.request["avatar"],
-                                        };
+                                        teacher = Teacher (
+                                          teacherAccountId: widget.request["id"],
+                                        );
 
-                                        var response = await helper.postMultipart("teacher_accounts", body);
-
-                                        _buildAcceptAdmissionModal("Pedido de adesão aceite com sucesso", widget.request);
+                                        var response = await helper.postWithoutToken("teacher", teacher.toJson());
+                                        buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
                                       },
                                     ),
                                     ElevatedButton(
@@ -347,7 +343,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
+                Icon(Icons.cancel_outlined, size: 70.0, color: Colors.red),
                 Text(message, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
                 ElevatedButton(
                   child: Text("Sim"),
