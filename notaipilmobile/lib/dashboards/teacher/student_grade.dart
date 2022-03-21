@@ -472,7 +472,6 @@ class _StudentGradeState extends State<StudentGrade> {
                       mac: int.parse(_macController.text.toString()),
                       pp: int.parse(_firstTestController.text.toString()),
                       pt: int.parse(_secondTestController.text.toString()),
-                      quarterId: quarter[0]["id"],
                       teacherInClassroomId: teacher[0]["id"],
                       classroomStudentId: students[0]["id"],
                     );
@@ -531,7 +530,6 @@ class _StudentGradeState extends State<StudentGrade> {
                       mac: int.parse(_macController.text.toString()),
                       pp: int.parse(_firstTestController.text.toString()),
                       pt: int.parse(_secondTestController.text.toString()),
-                      quarterId: quarter[0]["id"],
                       teacherInClassroomId: teacher[0]["id"],
                       classroomStudentId: students[0]["id"],
                     );

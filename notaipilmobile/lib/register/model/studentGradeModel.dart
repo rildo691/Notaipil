@@ -29,7 +29,6 @@ class Datum {
         this.mac,
         this.pp,
         this.pt,
-        this.quarterId,
         this.teacherInClassroomId,
         this.classroomStudentId,
     });
@@ -45,7 +44,6 @@ class Datum {
         mac: json["mac"],
         pp: json["pp"],
         pt: json["pt"],
-        quarterId: json["quarterId"],
         teacherInClassroomId: json["teacherInClassroomId"],
         classroomStudentId: json["classroomStudentId"],
     );
@@ -54,7 +52,6 @@ class Datum {
         "mac": mac,
         "pp": pp,
         "pt": pt,
-        "quarterId": quarterId,
         "teacherInClassroomId": teacherInClassroomId,
         "classroomStudentId": classroomStudentId,
     };
