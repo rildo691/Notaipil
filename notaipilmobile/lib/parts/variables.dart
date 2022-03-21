@@ -15,7 +15,6 @@ final Color drawerColor = Colors.white;
 final Color borderAndButtonColor = Color(0xFF0D89B0);
 final Color iconColor = Colors.black;
 final Color teacherNameColor = Colors.red;
-//final Color backgroundColor = Color.fromARGB(100, 253, 254, 255);
 
 /**DateTime */
 final DateTime now = DateTime.now();
