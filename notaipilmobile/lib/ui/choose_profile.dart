@@ -113,6 +113,8 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getSingleTeacher(userEmail).then((value) {
                                       Map<String, dynamic> map = {
+                                        'id': widget.response["user"]["id"],
+                                        'typeAccount': data,
                                         'token': widget.response['token']
                                       };
                                       value.add(map);
@@ -127,6 +129,8 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getPrincipal(userEmail).then((value) {
                                       Map<String, dynamic> map = {
+                                        'id': widget.response["user"]["id"],
+                                        'typeAccount': data,
                                         'token': widget.response["token"]
                                       };
                                       value.add(map);
@@ -141,6 +145,8 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getCoordinatorAndArea(userEmail).then((value) {
                                       Map<String, dynamic> map = {
+                                        'id': widget.response["user"]["id"],
+                                        'typeAccount': data,
                                         'token': widget.response["token"]
                                       };
                                       value.add(map); 

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/dashboards/teacher/teacherInformtions.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:intl/intl.dart';
 
@@ -17,11 +16,13 @@ import 'package:notaipilmobile/parts/variables.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/studentGradeModel.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
-import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/teacher/classroom_subject_stats.dart';
+import 'package:notaipilmobile/dashboards/teacher/teacherInformations.dart';
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
+
 
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
@@ -540,7 +541,8 @@ class _StudentGradeState extends State<StudentGrade> {
                     Navigator.pop(context);
 
                     studentGradeModel.data = grades;
-                    var response = await helper.patchWithoutId("mini_agendas", studentGradeModel.toJson());                    
+                    var response = await helper.patchWithoutId("mini_agendas", studentGradeModel.toJson());      
+                    buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
                   },
                 )
               ]

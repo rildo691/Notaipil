@@ -41,16 +41,10 @@ class _MainPageState extends State<MainPage> {
 
   var classrooms = [];
   var students = [];
-  var areasAndCourses = [];
+  var courses = [];
   var areas = [];
   var data = [];
-
-  @override
-  void initState(){
-    super.initState();
-    
-    getAreas().then((value) => setState((){areas = value;}));
-  }
+  var areasHeIsIn = [];
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +144,7 @@ class _MainPageState extends State<MainPage> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: Future.wait([getTeachersClassrooms(widget.teacher[0]["id"]), getTeachersAreasAndCourses(widget.teacher[0]["id"]), getTeachersStudentsQuantity(widget.teacher[0]["id"]), getTeachersClassroomsOrganizedByArea(widget.teacher[0]["id"], areas)]),
+                  future: Future.wait([getTeachersClassrooms(widget.teacher[0]["id"]), getTeachersCourses(widget.teacher[0]["id"]), getTeachersStudentsQuantity(widget.teacher[0]["id"]), getTeachersClassroomsOrganizedByArea(widget.teacher[0]["id"]), getTeacherAreas(widget.teacher[0]["id"])]),
                   builder: (context, snapshot){
                     switch (snapshot.connectionState){
                       case ConnectionState.none:
@@ -171,9 +165,10 @@ class _MainPageState extends State<MainPage> {
                         } else {
 
                           classrooms = (snapshot.data! as List)[0];
-                          areasAndCourses = (snapshot.data! as List)[1];
+                          courses = (snapshot.data! as List)[1];
                           students = (snapshot.data! as List)[2];
-                          data = (snapshot.data! as List)[3];
+                          areas = (snapshot.data! as List)[3];
+                          areasHeIsIn = (snapshot.data! as List)[4];
 
                           return 
                           Container(
@@ -195,8 +190,8 @@ class _MainPageState extends State<MainPage> {
                                   children: [
                                     _buildCard("Turmas", classrooms.length.toString(), Color.fromARGB(255, 0, 191, 252)),
                                     _buildCard("Alunos", students[0]["quantity"].toString(), Color.fromARGB(255, 241, 188, 109)),
-                                    _buildCard("Áreas", areasAndCourses[0]["areas"].length.toString(), Color.fromARGB(255, 13, 137, 164)),
-                                    _buildCard("Cursos", areasAndCourses[0]["courses"].length.toString(), Color.fromARGB(255, 225, 106, 128)),
+                                    _buildCard(areasHeIsIn.length > 1 ? "Áreas" : "Área", areasHeIsIn.length.toString(), Color.fromARGB(255, 13, 137, 164)),
+                                    _buildCard(courses.length > 1 ? "Cursos" : "Curso", courses.length.toString(), Color.fromARGB(255, 225, 106, 128)),
                                   ],
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
@@ -207,7 +202,7 @@ class _MainPageState extends State<MainPage> {
                                       return Column(
                                         children: [
                                           _buildClassroomsTables(areas[index], index),
-                                          SizedBox(height: data[index].length > 0 ? SizeConfig.heightMultiplier !* 5 : 0),
+                                          SizedBox(height: areas[index].length > 0 ? SizeConfig.heightMultiplier !* 5 : 0),
                                         ]
                                       );
                                     },
@@ -321,41 +316,13 @@ class _MainPageState extends State<MainPage> {
     );  
   }
 
-  Widget _buildCardTwo(index){
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      color: Colors.white,
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-            ),
-            Text(index["job"].toString()),
-            Text(index["principal"].toString()),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildClassroomsTables(indexArea, pos){
-      if (data[pos].length > 0){
+      if (indexArea.length > 0){
         return DataTable(
-          columnSpacing: SizeConfig.widthMultiplier !* 30,
+          columnSpacing: SizeConfig.widthMultiplier !* 25,
           columns: [
             DataColumn(
-              label: Text(indexArea["name"].toString()),
+              label: Text(indexArea[0]["area"].toString()),
               numeric: false,
             ),
             DataColumn(
@@ -363,19 +330,19 @@ class _MainPageState extends State<MainPage> {
               numeric: false,
             ),
           ],
-          rows: List<DataRow>.generate(data[pos].length, (index) => 
+          rows: List<DataRow>.generate(indexArea.length, (index) => 
             DataRow(
               cells: [
                 DataCell(
                   Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(data[pos].length != 0 ? data[pos][index]["classroom"]["name"] : ""),
+                    alignment: Alignment.center,
+                    child: Text(indexArea[index]["classroom"]["name"].toString()),//Text(data[pos].length != 0 ? data[pos][index]["classroom"]["name"] : ""),
                   ),
                 ),
                 DataCell(
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(data[pos].length != 0 ? data[pos][index]["subjectCourseGrade"]["subject"]["name"] : ""),
+                    child: Text(indexArea[index]["subjectCourseGrade"]["subject"]["name"].toString()),//Text(data[pos].length != 0 ? data[pos][index]["subjectCourseGrade"]["subject"]["name"] : ""),
                   ),
                 ),
               ]

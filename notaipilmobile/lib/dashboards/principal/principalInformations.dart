@@ -9,6 +9,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
+/**Varibales */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -36,24 +39,7 @@ class Principalinformations extends StatefulWidget {
 
 class _PrincipalinformationsState extends State<Principalinformations> {
 
-  var _fakeInformations = [
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-  ];
+  var informations = [];
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -171,74 +157,112 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 40,
                   color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                          GestureDetector(
-                            child: Container(
-                              width: SizeConfig.widthMultiplier !* 35,
-                              height: SizeConfig.heightMultiplier !* 6.3,
-                              child: ElevatedButton(
-                                child: Text("Enviar"),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
-                                  onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                                ),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowInformationEntities(widget.principal)));
-                                },
+                  child: FutureBuilder(
+                    future: getInformations(widget.principal[1]["userId"], widget.principal[1]["typeAccount"]["id"]),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                                strokeWidth: 5.0,
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            informations = (snapshot.data as List);
+
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Enviadas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
-                              ]
-                            ),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier !* 50,
-                              child: ListView.builder(
-                              itemCount: _fakeInformations.length,
-                              itemBuilder: (context, index){
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                    GestureDetector(
+                                      child: Container(
+                                        width: SizeConfig.widthMultiplier !* 35,
+                                        height: SizeConfig.heightMultiplier !* 6.3,
+                                        child: ElevatedButton(
+                                          child: Text("Enviar"),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: borderAndButtonColor,
+                                            onPrimary: Colors.white,
+                                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                          ),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowInformationEntities(widget.principal)));
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: SizeConfig.screenWidth,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(7.0),
+                                          color: informationNotSeen,
+                                        ),
+                                        child: Card(
+                                          child: Center(
+                                            child: Text("Todas", style: TextStyle(color: letterColor, fontFamily: fontFamily,))
+                                          )
+                                        ),
+                                      ),
+                                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                      SizedBox(
+                                        height: SizeConfig.heightMultiplier !* 50,
+                                        child: ListView.builder(
+                                        itemCount: informations.length,
+                                        itemBuilder: (context, index){
+                                          return Card(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            color: informationNotSeen,
+                                            child: Row(
+                                              children: [
+                                                ClipOval(
+                                                  child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
+                                                ),
+                                                SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                                Text(informations[index]["fullName"].toString(), style: normalTextStyle),
+                                                SizedBox(width: SizeConfig.widthMultiplier !* 10),
+                                                Text(informations[index]["description"].toString(), style: normalTextStyle),
+                                                SizedBox(width: SizeConfig.widthMultiplier !* 15),
+                                                Text(informations[index]["createdAt"].toString(), style: normalTextStyle),
+                                                SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                                informations[index]["sent"] ? Icon(Icons.arrow_circle_right_rounded, color: informationSentIconColor,) : Icon(Icons.arrow_circle_left_rounded, color: informationReceivedIconColor,),
+                                              ]
+                                            )
+                                          );
+                                        },
+                                      ),
+                                      )
+                                    ],
                                   ),
-                                  color: Color.fromARGB(255, 34, 42, 55),
-                                  child: ListTile(
-                                    title: Text(_fakeInformations[index]["mensagem"].toString(), style: TextStyle(color: Colors.white),),
-                                    leading: Icon(Icons.info_outline, color: Colors.yellow,),
-                                    trailing: Text(_fakeInformations[index]["prazo"].toString(), style: TextStyle(color: Colors.white),),
-                                    onTap: (){
-                                      buildModal(context, _fakeInformations[index]["prazo"], _fakeInformations[index]["mensagem"]);
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ), 
+                                )
+                              ],
+                            );
+                          }
+                      }
+                    },
+                  ),
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -312,21 +336,23 @@ class _PrincipalinformationsState extends State<Principalinformations> {
             padding: EdgeInsets.all(15.0),
             width: SizeConfig.widthMultiplier !* 100,
             height: SizeConfig.heightMultiplier !* 100,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(date.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(title.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
-                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                ),
-                Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
-                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                ),
-                Text("Ficheiros", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text("Para", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(date.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                  Text(title.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                  Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                  ),
+                  Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                  ),
+                  Text("Ficheiros", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                  Text("Para", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                ],
+              ),
             ),
           )
         );

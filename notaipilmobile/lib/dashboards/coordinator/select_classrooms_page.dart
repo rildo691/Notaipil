@@ -195,9 +195,9 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
                           courses = (snapshot.data! as List)[0];
 
-                          if (!isFull){
+                          if (isFull){
                             classrooms = (snapshot.data! as List)[1];
-                            isFull = true;
+                            isFull = false;
                           }
 
                           if (_firstTime){
@@ -238,6 +238,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                     setState((){
                                       _courseValue = newValue;
                                       _firstTime = true;
+                                      isFull = true;
                                       getClassroomsByCourse(_courseValue);
                                     });
                                   },

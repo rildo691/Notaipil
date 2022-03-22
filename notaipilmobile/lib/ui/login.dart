@@ -65,6 +65,8 @@ class _LoginState extends State<Login> {
 
         getPrincipal(userEmail).then((value) {
           Map<String, dynamic> map = {
+            'id': response["user"]["id"],
+            'typeAccount': response["user"]["typeAccounts"],
             'token': response["token"]
           };
           value.add(map);
@@ -77,6 +79,8 @@ class _LoginState extends State<Login> {
 
         getCoordinator(userEmail).then((value) {
           Map<String, dynamic> map = {
+            'id': response["user"]["id"],
+            'typeAccount': response["user"]["typeAccounts"],
             'token': response["token"]
           };
           value.add(map); 
@@ -91,6 +95,8 @@ class _LoginState extends State<Login> {
 
         getSingleTeacher(userEmail).then((value) {
           Map<String, dynamic> map = {
+            'id': response["user"]["id"],
+            'typeAccount': response["user"]["typeAccounts"],
             'token': response['token']
           };
           value.add(map);

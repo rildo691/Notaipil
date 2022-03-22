@@ -224,7 +224,7 @@ class _ClassroomsState extends State<Classrooms> {
                                                 crossAxisCount: 2,
                                                 crossAxisSpacing: 10.0,
                                                 mainAxisSpacing: 10.0,
-                                                childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                                                childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 4.7,
                                                 children: classrooms.map((e) => 
                                                   GestureDetector(
                                                     child: Card(
@@ -241,7 +241,7 @@ class _ClassroomsState extends State<Classrooms> {
                                                             children: [
                                                               Text(e["classroom"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                                                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                                              Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                                              Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center)
                                                             ],
                                                           ),
                                                         )
