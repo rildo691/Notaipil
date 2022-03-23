@@ -6,10 +6,11 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
-Widget buildTextFormField(String hint, TextInputType type, TextEditingController controller, maxL){
+Widget buildTextFormField(String hint, TextInputType type, TextEditingController controller, maxL, {isReadOnly}){
     return TextFormField(
       keyboardType: type,
       maxLines: maxL ? int.parse((SizeConfig.heightMultiplier !* .9).toInt().toString()) : null,
+      readOnly: isReadOnly != null ? isReadOnly ? true : false : false,
       decoration: InputDecoration(
         labelText: hint,
         labelStyle: TextStyle(color: Colors.black, fontFamily: 'Roboto'),

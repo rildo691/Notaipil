@@ -65,8 +65,8 @@ class _LoginState extends State<Login> {
 
         getPrincipal(userEmail).then((value) {
           Map<String, dynamic> map = {
-            'id': response["user"]["id"],
-            'typeAccount': response["user"]["typeAccounts"],
+            'userId': response["user"]["id"],
+            'typeAccount': response["user"]["typesAccounts"][0],
             'token': response["token"]
           };
           value.add(map);
@@ -79,8 +79,8 @@ class _LoginState extends State<Login> {
 
         getCoordinator(userEmail).then((value) {
           Map<String, dynamic> map = {
-            'id': response["user"]["id"],
-            'typeAccount': response["user"]["typeAccounts"],
+            'userId': response["user"]["id"],
+            'typeAccount': response["user"]["typesAccounts"][0],
             'token': response["token"]
           };
           value.add(map); 
@@ -95,8 +95,8 @@ class _LoginState extends State<Login> {
 
         getSingleTeacher(userEmail).then((value) {
           Map<String, dynamic> map = {
-            'id': response["user"]["id"],
-            'typeAccount': response["user"]["typeAccounts"],
+            'userId': response["user"]["id"],
+            'typeAccount': response["user"]["typesAccounts"][0],
             'token': response['token']
           };
           value.add(map);
@@ -194,10 +194,10 @@ class _LoginState extends State<Login> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                             SizedBox(width: 10.0,),
                             GestureDetector(
-                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                               onTap:(){
                                 Navigator.pushNamed(context, '/type');
                               }

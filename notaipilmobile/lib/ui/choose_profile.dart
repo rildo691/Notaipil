@@ -75,7 +75,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               ClipOval(
-                                child: widget.response["user"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + widget.response["user"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+                                child: widget.response["user"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + widget.response["user"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 25, height: SizeConfig.imageSizeMultiplier !* 25),
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                               Text(widget.response["user"]["userName"], style: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
@@ -113,7 +113,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getSingleTeacher(userEmail).then((value) {
                                       Map<String, dynamic> map = {
-                                        'id': widget.response["user"]["id"],
+                                        'userId': widget.response["user"]["id"],
                                         'typeAccount': data,
                                         'token': widget.response['token']
                                       };
@@ -129,7 +129,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getPrincipal(userEmail).then((value) {
                                       Map<String, dynamic> map = {
-                                        'id': widget.response["user"]["id"],
+                                        'userId': widget.response["user"]["id"],
                                         'typeAccount': data,
                                         'token': widget.response["token"]
                                       };
@@ -145,7 +145,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
 
                                     getCoordinatorAndArea(userEmail).then((value) {
                                       Map<String, dynamic> map = {
-                                        'id': widget.response["user"]["id"],
+                                        'userId': widget.response["user"]["id"],
                                         'typeAccount': data,
                                         'token': widget.response["token"]
                                       };

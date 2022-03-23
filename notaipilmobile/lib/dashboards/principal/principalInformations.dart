@@ -11,6 +11,7 @@ import 'package:notaipilmobile/parts/navbar.dart';
 
 /**Varibales */
 import 'package:notaipilmobile/parts/variables.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -18,14 +19,12 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/show_information_entities.dart';
 import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
-import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/show_single_information_page.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
 import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
 import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
 class Principalinformations extends StatefulWidget {
@@ -40,8 +39,9 @@ class Principalinformations extends StatefulWidget {
 class _PrincipalinformationsState extends State<Principalinformations> {
 
   var informations = [];
+  var informationOne = [];
 
-  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  final  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   int _selectedIndex = 0;
 
@@ -156,9 +156,9 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 40,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
-                    future: getInformations(widget.principal[1]["userId"], widget.principal[1]["typeAccount"]["id"]),
+                    future: getInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:
@@ -187,7 +187,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                    Text("Informação", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                     GestureDetector(
                                       child: Container(
                                         width: SizeConfig.widthMultiplier !* 35,
@@ -214,45 +214,69 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                     children: [
                                       Container(
                                         width: SizeConfig.screenWidth,
+                                        height: SizeConfig.heightMultiplier !* 7,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(7.0),
                                           color: informationNotSeen,
                                         ),
-                                        child: Card(
-                                          child: Center(
-                                            child: Text("Todas", style: TextStyle(color: letterColor, fontFamily: fontFamily,))
-                                          )
+                                        child: Container(
+                                          color: Colors.black,
+                                          child: Card(
+                                            color: Colors.black,
+                                            child: Center(
+                                              child: Text("Todas", style: TextStyle(color: Colors.white, fontFamily: fontFamily,))
+                                            )
+                                          ),
                                         ),
                                       ),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                       SizedBox(
                                         height: SizeConfig.heightMultiplier !* 50,
                                         child: ListView.builder(
-                                        itemCount: informations.length,
-                                        itemBuilder: (context, index){
-                                          return Card(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
-                                            ),
-                                            color: informationNotSeen,
-                                            child: Row(
-                                              children: [
-                                                ClipOval(
-                                                  child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
+                                          itemCount: informations.length,
+                                          itemBuilder: (context, index){
+
+                                            int whiteSpace = informations[index]["title"].toString().indexOf(" ");
+
+                                            if (whiteSpace == -1){
+                                              whiteSpace = informations[index]["title"].toString().length;
+                                            } else if (whiteSpace > 8){
+                                              whiteSpace = 8;
+                                            }
+
+                                            return GestureDetector(
+                                              child: Container(
+                                                width: SizeConfig.screenWidth,
+                                                height: SizeConfig.heightMultiplier !* 12,
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                  color: informationNotSeen,
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(width: SizeConfig.widthMultiplier !* 2),
+                                                      ClipOval(
+                                                        child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
+                                                      ),
+                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                      Text(informations[index]["fullName"].toString(), style: normalTextStyleWithoutTextSize),
+                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                      Text(informations[index]["title"].toString().substring(0, whiteSpace) + (whiteSpace == informations[index]["title"].toString().length ? "" : "..."), style: normalTextStyleWithoutTextSize),
+                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                      Text(informations[index]["createdAt"].toString().substring(0, 10), style: normalTextStyleWithoutTextSize),
+                                                      SizedBox(width: SizeConfig.widthMultiplier !* 1.5),
+                                                      informations[index]["sent"] ? Icon(Icons.arrow_forward, color: informationSentIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,) : Icon(Icons.arrow_back, color: informationReceivedIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,),
+                                                    ]
+                                                  )
                                                 ),
-                                                SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                                Text(informations[index]["fullName"].toString(), style: normalTextStyle),
-                                                SizedBox(width: SizeConfig.widthMultiplier !* 10),
-                                                Text(informations[index]["description"].toString(), style: normalTextStyle),
-                                                SizedBox(width: SizeConfig.widthMultiplier !* 15),
-                                                Text(informations[index]["createdAt"].toString(), style: normalTextStyle),
-                                                SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                                informations[index]["sent"] ? Icon(Icons.arrow_circle_right_rounded, color: informationSentIconColor,) : Icon(Icons.arrow_circle_left_rounded, color: informationReceivedIconColor,),
-                                              ]
-                                            )
-                                          );
-                                        },
-                                      ),
+                                              ),
+                                              onTap: (){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.principal, informations[index]["id"], informations[index]["sent"])));
+                                              },
+                                            );
+                                          },
+                                        ),
                                       )
                                     ],
                                   ),
@@ -323,7 +347,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
     );
   }
 
-  Future<Widget>? buildModal(context, date, title){
+  Future<Widget>? buildModal(context, information, sent){
     showDialog(
       context: context,
       builder: (context){
@@ -331,7 +355,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: Colors.white,
           child: Container(
             padding: EdgeInsets.all(15.0),
             width: SizeConfig.widthMultiplier !* 100,
@@ -341,16 +365,30 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(date.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                  Text(title.toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                  Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
-                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children:[
+                          ClipOval(
+                            child: information[0]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + information[0]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 25, height: SizeConfig.imageSizeMultiplier !* 25),
+                          ),
+                          Text(information[0]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),)
+                        ]
+                      ),
+                      sent ? Text("Enviada: " + information[0]["createdAt"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold))
+                      : Text("Recebida: " + information[0]["createdAt"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold))
+                    ]
                   ),
-                  Text("Ullamco aute adipisicing nisi Lorem adipisicing. Consequat deserunt ut consectetur in cupidatat eu consequat est veniam dolor magna occaecat dolor. Ad officia eu adipisicing cupidatat et consequat aute excepteur ullamco. Amet enim irure nulla laboris laborum laboris exercitation exercitation veniam. Non sunt pariatur eu elit veniam ex ea velit id qui.",
-                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
-                  ),
-                  Text("Ficheiros", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                  Text("Para", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                  SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                  Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),),
+                  SizedBox(height: SizeConfig.heightMultiplier !* 3,),
+                  Text("Descrição: ", style: normalTextStyle,),
+                  SizedBox(height: SizeConfig.heightMultiplier !* 1.5,),
+                  //buildTextFormField("", TextInputType.multiline, description, true, isReadOnly: true),
                 ],
               ),
             ),

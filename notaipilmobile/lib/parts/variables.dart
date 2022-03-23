@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notaipilmobile/configs/size_config.dart';
 
+
 ///Strings 
 const String baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
 const String fontFamily = 'Roboto';
@@ -26,6 +27,11 @@ final DateTime now = DateTime.now();
 
 ///Double
 final double titleSize = SizeConfig.textMultiplier !* 4.5;
+final double normalTextSize = SizeConfig.textMultiplier !* 2.7;
+final double normalTextSizeForSmallerText = SizeConfig.textMultiplier !* 2.3;
+final double normalTextSizeForSmallText = normalTextSize - 2;
 
 ///TextStyle
-const TextStyle normalTextStyle = TextStyle(color: letterColor, fontFamily: fontFamily,);
+TextStyle normalTextStyle = TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: normalTextSize);
+const TextStyle normalTextStyleWithoutTextSize = TextStyle(color: letterColor, fontFamily: fontFamily);
+TextStyle normalTextStyleBold = TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: normalTextSize, fontWeight: FontWeight.bold);

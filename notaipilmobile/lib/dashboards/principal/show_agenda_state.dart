@@ -203,13 +203,15 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                             width: SizeConfig.screenWidth,
-                            height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
+                            height: SizeConfig.screenHeight,
+                            //height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
                             color: Color.fromARGB(255, 34, 42, 55),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   buildHeaderPartTwo("Estado das minipautas"),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
                                     style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
@@ -234,6 +236,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                       });
                                     },
                                   ),
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 8),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -307,38 +310,46 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                       )
                                     ],
                                   ),
-                                  DataTable(
-                                    columns: [
-                                      DataColumn(
-                                        label: Text("TURMAS"),
-                                        numeric: false,
-                                      ),
-                                      /*
-                                      DataColumn(
-                                        label: Text("MINIPAUTAS"),
-                                        numeric: false,
-                                      ),
-                                      DataColumn(
-                                        label: Text("PROGRESSO"),
-                                        numeric: false,
-                                      ),
-                                      DataColumn(
-                                        label: Text("ESTADO"),
-                                        numeric: false,
-                                      )*/
-                                    ],
-                                    rows: classrooms.map((e) => 
-                                      DataRow(
-                                        cells: [
-                                          DataCell(
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(e["name"].toString())
+                                  SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                  Expanded(
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        DataTable(
+                                          columns: [
+                                            DataColumn(
+                                              label: Text("TURMAS"),
+                                              numeric: false,
                                             ),
-                                          )
-                                        ]
-                                      )
-                                    ).toList(),
+                                            /*
+                                            DataColumn(
+                                              label: Text("MINIPAUTAS"),
+                                              numeric: false,
+                                            ),
+                                            DataColumn(
+                                              label: Text("PROGRESSO"),
+                                              numeric: false,
+                                            ),
+                                            DataColumn(
+                                              label: Text("ESTADO"),
+                                              numeric: false,
+                                            )*/
+                                          ],
+                                          rows: classrooms.map((e) => 
+                                            DataRow(
+                                              cells: [
+                                                DataCell(
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(e["name"].toString())
+                                                  ),
+                                                )
+                                              ]
+                                            )
+                                          ).toList(),
+                                        ),
+                                      ]
+                                    ),
                                   )
                                 ],
                               ),

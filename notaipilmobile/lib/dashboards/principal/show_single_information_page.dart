@@ -3,83 +3,58 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/parts/variables.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
 
-/**Variables */
+/**Varibales */
 import 'package:notaipilmobile/parts/variables.dart';
-
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
-import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination.dart';
-import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
-import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/principalInformations.dart';
+import 'package:notaipilmobile/dashboards/principal/show_agenda_state.dart';
 import 'package:notaipilmobile/dashboards/principal/profile.dart';
 import 'package:notaipilmobile/dashboards/principal/settings.dart';
 import 'package:notaipilmobile/dashboards/principal/admission_requests.dart';
+import 'package:notaipilmobile/dashboards/principal/classrooms_page.dart';
+import 'package:notaipilmobile/dashboards/principal/show_coordination_teachers.dart';
+import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
-/**User Interface */
-import 'package:expansion_tile_card/expansion_tile_card.dart';
-
-class MainPage extends StatefulWidget {
-
+class ShowSingleInformationPage extends StatefulWidget {
   late var principal = [];
-  MainPage(this.principal);
+  late var informationId;
+  late bool sent;
+
+  ShowSingleInformationPage(this.principal, this.informationId, this.sent);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _ShowSingleInformationPageState createState() => _ShowSingleInformationPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
+
+  var information = [];
+
+  final  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  TextEditingController _descriptionController = TextEditingController();
 
   int _selectedIndex = 0;
 
-  var token;
-  var students = [];
-  var teachers = [];
-  var courses = [];
-  var classrooms = [];
-  var coordinators = [];
-  
-  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  @override 
+  void initState(){
+    super.initState();
 
-  ApiService helper = ApiService();  
-
-  final GlobalKey<ExpansionTileCardState> card = new GlobalKey();
-
-  Future verifyUser() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState((){
-      token = preferences.getString('token');
-    });
-    token == null ? Navigator.pushNamed(context, '/') : Navigator.pushNamed(context, '/dashboard');
-  }
-
-  Future _logOut() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove('token');
-    Navigator.pushNamed(context, '/');
   }
 
   @override
-  void initState(){
-    super.initState();
-  }
-
-   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
         return OrientationBuilder(
@@ -114,8 +89,8 @@ class _MainPageState extends State<MainPage> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new ClipOval(
-                          child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
@@ -186,22 +161,21 @@ class _MainPageState extends State<MainPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
                   color: backgroundColor,
                   child: FutureBuilder(
-                    future: Future.wait([getAllCourses(), getAllClassrooms(), getAllTeachers(), getAllStudents(), getAllCoordinations()]),
+                    future: getInformationsOne(widget.informationId, widget.sent),
                     builder: (context, snapshot){
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.waiting:
+                      switch (snapshot.connectionState){
                         case ConnectionState.none:
+                        case ConnectionState.waiting:
                           return Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                               child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                                valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                                 strokeWidth: 5.0,
                               ),
                           );
@@ -209,54 +183,78 @@ class _MainPageState extends State<MainPage> {
                           if (snapshot.hasError){
                             return Container();
                           } else {
-                            courses = (snapshot.data! as List)[0];
-                            classrooms = (snapshot.data! as List)[1];
-                            teachers = (snapshot.data! as List)[2];
-                            students = (snapshot.data! as List)[3];
-                            coordinators = (snapshot.data! as List)[4];
+
+                            information = (snapshot.data! as List);
+                            _descriptionController.text = information[0]["description"];
 
                             return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GridView.count(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 7.0,
-                                  mainAxisSpacing: 10.0,
-                                  childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    _buildCard("Cursos", courses.length.toString(), Color.fromARGB(255, 0, 191, 252)),
-                                    _buildCard("Turmas", classrooms.length.toString(), Color.fromARGB(255, 241, 188, 109)),
-                                    _buildCard("Professores", teachers.length.toString(), Color.fromARGB(255, 13, 137, 164)),
-                                    _buildCard("Estudantes", students.length.toString(), Color.fromARGB(255, 225, 106, 128)),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children:[
+                                        ClipOval(
+                                          child: information[0]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + information[0]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 25, height: SizeConfig.imageSizeMultiplier !* 25),
+                                        ),
+                                        Text(information[0]["fullName"].toString(), style: normalTextStyleBold)
+                                      ]
+                                    ),
+                                    widget.sent ? Text("Enviada: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
+                                    : Text("Recebida: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
+                                  ]
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold, fontSize: titleSize - 7),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text("Descrição: ", style: normalTextStyle,),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                                buildTextFormField("", TextInputType.text, _descriptionController, true, isReadOnly: true),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text("Ficheiro: ", style: normalTextStyle),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                widget.sent ? 
+                                information[0]["receptors"].length > 0 ?
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(information[0]["receptors"][0]["account"], style: normalTextStyleBold),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                                    SizedBox(
+                                      width: SizeConfig.screenHeight,
+                                      height: SizeConfig.heightMultiplier !* 20,
+                                      child: ListView.separated(
+                                        separatorBuilder: (context, index){
+                                          return SizedBox(
+                                            height: SizeConfig.heightMultiplier !* 1.5,
+                                          );
+                                        },
+                                        itemCount: information[0]["receptors"].length,
+                                        itemBuilder: (context, index){
+                                          return ListTile(
+                                            leading: ClipOval(
+                                              child: information[0]["receptors"][index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + information[0]["receptors"][index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15.5, height: SizeConfig.imageSizeMultiplier !* 15.5),
+                                            ),
+                                            title: Text(information[0]["receptors"][index]["fullName"].toString(), style: normalTextStyle),
+                                          );
+                                        },
+                                      ),
+                                    )
                                   ],
-                                ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                Expanded(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: coordinators.length,
-                                    itemBuilder: (context, index){
-                                      return Column(
-                                        children: [
-                                          _buildCoordinatorCard(coordinators[index]),
-                                          SizedBox(height: SizeConfig.heightMultiplier !* 2,)
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
+                                ) : Container() : Container(),
                               ],
                             );
                           }
                       }
                     },
-                  )
-                ),
+                  ),
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -313,100 +311,6 @@ class _MainPageState extends State<MainPage> {
           },
         );
       },
-    );
-  }
-
-  Widget _buildCard(String s, String t, Color color) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      color: color,
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              height: SizeConfig.imageSizeMultiplier !* 1.7 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-            ),
-            SizedBox(width: 7.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCoordinatorCard(index){
-    return ExpansionTileCard(
-      baseColor: Colors.white,//Color(0xFF1F2734),
-      expandedColor: Colors.white,//Color(0xFF1F2734),
-      leading: ClipOval(
-        child: index["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
-      ),
-      title: Text(index["coordinator"].toString(), style: normalTextStyle),
-      subtitle: Text("Área de Formação de " + index["areaName"].toString(), style: normalTextStyleWithoutTextSize),
-      children: [
-        Divider(
-          thickness: 1.0,
-          height: 2.0,
-        ),
-        Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Cursos: " + index["courses"].toString(), style: normalTextStyleWithoutTextSize,),
-                Text("Turmas: " + index["classrooms"].toString(), style: normalTextStyleWithoutTextSize,),
-                Text("Alunos: " + index["students"].toString(), style: normalTextStyleWithoutTextSize,),
-              ],
-            ),
-          ),
-        ),
-        ButtonBar(
-          alignment: MainAxisAlignment.spaceAround,
-          buttonHeight: SizeConfig.heightMultiplier !* .5,
-          buttonMinWidth: SizeConfig.widthMultiplier !* .5,
-          children: [
-            TextButton(
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0)
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCoordination(index["areaId"], widget.principal)));
-              },
-              child: Column(
-                children: <Widget>[
-                  Icon(Icons.swap_vert),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  ),
-                  Text('Ver coordenação'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

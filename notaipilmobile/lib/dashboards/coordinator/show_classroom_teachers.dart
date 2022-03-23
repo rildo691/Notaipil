@@ -266,7 +266,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 5.0,
                                     mainAxisSpacing: 10.0,
-                                    childAspectRatio: SizeConfig.widthMultiplier !* .6 / SizeConfig.heightMultiplier !* 7,
+                                    childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 2.5,
                                     children: teachers.map<Widget>((e) => 
                                       GestureDetector(
                                         child: Container(
@@ -289,16 +289,17 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                                 Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: titleSize),),
                                                 Center(
                                                   child: ClipOval(
-                                                    child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+                                                    child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),
                                                   ),
                                                 ),
                                                 Text("Prof. " + e["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(fontFamily: fontFamily, color: teacherNameColor)),
                                                 Text("Disciplina " + e["subject"]["subject"]["category"].toString(), style: TextStyle(fontFamily: fontFamily, color: letterColor),),
-                                                e["teacher"]["responsible"] != null ? Row(
+                                                e["teacher"]["responsible"] != false ? Row(
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
                                                     Icon(Icons.info_rounded, color: iconColor,),
+                                                    SizedBox(width: SizeConfig.widthMultiplier !* 2),
                                                     Text(e["teacher"]["teacher"]["teacherAccount"]["personalData"]["gender"] == "M" ? "Director de turma" : "Directora de turma"),
                                                   ],
                                                 ) : Container(),

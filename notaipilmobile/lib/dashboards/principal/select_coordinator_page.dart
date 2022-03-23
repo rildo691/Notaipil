@@ -13,6 +13,9 @@ import 'dart:math';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -48,9 +51,11 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
   int index = 0;
 
   var coordinators = [];
-  List<bool>? _selected;
+  var recipients = [];
 
-  bool _changing = false;
+  List<bool>? _selected;
+  bool isFull = false;
+  bool active = false;
 
   @override
   void initState(){
@@ -171,7 +176,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 50,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
                     future: getAllCoordinations(),
@@ -192,7 +197,15 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                           if (snapshot.hasError){
                             return Container();
                           } else {
-                            coordinators = (snapshot.data! as List);
+
+                            if (!active){
+                              coordinators = (snapshot.data! as List);
+                            }
+
+                            if (!isFull){
+                              _selected = List<bool>.generate(coordinators.length, (index) => false);
+                              isFull = true;
+                            }
 
                             return 
                             Column(
@@ -200,7 +213,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 TextFormField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
@@ -212,62 +225,81 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                                   ),
                                   style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
                                   controller: _nameController,
+                                  onFieldSubmitted: (String? value) {
+                                    if (value!.isNotEmpty){
+                                      setState((){
+                                        active = true;
+                                      });
+                                      _filter(value);
+                                    }
+                                  },
                                   onChanged: (value){
-                                    setState((){
-                                      _changing = true;
-                                      
-                                    });
+                                    if (value.isEmpty){
+                                      getAllCoordinations().then((value) => setState((){coordinators = value;}));
+                                      setState((){
+                                        isFull = false;
+                                        active = false;
+                                      });
+                                    }
                                   },
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                DataTable(
-                                  showCheckboxColumn: true,
-                                  columnSpacing: SizeConfig.widthMultiplier !* 9,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text(""),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Coordenador"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("Área de F."),
-                                      numeric: false,
-                                    ),
-                                  ],
-                                  rows: List<DataRow>.generate(coordinators.length, (index) => 
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Icon(Icons.account_circle_outlined, color: Colors.white),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      DataTable(
+                                        showCheckboxColumn: true,
+                                        columnSpacing: SizeConfig.widthMultiplier !* 9,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(""),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Coordenador"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Área de F."),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(coordinators.length, (index) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Center(
+                                                  child: ClipOval(
+                                                    child: coordinators[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + coordinators[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(coordinators[index]["coordinator"]),
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(coordinators[index]["areaName"]),
+                                                )
+                                              ),
+                                            ],
+                                            selected: _selected![index],
+                                            onSelectChanged: (bool? value){
+                                              _selected![index] = value!;
+                                              setState((){});
+                                            },
                                           )
                                         ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(coordinators[index]["coordinator"]),
-                                          )
-                                        ),
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(coordinators[index]["areaName"]),
-                                          )
-                                        ),
-                                      ],
-                                      selected: _selected![index],
-                                      onSelectChanged: (bool? value){
-                                        _selected![index] = value!;
-                                        setState((){getAllCoordinations();});
-                                      }
-                                    )
+                                      ),
+                                    ],
                                   ),
                                 ),  
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 Container(
                                   width: SizeConfig.widthMultiplier !* 30,
                                   height: SizeConfig.heightMultiplier !* 7,
@@ -278,7 +310,25 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                                       onPrimary: Colors.white,
                                       textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                     ),
-                                    onPressed: (){},
+                                    onPressed: () async{
+                                      for (int i = 0; i < _selected!.length; i++){
+                                        if (_selected![i] != false){
+                                          recipients.add(coordinators[i]["email"]);
+                                        }
+                                      }
+
+                                      Map<String, dynamic> body = {
+                                        "title": widget.information[0]["subject"].toString(),
+                                        "description": widget.information[0]["message"].toString(),
+                                        "userId": widget.principal[2]["userId"],
+                                        "typeAccountId":  widget.principal[2]["typeAccount"]["id"],
+                                        "group": "Coordenador",
+                                        "usersDestiny": recipients
+                                      };
+
+                                      var response = await helper.postWithoutToken("informations", body);
+                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)));
+                                    },
                                   ),
                                 )
                               ],
@@ -347,18 +397,10 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
+  _filter(value){
+    getCoordinatorsByName(value).then((valueF) => setState((){coordinators = valueF;}));
+    setState(() {
+      isFull = false;
+    });
   }
 }

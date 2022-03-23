@@ -403,6 +403,24 @@ ApiService helper = ApiService();
     return teachers;
   }
 
+  Future<List<dynamic>> getClassroomResponsible(classroomId) async{
+    var teachers = [];
+    var response = await helper.get("teacher_classrooms/classrooms/${classroomId}");
+
+    for (var r in response){
+      if (r["teacher"]["responsible"]){
+        Map<String, dynamic> map = {
+          "teacher": r["teacher"],
+          "subject": r["subject"],
+        };
+        
+        teachers.add(map);
+      }
+    }
+
+    return teachers;
+  }
+
   Future<List<dynamic>> getTeachersCoordinations(id) async{
     var coordinations = [];
     var response = await helper.get("teacher_classrooms/areas/teacher/all/$id");
@@ -429,7 +447,13 @@ ApiService helper = ApiService();
       Map<String, dynamic> map = {
         "areaId": r["areaId"],
         "areaName": r["areaName"],
+        "courses": r["courses"],
+        "classrooms": r["classrooms"],
+        "students": r["students"],
+        "teachers": r["teachers"],
         "coordinator": r["coordinator"],
+        "email": r["email"],
+        "avatar": r["avatar"]
       };
 
       coordinations.add(map);
@@ -438,7 +462,32 @@ ApiService helper = ApiService();
     return coordinations;
   }
 
-    Future<List<dynamic>> getTeacherAreas(teacherId) async{
+  Future<List<dynamic>> getCoordinatorsByName(value) async{
+    var coordinations = [];
+    var response = await helper.get("coordinations");
+
+    for (var r in response){
+      if (r["coordinator"].toString().toUpperCase().contains(value.toString().toUpperCase())){
+        Map<String, dynamic> map = {
+          "areaId": r["areaId"],
+          "areaName": r["areaName"],
+          "courses": r["courses"],
+          "classrooms": r["classrooms"],
+          "students": r["students"],
+          "teachers": r["teachers"],
+          "coordinator": r["coordinator"],
+          "email": r["email"],
+          "avatar": r["avatar"]
+        };
+
+        coordinations.add(map);
+      }
+    }
+
+    return coordinations;
+  }
+
+  Future<List<dynamic>> getTeacherAreas(teacherId) async{
     var areas = [];
     var response = await helper.get("teacher_classrooms/areas/teacher/all/$teacherId");
 
@@ -1113,7 +1162,7 @@ ApiService helper = ApiService();
     return informations;
   }
 
-  Future<List<dynamic>> getInformationsOnde(informationId, sent) async{
+  Future<List<dynamic>> getInformationsOne(informationId, sent) async{
     Map<String, dynamic> body = {
       "informationId": informationId,
       "sent": sent,
@@ -1123,37 +1172,34 @@ ApiService helper = ApiService();
     var response = await helper.postWithoutToken("informations/info-user-one", body);
 
     if (sent){
-      for (var r in response){
-        Map<String, dynamic> map = {
-          "id": r["id"],
-          "fullName": r["fullName"],
-          "avatar": r["avatar"],
-          "account": r["account"],
-          "createdAt": r["createdAt"],
-          "title": r["title"],
-          "description": r["description"],
-          "typeDestiny": r["typeDestiny"],
-          "receptors": r["receptors"]
-        };
+      Map<String, dynamic> map = {
+        "id": response["id"],
+        "fullName": response["fullName"],
+        "avatar": response["avatar"],
+        "account": response["account"],
+        "createdAt": response["createdAt"],
+        "title": response["title"],
+        "description": response["description"],
+        "typeDestiny": response["typeDestiny"],
+        "receptors": response["receptors"]
+      };
 
-        informations.add(map);
-      }
-    } else {
-      for (var r in response){
-        Map<String, dynamic> map = {
-          "id": r["id"],
-          "fullName": r["fullName"],
-          "avatar": r["avatar"],
-          "account": r["account"],
-          "createdAt": r["createdAt"],
-          "title": r["title"],
-          "description": r["description"],
-          "typeDestiny": r["typeDestiny"],
-          "isSeen": r["isSeen"]
-        };
+      informations.add(map);
+    }
+    else {
+      Map<String, dynamic> map = {
+        "id": response["id"],
+        "fullName": response["fullName"],
+        "avatar": response["avatar"],
+        "account": response["account"],
+        "createdAt": response["createdAt"],
+        "title": response["title"],
+        "description": response["description"],
+        "typeDestiny": response["typeDestiny"],
+        "isSeen": response["isSeen"]
+      };
 
-        informations.add(map);
-      }
+      informations.add(map);
     }
 
     return informations;

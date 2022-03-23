@@ -154,7 +154,7 @@ class _ProfileState extends State<Profile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 55,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +185,7 @@ class _ProfileState extends State<Profile> {
                         children: [
                           Center(
                             child: ClipOval(
-                              child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
+                              child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),
                             ),
                           ),
                           SizedBox(width: SizeConfig.widthMultiplier !* 10),
@@ -194,7 +194,9 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "DIRECTOR GERAL" : "DIRECTORA GERAL" : widget.principal[1]["personalData"]["gender"] == "M" ? "SUB-DIRECTOR " + widget.principal[0]["title"] : "SUB-DIRECTORA " + widget.principal[0]["title"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "DIRECTOR GERAL" : "DIRECTORA GERAL" : widget.principal[1]["personalData"]["gender"] == "M" ? "SUB-DIRECTOR " + widget.principal[0]["title"].toString().toUpperCase() : "SUB-DIRECTORA " + widget.principal[0]["title"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                              Text(widget.principal[1]["regime"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
                             ],
                           ),
                         ],

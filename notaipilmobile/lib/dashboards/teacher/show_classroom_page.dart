@@ -48,6 +48,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
 
   var classroom = [];
   var students = [];
+  var teacher = [];
   var _maleQuant;
   var _femaleQuant;
 
@@ -178,7 +179,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: start(),
+                  future: getClassroomResponsible(widget.classroomId),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -197,6 +198,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                         if (snapshot.hasError){
                           return Container();
                         } else {
+
+                          teacher = (snapshot.data! as List);
+
                           return 
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 10.0),
@@ -248,8 +252,10 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("PERÍODO: " + classroom[0]["period"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 1),
                                           Text("SALA: " + classroom[0]["room"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                                          Text("DIRECTOR DE TURMA:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                          SizedBox(height: SizeConfig.heightMultiplier !* 1),
+                                          Text("DIRECTOR DE TURMA: " + (teacher.length > 0 ? teacher[0]["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"].toString() : ""), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                         ]
                                       ),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 7,),

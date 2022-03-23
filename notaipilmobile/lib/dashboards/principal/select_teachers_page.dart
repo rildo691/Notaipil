@@ -17,6 +17,9 @@ import 'package:notaipilmobile/parts/variables.dart';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 import 'package:http/http.dart' as http;
@@ -53,10 +56,12 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   List<bool>? _selected;
+  bool _firstTime = true;
 
   int _selectedIndex = 0;
 
   var teachers = [];
+  var recipients = [];
 
   @override
   void initState(){
@@ -231,7 +236,9 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                     }
                                   },
                                   onFieldSubmitted: (String? value) {
-                                    _filter(value);
+                                    if (value!.isNotEmpty){
+                                      _filter(value);
+                                    }
                                   },
                                   onChanged: (value){
                                     if (value.isEmpty){
@@ -270,7 +277,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                               DataCell(
                                                 Center(
                                                   child: ClipOval(
-                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 10, height: SizeConfig.imageSizeMultiplier !* 10),
+                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
                                                   ),
                                                 ),
                                               ),
@@ -311,7 +318,25 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                       onPrimary: Colors.white,
                                       textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                     ),
-                                    onPressed: (){},
+                                    onPressed: () async{
+                                      for (int i = 0; i < _selected!.length; i++){
+                                        if (_selected![i] != false){
+                                          recipients.add(teachers[i]["teacherAccount"]["email"]);
+                                        }
+                                      }
+
+                                      Map<String, dynamic> body = {
+                                        "title": widget.information[0]["subject"].toString(),
+                                        "description": widget.information[0]["message"].toString(),
+                                        "userId": widget.principal[2]["userId"],
+                                        "typeAccountId":  widget.principal[2]["typeAccount"]["id"],
+                                        "group": "Professor",
+                                        "usersDestiny": recipients
+                                      };
+
+                                      var response = await helper.postWithoutToken("informations", body);
+                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)));
+                                    },
                                   ),
                                 )
                               ],
