@@ -14,6 +14,9 @@ import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
 

@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
 
 /**Functions */
-import 'package:notaipilmobile/parts/header.dart';
-import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
-/**Sessions */
-import 'package:shared_preferences/shared_preferences.dart';
-
-/**API Helper */
-import 'package:notaipilmobile/services/apiService.dart';
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
@@ -206,7 +199,7 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GridView.count(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 7.0,

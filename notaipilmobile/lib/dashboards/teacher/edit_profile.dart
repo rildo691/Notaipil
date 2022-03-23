@@ -21,6 +21,7 @@ import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
 import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/entities.dart';
 
 class EditProfile extends StatefulWidget {
 
@@ -230,7 +231,7 @@ class _EditProfileState extends State<EditProfile> {
                 selectedFontSize: 15,
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
-                selectedItemColor: Color(0xFF0D89A4),
+                selectedItemColor: linKColor,
                 unselectedItemColor: Colors.grey,
                 unselectedLabelStyle: TextStyle(color: Colors.grey),
                 items: const <BottomNavigationBarItem> [
@@ -273,9 +274,11 @@ class _EditProfileState extends State<EditProfile> {
                     case 3:
                       Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
                       break;
+                    case 4:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Entities(widget.teacher)));
+                      break;
                     default:
                   }
-                  
                 },
               ),
             );

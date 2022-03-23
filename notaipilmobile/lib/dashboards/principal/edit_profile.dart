@@ -13,6 +13,9 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
 

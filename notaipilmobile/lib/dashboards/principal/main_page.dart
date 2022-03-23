@@ -216,7 +216,7 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GridView.count(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 7.0,

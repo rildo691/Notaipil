@@ -9,6 +9,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Complements */
 import 'package:notaipilmobile/dashboards/principal/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/principal/show_classroom_teachers.dart';

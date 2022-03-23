@@ -12,6 +12,9 @@ import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/variables.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Models */
 import 'package:notaipilmobile/register/model/classroomModel.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';

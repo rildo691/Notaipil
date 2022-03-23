@@ -13,6 +13,9 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'dart:math';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 

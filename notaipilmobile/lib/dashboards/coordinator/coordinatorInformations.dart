@@ -9,12 +9,14 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/show_information_entities.dart';
-import 'package:notaipilmobile/dashboards/coordinator/coordinatorInformations.dart';
 import 'package:notaipilmobile/dashboards/coordinator/profile.dart';
 import 'package:notaipilmobile/dashboards/coordinator/settings.dart';
 import 'package:notaipilmobile/dashboards/coordinator/show_coordination.dart';

@@ -14,7 +14,6 @@ import 'dart:math';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
-
 /**Model */
 import 'package:notaipilmobile/register/model/teacher.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';

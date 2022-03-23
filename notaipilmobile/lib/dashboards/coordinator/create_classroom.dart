@@ -9,6 +9,9 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Model */
 import 'package:notaipilmobile/register/model/classroomModel.dart';
 

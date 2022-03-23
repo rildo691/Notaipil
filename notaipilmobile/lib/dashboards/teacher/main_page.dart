@@ -181,7 +181,7 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GridView.count(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 7.0,
@@ -224,7 +224,7 @@ class _MainPageState extends State<MainPage> {
                 selectedFontSize: 15,
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
-                selectedItemColor: Color(0xFF0D89A4),
+                selectedItemColor: linKColor,
                 unselectedItemColor: Colors.grey,
                 unselectedLabelStyle: TextStyle(color: Colors.grey),
                 items: const <BottomNavigationBarItem> [
@@ -307,7 +307,7 @@ class _MainPageState extends State<MainPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
               ],
             )
           ],

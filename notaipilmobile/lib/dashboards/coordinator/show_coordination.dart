@@ -10,6 +10,9 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/variables.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
 

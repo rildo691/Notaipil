@@ -25,6 +25,11 @@ import 'package:notaipilmobile/dashboards/teacher/show_classroom_schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
 import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
 import 'package:notaipilmobile/dashboards/teacher/show_classroom_page.dart';
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
+import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
+import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/entities.dart';
 
 class StudentAbsence extends StatefulWidget {
 
@@ -455,7 +460,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                 selectedFontSize: 15,
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
-                selectedItemColor: Color(0xFF0D89A4),
+                selectedItemColor: linKColor,
                 unselectedItemColor: Colors.grey,
                 unselectedLabelStyle: TextStyle(color: Colors.grey),
                 items: const <BottomNavigationBarItem> [
@@ -485,7 +490,24 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.teacher)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
+                      break;
+                    case 4:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Entities(widget.teacher)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );

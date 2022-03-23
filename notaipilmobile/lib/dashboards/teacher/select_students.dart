@@ -27,8 +27,6 @@ class _SelectStudentsState extends State<SelectStudents> {
 
   TextEditingController _nameController = TextEditingController();
 
-  DataTableSource _data = MyData();
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -139,26 +137,7 @@ class _SelectStudentsState extends State<SelectStudents> {
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      PaginatedDataTable(
-                        source: _data,
-                        rowsPerPage: 5,
-                        columnSpacing: SizeConfig.widthMultiplier !* 11.5,
-                        showCheckboxColumn: true,
-                        columns: [
-                          DataColumn(
-                            label: Text("Profile"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Coordenador"),
-                            numeric: false,
-                          ),
-                          DataColumn(
-                            label: Text("Área de Formação"),
-                            numeric: false,
-                          ),
-                        ],
-                      ),
+                      
                       SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
                       Container(
                         width: SizeConfig.widthMultiplier !* 30,
@@ -239,39 +218,4 @@ class _SelectStudentsState extends State<SelectStudents> {
       controller: controller,
     );
   }
-}
-
-class MyData extends DataTableSource{
-  final _data = List.generate(
-    200,
-    (index) => {
-      "id": index,
-      "title": "Item $index",
-      "price": Random().nextInt(10000)
-    });   
-    var _selected = List<bool?>.generate(200, (index) => false
-  );
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => _data.length;
-  @override
-  int get selectedRowCount => 0;
-  @override
-  DataRow getRow(int index) {
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-      DataCell(Center(child: Icon(Icons.account_circle, color: Colors.white,),)),
-      DataCell(Text(_data[index]["title"].toString(), style: TextStyle(color: Colors.white)),),
-      DataCell(
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(_data[index]["price"].toString(), textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
-        )
-      ),
-    ],
-  );
-  }  
 }
