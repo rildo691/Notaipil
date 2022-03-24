@@ -853,12 +853,12 @@ ApiService helper = ApiService();
     return classrooms;
   }
 
-  Future<List<dynamic>> getClassroomsByCourseAndName(course, name) async{
+  Future<List<dynamic>> getClassroomsByCourseAndName(name) async{
     var classrooms = [];
     var response = await helper.get("classrooms");
 
     for (var r in response){
-      if (r["courseId"] == course && r["name"].toString().toUpperCase().contains(name.toString().toUpperCase())){
+      if (r["name"].toString().toUpperCase().contains(name.toString().toUpperCase())){
         Map<String, dynamic> map = {
           "id": ClassroomModel.fromJson(r).id.toString(),
           "name": ClassroomModel.fromJson(r).name.toString(),

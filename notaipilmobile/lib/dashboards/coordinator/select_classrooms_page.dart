@@ -27,8 +27,9 @@ import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 
 class SelectClassroomsPage extends StatefulWidget {
   late var coordinator = [];
+  late var information = [];
 
-  SelectClassroomsPage(this.coordinator);
+  SelectClassroomsPage(this.coordinator, this.information);
 
   @override
   _SelectClassroomsPageState createState() => _SelectClassroomsPageState();
@@ -109,14 +110,14 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
+                            child: Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -176,7 +177,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: Future.wait([getCoursesByArea(_areaId), getClassroomsByCourse(_courseValue)]),
+                  future: Future.wait([getCoursesByArea(_areaId), getClassroomsByArea(_areaId)]),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -221,32 +222,6 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                               children: [
                                 Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                DropdownButtonFormField<String>(
-                                  hint: Text("Cursos", textAlign: TextAlign.center, ),
-                                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      filled: true,
-                                      fillColor: Color(0xFF202733),
-                                    ),
-                                  dropdownColor: Colors.black,
-                                  items: courses.map((e) => 
-                                    DropdownMenuItem<String>(
-                                      value: e["id"],
-                                      child: Text(e["code"].toString())
-                                    )
-                                  ).toList(), 
-                                  value: _courseValue,
-                                  onChanged: (newValue){
-                                    setState((){
-                                      _courseValue = newValue;
-                                      _firstTime = true;
-                                      isFull = true;
-                                      getClassroomsByCourse(_courseValue);
-                                    });
-                                  },
-                                ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 TextFormField(
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
@@ -265,11 +240,13 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                     }
                                   },
                                   onFieldSubmitted: (String? value) {
-                                    _filter(_courseValue, value);
+                                    if (value!.isNotEmpty){
+                                      _filter(value);
+                                    }
                                   },
                                   onChanged: (value){
                                     if (value.isEmpty){
-                                      getClassroomsByCourse(_courseValue).then((value) => setState((){classrooms = value;}));
+                                      getClassroomsByArea(_areaId).then((value) => setState((){classrooms = value;}));
                                       setState((){
                                         _firstTime = true;
                                         isFull = true;
@@ -404,8 +381,8 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
     );
   }
 
-  _filter(_courseValue, value){
-    getClassroomsByCourseAndName(_courseValue, value).then((value) => setState((){classrooms = value;}));
+  _filter(value){
+    getClassroomsByCourseAndName(value).then((value) => setState((){classrooms = value;}));
     setState(() {
       _firstTime = true;
       isFull = true;

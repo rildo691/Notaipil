@@ -27,8 +27,9 @@ import 'package:notaipilmobile/dashboards/coordinator/main_page.dart';
 
 class SelectTeachersPage extends StatefulWidget {
   late var coordinator = [];
+  late var information = [];
 
-  SelectTeachersPage(this.coordinator);
+  SelectTeachersPage(this.coordinator, this.information);
 
   @override
   _SelectTeachersPageState createState() => _SelectTeachersPageState();
@@ -102,14 +103,14 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "Coordenador da Área de ${widget.coordinator[1]["name"]}" : "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "Coordenadora da Área de ${widget.coordinator[1]["name"]}" : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
+                            child: Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -179,7 +180,30 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                     children: [
                       Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      buildTextFieldRegister("Pesquise o Nome", TextInputType.text, _nameController),
+                      TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                   
+                                  },
+                                  onChanged: (value){
+                                    
+                                  },
+                                ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
                       Container(
