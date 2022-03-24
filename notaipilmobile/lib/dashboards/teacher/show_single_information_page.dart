@@ -3,57 +3,49 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
+import 'package:notaipilmobile/dashboards/teacher/show_information_entities.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/functions/functions.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
 /**Complements */
-import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
-import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
 import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
 import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/entities.dart';
+import 'package:notaipilmobile/dashboards/teacher/profile.dart';
 
-class ShowClassroomSchedule extends StatefulWidget {
+class ShowSingleInformationPage extends StatefulWidget {
 
   late var teacher = [];
-  late String classroomId;
-  late var subject;
+  late var informationId;
+  late bool sent;
 
-  ShowClassroomSchedule(this.teacher, this.classroomId, this.subject);
+  ShowSingleInformationPage(this.teacher, this.informationId, this.sent);
 
   @override
-  _ShowClassroomScheduleState createState() => _ShowClassroomScheduleState();
+  _ShowSingleInformationPageState createState() => _ShowSingleInformationPageState();
 }
 
-class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
+class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
+
+  var information = [];
+
+  final  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  TextEditingController _descriptionController = TextEditingController();
 
   int _selectedIndex = 0;
-
-  String? _classroomName;
-
-  @override
-  void initState(){
-    super.initState();
-
-    getClassroomById(widget.classroomId).then((value) => 
-      setState((){
-        _classroomName = value[0]["name"].toString();
-      })
-    );
-
-  }
-
-  Future<void> start() async{
-    await Future.delayed(Duration(seconds: 3));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +103,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
                         },
                       ),
                       ListTile(
@@ -152,73 +144,100 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                 )
               ),
               body: SingleChildScrollView(
-                child: FutureBuilder(
-                  future: start(),
-                  builder: (context, snapshot){
-                    switch(snapshot.connectionState){
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Container(
-                          color: Color.fromARGB(255, 34, 42, 55),
-                          width: SizeConfig.screenWidth,
-                          height: SizeConfig.screenHeight,
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
-                            strokeWidth: 5.0,
-                          ),
-                        );
-                      default:
-                        if (snapshot.hasError){
-                          return Container();
-                        } else {
-                          return
-                          Container(
-                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 30.0),
+                  width: SizeConfig.screenWidth,
+                  color: backgroundColor,
+                  child: FutureBuilder(
+                    future: getInformationsOne(widget.informationId, widget.sent),
+                    builder: (context, snapshot){
+                      switch (snapshot.connectionState){
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            alignment: Alignment.center,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                                strokeWidth: 5.0,
+                              ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            information = (snapshot.data! as List);
+                            _descriptionController.text = information[0]["description"];
+
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
+                                      children:[
+                                        ClipOval(
+                                          child: information[0]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + information[0]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 25, height: SizeConfig.imageSizeMultiplier !* 25),
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.edit_calendar, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
-                                        ),
-                                      ],
-                                    )
+                                        Text(information[0]["fullName"].toString(), style: normalTextStyleBold)
+                                      ]
+                                    ),
+                                    widget.sent ? Text("Enviada: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
+                                    : Text("Recebida: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
                                   ]
                                 ),
-                              ]  
-                            )
-                          );
-                        }
-                    }
-                  },
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold, fontSize: titleSize - 7),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text("Descrição: ", style: normalTextStyle,),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                                buildTextFormField("", TextInputType.text, _descriptionController, true, isReadOnly: true),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Text("Ficheiro: ", style: normalTextStyle),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                widget.sent ? 
+                                information[0]["receptors"].length > 0 ?
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(information[0]["receptors"][0]["account"], style: normalTextStyleBold),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                                    SizedBox(
+                                      width: SizeConfig.screenHeight,
+                                      height: SizeConfig.heightMultiplier !* 20,
+                                      child: ListView.separated(
+                                        separatorBuilder: (context, index){
+                                          return SizedBox(
+                                            height: SizeConfig.heightMultiplier !* 1.5,
+                                          );
+                                        },
+                                        itemCount: information[0]["receptors"].length,
+                                        itemBuilder: (context, index){
+                                          return ListTile(
+                                            leading: ClipOval(
+                                              child: information[0]["receptors"][index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + information[0]["receptors"][index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15.5, height: SizeConfig.imageSizeMultiplier !* 15.5),
+                                            ),
+                                            title: Text(information[0]["receptors"][index]["fullName"].toString(), style: normalTextStyle),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ) : Container() : Container(),
+                              ],
+                            );
+                          }
+                      }
+                    },
+                  ),
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(

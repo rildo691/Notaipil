@@ -8,10 +8,10 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**Varibales */
 import 'package:notaipilmobile/parts/variables.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';

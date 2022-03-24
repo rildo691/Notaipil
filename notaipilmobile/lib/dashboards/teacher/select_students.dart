@@ -8,14 +8,21 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/register.dart';
 import 'dart:math';
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 class SelectStudents extends StatefulWidget {
 
-  const SelectStudents({ Key? key }) : super(key: key);
+  late var teacher = [];
+  late var information = [];
+
+  SelectStudents(this.teacher, this.information);
 
   @override
   _SelectStudentsState createState() => _SelectStudentsState();
@@ -58,14 +65,14 @@ class _SelectStudentsState extends State<SelectStudents> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -135,10 +142,40 @@ class _SelectStudentsState extends State<SelectStudents> {
                     children: [
                       Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      _buildTextFormField("Pesquise o Nome", TextInputType.text, _nameController),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.done,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: "Pesquise o Nome",
+                          labelStyle: TextStyle(color: Colors.white),
+                          filled: true,
+                          fillColor: Color(0xFF202733),
+                          border: OutlineInputBorder(),
+                        ),
+                        controller:  _nameController,
+                        validator: (String? value){
+                          if (value!.isEmpty){
+                            return "Preencha o campo Pesquise o Nome";
+                          }
+                        },
+                        onFieldSubmitted: (String? value) {
+                          
+                        },
+                        onChanged: (value){
+                          
+                        },
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Expanded(
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: [
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 4),
                       Container(
                         width: SizeConfig.widthMultiplier !* 30,
                         height: SizeConfig.heightMultiplier !* 7,

@@ -3,57 +3,42 @@ import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
-import 'package:notaipilmobile/functions/functions.dart';
+import 'package:notaipilmobile/dashboards/teacher/send_information_educator.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/functions/functions.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**API Helper */
+import 'package:notaipilmobile/services/apiService.dart';
+
 /**Complements */
-import 'package:notaipilmobile/dashboards/teacher/show_classroom_teachers.dart';
-import 'package:notaipilmobile/dashboards/teacher/set_classroom_attendance.dart';
+import 'package:notaipilmobile/dashboards/teacher/send_information.dart';
 import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
 import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/entities.dart';
 
-class ShowClassroomSchedule extends StatefulWidget {
+class ShowInformationEntities extends StatefulWidget {
 
   late var teacher = [];
-  late String classroomId;
-  late var subject;
 
-  ShowClassroomSchedule(this.teacher, this.classroomId, this.subject);
+  ShowInformationEntities(this.teacher);
 
   @override
-  _ShowClassroomScheduleState createState() => _ShowClassroomScheduleState();
+  _ShowInformationEntitiesState createState() => _ShowInformationEntitiesState();
 }
 
-class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
+class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
 
   int _selectedIndex = 0;
 
-  String? _classroomName;
-
-  @override
-  void initState(){
-    super.initState();
-
-    getClassroomById(widget.classroomId).then((value) => 
-      setState((){
-        _classroomName = value[0]["name"].toString();
-      })
-    );
-
-  }
-
-  Future<void> start() async{
-    await Future.delayed(Duration(seconds: 3));
-  }
+  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -152,73 +137,49 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                 )
               ),
               body: SingleChildScrollView(
-                child: FutureBuilder(
-                  future: start(),
-                  builder: (context, snapshot){
-                    switch(snapshot.connectionState){
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Container(
-                          color: Color.fromARGB(255, 34, 42, 55),
-                          width: SizeConfig.screenWidth,
-                          height: SizeConfig.screenHeight,
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
-                            strokeWidth: 5.0,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight !- 100,
+                  color: Color.fromARGB(255, 34, 42, 55),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Escolha a entidade", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                      Container(
+                        width: SizeConfig.screenWidth !* .7,
+                        height: SizeConfig.heightMultiplier !* 7,
+                        child: ElevatedButton(
+                          child: Text("Encarregados"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF0D89A4),
+                            onPrimary: Colors.white,
+                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                           ),
-                        );
-                      default:
-                        if (snapshot.hasError){
-                          return Container();
-                        } else {
-                          return
-                          Container(
-                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
-                            width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.calendar_today, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.edit_calendar, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                          onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
-                                          },
-                                        ),
-                                      ],
-                                    )
-                                  ]
-                                ),
-                              ]  
-                            )
-                          );
-                        }
-                    }
-                  },
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SendInformationEducator(widget.teacher)));
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: SizeConfig.screenWidth !* .7,
+                        height: SizeConfig.heightMultiplier !* 7,
+                        child: ElevatedButton(
+                          child: Text("Alunos"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFF0D89A4),
+                            onPrimary: Colors.white,
+                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                          ),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SendInformation(widget.teacher)));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                      
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(

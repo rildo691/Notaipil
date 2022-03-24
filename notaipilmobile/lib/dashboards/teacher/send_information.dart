@@ -10,6 +10,9 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
 
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -18,7 +21,9 @@ import 'package:notaipilmobile/dashboards/teacher/select_students.dart';
 
 class SendInformation extends StatefulWidget {
 
-  const SendInformation({ Key? key }) : super(key: key);
+  late var teacher = [];
+
+  SendInformation(this.teacher);
 
   @override
   _SendInformationState createState() => _SendInformationState();
@@ -64,14 +69,14 @@ class _SendInformationState extends State<SendInformation> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -191,7 +196,7 @@ class _SendInformationState extends State<SendInformation> {
                                 ),
                                 onPressed: (){
                                   if (_key.currentState!.validate()){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectStudents()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectStudents(widget.teacher, [{'subject': _subjectController.text, 'message': _messageController.text}])));
                                   }
                                 },
                               )
