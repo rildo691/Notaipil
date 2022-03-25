@@ -111,15 +111,14 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
             return Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                title: Text("NotaIPIL", style: TextStyle(color: letterColor, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                backgroundColor: appBarColor,
+                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
                 elevation: 0,
                 centerTitle: true,
-                iconTheme: IconThemeData(color: Colors.black),
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: Icon(Icons.account_circle, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){
                       _scaffoldKey.currentState!.openDrawer();
                     },
@@ -129,7 +128,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: drawerColor,
+                    color: Color.fromARGB(255, 34, 42, 55),
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
@@ -150,34 +149,34 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                         ),
                       ),
                       ListTile(
-                        leading: Icon(Icons.notifications, color: iconColor,),
-                        title: Text('Informações', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.account_circle, color: iconColor,),
-                        title: Text('Perfil', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.settings, color: iconColor,),
-                        title: Text('Definições', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.coordinator)))
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: iconColor,),
-                        title: Text('Sair', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
                       ),
                       ListTile(
-                        leading: Icon(Icons.help_outline, color: iconColor,),
-                        title: Text('Ajuda', style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
                         trailing: ClipOval(
                           child: Container(

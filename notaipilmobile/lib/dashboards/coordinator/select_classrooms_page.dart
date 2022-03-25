@@ -85,7 +85,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
             SizeConfig().init(constraints, orientation);
 
             return Scaffold(
-              key: _scaffoldKey, 
+              key: _scaffoldKey,
               appBar: AppBar(
                 title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
@@ -292,7 +292,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                             onSelectChanged: (bool? value){
                                               _selected![index] = value!;
                                               setState((){
-                                                getClassroomsByCourse(_courseValue);
+                                                
                                               });
                                             }
                                           )

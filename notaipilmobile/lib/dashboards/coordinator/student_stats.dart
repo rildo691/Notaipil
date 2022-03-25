@@ -116,7 +116,7 @@ class _StudentStatsState extends State<StudentStats> {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                     UserAccountsDrawerHeader(
+                      UserAccountsDrawerHeader(
                         accountName: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new ClipOval(

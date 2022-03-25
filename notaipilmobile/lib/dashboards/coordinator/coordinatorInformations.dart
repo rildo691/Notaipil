@@ -37,32 +37,6 @@ class Coordinatorinformations extends StatefulWidget {
 
 class _CoordinatorinformationsState extends State<Coordinatorinformations> {
 
-  var _fakeInformations = [
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-    {
-      'mensagem': 'Data de término da minipauta',
-      'prazo': '12/09/2021'
-    },
-  ];
   var informations = [];
   var informationOne = [];
 

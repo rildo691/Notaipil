@@ -166,8 +166,7 @@ class _TeacherStatsState extends State<TeacherStats> {
                     ]
                   )
                 )
-              ),
-              body: SingleChildScrollView(
+              ),              body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,

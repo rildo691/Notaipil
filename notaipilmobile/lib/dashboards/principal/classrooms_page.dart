@@ -129,7 +129,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                 centerTitle: true,
                 actions: <Widget>[
                   IconButton(
-                    padding: EdgeInsets.only(right: 20.0),
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
                     icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                     onPressed: (){
                       _key.currentState!.openDrawer();
@@ -148,8 +148,8 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        currentAccountPicture: new ClipOval(
+                          child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(

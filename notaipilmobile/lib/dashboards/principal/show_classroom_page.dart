@@ -121,8 +121,8 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                       UserAccountsDrawerHeader(
                         accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        currentAccountPicture: new ClipOval(
+                          child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
