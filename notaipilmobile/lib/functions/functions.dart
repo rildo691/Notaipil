@@ -1037,8 +1037,6 @@ ApiService helper = ApiService();
 
           requests.add(map);
     }
-
-    requests.removeAt(4);
     return requests;
   }
 

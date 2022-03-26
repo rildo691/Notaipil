@@ -191,7 +191,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                                 buildHeaderPartTwo("Pedidos de adesão"),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 10),
                                 _buildTextFormField("Pesquise o n.º do bilhete", TextInputType.text, _nameController),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 12),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 8),
                                 SizedBox(
                                   height: SizeConfig.heightMultiplier !* 49.4,
                                   child: ListView.builder(
@@ -292,7 +292,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
       leading: ClipOval(
-        child: index["avatar"] == null ? Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+        child: index["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
       ),
       title: Text(index["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text(index["email"].toString(), style: TextStyle(color: Colors.black)),

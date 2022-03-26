@@ -241,7 +241,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                           teacherAccountId: widget.request["id"],
                                         );
 
-                                        var response = await helper.postWithoutToken("teacher", teacher.toJson());
+                                        var response = await helper.postWithoutToken("teachers", teacher.toJson());
                                         buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
                                       },
                                     ),
@@ -352,9 +352,10 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                     textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
-                  onPressed: (){
-                    var response = helper.delete("teacher_accounts/", e["id"]);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
+                  onPressed: () async{
+                    var response = await helper.delete("teacher_accounts/", e["id"]);
+                    Navigator.pop(context);
+                    buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
                   },
                 )
               ]
