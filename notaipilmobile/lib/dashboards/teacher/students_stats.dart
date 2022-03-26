@@ -22,6 +22,8 @@ import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
 import 'package:notaipilmobile/dashboards/teacher/entities.dart';
+import 'package:notaipilmobile/dashboards/teacher/profile.dart';
+import 'package:notaipilmobile/dashboards/teacher/teacherInformations.dart';
 
 class StudentsStats extends StatefulWidget {
 
@@ -42,6 +44,8 @@ class _StudentsStatsState extends State<StudentsStats> {
   var _selected3 = false;
 
   int _selectedIndex = 0;
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> start() async {
     await Future.delayed(Duration(seconds: 3));
@@ -64,8 +68,10 @@ class _StudentsStatsState extends State<StudentsStats> {
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
+                    icon: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 9) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9, height: SizeConfig.imageSizeMultiplier !* 9),
+                    onPressed: (){
+                      _scaffoldKey.currentState!.openDrawer();
+                    },
                   )
                 ],
               ),
@@ -81,7 +87,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                         accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
                         accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new ClipOval(
-                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
+                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
@@ -96,14 +102,14 @@ class _StudentsStatsState extends State<StudentsStats> {
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
                         title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
                         },
                       ),
                       ListTile(
