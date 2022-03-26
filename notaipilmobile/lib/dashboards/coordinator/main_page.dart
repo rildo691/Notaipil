@@ -84,7 +84,7 @@ class _MainPageState extends State<MainPage> {
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 9) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9, height: SizeConfig.imageSizeMultiplier !* 9),
+                    icon: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 9) : ClipOval(child: Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 12, height: SizeConfig.imageSizeMultiplier !* 8)),
                     onPressed: (){
                       _scaffoldKey.currentState!.openDrawer();
                     },
@@ -100,14 +100,14 @@ class _MainPageState extends State<MainPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["courses"].length == coursesLength ? widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador da Área de " + widget.coordinator[1]["name"] : "Coordenadora da Área de " + widget.coordinator[1]["name"] : widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new ClipOval(
                           child: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class _MainPageState extends State<MainPage> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !- 70,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: FutureBuilder(
                     future: Future.wait([getCoursesByArea(_areaId), getClassroomsByArea(_areaId), getAllPrincipals()]),
@@ -334,8 +334,8 @@ class _MainPageState extends State<MainPage> {
     return ExpansionTileCard(
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
-      leading: CircleAvatar(
-        child: Icon(Icons.account_circle_outlined, color: Colors.white,),
+      leading: ClipOval(
+        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
       ),
       title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text(index["title"] == "Geral" ? index["teacherAccount"]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : index["teacherAccount"]["personalData"]["gender"] == "M" ? "Sub-Director " + index["title"] : "Sub-Directora " + index["title"], style: TextStyle(color: Colors.black)),

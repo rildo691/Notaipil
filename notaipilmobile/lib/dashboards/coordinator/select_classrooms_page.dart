@@ -13,6 +13,9 @@ import 'package:notaipilmobile/parts/register.dart';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -46,7 +49,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<bool>? _selected;
-  bool _firstTime = true;
+  bool _firstTime = false;
   bool isFull = false;
 
   var coursesLength;
@@ -54,6 +57,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
   var area = [];
   var classrooms = [];
   var courses = [];
+  var recipients = [];
 
   @override
   void initState(){
@@ -94,7 +98,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                 actions: <Widget>[
                   IconButton(
                     padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    icon: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 9) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9, height: SizeConfig.imageSizeMultiplier !* 9),
                     onPressed: (){
                       _scaffoldKey.currentState!.openDrawer();
                     },
@@ -110,14 +114,14 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text(widget.coordinator[0]["courses"].length == coursesLength ? widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador da Área de " + widget.coordinator[1]["name"] : "Coordenadora da Área de " + widget.coordinator[1]["name"] : widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
                         currentAccountPicture: new ClipOval(
                           child: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text(widget.coordinator[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                            child: Text(widget.coordinator[0]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
@@ -174,7 +178,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                     ]
                   )
                 )
-              ),
+              ),              
               body: SingleChildScrollView(
                 child: FutureBuilder(
                   future: Future.wait([getCoursesByArea(_areaId), getClassroomsByArea(_areaId)]),
@@ -199,14 +203,14 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
 
                           courses = (snapshot.data! as List)[0];
 
-                          if (isFull){
+                          if (!isFull){
                             classrooms = (snapshot.data! as List)[1];
-                            isFull = false;
+                            isFull = true;
                           }
 
-                          if (_firstTime){
+                          if (!_firstTime){
                             _selected = List<bool>.generate(classrooms.length, (index) => false);
-                            _firstTime = false;
+                            _firstTime = true;
                           }
 
                           return
@@ -248,8 +252,8 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                     if (value.isEmpty){
                                       getClassroomsByArea(_areaId).then((value) => setState((){classrooms = value;}));
                                       setState((){
-                                        _firstTime = true;
-                                        isFull = true;
+                                        _firstTime = false;
+                                        isFull = false;
                                       });
                                     }
                                   },
@@ -312,7 +316,25 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                       onPrimary: Colors.white,
                                       textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                     ),
-                                    onPressed: (){},
+                                    onPressed: () async{
+                                      for (int i = 0; i < _selected!.length; i++){
+                                        if (_selected![i] != false){
+                                          recipients.add(classrooms[i]["id"]);
+                                        }
+                                      }
+
+                                      Map<String, dynamic> body = {
+                                        "title": widget.information[0]["subject"].toString(),
+                                        "description": widget.information[0]["message"].toString(),
+                                        "userId": widget.coordinator[2]["userId"],
+                                        "typeAccountId":  widget.coordinator[2]["typeAccount"]["id"],
+                                        "group": "Aluno",
+                                        "classroomsIds": recipients
+                                      };
+
+                                      var response = await helper.postWithoutToken("informations/info-user-classroom", body);
+                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)));
+                                    },
                                   ),
                                 )
                               ],
@@ -384,8 +406,8 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
   _filter(value){
     getClassroomsByCourseAndName(value).then((value) => setState((){classrooms = value;}));
     setState(() {
-      _firstTime = true;
-      isFull = true;
+      _firstTime = false;
+      isFull = false;
     });
   }
 }

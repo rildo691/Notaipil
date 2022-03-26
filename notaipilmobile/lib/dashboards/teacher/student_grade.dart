@@ -499,7 +499,7 @@ class _StudentGradeState extends State<StudentGrade> {
                       pp: int.parse(_firstTestController.text.toString()),
                       pt: int.parse(_secondTestController.text.toString()),
                       teacherInClassroomId: teacher[0]["id"],
-                      classroomStudentId: students[0]["id"],
+                      classroomStudentId: students[i]["id"],
                     );
 
                     setState((){
@@ -557,7 +557,7 @@ class _StudentGradeState extends State<StudentGrade> {
                       pp: int.parse(_firstTestController.text.toString()),
                       pt: int.parse(_secondTestController.text.toString()),
                       teacherInClassroomId: teacher[0]["id"],
-                      classroomStudentId: students[0]["id"],
+                      classroomStudentId: students[i]["id"],
                     );
 
 

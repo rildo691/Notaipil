@@ -786,10 +786,13 @@ ApiService helper = ApiService();
     var response = await helper.get("classrooms/areas/${area}");
 
     for (var r in response){
+
+      var response2 = await helper.get("grades/${r["gradeId"]}");
+
       Map<String, dynamic> map = {
         "id": ClassroomModel.fromJson(r).id.toString(),
         "name": ClassroomModel.fromJson(r).name.toString(),
-        "gradeId": ClassroomModel.fromJson(r).gradeId.toString(),
+        "grade": response2,
         "courseId": ClassroomModel.fromJson(r).courseId
       };
 

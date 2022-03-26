@@ -36,7 +36,6 @@ class Datum {
     int? mac;
     int? pp;
     int? pt;
-    String? quarterId;
     String? teacherInClassroomId;
     String? classroomStudentId;
 
