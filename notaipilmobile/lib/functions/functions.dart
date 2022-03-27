@@ -1299,3 +1299,16 @@ ApiService helper = ApiService();
 
     return students;
   }
+
+  Future<int> getUnreadInformations(userId, typeAccoundId) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+      'typeAccountId': typeAccoundId,
+    };
+    var length;
+    var response = await helper.postWithoutToken("informations/info-user-length", body);
+
+    length = response;
+
+    return length;
+  }

@@ -44,6 +44,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
 
   var _value;
   int _selectedIndex = 3;
+  int? informationLength;
 
   var _selected1 = true;
   var _selected2 = false;
@@ -54,6 +55,8 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
   @override
   void initState(){
     super.initState();
+
+    getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
 
     setState(() {
       _selectedIndex = widget.index;
@@ -121,6 +124,22 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                         onTap: () => {
                          Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
@@ -152,27 +171,11 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )
                 )
-              ),
+              ),              
               body: SingleChildScrollView(
                 child: FutureBuilder(
                   future: Future.wait([getClassroomsByArea(_value), getAreas()]),

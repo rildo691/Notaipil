@@ -51,6 +51,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
   TextEditingController _nameController = TextEditingController();
 
   int _selectedIndex = 2;
+  int? informationLength;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -59,11 +60,11 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
   var teachers = [];
   var qualification;
 
-  final String _baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
-
   @override
   void initState(){
     super.initState();
+
+    getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
 
     getAllTeachers().then((value) => setState((){teachers = value.toList();}));
   }
@@ -122,6 +123,22 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                         onTap: () => {
                          Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.group, color: Colors.white,),
@@ -153,27 +170,11 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )
                 )
-              ),
+              ),              
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 50.0),
@@ -322,7 +323,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
       baseColor: Colors.white,//Color(0xFF1F2734),
       expandedColor: Colors.white,//Color(0xFF1F2734),
       leading: ClipOval(
-        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(_baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
+        child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
       ),
       title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
       subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: Colors.black)),
