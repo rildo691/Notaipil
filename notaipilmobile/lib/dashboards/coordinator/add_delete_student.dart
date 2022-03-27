@@ -46,8 +46,9 @@ class AddDeleteStudent extends StatefulWidget {
 class _AddDeleteStudentState extends State<AddDeleteStudent> {
 
   int _selectedIndex = 0;
-  bool _value = false;
+  int? informationLength;
 
+  bool _value = false;
   List<bool>? _selected;
 
   TextEditingController _processController = TextEditingController();
@@ -151,6 +152,22 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -178,27 +195,12 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )
                 )
-              ),              body: SingleChildScrollView(
+              ),
+              body: SingleChildScrollView(
                 child: FutureBuilder(
                   future: Future.wait([getAllClassroomStudents(widget.classroomId), getClassroomGender(widget.classroomId)]),
                   builder: (context, snapshot){

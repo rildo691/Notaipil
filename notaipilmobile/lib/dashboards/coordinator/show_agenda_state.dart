@@ -39,6 +39,7 @@ class ShowAgendaState extends StatefulWidget {
 class _ShowAgendaStateState extends State<ShowAgendaState> {
 
   int _selectedIndex = 3;
+  int? informationLength;
 
   var _selected1 = true;
   var _selected2 = false;
@@ -70,6 +71,8 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
         coursesLength = value.length;
       })
     );
+
+    getUnreadInformations(widget.coordinator[2]["userId"], widget.coordinator[2]["typeAccount"]["id"]);
   }
 
   @override
@@ -123,6 +126,22 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: Colors.white,),
                         title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -150,27 +169,12 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )
                 )
-              ),              body: SingleChildScrollView(
+              ),
+              body: SingleChildScrollView(
                 child: FutureBuilder(
                   future: getClassroomsByArea(_areaId),
                   builder: (context, snapshot){
