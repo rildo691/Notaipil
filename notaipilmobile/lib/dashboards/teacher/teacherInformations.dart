@@ -44,6 +44,10 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
 
   int _selectedIndex = 0;
 
+  Future _refresh() async{
+    getInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]).then((value) => setState((){informations = value;}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -146,7 +150,7 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 40,
+                  height: SizeConfig.screenHeight !- 70,
                   color: backgroundColor,
                   child: FutureBuilder(
                     future: getInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]),
@@ -221,52 +225,56 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                                         ),
                                       ),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                                      SizedBox(
-                                        height: SizeConfig.heightMultiplier !* 50,
-                                        child: ListView.builder(
-                                          itemCount: informations.length,
-                                          itemBuilder: (context, index){
-
-                                            int whiteSpace = informations[index]["title"].toString().indexOf(" ");
-
-                                            if (whiteSpace == -1){
-                                              whiteSpace = informations[index]["title"].toString().length;
-                                            } else if (whiteSpace > 8){
-                                              whiteSpace = 8;
-                                            }
-
-                                            return GestureDetector(
-                                              child: Container(
-                                                width: SizeConfig.screenWidth,
-                                                height: SizeConfig.heightMultiplier !* 12,
-                                                child: Card(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(10.0),
+                                      RefreshIndicator(
+                                        onRefresh: _refresh,
+                                        child: SizedBox(
+                                          height: SizeConfig.heightMultiplier !* 50,
+                                          child: ListView.builder(
+                                            itemCount: informations.length,
+                                            itemBuilder: (context, index){
+                                      
+                                              int whiteSpace = informations[index]["title"].toString().indexOf(" ");
+                                      
+                                              if (whiteSpace == -1){
+                                                whiteSpace = informations[index]["title"].toString().length;
+                                              } else if (whiteSpace > 8){
+                                                whiteSpace = 8;
+                                              }
+                                      
+                                              return GestureDetector(
+                                                child: Container(
+                                                  width: SizeConfig.screenWidth,
+                                                  height: SizeConfig.heightMultiplier !* 12,
+                                                  child: Card(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(10.0),
+                                                    ),
+                                                    color: informationNotSeen,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        SizedBox(width: SizeConfig.widthMultiplier !* 2),
+                                                        ClipOval(
+                                                          child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
+                                                        ),
+                                                        SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                        Text(informations[index]["fullName"].toString(), style: normalTextStyleWithoutTextSize),
+                                                        SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                        Text(informations[index]["title"].toString().substring(0, whiteSpace) + (whiteSpace == informations[index]["title"].toString().length ? "" : "..."), style: normalTextStyleWithoutTextSize),
+                                                        SizedBox(width: SizeConfig.widthMultiplier !* 4),
+                                                        Text(informations[index]["createdAt"].toString().substring(0, 10), style: normalTextStyleWithoutTextSize),
+                                                        SizedBox(width: SizeConfig.widthMultiplier !* 1.5),
+                                                        informations[index]["sent"] ? Icon(Icons.arrow_forward, color: informationSentIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,) : Icon(Icons.arrow_back, color: informationReceivedIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,),
+                                                      ]
+                                                    )
                                                   ),
-                                                  color: informationNotSeen,
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(width: SizeConfig.widthMultiplier !* 2),
-                                                      ClipOval(
-                                                        child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
-                                                      ),
-                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                      Text(informations[index]["fullName"].toString(), style: normalTextStyleWithoutTextSize),
-                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                      Text(informations[index]["title"].toString().substring(0, whiteSpace) + (whiteSpace == informations[index]["title"].toString().length ? "" : "..."), style: normalTextStyleWithoutTextSize),
-                                                      SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                      Text(informations[index]["createdAt"].toString().substring(0, 10), style: normalTextStyleWithoutTextSize),
-                                                      SizedBox(width: SizeConfig.widthMultiplier !* 1.5),
-                                                      informations[index]["sent"] ? Icon(Icons.arrow_forward, color: informationSentIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,) : Icon(Icons.arrow_back, color: informationReceivedIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,),
-                                                    ]
-                                                  )
                                                 ),
-                                              ),
-                                              onTap: (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.teacher, informations[index]["id"], informations[index]["sent"])));
-                                              },
-                                            );
-                                          },
+                                                onTap: (){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.teacher, informations[index]["id"], informations[index]["sent"])));
+                                                },
+                                              );
+                                            },
+                                          ),
                                         ),
                                       )
                                     ],

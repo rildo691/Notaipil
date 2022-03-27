@@ -305,7 +305,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                     ]  
                                   ),
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 Container(
                                   width: SizeConfig.widthMultiplier !* 30,
                                   height: SizeConfig.heightMultiplier !* 7,
@@ -317,23 +317,7 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                       textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
                                     ),
                                     onPressed: () async{
-                                      for (int i = 0; i < _selected!.length; i++){
-                                        if (_selected![i] != false){
-                                          recipients.add(classrooms[i]["id"]);
-                                        }
-                                      }
-
-                                      Map<String, dynamic> body = {
-                                        "title": widget.information[0]["subject"].toString(),
-                                        "description": widget.information[0]["message"].toString(),
-                                        "userId": widget.coordinator[2]["userId"],
-                                        "typeAccountId":  widget.coordinator[2]["typeAccount"]["id"],
-                                        "group": "Aluno",
-                                        "classroomsIds": recipients
-                                      };
-
-                                      var response = await helper.postWithoutToken("informations/info-user-classroom", body);
-                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)));
+                                      
                                     },
                                   ),
                                 )

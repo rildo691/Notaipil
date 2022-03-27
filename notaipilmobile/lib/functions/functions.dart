@@ -1205,3 +1205,97 @@ ApiService helper = ApiService();
 
     return informations;
   }
+
+  Future<List<dynamic>>? getEducators(userId) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+    };
+    var educators = [];
+    var response = await helper.postWithoutToken("informations/info-user-educator", body);
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "email": r["email"],
+        "fullName": r["fullName"],
+        "telephone": r["telephone"],
+        "avatar": r["avatar"],
+        "bi": r["bi"],
+        "student": r["student"],
+      };
+
+      educators.add(map);
+    }
+
+    return educators;
+  }
+
+  Future<List<dynamic>>? getEducatorsByName(userId, name) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+    };
+    var educators = [];
+    var response = await helper.postWithoutToken("informations/info-user-educator", body);
+
+    for (var r in response){
+      if (r['fullName'].toString().toUpperCase().contains(name.toString().toUpperCase())){
+        Map<String, dynamic> map = {
+          "email": r["email"],
+          "fullName": r["fullName"],
+          "telephone": r["telephone"],
+          "avatar": r["avatar"],
+          "bi": r["bi"],
+          "student": r["student"],
+        };
+
+        educators.add(map);
+      }
+    }
+
+    return educators;
+  }
+
+  Future<List<dynamic>>? getStudentsByResponsibleId(userId) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+    };
+    var students = [];
+    var response = await helper.postWithoutToken("nformations/info-user-student", body);
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "email": r["email"],
+        "telephone": r["telephone"],
+        "studentId": r["studentId"],
+        "student": r["student"],
+      };
+
+      students.add(map);
+    }
+
+    return students;
+  }
+
+  Future<List<dynamic>>? getStudentsNameByResponsibleId(userId, name) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+    };
+    var students = [];
+    var response = await helper.postWithoutToken("nformations/info-user-student", body);
+
+    for (var r in response){
+      if (r["student"]["personalData"]["fullName"].toString().toUpperCase().contains(name.toString().toUpperCase())){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "email": r["email"],
+          "telephone": r["telephone"],
+          "studentId": r["studentId"],
+          "student": r["student"],
+        };
+
+        students.add(map);
+      }
+    }
+
+    return students;
+  }

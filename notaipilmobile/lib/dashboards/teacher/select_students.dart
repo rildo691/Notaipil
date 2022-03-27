@@ -14,6 +14,9 @@ import 'dart:math';
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
 
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
+
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
@@ -39,6 +42,13 @@ class _SelectStudentsState extends State<SelectStudents> {
   TextEditingController _nameController = TextEditingController();
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<bool>? _selected;
+  bool _firstTime = false;
+
+  var students = [];
+  var recipients = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,67 +149,176 @@ class _SelectStudentsState extends State<SelectStudents> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          labelText: "Pesquise o Nome",
-                          labelStyle: TextStyle(color: Colors.white),
-                          filled: true,
-                          fillColor: Color(0xFF202733),
-                          border: OutlineInputBorder(),
-                        ),
-                        controller:  _nameController,
-                        validator: (String? value){
-                          if (value!.isEmpty){
-                            return "Preencha o campo Pesquise o Nome";
-                          }
-                        },
-                        onFieldSubmitted: (String? value) {
-                          
-                        },
-                        onChanged: (value){
-                          
-                        },
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                      Expanded(
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: [
-
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 4),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                child: FutureBuilder(
+                  future: getStudentsByResponsibleId(widget.teacher[1]["userId"]),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: Color.fromARGB(255, 34, 42, 55),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            strokeWidth: 5.0,
                           ),
-                          onPressed: (){},
-                        ),
-                      )
-                    ]  
-                  )
-                ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          students = (snapshot.data! as List);
+
+                          if (!_firstTime){
+                            _selected = List<bool>.generate(students.length, (index) => false);
+                            _firstTime = true;
+                          }
+
+                          return
+                          Container(
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 10.0),
+                            width: SizeConfig.screenWidth,
+                            /*height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,*/
+                            height: SizeConfig.screenHeight,
+                            color: Color.fromARGB(255, 34, 42, 55),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    filled: true,
+                                    fillColor: Color(0xFF202733),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    if (value!.isNotEmpty){
+                                      _filter(value);
+                                    }
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      
+                                      setState((){
+                                        _firstTime = false;
+                                      });
+                                    }
+                                  },
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children:[ 
+                                      DataTable(
+                                        showCheckboxColumn: true,
+                                        columnSpacing: SizeConfig.widthMultiplier !* 10,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(""),
+                                            numeric: false
+                                          ),
+                                          DataColumn(
+                                            label: Text("Nome"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("B.I."),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(students.length, (index) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Center(
+                                                  child: ClipOval(
+                                                    child: students[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + students[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(students[index]["student"]["personalData"]["fullName"])
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(students[index]["student"]["personalData"]["bi"].toString())
+                                                )
+                                              ),
+                                            ],
+                                            selected: _selected![index],
+                                            onSelectChanged: (bool? value){
+                                              _selected![index] = value!;
+                                              setState((){
+                                                
+                                              });
+                                            }
+                                          )
+                                        ),
+                                      ),
+                                    ]  
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                Container(
+                                  width: SizeConfig.widthMultiplier !* 30,
+                                  height: SizeConfig.heightMultiplier !* 7,
+                                  child: ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xFF0D89A4),
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                    ),
+                                    onPressed: () async{
+                                      
+                                      for (int i = 0; i < _selected!.length; i++){
+                                        if (_selected![i] != false){
+                                          recipients.add(students[i]["email"]);
+                                        }
+                                      }
+
+                                      Map<String, dynamic> body = {
+                                        "title": widget.information[0]["subject"].toString(),
+                                        "description": widget.information[0]["message"].toString(),
+                                        "userId": widget.teacher[1]["userId"],
+                                        "typeAccountId":  widget.teacher[1]["typeAccount"]["id"],
+                                        "group": "Aluno",
+                                        "usersDestiny": recipients
+                                      };
+
+                                      var response = await helper.postWithoutToken("informations", body);
+                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),    
+                          );
+                        } 
+                    }
+                  }
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
@@ -249,18 +368,7 @@ class _SelectStudentsState extends State<SelectStudents> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
+  _filter(value){
+
   }
 }

@@ -177,7 +177,7 @@ class _ProfileState extends State<Profile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 100,
+                  height: SizeConfig.screenHeight,
                   color: Color.fromARGB(255, 34, 42, 55),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,9 +217,9 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.coordinator[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADOR DA ÁREA DE ${area[0]["name"]}" : "COORDENADOR DO CURSO DE " + widget.coordinator[0]["courses"][0]["code"] : widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADORA DA ÁREA DE ${area[0]["name"]}" : "COORDENADORA DO CURSO " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),)
+                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADOR DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADOR DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase() : widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADORA DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADORA DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase(), style: TextStyle(color: Colors.white),)
                             ],
                           ),
                         ],
@@ -249,7 +249,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cake_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("Nascido aos " + widget.coordinator[0]["teacherAccount"]["personalData"]["birthdate"]),
+                                  Text("Nascido aos " + widget.coordinator[0]["personalData"]["birthdate"]),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -259,7 +259,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("B.I. nº: " + widget.coordinator[0]["teacherAccount"]["personalData"]["bi"]),
+                                  Text("B.I. nº: " + widget.coordinator[0]["personalData"]["bi"]),
                                 ]
                               )
                             ],
