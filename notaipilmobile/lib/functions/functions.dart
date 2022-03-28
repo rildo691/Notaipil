@@ -99,25 +99,6 @@ ApiService helper = ApiService();
   }
 
   Future<List<dynamic>> getTeachersClassrooms(id) async{
-    /*
-    var teachers = [];
-    var response = await helper.get("teacher_classrooms");
-
-    for (var r in response){
-
-      if (r["teacher"]["id"].toString() == id){
-        var response2 = await helper.get("subject_course_grade/${r["subjectCourseGrade"]["id"]}");
-
-        Map<String, dynamic> map = {
-          "subjectCourseGrade": response2,
-          "classroom": r["classroom"],
-        };
-
-        teachers.add(map);
-      }
-    }
-
-    return teachers;*/
 
     var classrooms = [];
     var response = await helper.get("teacher_classrooms/classrooms/teacher/${id}");
@@ -130,6 +111,7 @@ ApiService helper = ApiService();
         "period": r["period"],
         "place": r["place"],
         "code": r["code"],
+        "schedule": r["schedule"],
         "gradeId": r["gradeId"],
         "courseId": r["courseId"],
         "academicYear": r["academicYear"],
@@ -164,36 +146,6 @@ ApiService helper = ApiService();
   }
 
   Future<List<dynamic>> getTeachersCourses(id) async{
-    /*
-    var courses = [];
-    var areas = [];
-    var result = [];
-    var response = await helper.get("teacher_classrooms");
-
-    for (var r in response){
-      if (r["teacher"]["id"].toString() == id){
-        if (!courses.contains(r["subjectCourseGrade"]["courseId"])){
-          courses.add(r["subjectCourseGrade"]["courseId"]);
-
-          var resp = await helper.get("courses/${r["subjectCourseGrade"]["courseId"]}");
-
-          if (!areas.contains(resp["area"]["name"])){
-            areas.add(resp["area"]["name"]);
-          }
-        }
-      }
-    }
-
-    Map<String, dynamic> map2 = {
-      'courses': courses,
-      'areas': areas,
-    };
-
-    result.add(map2);
-
-    return result;*/
-
-    
     var courses = [];
     var response = await helper.get("teacher_classrooms/courses/teacher/${id}");
 
@@ -213,26 +165,6 @@ ApiService helper = ApiService();
   }
 
   Future<List<dynamic>> getTeachersStudentsQuantity(id) async{    
-    /*
-    var students = [];
-    var quantity = 0;
-    var response = await helper.get("teacher_classrooms");
-
-    for (var r in response){
-      if (r["teacher"]["id"].toString() == id){
-        var response3 = await helper.get("classrooms/statistic_gender/classrooms/${r["classroom"]["id"]}");
-
-        quantity += (int.parse(response3["m"].toString()) + int.parse(response3["f"].toString()));  
-      }
-    }
-
-    Map<String, dynamic> map = {
-      'quantity': quantity.toString(),
-    };
-
-    students.add(map);
-
-    return students;*/
     var students = [];
     var quantity = 0;
     var response = await helper.get("teacher_classrooms/students/teacher/${id}");
@@ -772,6 +704,11 @@ ApiService helper = ApiService();
         Map<String, dynamic> map = {
           "id": ClassroomModel.fromJson(r).id.toString(),
           "name": ClassroomModel.fromJson(r).name.toString(),
+          "room": ClassroomModel.fromJson(r).room.toString(),
+          "period": ClassroomModel.fromJson(r).period.toString(),
+          "place": ClassroomModel.fromJson(r).place.toString(),
+          "code": ClassroomModel.fromJson(r).code.toString(),
+          "schedule": r["schedule"],
         };
         
         classrooms.add(map);
@@ -792,6 +729,10 @@ ApiService helper = ApiService();
       Map<String, dynamic> map = {
         "id": ClassroomModel.fromJson(r).id.toString(),
         "name": ClassroomModel.fromJson(r).name.toString(),
+        "room": ClassroomModel.fromJson(r).room.toString(),
+        "period": ClassroomModel.fromJson(r).period.toString(),
+        "place": ClassroomModel.fromJson(r).place.toString(),
+        "schedule": r["schedule"],
         "grade": response2,
         "courseId": ClassroomModel.fromJson(r).courseId
       };
@@ -811,6 +752,7 @@ ApiService helper = ApiService();
         Map<String, dynamic> map = {
           "id": ClassroomModel.fromJson(r).id.toString(),
           "name": ClassroomModel.fromJson(r).name.toString(),
+          "schedule": r["schedule"],
         };
         
         classrooms.add(map);
@@ -829,6 +771,7 @@ ApiService helper = ApiService();
           "room": response["room"],
           "period": response["period"],
           "code": response["code"],
+          "schedule": response["schedule"],
           "place": response["place"],
         };
 
@@ -846,6 +789,10 @@ ApiService helper = ApiService();
         Map<String, dynamic> map = {
           "id": ClassroomModel.fromJson(r).id.toString(),
           "name": ClassroomModel.fromJson(r).name.toString(),
+          "room": ClassroomModel.fromJson(r).room.toString(),
+          "period": ClassroomModel.fromJson(r).period.toString(),
+          "place": ClassroomModel.fromJson(r).place.toString(),
+          "code": ClassroomModel.fromJson(r).code.toString(),
           "grade": r["grade"],
         };
         
@@ -865,6 +812,10 @@ ApiService helper = ApiService();
         Map<String, dynamic> map = {
           "id": ClassroomModel.fromJson(r).id.toString(),
           "name": ClassroomModel.fromJson(r).name.toString(),
+          "room": ClassroomModel.fromJson(r).room.toString(),
+          "period": ClassroomModel.fromJson(r).period.toString(),
+          "place": ClassroomModel.fromJson(r).place.toString(),
+          "code": ClassroomModel.fromJson(r).code.toString(),
           "grade": r["grade"],
         };
         
