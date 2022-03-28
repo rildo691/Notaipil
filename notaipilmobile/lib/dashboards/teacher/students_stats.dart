@@ -44,8 +44,16 @@ class _StudentsStatsState extends State<StudentsStats> {
   var _selected3 = false;
 
   int _selectedIndex = 0;
+  int? informationLength;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState(){
+    super.initState();
+
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
+  }
 
   Future<void> start() async {
     await Future.delayed(Duration(seconds: 3));
@@ -104,6 +112,22 @@ class _StudentsStatsState extends State<StudentsStats> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
@@ -128,22 +152,6 @@ class _StudentsStatsState extends State<StudentsStats> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )

@@ -48,6 +48,7 @@ class _StudentGradeState extends State<StudentGrade> {
 
   int _selectedIndex = 0;
   int i = 0;
+  int? informationLength;
 
   double? media = 0.0;
 
@@ -56,7 +57,6 @@ class _StudentGradeState extends State<StudentGrade> {
   TextEditingController _macController = TextEditingController();
 
   var students = [];
-  List<Datum> grades = [];
   var quarter = [];
   var teacher = [];
 
@@ -66,12 +66,16 @@ class _StudentGradeState extends State<StudentGrade> {
   GlobalKey<FormFieldState> _ptKey = GlobalKey<FormFieldState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  List<Datum> grades = [];
+
   StudentGradeModel studentGradeModel = StudentGradeModel();
   Datum datum = Datum();
 
   @override
   void initState(){
     super.initState();
+
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
   }
 
   @override
@@ -127,6 +131,22 @@ class _StudentGradeState extends State<StudentGrade> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
@@ -151,22 +171,6 @@ class _StudentGradeState extends State<StudentGrade> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )

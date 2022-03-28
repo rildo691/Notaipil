@@ -38,6 +38,7 @@ class ShowClassroomSchedule extends StatefulWidget {
 class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
   int _selectedIndex = 0;
+  int? informationLength;
 
   String? _classroomName;
 
@@ -53,6 +54,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
       })
     );
 
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
   }
 
   Future<void> start() async{
@@ -112,6 +114,22 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
@@ -136,22 +154,6 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )

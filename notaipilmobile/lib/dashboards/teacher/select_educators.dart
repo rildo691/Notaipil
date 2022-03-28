@@ -37,6 +37,7 @@ class SelectEducators extends StatefulWidget {
 class _SelectEducatorsState extends State<SelectEducators> {
 
   int _selectedIndex = 0;
+  int? informationLength;
 
   TextEditingController _nameController = TextEditingController();
 
@@ -48,6 +49,13 @@ class _SelectEducatorsState extends State<SelectEducators> {
 
   var educators = [];
   var recipients = [];
+
+  @override
+  void initState(){
+    super.initState();
+
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +110,22 @@ class _SelectEducatorsState extends State<SelectEducators> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
@@ -126,22 +150,6 @@ class _SelectEducatorsState extends State<SelectEducators> {
                         leading: Icon(Icons.help_outline, color: Colors.white,),
                         title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
                         onTap: () => null,
-                        trailing: ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                '8',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       )
                     ]
                   )
