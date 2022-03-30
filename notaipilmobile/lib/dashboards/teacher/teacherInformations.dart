@@ -278,6 +278,7 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                                                   ),
                                                 ),
                                                 onTap: (){
+                                                  setReadInformation(widget.teacher[1]["userId"], informations[index]["id"]);
                                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.teacher, informations[index]["id"], informations[index]["sent"])));
                                                 },
                                               );

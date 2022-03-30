@@ -1266,6 +1266,16 @@ ApiService helper = ApiService();
     return length;
   }
 
+  Future setReadInformation(userId, informationId) async{
+    Map<String, dynamic> body = {
+      'userId': userId,
+      'informationId': informationId, 
+    };
+
+    var response = await helper.postWithoutToken("informations/info-user-change", body);
+    return response;
+  }
+
   Future logOut(context, token){
     return Navigator.pushNamed(context, '/login');
   }
