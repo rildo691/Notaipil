@@ -54,7 +54,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
       })
     );
 
-    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
   }
 
   Future<void> start() async{

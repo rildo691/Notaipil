@@ -340,13 +340,15 @@ ApiService helper = ApiService();
     var response = await helper.get("teacher_classrooms/classrooms/${classroomId}");
 
     for (var r in response){
-      if (r["teacher"]["responsible"]){
-        Map<String, dynamic> map = {
-          "teacher": r["teacher"],
-          "subject": r["subject"],
-        };
-        
-        teachers.add(map);
+      if (r["teacher"] != null){
+        if (r["teacher"]["responsible"]){
+          Map<String, dynamic> map = {
+            "teacher": r["teacher"],
+            "subject": r["subject"],
+          };
+          
+          teachers.add(map);
+        }
       }
     }
 
@@ -1262,4 +1264,8 @@ ApiService helper = ApiService();
     length = response;
 
     return length;
+  }
+
+  Future logOut(context, token){
+    return Navigator.pushNamed(context, '/login');
   }

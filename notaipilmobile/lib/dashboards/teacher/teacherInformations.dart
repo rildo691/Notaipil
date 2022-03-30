@@ -49,7 +49,7 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
   void initState(){
     super.initState();
 
-    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]);
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
   }
 
   Future _refresh() async{
@@ -257,7 +257,7 @@ class _TeacherinformtionsState extends State<Teacherinformtions> {
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(10.0),
                                                     ),
-                                                    color: informationNotSeen,
+                                                    color: informations[index]["isSeen"] ? informationSeen : informationNotSeen,
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [

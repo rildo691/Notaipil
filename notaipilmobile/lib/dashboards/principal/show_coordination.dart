@@ -98,87 +98,76 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                   )
                 ],
               ),
-              drawer: new Drawer(
+              drawer: Drawer(
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 34, 42, 55),
                   ),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      UserAccountsDrawerHeader(
-                        accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new ClipOval(
-                          child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
-                        ),
-                        otherAccountsPictures: [
-                          new CircleAvatar(
-                            child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
+                  child: SizedBox(
+                    height: SizeConfig.screenHeight,
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      children: [
+                        UserAccountsDrawerHeader(
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          currentAccountPicture: new ClipOval(
+                            child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
-                        ],
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 34, 42, 55),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.notifications, color: Colors.white,),
-                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                         Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
-                        },
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                          otherAccountsPictures: [
+                            new CircleAvatar(
+                              child: Text(widget.principal[1]["personalData"]["fullName"].toString().substring(0, 1)),
                             ),
+                          ],
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 34, 42, 55),
                           ),
-                        ) : Container(),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.group, color: Colors.white,),
-                        title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.account_circle, color: Colors.white,),
-                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.settings, color: Colors.white,),
-                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
-                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => null,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.help_outline, color: Colors.white,),
-                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => null,
-                      )
-                    ]
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.notifications, color: Colors.white,),
+                          title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => {
+                           Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
+                          },
+                          
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.group, color: Colors.white,),
+                          title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.account_circle, color: Colors.white,),
+                          title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.settings, color: Colors.white,),
+                          title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                          title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => null,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.help_outline, color: Colors.white,),
+                          title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          onTap: () => null,
+                        )
+                      ]
+                    ),
                   )
                 )
-              ),              
+              ),
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
@@ -503,13 +492,12 @@ class _ShowCoordinationState extends State<ShowCoordination> {
       child: Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ClipOval(
-              child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 13) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 23),
+              child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
             ),
-            SizedBox(width: SizeConfig.widthMultiplier !* 5),
             Text(index["teacherAccount"]["personalData"]["fullName"].toString()),
-            SizedBox(width: SizeConfig.widthMultiplier !* 9.5),
             Text(index["teacherAccount"]["personalData"]["gender"] == "M" ? index["courses"].length == courses.length ? "Coordenador da Área" : "Coordenador do curso de " + index["courses"][0]["code"] : index["courses"].length == courses.length ? "Coordenadora da Área" : "Coordenadora do curso de " + index["courses"][0]["code"])
           ],
         ),

@@ -91,6 +91,22 @@ class ApiService{
     return responseJson;
   }
 
+  Future<dynamic> patchMultipartOnly(String url, Map body, {String? token}) async{
+    var request = await http.MultipartRequest("PATCH", Uri.parse(_baseUrl + url));
+
+    request.headers.addAll({"Content-Type": "multipart/form-data"});
+
+    request.files.add(await http.MultipartFile.fromPath('schedule', body["schedule"]));
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    final responseData = json.decode(responsed.body);
+    
+    if (response.statusCode == 200){
+      return responseData; 
+    } 
+  }
+
   Future<dynamic> patchWithoutId(String url, Map body, {String? token}) async{
     var response = await http.patch(
       Uri.parse(_baseUrl + url),

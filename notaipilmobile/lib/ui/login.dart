@@ -7,6 +7,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+import 'package:notaipilmobile/parts/register.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -165,7 +166,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildTextFormField("E-mail", TextInputType.emailAddress, _emailController),
+                            buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailController),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
                             _buildPassFormField("Palavra-passe", _passwordController),
                             SizedBox(height: SizeConfig.heightMultiplier !* 5),
@@ -218,20 +219,6 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: letterColor, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: fillColor,
-      ),
-      style: TextStyle(color: letterColor, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
-  }
-
   Widget _buildPassFormField(String hint, TextEditingController controller){
     return TextFormField(
       decoration: InputDecoration(
@@ -252,6 +239,11 @@ class _LoginState extends State<Login> {
       autocorrect: false,
       style: TextStyle(color: letterColor, fontFamily: 'Roboto'), textAlign: TextAlign.start,
       controller: controller,
+      validator: (String? value){
+        if (value!.isEmpty){
+          return "Preecnha o campo $hint";
+        }
+      }
     );
   }
 }
