@@ -219,7 +219,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                                     SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                                     SizedBox(
                                       width: SizeConfig.screenHeight,
-                                      height: SizeConfig.heightMultiplier !* 20,
+                                      height: SizeConfig.heightMultiplier !* 35,
                                       child: ListView.separated(
                                         separatorBuilder: (context, index){
                                           return SizedBox(
