@@ -110,11 +110,11 @@ class ApiService{
   Future<dynamic> patchWithoutId(String url, Map body, {String? token}) async{
     var response = await http.patch(
       Uri.parse(_baseUrl + url),
-      /*headers: {
+      headers: {
         'Content-type': 'application/json; charset=utf-8',
         'Accept': 'application/json',
         /*'x-access-token': 'Bearer ' + token,*/
-      },*/
+      },
       body: json.encode(body)
     );
     var responseJson = _responseStatus(response);

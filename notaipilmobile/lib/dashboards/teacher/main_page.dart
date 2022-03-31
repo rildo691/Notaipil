@@ -54,7 +54,11 @@ class _MainPageState extends State<MainPage> {
   void initState(){
     super.initState();
 
-    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
+    getUnreadInformations(widget.teacher[1]["userId"], widget.teacher[1]["typeAccount"]["id"]).then((value) {
+      if (mounted){
+        setState((){informationLength = value;});
+      }
+    });
   }
 
   @override
