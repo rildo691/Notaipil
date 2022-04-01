@@ -555,7 +555,7 @@ class _StudentGradeState extends State<StudentGrade> {
                     textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     datum = Datum (
                       mac: int.parse(_macController.text.toString()),
                       pp: int.parse(_firstTestController.text.toString()),
@@ -563,7 +563,6 @@ class _StudentGradeState extends State<StudentGrade> {
                       teacherInClassroomId: teacher[0]["id"],
                       classroomStudentId: students[i]["id"],
                     );
-
 
                     grades.add(datum);
 
