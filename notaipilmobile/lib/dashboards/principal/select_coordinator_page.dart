@@ -318,7 +318,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                                         "usersDestiny": recipients
                                       };
 
-                                      var response = await helper.postWithoutToken("informations", body);
+                                      var response = await helper.post("informations", body);
                                       buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)));
                                     },
                                   ),

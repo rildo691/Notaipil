@@ -442,7 +442,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                               faults.add(map);
                                             });
 
-                                            var response = await helper.postWithoutToken("presences", faults);
+                                            var response = await helper.post("presences", faults);
                                             buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.teacher, widget.classroomId, widget.subject)));                                         
                                           }
                                         },

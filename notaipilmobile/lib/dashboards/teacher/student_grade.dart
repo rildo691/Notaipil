@@ -568,7 +568,7 @@ class _StudentGradeState extends State<StudentGrade> {
 
                     studentGradeModel.data = grades;
 
-                    var response = await helper.patchWithoutId("mini_agendas", studentGradeModel.toJson());
+                    var response = await helper.patch("mini_agendas", studentGradeModel.toJson());
                     Navigator.pop(context);
                     buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
                   },

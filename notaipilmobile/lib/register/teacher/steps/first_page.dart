@@ -95,7 +95,25 @@ class _FirstPageState extends State<FirstPage> {
                               children: [
                                 buildTextFieldRegister("Nº do Bilhete de Identidade", TextInputType.text, _numeroBilhete),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                                buildTextFieldRegister("Telefone", TextInputType.number, _telefone),
+                                TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(color: letterColor),
+                                  decoration: InputDecoration(
+                                    labelText: "Telefone",
+                                    labelStyle: TextStyle(color: letterColor),
+                                    filled: true,
+                                    fillColor: fillColor,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller: _telefone,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Telefone";
+                                    } else if (value.toString().length > 9 || value.toString().length < 9){
+                                      return "Número de telefone deve possuir 9 dígitos";
+                                    }
+                                  },
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Container(
                                   padding: EdgeInsets.only(top: SizeConfig.heightMultiplier !* 5),
@@ -111,9 +129,9 @@ class _FirstPageState extends State<FirstPage> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: arrowIconSize,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Anterior", style: normalTextStyleWhiteSmall),
                                             ],
                                           ),
                                         ),
@@ -130,25 +148,14 @@ class _FirstPageState extends State<FirstPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Próximo", style: normalTextStyleWhiteSmall),
                                               SizedBox(width: 8.0),
-                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: arrowIconSize,),
                                             ],
                                           ),
                                         ),
                                         onTap: (){
-                                            if (_telefone.text.length > 9 || _telefone.text.length < 9){
-                                            Fluttertoast.showToast(
-                                              msg: "Número de telefone deve possuir 9 dígitos.",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                              gravity: ToastGravity.BOTTOM,
-                                            ).toString();
-                                          } else {
-                                            _isValid = true;
-                                          }
-                                            if (_formKey.currentState!.validate() && _isValid){
+                                          if (_formKey.currentState!.validate()){
                                             var model = newTeacher?.copyWith(numeroBI: _numeroBilhete.text, telefone: _telefone.text);
                                             Navigator.pushNamed(context, '/three', arguments: model);
                                           }
@@ -162,7 +169,7 @@ class _FirstPageState extends State<FirstPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

@@ -1096,7 +1096,7 @@ ApiService helper = ApiService();
     };
     var informations = [];
 
-    var response = await helper.postWithoutToken("informations/info-user-all", body);
+    var response = await helper.post("informations/info-user-all", body);
 
     for (var r in response){
       Map<String, dynamic> map = {
@@ -1123,7 +1123,7 @@ ApiService helper = ApiService();
     };
     var informations = [];
 
-    var response = await helper.postWithoutToken("informations/info-user-one", body);
+    var response = await helper.post("informations/info-user-one", body);
 
     if (sent){
       Map<String, dynamic> map = {
@@ -1164,7 +1164,7 @@ ApiService helper = ApiService();
       'userId': userId,
     };
     var educators = [];
-    var response = await helper.postWithoutToken("informations/info-user-educator", body);
+    var response = await helper.post("informations/info-user-educator", body);
 
     for (var r in response){
       Map<String, dynamic> map = {
@@ -1187,7 +1187,7 @@ ApiService helper = ApiService();
       'userId': userId,
     };
     var educators = [];
-    var response = await helper.postWithoutToken("informations/info-user-educator", body);
+    var response = await helper.post("informations/info-user-educator", body);
 
     for (var r in response){
       if (r['fullName'].toString().toUpperCase().contains(name.toString().toUpperCase())){
@@ -1212,7 +1212,7 @@ ApiService helper = ApiService();
       'userId': userId,
     };
     var students = [];
-    var response = await helper.postWithoutToken("nformations/info-user-student", body);
+    var response = await helper.post("nformations/info-user-student", body);
 
     for (var r in response){
       Map<String, dynamic> map = {
@@ -1234,7 +1234,7 @@ ApiService helper = ApiService();
       'userId': userId,
     };
     var students = [];
-    var response = await helper.postWithoutToken("nformations/info-user-student", body);
+    var response = await helper.post("nformations/info-user-student", body);
 
     for (var r in response){
       if (r["student"]["personalData"]["fullName"].toString().toUpperCase().contains(name.toString().toUpperCase())){
@@ -1259,7 +1259,7 @@ ApiService helper = ApiService();
       'typeAccountId': typeAccoundId,
     };
     var length;
-    var response = await helper.postWithoutToken("informations/info-user-length", body);
+    var response = await helper.post("informations/info-user-length", body);
 
     length = response;
 
@@ -1272,7 +1272,7 @@ ApiService helper = ApiService();
       'informationId': informationId, 
     };
 
-    var response = await helper.postWithoutToken("informations/info-user-change", body);
+    var response = await helper.patch("informations/info-user-change", body);
     return response;
   }
 

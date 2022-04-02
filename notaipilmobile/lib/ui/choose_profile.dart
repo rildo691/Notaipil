@@ -69,7 +69,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           buildHeaderPartOne(),
-                          buildHeaderPartTwo("Escolha o seu perfil"),
+                          buildHeaderPartTwo("Autenticar-se como:"),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,

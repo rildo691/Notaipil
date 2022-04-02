@@ -97,7 +97,7 @@ class _FourthPageState extends State<FourthPage> {
                       padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
-                      color: Color.fromARGB(255, 34, 42, 55),
+                      color: backgroundColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -208,9 +208,9 @@ class _FourthPageState extends State<FourthPage> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: arrowIconSize,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Anterior", style: normalTextStyleWhiteSmall),
                                             ],
                                           ),
                                         ),
@@ -227,9 +227,9 @@ class _FourthPageState extends State<FourthPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Finalizar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Finalizar", style: normalTextStyleWhiteSmall),
                                               SizedBox(width: 8.0),
-                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: arrowIconSize,),
                                             ],
                                           ),
                                         ),
@@ -267,7 +267,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

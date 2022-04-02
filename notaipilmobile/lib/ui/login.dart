@@ -57,7 +57,7 @@ class _LoginState extends State<Login> {
     };
     String userEmail;
 
-    var response = await helper.postWithoutToken("users/authenticate", body);
+    var response = await helper.post("users/authenticate", body);
     
     if (!response["error"] && response["user"]["typesAccounts"].length < 2){
       //sharedPreferences.setString("$email", response['token']);

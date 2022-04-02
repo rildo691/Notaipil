@@ -567,7 +567,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                             classroomId: widget.classroomId
                           );
                           
-                          var response = await helper.postWithoutToken("classroom_students", classroomStudent.toJson());
+                          var response = await helper.post("classroom_students", classroomStudent.toJson());
                           Navigator.pop(context);
                           buildModalMaterialPage(context, response["error"], message, MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));
                         } else {
@@ -701,7 +701,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           process: int.parse(_processController.text),
                         );
                           
-                        var response = await helper.postWithoutToken("students", studentAccount.toJson());
+                        var response = await helper.post("students", studentAccount.toJson());
                         Navigator.pop(context);
                         buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.classroomId, widget.coordinator)));
                       },

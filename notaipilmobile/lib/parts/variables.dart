@@ -30,8 +30,12 @@ final double titleSize = SizeConfig.textMultiplier !* 4.5;
 final double normalTextSize = SizeConfig.textMultiplier !* 2.7;
 final double normalTextSizeForSmallerText = SizeConfig.textMultiplier !* 2.3;
 final double normalTextSizeForSmallText = normalTextSize - 2;
+final double arrowIconSize = SizeConfig.imageSizeMultiplier !* 4.7;
 
 ///TextStyle
 TextStyle normalTextStyle = TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: normalTextSize);
+TextStyle normalTextStyleSmall = TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: normalTextSizeForSmallerText);
+TextStyle normalTextStyleWhite = TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: normalTextSize);
+TextStyle normalTextStyleWhiteSmall = TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: normalTextSizeForSmallerText);
 const TextStyle normalTextStyleWithoutTextSize = TextStyle(color: letterColor, fontFamily: fontFamily);
 TextStyle normalTextStyleBold = TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: normalTextSize, fontWeight: FontWeight.bold);

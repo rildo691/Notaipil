@@ -237,7 +237,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                           teacherAccountId: widget.request["id"],
                                         );
 
-                                        var response = await helper.postWithoutToken("teachers", teacher.toJson());
+                                        var response = await helper.post("teachers", teacher.toJson());
                                         buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)));
                                       },
                                     ),

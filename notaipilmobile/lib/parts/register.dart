@@ -26,13 +26,13 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
         isValid = EmailValidator.validate(value);
 
         if (!isValid){
-          Fluttertoast.showToast(
+          /*Fluttertoast.showToast(
             msg: "E-mail inválido, tente novamente",
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.red,
             textColor: Colors.white,
             gravity: ToastGravity.BOTTOM,
-          ).toString();
+          ).toString();*/
 
           return "E-mail inválido.";
         }

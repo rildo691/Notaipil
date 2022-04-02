@@ -335,7 +335,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                   "place": _placeValue.toString(),
                                 };
 
-                                var response = await helper.patch("classrooms/", widget.classroomId, body);
+                                var response = await helper.patch("classrooms/", body, id: widget.classroomId);
                                 buildConfirmationModal("Alterações feitas com sucesso.");
                               },
                             )

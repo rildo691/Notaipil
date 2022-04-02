@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
@@ -23,7 +21,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 
 class ThirdPage extends StatefulWidget {
 
-  const ThirdPage({ Key? key }) : super(key: key);
+  const ThirdPage({Key? key }) : super(key: key);
 
   @override
   _ThirdPageState createState() => _ThirdPageState();
@@ -82,7 +80,7 @@ class _ThirdPageState extends State<ThirdPage> {
                   height: SizeConfig.screenHeight,
                   color: backgroundColor,
                   child: FutureBuilder(
-                    future: Future.wait([getGrade(), getClassroom(newStudent!.curso, _value)]),
+                    future: Future.wait([getGrade(), getClassroom(curso, _value)]),
                     builder: (context, snapshot){
                       switch(snapshot.connectionState){
                         case ConnectionState.none:
@@ -135,7 +133,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                           fillColor: fillColor,
                                           hintStyle: TextStyle(color: letterColor),
                                         ),
-                                        dropdownColor: Colors.black,
+                                        dropdownColor: fillColor,
                                         items: grades.map((e) {
                                           return new DropdownMenuItem<String>(
                                             value: e["id"],
@@ -148,7 +146,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                           setState(() {
                                             _value = newValue.toString();
                                           });
-                                          getClassroom(newStudent!.classe, newValue);
+                                          getClassroom(curso, newValue);
                                         },
                                         validator: (value) => value == null ? 'Preencha o campo Classe' : null,
                                       ),
@@ -162,7 +160,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                           fillColor: fillColor,
                                           hintStyle: TextStyle(color: letterColor),
                                         ),
-                                        dropdownColor: Colors.black,
+                                        dropdownColor: fillColor,
                                         items: classrooms.map((e) {
                                           return new DropdownMenuItem<String>(
                                             value: e["id"],
@@ -192,9 +190,9 @@ class _ThirdPageState extends State<ThirdPage> {
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                                    Icon(Icons.arrow_back_ios, color: Colors.white, size: arrowIconSize,),
                                                     SizedBox(width: 8.0),
-                                                    Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                                    Text("Anterior", style: normalTextStyleWhiteSmall),
                                                   ],
                                                 ),
                                               ),
@@ -211,9 +209,9 @@ class _ThirdPageState extends State<ThirdPage> {
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                                    Text("Próximo", style: normalTextStyleWhiteSmall),
                                                     SizedBox(width: 8.0),
-                                                    Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                                    Icon(Icons.arrow_forward_ios, color: Colors.white, size: arrowIconSize,),
                                                   ],
                                                 ),
                                               ),
@@ -232,7 +230,7 @@ class _ThirdPageState extends State<ThirdPage> {
                                 ),
                                 Container(
                                   child: GestureDetector(
-                                    child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                                     onTap: (){
                                       Navigator.of(context, rootNavigator: true).pushNamed('/');
                                     }

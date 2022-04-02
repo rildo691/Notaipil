@@ -54,7 +54,7 @@ class _FourthPageState extends State<FourthPage> {
   var model;
 
   Future registerUser(studentAccountBody) async{
-    var studentAccountResponse = await helper.postWithoutToken("student_accounts", studentAccountBody);
+    var studentAccountResponse = await helper.post("student_accounts", studentAccountBody);
     buildModal(context, studentAccountResponse["error"], studentAccountResponse["message"], route: !studentAccountResponse["error"] ? '/' : null);
   }
 
@@ -152,7 +152,7 @@ class _FourthPageState extends State<FourthPage> {
                                             children: [
                                               Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Anterior", style: normalTextStyleWhiteSmall),
                                             ],
                                           ),
                                         ),
@@ -169,7 +169,7 @@ class _FourthPageState extends State<FourthPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Finalizar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Finalizar", style: normalTextStyleWhiteSmall),
                                               SizedBox(width: 8.0),
                                             ],
                                           ),
@@ -199,7 +199,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }
