@@ -176,7 +176,7 @@ class _GradesHistoryState extends State<GradesHistory> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -191,14 +191,14 @@ class _GradesHistoryState extends State<GradesHistory> {
                             child: SizedBox(
                               child: DropdownButtonFormField(
                                 hint: Text("Trimestre"),
-                                style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   filled: true,
-                                  fillColor: Color(0xFF202733),
-                                  hintStyle: TextStyle(color: Colors.white),
+                                  fillColor: fillColor,
+                                  hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                 ),
-                                dropdownColor: Colors.black,
+                                dropdownColor: fillColor,
                                 items: [
                                   DropdownMenuItem(
                                     child: Text("Nothing"),
@@ -217,20 +217,20 @@ class _GradesHistoryState extends State<GradesHistory> {
                           ),
                         ],
                       ),
-                      Text("ESTATÌSTICAS DO I TRIMESTRE"),
+                      Text("ESTATÌSTICAS DO I TRIMESTRE", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Estado:"),
+                          Text("Estado:", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           SizedBox(
                             height: SizeConfig.heightMultiplier !* 2.5,
                           ),
                           OutlinedButton(
-                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
+                            child: Text("Em progresso", style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
+                              primary: backgroundColor,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                               minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
                             ),
@@ -243,15 +243,15 @@ class _GradesHistoryState extends State<GradesHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Média:"),
+                          Text("Média:", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           SizedBox(
                             height: SizeConfig.heightMultiplier !* 2.5,
                           ),
                           OutlinedButton(
-                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
+                            child: Text("17.05 valores", style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
-                              primary: Color.fromARGB(255, 34, 42, 55),
+                              primary: backgroundColor,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                               minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
                             ),

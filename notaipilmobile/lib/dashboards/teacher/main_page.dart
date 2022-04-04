@@ -169,10 +169,10 @@ class _MainPageState extends State<MainPage> {
                         return Container(
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -192,7 +192,7 @@ class _MainPageState extends State<MainPage> {
                             padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,

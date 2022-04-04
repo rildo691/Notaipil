@@ -11,6 +11,7 @@ import 'package:notaipilmobile/parts/register.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -193,7 +194,7 @@ class _EditClassroomState extends State<EditClassroom> {
                   padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 10.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 60,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: 
                       Form(
                         child: Column(
@@ -202,13 +203,13 @@ class _EditClassroomState extends State<EditClassroom> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Editar Turma"),
+                                Text("Editar Turma", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
                                 GestureDetector(
                                   child: Container(
                                     alignment: Alignment.center,
                                     width: SizeConfig.widthMultiplier !* 10,
                                     height: SizeConfig.heightMultiplier !* 4,
-                                    child: Icon(Icons.person, color: Colors.white)
+                                    child: Icon(Icons.person, color: iconColor)
                                   ),
                                   onTap: (){
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => AddDeleteStudent(widget.classroomId, widget.coordinator)));
@@ -229,14 +230,14 @@ class _EditClassroomState extends State<EditClassroom> {
                             ),
                             DropdownButtonFormField(
                               hint: Text("Localização"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
+                                fillColor: fillColor,
+                                hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                               ),
-                              dropdownColor: Colors.black,
+                              dropdownColor: fillColor,
                               items: [
                                 DropdownMenuItem(
                                   child: Text("Edifício"),
@@ -260,14 +261,14 @@ class _EditClassroomState extends State<EditClassroom> {
                             ),
                             DropdownButtonFormField(
                               hint: Text("Período"),
-                              style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                              style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 filled: true,
-                                fillColor: Color(0xFF202733),
-                                hintStyle: TextStyle(color: Colors.white),
+                                fillColor: fillColor,
+                                hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                               ),
-                              dropdownColor: Colors.black,
+                              dropdownColor: fillColor,
                               items: [
                                 DropdownMenuItem(
                                   child: Text("Manhã"),
@@ -298,14 +299,10 @@ class _EditClassroomState extends State<EditClassroom> {
                                 ElevatedButton(
                                   child: Text("Horário"),
                                   style: ElevatedButton.styleFrom(
-                                    primary:  Color(0xFF0D89A4),
+                                    primary:  borderAndButtonColor,
                                     onPrimary: Colors.white,
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto',
-                                      fontSize: 20.0,
-                                    ),
-                                  minimumSize: Size(0.0, 50.0),
+                                    textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
+                                    minimumSize: Size(0.0, 50.0),
                                   ),
                                   onPressed: (){
                                 
@@ -319,14 +316,10 @@ class _EditClassroomState extends State<EditClassroom> {
                             ElevatedButton(
                               child: Text("Concluir"),
                               style: ElevatedButton.styleFrom(
-                                primary:  Color(0xFF0D89A4),
+                                primary:  borderAndButtonColor,
                                 onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
-                                ),
-                              minimumSize: Size(0.0, 50.0),
+                                textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
+                                minimumSize: Size(0.0, 50.0),
                               ),
                               onPressed: () async{
                                 Map<String, dynamic> body = {
@@ -336,7 +329,7 @@ class _EditClassroomState extends State<EditClassroom> {
                                 };
 
                                 var response = await helper.patch("classrooms/", body, id: widget.classroomId);
-                                buildConfirmationModal("Alterações feitas com sucesso.");
+                                buildModalMaterialPage(context, response["error"], response["error"], MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));
                               },
                             )
                           ]

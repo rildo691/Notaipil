@@ -151,7 +151,7 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     children: [
                       SizedBox(height: SizeConfig.heightMultiplier !* 4,),
@@ -159,13 +159,13 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                           GestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: SizeConfig.widthMultiplier !* 10,
                               height: SizeConfig.heightMultiplier !* 4,
-                              child: Icon(Icons.brush_outlined, color: Colors.white)
+                              child: Icon(Icons.brush_outlined, color: iconColor)
                             ),
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(widget.teacher)));
@@ -187,11 +187,11 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.teacher[0]["teacherAccount"]["regime"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.teacher[0]["teacherAccount"]["regime"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                             ],
                           ),
                         ],
@@ -213,7 +213,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Dados pessoais", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -221,7 +221,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cake_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("Nascido aos " + widget.teacher[0]["teacherAccount"]["personalData"]["birthdate"]),
+                                  Text("Nascido aos " + widget.teacher[0]["teacherAccount"]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -231,7 +231,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("B.I. nº: " + widget.teacher[0]["teacherAccount"]["personalData"]["bi"]),
+                                  Text("B.I. nº: " + widget.teacher[0]["teacherAccount"]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               )
                             ],
@@ -255,7 +255,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Tempo de serviço", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -263,7 +263,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cast_for_education, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos"),
+                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -273,7 +273,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.co_present_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos" ),
+                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               )
                             ],
@@ -297,7 +297,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Contactos", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -305,7 +305,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.contact_phone, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.teacher[0]["teacherAccount"]["telephone"].toString()),
+                                  Text(widget.teacher[0]["teacherAccount"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -315,7 +315,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.contact_mail, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.teacher[0]["teacherAccount"]["email"]),
+                                  Text(widget.teacher[0]["teacherAccount"]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               )
                             ],

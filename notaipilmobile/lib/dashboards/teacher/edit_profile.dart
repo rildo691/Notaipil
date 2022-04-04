@@ -160,17 +160,17 @@ class _EditProfileState extends State<EditProfile> {
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Form(
                     key: _key,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                        Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
+                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
+                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 8),
                         buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
@@ -187,13 +187,9 @@ class _EditProfileState extends State<EditProfile> {
                               child: ElevatedButton(
                                 child: Text("Guardar alterações"),
                                 style: ElevatedButton.styleFrom(
-                                  primary:  Color(0xFF0D89A4),
+                                  primary:  borderAndButtonColor,
                                   onPrimary: Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Roboto',
-                                    fontSize: 20.0,
-                                  ),
+                                  textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),
                                   minimumSize: Size(0.0, 50.0),
                                 ),
                                 onPressed: (){

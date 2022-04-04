@@ -166,7 +166,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !* 1.15,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: start(),
                     builder: (context, snapshot){
@@ -178,7 +178,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             ),
                           );
@@ -197,7 +197,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Align(
                                   alignment: Alignment.centerRight,
-                                  child: Text(widget.request["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                  child: Text(widget.request["createdAt"].toString().substring(0, 10), textAlign: TextAlign.end, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Center(
@@ -206,19 +206,19 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7),
-                                Text("Bilhete: " + widget.request["personalData"]["bi"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Nome: " + widget.request["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Sexo: " + widget.request["personalData"]["gender"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Data de nascimento: " + widget.request["personalData"]["birthdate"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Bilhete: " + widget.request["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Nome: " + widget.request["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Sexo: " + widget.request["personalData"]["gender"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Data de nascimento: " + widget.request["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
-                                Text("Categoria: " + widget.request["category"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Habilitações Literárias: " + widget.request["qualification"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Tempo de serviço no IPIL: " + widget.request["ipilDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Tempo de serviço na Educação: " + widget.request["educationDate"].toString().substring(0, 10), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Regime Laboral: " + widget.request["regime"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("Categoria: " + widget.request["category"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Habilitações Literárias: " + widget.request["qualification"]["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Tempo de serviço no IPIL: " + widget.request["ipilDate"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Tempo de serviço na Educação: " + widget.request["educationDate"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Regime Laboral: " + widget.request["regime"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
-                                Text("E-mail: " + widget.request["email"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                                Text("Contacto: " + widget.request["telephone"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                Text("E-mail: " + widget.request["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                Text("Contacto: " + widget.request["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,7 +229,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                       style: ElevatedButton.styleFrom(
                                         primary: Color(0xFF00AD96),
                                         onPrimary: Colors.white,
-                                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                        textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),
                                         minimumSize: Size(40.0, 40.0),
                                       ),
                                       onPressed: () async{
@@ -246,7 +246,7 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
                                       style: ElevatedButton.styleFrom(
                                         primary: Color(0xFFE00028),
                                         onPrimary: Colors.white,
-                                        textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                        textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),
                                         minimumSize: Size(40.0, 40.0),
                                       ),
                                       onPressed: (){

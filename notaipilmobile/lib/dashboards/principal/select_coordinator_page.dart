@@ -106,8 +106,8 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -117,7 +117,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -169,7 +169,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 20.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 50,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: getAllCoordinations(),
                     builder:(context, snapshot){
@@ -181,7 +181,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             ),
                           );
@@ -204,18 +204,18 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("Selecione o destinatário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 TextFormField(
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                    labelText: "Pesquise o Nome",
-                                    labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
+                                    labelText: "Pesquise o Nome ou B.I.",
+                                    labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
+                                    fillColor: fillColor,
                                     border: OutlineInputBorder(),
                                   ),
-                                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+                                  style: TextStyle(color: letterColor, fontFamily: fontFamily), textAlign: TextAlign.start,
                                   controller: _nameController,
                                   onFieldSubmitted: (String? value) {
                                     if (value!.isNotEmpty){
@@ -298,9 +298,9 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                                   child: ElevatedButton(
                                     child: Text("Confirmar"),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFF0D89A4),
+                                      primary: borderAndButtonColor,
                                       onPrimary: Colors.white,
-                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                      textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                     ),
                                     onPressed: () async{
                                       for (int i = 0; i < _selected!.length; i++){

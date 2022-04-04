@@ -107,8 +107,8 @@ class _EditProfileState extends State<EditProfile> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -118,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -170,13 +170,13 @@ class _EditProfileState extends State<EditProfile> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 25,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Form(
                     key: _key,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                        Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
                         buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
@@ -197,7 +197,7 @@ class _EditProfileState extends State<EditProfile> {
                               child: ElevatedButton(
                                 child: Text("Guardar alterações"),
                                 style: ElevatedButton.styleFrom(
-                                  primary:  Color(0xFF0D89A4),
+                                  primary:  borderAndButtonColor,
                                   onPrimary: Colors.white,
                                   textStyle: TextStyle(
                                     color: Colors.white,

@@ -182,12 +182,12 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       case ConnectionState.none:
                       case ConnectionState.waiting:
                         return Container(
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -201,8 +201,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                             width: SizeConfig.screenWidth,
-                            height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            height: SizeConfig.screenHeight,
+                            //height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
+                            color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -212,7 +213,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                     SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -222,12 +223,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                           child: Text("I"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected1 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            primary: _selected1 ? Colors.white : letterColor,
+                                            backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                           ),
                                           onPressed: (){
                                             setState(() {
@@ -241,13 +239,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                           child: Text("II"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected2 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold
-                                            )
+                                            primary: _selected2 ? Colors.white : letterColor,
+                                            backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                           ),
                                           onPressed: (){
                                             setState(() {
@@ -261,13 +255,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                           child: Text("III"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected3 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold
-                                            )
+                                            primary: _selected3 ? Colors.white : letterColor,
+                                            backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                           ),
                                           onPressed: (){
                                             setState(() {
@@ -281,38 +271,46 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                     )
                                   ],
                                 ),
-                                DataTable(
-                                  columns: [
-                                    DataColumn(
-                                      label: Text("TURMAS"),
-                                      numeric: false,
-                                    ),
-                                    /*
-                                    DataColumn(
-                                      label: Text("MINIPAUTAS"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("PROGRESSO"),
-                                      numeric: false,
-                                    ),
-                                    DataColumn(
-                                      label: Text("ESTADO"),
-                                      numeric: false,
-                                    )*/
-                                  ],
-                                  rows: classrooms.map((e) => 
-                                    DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: Text(e["name"].toString())
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      DataTable(
+                                        columns: [
+                                          DataColumn(
+                                            label: Text("TURMAS"),
+                                            numeric: false,
                                           ),
-                                        )
-                                      ]
-                                    )
-                                  ).toList(),
+                                          /*
+                                          DataColumn(
+                                            label: Text("MINIPAUTAS"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("PROGRESSO"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("ESTADO"),
+                                            numeric: false,
+                                          )*/
+                                        ],
+                                        rows: classrooms.map((e) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(e["name"].toString())
+                                                ),
+                                              )
+                                            ]
+                                          )
+                                        ).toList(),
+                                      ),
+                                    ]
+                                  ),
                                 )
                               ],
                             ),

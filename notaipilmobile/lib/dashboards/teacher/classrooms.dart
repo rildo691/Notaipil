@@ -159,7 +159,7 @@ class _ClassroomsState extends State<Classrooms> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child:FutureBuilder(
                     future: Future.wait([getAreas(), getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue), getCoursesName(_areaValue)]),
                     builder: (context, snapshot){
@@ -169,10 +169,10 @@ class _ClassroomsState extends State<Classrooms> {
                           return Container(
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -194,14 +194,14 @@ class _ClassroomsState extends State<Classrooms> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                 DropdownButtonFormField(
                                   hint: Text("Área de Formação"),
-                                  style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                  style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
-                                    hintStyle: TextStyle(color: Colors.white),
+                                    fillColor: fillColor,
+                                    hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                   ),
-                                  dropdownColor: Colors.black,
+                                  dropdownColor: fillColor,
                                   items: areas.map((e) => 
                                     DropdownMenuItem(
                                       child: Text(e["name"].toString()),
@@ -245,7 +245,7 @@ class _ClassroomsState extends State<Classrooms> {
                                                 children: classrooms.map((e) => 
                                                   GestureDetector(
                                                     child: Card(
-                                                      color: Color(0xFF0D89A4),
+                                                      color: borderAndButtonColor,
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.circular(5.0),
                                                       ),
@@ -256,9 +256,9 @@ class _ClassroomsState extends State<Classrooms> {
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: [
-                                                              Text(e["classroom"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                                              Text(e["classroom"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                                              Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center)
+                                                              Text(e["subjectCourseGrade"]["subject"]["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3), textAlign: TextAlign.center)
                                                             ],
                                                           ),
                                                         )

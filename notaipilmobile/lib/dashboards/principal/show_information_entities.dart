@@ -89,8 +89,8 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -100,7 +100,7 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -152,21 +152,21 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 100,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Escolha a entidade", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                      Text("Escolha a entidade", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                       Container(
                         width: SizeConfig.screenWidth !* .7,
                         height: SizeConfig.heightMultiplier !* 7,
                         child: ElevatedButton(
                           child: Text("Coordenadores"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
+                            primary: borderAndButtonColor,
                             onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                           ),
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => SendInformationPage( widget.principal)));
@@ -179,9 +179,9 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
                         child: ElevatedButton(
                           child: Text("Professores"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
+                            primary: borderAndButtonColor,
                             onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                           ),
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => SendInformationTeachers( widget.principal)));

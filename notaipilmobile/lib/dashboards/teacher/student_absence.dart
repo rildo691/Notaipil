@@ -183,7 +183,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                   padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 50,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: getAllClassroomStudents(widget.classroomId),
                     builder: (context, snapshot){
@@ -194,9 +194,9 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             ),
                           );
@@ -216,25 +216,25 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Marcação de Presença", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Marcação de Presença", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.calendar_today, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.group_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.edit_calendar, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.edit_calendar, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
                                             },
@@ -257,7 +257,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                       SizedBox(
                                         height: SizeConfig.heightMultiplier !* 2,
                                       ),
-                                      Text(students[i]["student"]["personalData"]["fullName"].toString()),
+                                      Text(students[i]["student"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
                                     ],
                                   ),
                                   SizedBox(
@@ -266,14 +266,14 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                   DropdownButtonFormField(
                                     hint: Text("Tipo de falta"),
                                     key: _dropdownKey,
-                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
-                                      hintStyle: TextStyle(color: Colors.white),
+                                      fillColor: fillColor,
+                                      hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     ),
-                                    dropdownColor: Colors.black,
+                                    dropdownColor: fillColor,
                                     items: [
                                       DropdownMenuItem(
                                         child: Text("Normal"),
@@ -372,10 +372,10 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                   TextFormField(
                                     key: _textfieldKey,
                                     keyboardType: TextInputType.number,
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     decoration: InputDecoration(
                                       labelText: "N.º de faltas",
-                                      labelStyle: TextStyle(color: Colors.black),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                       filled: true,
                                       fillColor: fillColor,
                                       border: OutlineInputBorder(),
@@ -393,14 +393,14 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i == 0 ? Colors.grey : Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: i == 0 ? Colors.grey : borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                             ],
                                           ),
                                         ),
@@ -416,13 +416,13 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                               SizedBox(width: 8.0),
-                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                             ],
                                           ),
                                         ),

@@ -106,8 +106,8 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -117,7 +117,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -169,7 +169,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                   padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: getQualificationsByArray(teachers),
                     builder: (context, snapshot){
@@ -181,7 +181,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0
                             ),
                           );
@@ -203,10 +203,10 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                                   textInputAction: TextInputAction.done,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
-                                    labelText: "Pesquise o Nome",
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    labelText: "Pesquise o Nome ou B.I",
+                                    labelStyle: TextStyle(color: letterColor),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
+                                    fillColor: fillColor,
                                     border: OutlineInputBorder(),
                                   ),
                                   controller:  _nameController,
@@ -314,8 +314,8 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
       leading: ClipOval(
         child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
       ),
-      title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-      subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: Colors.black)),
+      title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+      subtitle: Text("Professor do: " + index["teacherAccount"]["category"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
       children: [
         Divider(
           thickness: 1.0,
@@ -329,9 +329,9 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Bilhete de identidade: " + index["teacherAccount"]["personalData"]["bi"]),
-                Text("Regime: " + index["teacherAccount"]["regime"]),
-                Text("Grau académico: " + qualification["name"]),
+                Text("Bilhete de identidade: " + index["teacherAccount"]["personalData"]["bi"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                Text("Regime: " + index["teacherAccount"]["regime"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                Text("Grau académico: " + qualification["name"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
               ],
             ),
           )

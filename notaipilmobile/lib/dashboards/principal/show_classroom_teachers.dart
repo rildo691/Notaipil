@@ -77,15 +77,6 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                 backgroundColor: Color.fromARGB(255, 34, 42, 55),
                 elevation: 0,
                 centerTitle: true,
-                actions: <Widget>[
-                  IconButton(
-                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 9) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9, height: SizeConfig.imageSizeMultiplier !* 9),
-                    onPressed: (){
-                      _key.currentState!.openDrawer();
-                    },
-                  )
-                ],
               ),
               drawer: Drawer(
                 child: Container(
@@ -99,8 +90,8 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -110,7 +101,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -168,9 +159,9 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -192,7 +183,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -200,25 +191,25 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(_classroomName != null ? _classroomName.toString() : "", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                                    Text(_classroomName.toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 4.5 - .4, fontWeight: FontWeight.bold)),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         IconButton(
-                                          icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          icon: Icon(Icons.calendar_today, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                           onPressed: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.principal)));
                                           },
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.group_rounded, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          icon: Icon(Icons.group_rounded, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                           onPressed: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.principal)));
                                           },
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.trending_up_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          icon: Icon(Icons.trending_up_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                           onPressed: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStatistics(widget.classroomId, widget.principal)));
                                           },
@@ -255,7 +246,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: titleSize - 10), textAlign: TextAlign.center),
+                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 10), textAlign: TextAlign.center),
                                                 Center(
                                                   child: ClipOval(
                                                     child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),

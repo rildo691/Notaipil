@@ -181,7 +181,7 @@ class _StudentGradeState extends State<StudentGrade> {
                   padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   //height: SizeConfig.screenHeight !* 1.13999,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getAllClassroomStudents(widget.classroom["id"]), getActiveQuarter(), getTeacherInClassroom(widget.teacher[0]["id"], widget.classroom["id"])]),
                     builder: (context, snapshot){
@@ -192,9 +192,9 @@ class _StudentGradeState extends State<StudentGrade> {
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             ),
                           );
@@ -217,19 +217,19 @@ class _StudentGradeState extends State<StudentGrade> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Lançar notas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Lançar notas", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.stacked_line_chart_sharp, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.stacked_line_chart_sharp, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats(widget.teacher, widget.classroom, widget.subject)));
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.text_snippet_outlined, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.text_snippet_outlined, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade(widget.teacher, widget.classroom, widget.subject)));
                                             },
@@ -242,9 +242,9 @@ class _StudentGradeState extends State<StudentGrade> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(widget.classroom["name"].toString()),
-                                      Text("-----"),
-                                      Text(widget.subject["name"].toString()),
+                                      Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                      Text("________", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
+                                      Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
                                     ],
                                   ),
                                   Align(alignment: Alignment.centerLeft, child: Text("II Trimestre")),
@@ -260,7 +260,7 @@ class _StudentGradeState extends State<StudentGrade> {
                                       SizedBox(
                                         height: SizeConfig.heightMultiplier !* 2,
                                       ),
-                                      Text(students[i]["student"]["personalData"]["fullName"].toString()),
+                                      Text(students[i]["student"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
                                     ],
                                   ),
                                   SizedBox(
@@ -268,12 +268,12 @@ class _StudentGradeState extends State<StudentGrade> {
                                   ),
                                   TextFormField(
                                     keyboardType: TextInputType.number,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     decoration: InputDecoration(
                                       labelText: "MAC",
-                                      labelStyle: TextStyle(color: Colors.white),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
+                                      fillColor: fillColor,
                                       border: OutlineInputBorder(),
                                     ),
                                     controller: _macController,
@@ -291,12 +291,12 @@ class _StudentGradeState extends State<StudentGrade> {
                                   ),
                                   TextFormField(
                                     keyboardType: TextInputType.number,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     decoration: InputDecoration(
                                       labelText: "PP",
-                                      labelStyle: TextStyle(color: Colors.white),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
+                                      fillColor: fillColor,
                                       border: OutlineInputBorder(),
                                     ),
                                     controller: _firstTestController,
@@ -314,12 +314,12 @@ class _StudentGradeState extends State<StudentGrade> {
                                   ),
                                   TextFormField(
                                     keyboardType: TextInputType.number,
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     decoration: InputDecoration(
                                       labelText: "PT",
-                                      labelStyle: TextStyle(color: Colors.white),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
+                                      fillColor: fillColor,
                                       border: OutlineInputBorder(),
                                     ),
                                     controller: _secondTestController,
@@ -347,14 +347,14 @@ class _StudentGradeState extends State<StudentGrade> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i == 0 ? Colors.grey : Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: i == 0 ? Colors.grey : borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                             ],
                                           ),
                                         ),
@@ -370,13 +370,13 @@ class _StudentGradeState extends State<StudentGrade> {
                                         child: Container(
                                           width: SizeConfig.screenWidth !* .32,
                                           height: SizeConfig.heightMultiplier !* 6,
-                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : Color.fromRGBO(0, 209, 255, 0.49),
+                                          color: i <= students.length - 2 ? Color.fromRGBO(0, 209, 255, 0.49) : borderAndButtonColor,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,)),
+                                              Text( i <= students.length - 2 ? "Próximo" : "Confirmar", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                               SizedBox(width: 8.0),
-                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: 18.0,),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                             ],
                                           ),
                                         ),

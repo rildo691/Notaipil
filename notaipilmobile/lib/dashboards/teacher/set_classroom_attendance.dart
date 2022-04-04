@@ -182,9 +182,9 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -197,7 +197,7 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight !- 90,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: Form(
                               key: _key,
                               child: Column(
@@ -207,25 +207,25 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Marcação de Presença", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Marcação de Presença", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.calendar_today, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.calendar_today, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.teacher, widget.classroomId, widget.subject)));
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.group_rounded, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.group_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.teacher, widget.classroomId, widget.subject)));
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.edit_calendar, color:  Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                            icon: Icon(Icons.edit_calendar, color:  linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => SetClassroomAttendance(widget.teacher, widget.classroomId, widget.subject)));
                                             },
@@ -249,7 +249,7 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                                     decoration: InputDecoration(
                                       labelText: "Data da aula",
                                       suffixIcon: Icon(Icons.event_note, color: iconColor),
-                                      labelStyle: TextStyle(color: letterColor),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     ),
                                     controller: _data,
                                     format: DateFormat("yyyy-MM-dd"),
@@ -282,13 +282,9 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                                   ElevatedButton(
                                     child: Text("Confirmar"),
                                     style: ElevatedButton.styleFrom(
-                                      primary:  Color(0xFF0D89A4),
+                                      primary:   borderAndButtonColor,
                                       onPrimary: Colors.white,
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto',
-                                        fontSize: 20.0,
-                                      ),
+                                      textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),
                                       minimumSize: Size(0.0, 50.0),
                                     ),
                                     onPressed: (){

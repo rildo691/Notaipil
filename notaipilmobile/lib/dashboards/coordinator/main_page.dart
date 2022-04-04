@@ -103,8 +103,8 @@ class _MainPageState extends State<MainPage> {
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text(widget.coordinator[0]["courses"].length == coursesLength ? widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador da Área de " + widget.coordinator[1]["name"] : "Coordenadora da Área de " + widget.coordinator[1]["name"] : widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: Colors.white),),
+                        accountName: new Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                        accountEmail: new Text(widget.coordinator[0]["courses"].length == coursesLength ? widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador da Área de " + widget.coordinator[1]["name"] : "Coordenadora da Área de " + widget.coordinator[1]["name"] : widget.coordinator[0]["personalData"]["gender"] == "M" ? "Coordenador do curso de " + widget.coordinator[0]["courses"][0]["code"] : "Coordenadora do curso de " + widget.coordinator[0]["courses"][0]["code"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         currentAccountPicture: new ClipOval(
                           child: widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
@@ -119,7 +119,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                       ListTile(
                         leading: Icon(Icons.notifications, color: Colors.white,),
-                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Informações', style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         trailing: informationLength != 0 ? ClipOval(
                           child: Container(
                             color: Colors.red,
@@ -142,26 +142,26 @@ class _MainPageState extends State<MainPage> {
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: Colors.white,),
-                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Perfil', style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.settings, color: Colors.white,),
-                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Definições', style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.coordinator)))
                         },
                       ),
                       ListTile(
                         leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
-                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Sair', style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
                       ),
                       ListTile(
                         leading: Icon(Icons.help_outline, color: Colors.white,),
-                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        title: Text('Ajuda', style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
                       )
                     ]
@@ -173,7 +173,7 @@ class _MainPageState extends State<MainPage> {
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 70,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getCoursesByArea(_areaId), getClassroomsByArea(_areaId), getAllPrincipals()]),
                     builder: (context, snapshot){
@@ -183,7 +183,7 @@ class _MainPageState extends State<MainPage> {
                           return Container(
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             )
                           );
@@ -340,8 +340,8 @@ class _MainPageState extends State<MainPage> {
       leading: ClipOval(
         child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
       ),
-      title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-      subtitle: Text(index["title"] == "Geral" ? index["teacherAccount"]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : index["teacherAccount"]["personalData"]["gender"] == "M" ? "Sub-Director " + index["title"] : "Sub-Directora " + index["title"], style: TextStyle(color: Colors.black)),
+      title: Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+      subtitle: Text(index["title"] == "Geral" ? index["teacherAccount"]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : index["teacherAccount"]["personalData"]["gender"] == "M" ? "Sub-Director " + index["title"] : "Sub-Directora " + index["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily)),
       children: [
         Divider(
           thickness: 1.0,
@@ -353,7 +353,7 @@ class _MainPageState extends State<MainPage> {
             padding: EdgeInsets.all(10.0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(index["title"] == "Geral" ? index["teacherAccount"]["personalData"]["gender"] == "M" ? "Director Geral do IPIL, trabalhador da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : "Directora Geral do IPIL, trabalhadora da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : index["teacherAccount"]["personalData"]["gender"] == "M" ? "Sub-Director ${index["title"]} do IPIL, trabalhador da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : "Sub-Directora ${index["title"]} do IPIL, trabalhadora da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]} ", style: TextStyle(color: Colors.black)),
+              child: Text(index["title"] == "Geral" ? index["teacherAccount"]["personalData"]["gender"] == "M" ? "Director Geral do IPIL, trabalhador da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : "Directora Geral do IPIL, trabalhadora da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : index["teacherAccount"]["personalData"]["gender"] == "M" ? "Sub-Director ${index["title"]} do IPIL, trabalhador da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]}" : "Sub-Directora ${index["title"]} do IPIL, trabalhadora da Instituição desde ${index["teacherAccount"]["ipilDate"]} e ao serviço da Educação desde ${index["teacherAccount"]["educationDate"]} ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
             ),
           )
         )

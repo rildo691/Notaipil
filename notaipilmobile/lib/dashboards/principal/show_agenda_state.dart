@@ -107,8 +107,8 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -118,7 +118,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -173,12 +173,12 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       case ConnectionState.none:
                       case ConnectionState.waiting:
                         return Container(
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -197,7 +197,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
                             //height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -206,13 +206,13 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                   SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                   DropdownButtonFormField<String>(
                                     hint: Text("Área de Formação"),
-                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(),
                                         filled: true,
-                                        fillColor: Color(0xFF202733),
+                                        fillColor: fillColor,
                                       ),
-                                    dropdownColor: Colors.black,
+                                    dropdownColor: fillColor,
                                     items: areas.map((e) => 
                                       DropdownMenuItem<String>(
                                         value: e["id"],
@@ -233,7 +233,7 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                      Text("FORMAÇÃO DAS MINIPAUTAS: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -243,12 +243,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                             child: Text("I"),
                                             style: TextButton.styleFrom(
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                              primary: _selected1 ? Colors.white : Colors.black,
-                                              backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                              textStyle: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                              primary: _selected1 ? Colors.white : letterColor,
+                                              backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                              textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                             ),
                                             onPressed: (){
                                               setState(() {
@@ -262,13 +259,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                             child: Text("II"),
                                             style: TextButton.styleFrom(
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                              primary: _selected2 ? Colors.white : Colors.black,
-                                              backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Roboto',
-                                                fontWeight: FontWeight.bold
-                                              )
+                                              primary: _selected2 ? Colors.white : letterColor,
+                                              backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                              textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                             ),
                                             onPressed: (){
                                               setState(() {
@@ -282,13 +275,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                                             child: Text("III"),
                                             style: TextButton.styleFrom(
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                              primary: _selected3 ? Colors.white : Colors.black,
-                                              backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: 'Roboto',
-                                                fontWeight: FontWeight.bold
-                                              )
+                                              primary: _selected3 ? Colors.white : letterColor,
+                                              backgroundColor: _selected3 ? borderAndButtonColor: Colors.white,
+                                              textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                             ),
                                             onPressed: (){
                                                 setState(() {

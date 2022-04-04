@@ -79,13 +79,14 @@ ApiService helper = ApiService();
     return teachers;
   }
 
-  Future<List<dynamic>> getAllTeachersByName(name) async{
+  Future<List<dynamic>> getAllTeachersByName(value) async{
     var teachers = [];
     var response = await helper.get("teachers");
 
     for (var r in response){
 
-      if (r["teacherAccount"]["personalData"]["fullName"].toString().toUpperCase().contains(name.toString().toUpperCase())){
+      if (r["teacherAccount"]["personalData"]["fullName"].toString().toUpperCase().contains(value.toString().toUpperCase())
+      || r["teacherAccount"]["personalData"]["bi"].toString().toUpperCase().contains(value.toString().toUpperCase())){
         Map<String, dynamic> map = {
           "id": r["id"],
           "teacherAccount": r["teacherAccount"],

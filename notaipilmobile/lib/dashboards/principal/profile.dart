@@ -89,8 +89,8 @@ class _ProfileState extends State<Profile> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -100,7 +100,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -152,7 +152,7 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -161,13 +161,13 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                           GestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: SizeConfig.widthMultiplier !* 10,
                               height: SizeConfig.heightMultiplier !* 4,
-                              child: Icon(Icons.brush_outlined, color: Colors.white)
+                              child: Icon(Icons.brush_outlined, color: iconColor)
                             ),
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(widget.principal)));
@@ -189,11 +189,11 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "DIRECTOR GERAL" : "DIRECTORA GERAL" : widget.principal[1]["personalData"]["gender"] == "M" ? "SUB-DIRECTOR " + widget.principal[0]["title"].toString().toUpperCase() : "SUB-DIRECTORA " + widget.principal[0]["title"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "DIRECTOR GERAL" : "DIRECTORA GERAL" : widget.principal[1]["personalData"]["gender"] == "M" ? "SUB-DIRECTOR " + widget.principal[0]["title"].toString().toUpperCase() : "SUB-DIRECTORA " + widget.principal[0]["title"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.principal[1]["regime"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                              Text(widget.principal[1]["regime"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7))
                             ],
                           ),
                         ],
@@ -215,7 +215,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Dados pessoais", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -223,7 +223,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cake_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("Nascido aos " + widget.principal[1]["personalData"]["birthdate"]),
+                                  Text("Nascido aos " + widget.principal[1]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -233,7 +233,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("B.I. nº: " + widget.principal[1]["personalData"]["bi"]),
+                                  Text("B.I. nº: " + widget.principal[1]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                 ]
                               )
                             ],
@@ -265,7 +265,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.cast_for_education, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos"),
+                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -275,7 +275,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.co_present_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos" ),
+                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               )
                             ],
@@ -307,7 +307,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.contact_phone, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.principal[1]["telephone"].toString()),
+                                  Text(widget.principal[1]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -317,7 +317,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Icon(Icons.contact_mail, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.principal[1]["email"]),
+                                  Text(widget.principal[1]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                 ]
                               )
                             ],

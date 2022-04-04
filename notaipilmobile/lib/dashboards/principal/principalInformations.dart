@@ -94,8 +94,8 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -105,7 +105,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -188,7 +188,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("Informação", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                    Text("Informação", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                     GestureDetector(
                                       child: Container(
                                         width: SizeConfig.widthMultiplier !* 35,
@@ -198,7 +198,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                           style: ElevatedButton.styleFrom(
                                             primary: borderAndButtonColor,
                                             onPrimary: Colors.white,
-                                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                           ),
                                           onPressed: (){
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => ShowInformationEntities(widget.principal)));
@@ -264,11 +264,11 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                                           child: informations[index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor,size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + informations[index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 14, height: SizeConfig.imageSizeMultiplier !* 14),
                                                         ),
                                                         SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                        Text(informations[index]["fullName"].toString(), style: normalTextStyleWithoutTextSize),
+                                                        Text(informations[index]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                                         SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                        Text(informations[index]["title"].toString().substring(0, whiteSpace) + (whiteSpace == informations[index]["title"].toString().length ? "" : "..."), style: normalTextStyleWithoutTextSize),
+                                                        Text(informations[index]["title"].toString().substring(0, whiteSpace) + (whiteSpace == informations[index]["title"].toString().length ? "" : "..."), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                                         SizedBox(width: SizeConfig.widthMultiplier !* 4),
-                                                        Text(informations[index]["createdAt"].toString().substring(0, 10), style: normalTextStyleWithoutTextSize),
+                                                        Text(informations[index]["createdAt"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
                                                         SizedBox(width: SizeConfig.widthMultiplier !* 1.5),
                                                         informations[index]["sent"] ? Icon(Icons.arrow_forward, color: informationSentIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,) : Icon(Icons.arrow_back, color: informationReceivedIconColor, size: SizeConfig.imageSizeMultiplier !* 6.5,),
                                                       ]
@@ -392,7 +392,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                   SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                   Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),),
                   SizedBox(height: SizeConfig.heightMultiplier !* 3,),
-                  Text("Descrição: ", style: normalTextStyle,),
+                  Text("Descrição: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                   SizedBox(height: SizeConfig.heightMultiplier !* 1.5,),
                   //buildTextFormField("", TextInputType.multiline, description, true, isReadOnly: true),
                 ],

@@ -23,7 +23,7 @@ Widget buildTextFieldRegister(String hint, TextInputType type, TextEditingContro
       bool isValid = false;
 
       if (type == TextInputType.emailAddress && value!.isNotEmpty){
-        isValid = EmailValidator.validate(value);
+        isValid = EmailValidator.validate(value.toString().trim());
 
         if (!isValid){
           /*Fluttertoast.showToast(

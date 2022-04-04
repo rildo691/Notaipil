@@ -182,7 +182,7 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -191,13 +191,13 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Perfil", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                           GestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: SizeConfig.widthMultiplier !* 10,
                               height: SizeConfig.heightMultiplier !* 4,
-                              child: Icon(Icons.brush_outlined, color: Colors.white)
+                              child: Icon(Icons.brush_outlined, color: iconColor)
                             ),
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(widget.coordinator)));
@@ -219,11 +219,11 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
-                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADOR DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADOR DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase() : widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADORA DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADORA DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase(), style: TextStyle(color: Colors.white),)
+                              Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADOR DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADOR DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase() : widget.coordinator[0]["courses"].length == coursesLength ? "COORDENADORA DE ${area[0]["name"].toString().toUpperCase()}" : "COORDENADORA DE " + widget.coordinator[0]["courses"][0]["code"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7))
                             ],
                           ),
                         ],
@@ -245,7 +245,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Dados pessoais", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -287,7 +287,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Tempo de serviço", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,7 +329,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Contactos", style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -156,7 +156,7 @@ class _EntitiesState extends State<Entities> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: getTeachersCoordinations(widget.teacher[0]["id"]),
                     builder: (context, snapshot){
@@ -174,7 +174,7 @@ class _EntitiesState extends State<Entities> {
                             return 
                             Column(
                               children: [
-                                Text("Coordenações"),
+                                Text("Coordenações", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3,),
                                 GridView.count(
                                   shrinkWrap: true,
@@ -185,7 +185,7 @@ class _EntitiesState extends State<Entities> {
                                   children: coordinations.map((e) => 
                                     GestureDetector(
                                       child: Card(
-                                        color: Color(0xFF0D89A4),
+                                        color: borderAndButtonColor,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(5.0),
                                         ),
@@ -196,7 +196,7 @@ class _EntitiesState extends State<Entities> {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(e["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),                                                
+                                                Text(e["name"].toString(), style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                               ],
                                             ),
                                           )

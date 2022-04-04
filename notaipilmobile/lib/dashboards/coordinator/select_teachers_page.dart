@@ -181,32 +181,32 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                      Text("Selecione o destinatário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    labelText: "Pesquise o Nome",
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    filled: true,
-                                    fillColor: Color(0xFF202733),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  controller:  _nameController,
-                                  validator: (String? value){
-                                    if (value!.isEmpty){
-                                      return "Preencha o campo Pesquise o Nome";
-                                    }
-                                  },
-                                  onFieldSubmitted: (String? value) {
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.done,
+                        style: TextStyle(color: letterColor, fontFamily: fontFamily),
+                        decoration: InputDecoration(
+                          labelText: "Pesquise o Nome",
+                          labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
+                          filled: true,
+                          fillColor: fillColor,
+                          border: OutlineInputBorder(),
+                        ),
+                        controller:  _nameController,
+                        validator: (String? value){
+                          if (value!.isEmpty){
+                            return "Preencha o campo Pesquise o Nome";
+                          }
+                        },
+                        onFieldSubmitted: (String? value) {
                                    
-                                  },
-                                  onChanged: (value){
+                        },
+                        onChanged: (value){
                                     
-                                  },
-                                ),
+                        },
+                      ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3),
                       SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
                       Container(
@@ -215,9 +215,9 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                         child: ElevatedButton(
                           child: Text("Confirmar"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF0D89A4),
+                            primary: borderAndButtonColor,
                             onPrimary: Colors.white,
-                            textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                            textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                           ),
                           onPressed: (){},
                         ),

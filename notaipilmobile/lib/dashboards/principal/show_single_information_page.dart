@@ -92,8 +92,8 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -103,7 +103,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -193,21 +193,21 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                                         ClipOval(
                                           child: information[0]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 25) : Image.network(baseImageUrl + information[0]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 25, height: SizeConfig.imageSizeMultiplier !* 25),
                                         ),
-                                        Text(information[0]["fullName"].toString(), style: normalTextStyleBold)
+                                        Text(information[0]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold))
                                       ]
                                     ),
-                                    widget.sent ? Text("Enviada: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
-                                    : Text("Recebida: " + information[0]["createdAt"].toString().substring(0, 10), style: normalTextStyleBold)
+                                    widget.sent ? Text("Enviada: " + information[0]["createdAt"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold))
+                                    : Text("Recebida: " + information[0]["createdAt"].toString().substring(0, 10), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold))
                                   ]
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                                Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold, fontSize: titleSize - 7),),
+                                Text(information[0]["title"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                                Text("Descrição: ", style: normalTextStyle,),
+                                Text("Descrição: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                                 buildTextFormField("", TextInputType.text, _descriptionController, true, isReadOnly: true),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
-                                Text("Ficheiro: ", style: normalTextStyle),
+                                Text("Ficheiro: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                 widget.sent ? 
                                 information[0]["receptors"].length > 0 ?
@@ -215,7 +215,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(information[0]["receptors"][0]["account"], style: normalTextStyleBold),
+                                    Text(information[0]["receptors"][0]["account"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                     SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                                     SizedBox(
                                       width: SizeConfig.screenHeight,
@@ -232,7 +232,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                                             leading: ClipOval(
                                               child: information[0]["receptors"][index]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + information[0]["receptors"][index]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15.5, height: SizeConfig.imageSizeMultiplier !* 15.5),
                                             ),
-                                            title: Text(information[0]["receptors"][index]["fullName"].toString(), style: normalTextStyle),
+                                            title: Text(information[0]["receptors"][index]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                           );
                                         },
                                       ),

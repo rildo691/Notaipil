@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 
+/**Configurations */
+import 'package:notaipilmobile/configs/size_config.dart';
+
 /**User Interface*/
 import 'package:notaipilmobile/ui/login.dart';
 import 'package:notaipilmobile/ui/account_type.dart';
@@ -14,9 +17,6 @@ import 'package:notaipilmobile/parts/variables.dart';
 import 'package:notaipilmobile/register/student/student_register.dart';
 import 'package:notaipilmobile/register/teacher/teacher_register.dart';
 import 'package:notaipilmobile/register/educator/educator_register.dart';
-
-/**Configurations */
-import 'configs/size_config.dart';
 
 /**Complements */
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
@@ -57,11 +57,15 @@ class MyApp extends StatelessWidget {
           bodyText1: TextStyle(color: letterColor),
         ),
         dataTableTheme: DataTableThemeData(
-          dataRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)),
-          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) ? borderAndButtonColor : borderAndButtonColor),
-          headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ?  SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null) ,
+          dataRowColor: MaterialStateColor.resolveWith((states) => 
+            states.contains(MaterialState.selected) ? backgroundColor : backgroundColor
+          ),
+          dataTextStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.3 : 9),
           dividerThickness: 5,
-          dataTextStyle: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier != null && SizeConfig.widthMultiplier != null ? SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4 : null),
+          headingTextStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.3 : 9),
+          headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
+            ? borderAndButtonColor: borderAndButtonColor
+          ),
         ),
       ),
       debugShowCheckedModeBanner: false,

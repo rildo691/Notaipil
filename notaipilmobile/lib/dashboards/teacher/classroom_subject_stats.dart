@@ -162,7 +162,7 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -170,19 +170,19 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Estatistica", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          Text("Estatistica", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.stacked_line_chart_sharp, color: Color(0xFF0D89A4), size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.stacked_line_chart_sharp, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSubjectStats(widget.teacher, widget.classroom, widget.subject)));
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.text_snippet_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                icon: Icon(Icons.text_snippet_outlined, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                 onPressed: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrade(widget.teacher, widget.classroom, widget.subject)));
                                 },
@@ -195,9 +195,9 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(widget.classroom["name"].toString()),
-                          Text("-----"),
-                          Text(widget.subject["name"].toString()),
+                          Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          Text("________", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
+                          Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
                         ],
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 12,),
@@ -205,7 +205,7 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          Text("TRIMESTRES: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           SizedBox(height: SizeConfig.heightMultiplier !* 3),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -215,12 +215,9 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                                 child: Text("I"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected1 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  primary: _selected1 ? Colors.white : letterColor,
+                                  backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                  textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: (){
                                   setState(() {
@@ -234,13 +231,9 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                                 child: Text("II"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected2 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
+                                  primary: _selected2 ? Colors.white : letterColor,
+                                  backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                  textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                 ),
                                 onPressed: (){
                                   setState(() {
@@ -254,13 +247,9 @@ class _ClassroomSubjectStatsState extends State<ClassroomSubjectStats> {
                                 child: Text("III"),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                  primary: _selected3 ? Colors.white : Colors.black,
-                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.bold
-                                  )
+                                  primary: _selected3 ? Colors.white : letterColor,
+                                  backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
+                                  textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                 ),
                                 onPressed: (){
                                   setState(() {

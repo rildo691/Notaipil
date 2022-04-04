@@ -152,7 +152,7 @@ class _FourthPageState extends State<FourthPage> {
                                             children: [
                                               Icon(Icons.arrow_back_ios, color: Colors.white, size: 18.0,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: normalTextStyleWhiteSmall),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                             ],
                                           ),
                                         ),
@@ -169,7 +169,7 @@ class _FourthPageState extends State<FourthPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Finalizar", style: normalTextStyleWhiteSmall),
+                                              Text("Finalizar", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                               SizedBox(width: 8.0),
                                             ],
                                           ),
@@ -199,7 +199,7 @@ class _FourthPageState extends State<FourthPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier !* 2.7 - 2)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

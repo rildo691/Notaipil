@@ -110,8 +110,8 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: Colors.white),),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: Colors.white),),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
                             child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
@@ -121,7 +121,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: drawerColor,
                           ),
                         ),
                         ListTile(
@@ -173,7 +173,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
                   width: SizeConfig.screenWidth,
                   //height: SizeConfig.screenHeight !* 1.2,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getAreaById(widget.coordinationId), getCoursesByArea(widget.coordinationId), getGrade(), getCoordinatiorsByArea(widget.coordinationId), getClassroomsByArea(widget.coordinationId), getStudentGenderByArea(widget.coordinationId), getSubjectByCourseAndGrade(_courseValue, _gradeValue)]),
                     builder: (context, snapshot){
@@ -214,8 +214,8 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text("Coordenadores"),
-                                        Text(""),
+                                        Text("Coordenadores", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+                                        Text("", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                       ],
                                     ),
                                     SizedBox(height: SizeConfig.heightMultiplier !* 2.5),
@@ -238,14 +238,14 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                       child: SizedBox(
                                         child: DropdownButtonFormField<String>(
                                           hint: Text("Curso"),
-                                          style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             filled: true,
-                                            fillColor: Color(0xFF202733),
-                                            hintStyle: TextStyle(color: Colors.white),
+                                            fillColor: fillColor,
+                                            hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                           ),
-                                          dropdownColor: Colors.black,
+                                          dropdownColor: fillColor,
                                           items: courses.map((e) => 
                                             DropdownMenuItem<String>(
                                               value: e["id"],
@@ -273,14 +273,14 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                       child: SizedBox(
                                         child: DropdownButtonFormField<String>(
                                           hint: Text("Classe"),
-                                          style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                          style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             filled: true,
-                                            fillColor: Color(0xFF202733),
-                                            hintStyle: TextStyle(color: Colors.white),
+                                            fillColor: fillColor,
+                                            hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                           ),
-                                          dropdownColor: Colors.black,
+                                          dropdownColor: fillColor,
                                           items: grades.map((e) => 
                                             DropdownMenuItem<String>(
                                               value: e["id"],
@@ -315,7 +315,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                   ],
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7),
-                                Text(_gradeValue == null ? "" : "Estatística da $_gradeName classe - $_courseName"),
+                                Text(_gradeValue == null ? "" : "Estatística da $_gradeName classe - $_courseName", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 DataTable(
                                   columns: [
@@ -342,25 +342,25 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                         DataCell(
                                           Align(
                                             alignment: Alignment.center,
-                                            child: Text(e["name"], style: TextStyle(color: Colors.white)),
+                                            child: Text(e["name"]),
                                           )
                                         ),
                                         DataCell(
                                           Align(
                                             alignment: Alignment.center,
-                                            child: Text(e["m"].toString(), style: TextStyle(color: Colors.white)),
+                                            child: Text(e["m"].toString()),
                                           )
                                         ),
                                         DataCell(
                                           Align(
                                             alignment: Alignment.center,
-                                            child: Text(e["f"].toString(), style: TextStyle(color: Colors.white)),
+                                            child: Text(e["f"].toString()),
                                           )
                                         ),
                                         DataCell(
                                           Align(
                                             alignment: Alignment.center,
-                                            child: Text((int.parse(e["m"].toString()) + int.parse(e["f"].toString())).toString(), style: TextStyle(color: Colors.white)),
+                                            child: Text((int.parse(e["m"].toString()) + int.parse(e["f"].toString())).toString()),
                                           )
                                         ),
                                       ]
@@ -368,7 +368,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                   ).toList(),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7),
-                                Text(_courseName == null ? "" : "Estatística do Curso $_courseName - $_gradeName classe"),
+                                Text(_courseName == null ? "" : "Estatística do Curso $_courseName - $_gradeName classe", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 DataTable(
                                   columnSpacing: SizeConfig.widthMultiplier !* 37,
@@ -497,8 +497,8 @@ class _ShowCoordinationState extends State<ShowCoordination> {
             ClipOval(
               child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
             ),
-            Text(index["teacherAccount"]["personalData"]["fullName"].toString()),
-            Text(index["teacherAccount"]["personalData"]["gender"] == "M" ? index["courses"].length == courses.length ? "Coordenador da Área" : "Coordenador do curso de " + index["courses"][0]["code"] : index["courses"].length == courses.length ? "Coordenadora da Área" : "Coordenadora do curso de " + index["courses"][0]["code"])
+            Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+            Text(index["teacherAccount"]["personalData"]["gender"] == "M" ? index["courses"].length == courses.length ? "Coordenador da Área" : "Coordenador do curso de " + index["courses"][0]["code"] : index["courses"].length == courses.length ? "Coordenadora da Área" : "Coordenadora do curso de " + index["courses"][0]["code"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3))
           ],
         ),
       ),

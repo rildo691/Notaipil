@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 /**Configurations */
@@ -132,6 +131,10 @@ class _LoginState extends State<Login> {
     //verifyUser();
   }
 
+  Future _start() async{
+    await Future.delayed(Duration(seconds: 5));
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -147,69 +150,93 @@ class _LoginState extends State<Login> {
 
             return Scaffold(
               body: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                  Container(
-                  padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: backgroundColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      buildHeaderPartOne(),
-                      buildHeaderPartTwo("Login"),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailController),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            _buildPassFormField("Palavra-passe", _passwordController),
-                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                            ElevatedButton(
-                              child: Text("Entrar"),
-                              style: ElevatedButton.styleFrom(
-                                primary:  borderAndButtonColor,
-                                onPrimary: Colors.white,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 20.0,
+                child: FutureBuilder(
+                  future: _start(),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          alignment: Alignment.center,
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          color: backgroundColor,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+                          return Stack(
+                            children: [
+                            Container(
+                            padding: EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: backgroundColor,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                buildHeaderPartOne(),
+                                buildHeaderPartTwo("Login"),
+                                Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      buildTextFieldRegister("E-mail", TextInputType.emailAddress, _emailController),
+                                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                      _buildPassFormField("Palavra-passe", _passwordController),
+                                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                      ElevatedButton(
+                                        child: Text("Entrar"),
+                                        style: ElevatedButton.styleFrom(
+                                          primary:  borderAndButtonColor,
+                                          onPrimary: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto',
+                                            fontSize: 20.0,
+                                          ),
+                                          minimumSize: Size(0.0, 50.0),
+                                        ),
+                                        onPressed: (){
+                                          if (_formKey.currentState!.validate()){
+                                            signIn(_emailController.text.toString(), _passwordController.text.toString());
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                minimumSize: Size(0.0, 50.0),
-                              ),
-                              onPressed: (){
-                                if (_formKey.currentState!.validate()){
-                                  signIn(_emailController.text.toString(), _passwordController.text.toString());
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
-                            SizedBox(width: 10.0,),
-                            GestureDetector(
-                              child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
-                              onTap:(){
-                                Navigator.pushNamed(context, '/type');
-                              }
-                            )
-                          ],
-                        )
-                      ),
-                    ],
-                  ),
-                )
-                  ],
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Não possui uma conta?", style: TextStyle(color: letterColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier !* 2.7 - 2)),
+                                      SizedBox(width: 10.0,),
+                                      GestureDetector(
+                                        child: Text("Cadastre-se", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier !* 2.7 - 2)),
+                                        onTap:(){
+                                          Navigator.pushNamed(context, '/type');
+                                        }
+                                      )
+                                    ],
+                                  )
+                                ),
+                              ],
+                            ),
+                          )
+                            ],
+                          );
+                        }
+                    }
+                  }
                 ),
               ),
             );

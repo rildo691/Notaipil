@@ -288,7 +288,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: titleSize),),
+                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5),),
                                                 Center(
                                                   child: ClipOval(
                                                     child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),

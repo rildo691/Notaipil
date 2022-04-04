@@ -153,9 +153,9 @@ class _SecondPageState extends State<SecondPage> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: arrowIconSize,),
+                                              Icon(Icons.arrow_back_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                               SizedBox(width: 8.0),
-                                              Text("Anterior", style: normalTextStyleWhiteSmall),
+                                              Text("Anterior", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                             ],
                                           ),
                                         ),
@@ -172,9 +172,9 @@ class _SecondPageState extends State<SecondPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Text("Próximo", style: normalTextStyleWhiteSmall),
+                                              Text("Próximo", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                               SizedBox(width: 8.0),
-                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: arrowIconSize,),
+                                              Icon(Icons.arrow_forward_ios, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 4.7,),
                                             ],
                                           ),
                                         ),
@@ -193,7 +193,7 @@ class _SecondPageState extends State<SecondPage> {
                           ),
                           Container(
                             child: GestureDetector(
-                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: normalTextSizeForSmallText)),
+                              child: Text("Já possui uma conta?", style: TextStyle(color: linKColor, fontWeight: FontWeight.w400, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier !* 2.7 - 2)),
                               onTap: (){
                                 Navigator.of(context, rootNavigator: true).pushNamed('/');
                               }

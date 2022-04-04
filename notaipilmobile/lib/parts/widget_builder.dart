@@ -13,12 +13,12 @@ Widget buildTextFormField(String hint, TextInputType type, TextEditingController
       readOnly: isReadOnly != null ? isReadOnly ? true : false : false,
       decoration: InputDecoration(
         labelText: hint,
-        labelStyle: TextStyle(color: Colors.black, fontFamily: 'Roboto'),
+        labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
         filled: true,
         fillColor: fillColor,
         border: OutlineInputBorder(),
       ),
-      style: TextStyle(color: Colors.black, fontFamily: 'Roboto'), textAlign: TextAlign.start,
+      style: TextStyle(color: letterColor, fontFamily: fontFamily), textAlign: TextAlign.start,
       controller: controller,
       validator: (String? value){
         if (value!.isEmpty){

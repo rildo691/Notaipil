@@ -176,7 +176,7 @@ class _StudentHistoryState extends State<StudentHistory> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,7 +198,7 @@ class _StudentHistoryState extends State<StudentHistory> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(Icons.account_circle, color: Colors.black, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                child: Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 1.4 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                               ),
                               Text("Rildo William de Melo Franco"),
                               Text("60971"),
@@ -211,14 +211,14 @@ class _StudentHistoryState extends State<StudentHistory> {
                         child: SizedBox(
                           child: DropdownButtonFormField(
                             hint: Text("Turma"),
-                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               filled: true,
-                              fillColor: Color(0xFF202733),
-                              hintStyle: TextStyle(color: Colors.white),
+                              fillColor: fillColor,
+                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                             ),
-                            dropdownColor: Colors.black,
+                            dropdownColor: fillColor,
                             items: [
                               DropdownMenuItem(
                                 child: Text("Nothing"),

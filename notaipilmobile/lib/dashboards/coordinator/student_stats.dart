@@ -196,9 +196,9 @@ class _StudentStatsState extends State<StudentStats> {
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0
                           )
                         );
@@ -211,13 +211,13 @@ class _StudentStatsState extends State<StudentStats> {
                            Container(
                             padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                             width: SizeConfig.screenWidth,
-                           height: SizeConfig.screenHeight !* 1.2,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            height: SizeConfig.screenHeight !* 1.2,
+                            color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Aluno", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("Aluno", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 Center(
                                   child: 
                                     Container(
@@ -229,41 +229,31 @@ class _StudentStatsState extends State<StudentStats> {
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                                Text("Bilhete: " + widget.student["student"]["personalData"]["bi"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Bilhete: " + widget.student["student"]["personalData"]["bi"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Nome: " + widget.student["student"]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Nome: " + widget.student["student"]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sexo: " + widget.student["student"]["personalData"]["gender"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Sexo: " + widget.student["student"]["personalData"]["gender"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Data de nascimento: " + widget.student["student"]["personalData"]["birthdate"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Data de nascimento: " + widget.student["student"]["personalData"]["birthdate"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                Text("N.º de processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("N.º de processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("N.º: " + widget.student["number"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("N.º: " + widget.student["number"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Turma: " + widget.student["classroom"]["name"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Turma: " + widget.student["classroom"]["name"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sala: " + widget.student["classroom"]["room"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Sala: " + widget.student["classroom"]["room"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Período: " + widget.student["classroom"]["period"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Período: " + widget.student["classroom"]["period"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                Text("Contacto do Encarregado: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', )),
+                                Text("Contacto do Encarregado: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Expanded(
                                   child: ConstrainedBox(
                                   constraints: BoxConstraints(minWidth: constraints.minWidth),
                                   child: DataTable(
-                                    dataRowColor: MaterialStateColor.resolveWith((states) => 
-                                      states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                                    ),
-                                    dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                    showBottomBorder: true,
-                                    dividerThickness: 5,
-                                    headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                    headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                      ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
-                                    ),
                                     columns: [
                                       DataColumn(
                                         label: Text("Disciplina"),

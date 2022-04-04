@@ -208,7 +208,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                   padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getAreas(), getCoursesCode(_areaId), getGrade(), getClassroom(_courseValue, _gradeValue), getClassroomStudent(_classroomId)]),
                     builder: (context, snapshot){
@@ -220,7 +220,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>( Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             ),
                           );
@@ -251,7 +251,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Turmas", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
                                       GestureDetector(
                                         child: Container(
                                           width: SizeConfig.widthMultiplier !* 35,
@@ -259,9 +259,9 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           child: ElevatedButton(
                                             child: Text("Criar Turma"),
                                             style: ElevatedButton.styleFrom(
-                                              primary: Color(0xFF0D89A4),
+                                              primary: borderAndButtonColor,
                                               onPrimary: Colors.white,
-                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                              textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                             ),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
@@ -281,14 +281,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Curso"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: courses.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -312,14 +312,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Classe"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: grades.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -344,16 +344,6 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   ),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                   DataTable(
-                                    dataRowColor: MaterialStateColor.resolveWith((states) => 
-                                      states.contains(MaterialState.selected) ? Color.fromARGB(255, 34, 42, 55) : Color.fromARGB(255, 34, 42, 55)
-                                    ),
-                                    dataTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.2 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                    showBottomBorder: true,
-                                    dividerThickness: 5,
-                                    headingTextStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
-                                    headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
-                                      ? Color(0xFF0D89A4) : Color(0xFF0D89A4)
-                                    ),
                                     columnSpacing: SizeConfig.widthMultiplier !* 3,
                                     columns: [
                                       DataColumn(
@@ -422,7 +412,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   GestureDetector(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: Text("Ver mais", style: TextStyle(color: !_clicked ? Colors.grey : Color(0xFF00D1FF), fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                      child: Text("Ver mais", style: TextStyle(color: !_clicked ? Colors.grey : linKColor, fontWeight: FontWeight.w200, fontFamily: 'Roboto', fontSize: SizeConfig.textMultiplier !* 2.7 - 2)),
                                     ),
                                     onTap: (){
                                       if(_clicked){
@@ -482,7 +472,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Turmas", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
                                       GestureDetector(
                                         child: Container(
                                           width: SizeConfig.widthMultiplier !* 35,
@@ -490,9 +480,9 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           child: ElevatedButton(
                                             child: Text("Criar Turma"),
                                             style: ElevatedButton.styleFrom(
-                                              primary: Color(0xFF0D89A4),
+                                              primary: borderAndButtonColor,
                                               onPrimary: Colors.white,
-                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                              textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                             ),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
@@ -541,14 +531,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Curso"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: courses.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -570,14 +560,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Classe"),
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: grades.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -600,7 +590,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   ),
                                   Expanded(
                                     child: Center(
-                                      child: Text("Por favor, selecione um Curso e uma Classe", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                                      child: Text("Por favor, selecione um Curso e uma Classe", textAlign: TextAlign.center, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 3.4, fontWeight: FontWeight.bold),)
                                     )
                                   )
                                 ]  
@@ -615,7 +605,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text("Turmas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                      Text("Turmas", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
                                       GestureDetector(
                                         child: Container(
                                           width: SizeConfig.widthMultiplier !* 35,
@@ -623,9 +613,9 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                           child: ElevatedButton(
                                             child: Text("Criar Turma"),
                                             style: ElevatedButton.styleFrom(
-                                              primary: Color(0xFF0D89A4),
+                                              primary: borderAndButtonColor,
                                               onPrimary: Colors.white,
-                                              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                              textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                             ),
                                             onPressed: (){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => CreateClassroom(widget.coordinator)));
@@ -674,14 +664,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Curso"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: courses.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -705,14 +695,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField<String>(
                                             hint: Text("Classe"),
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily)
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: grades.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -735,7 +725,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                                   ),
                                   Expanded(
                                     child: Center(
-                                      child: Text("Infelizmente não conseguimos encontrar uma turma para esse Curso e essa Classe. Tente novamente!", textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),)
+                                      child: Text("Infelizmente não conseguimos encontrar uma turma para esse Curso e essa Classe. Tente novamente!", textAlign: TextAlign.center, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 3.4, fontWeight: FontWeight.bold),)
                                     )
                                   )
                                 ]  
@@ -813,9 +803,9 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
           child: ElevatedButton(
             child: Text(classroomName.toString()),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF0D89A4),
+              primary: borderAndButtonColor,
               onPrimary: Colors.white,
-              textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+              textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
             ),
             onPressed: (){
               setState((){

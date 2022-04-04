@@ -188,7 +188,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Aluno", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("Aluno", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 Center(
                                   child: 
                                     Container(
@@ -200,32 +200,32 @@ class _StudentsStatsState extends State<StudentsStats> {
                                   ),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                                Text("Bilhete: " + widget.student["student"]["personalData"]["bi"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Bilhete: " + widget.student["student"]["personalData"]["bi"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Nome: " + widget.student["student"]["personalData"]["fullName"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Nome: " + widget.student["student"]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sexo: " + widget.student["student"]["personalData"]["gender"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Sexo: " + widget.student["student"]["personalData"]["gender"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Data de nascimento: " + widget.student["student"]["personalData"]["birthdate"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Data de nascimento: " + widget.student["student"]["personalData"]["birthdate"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                Text("N.º de processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("N.º de processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("N.º: " + widget.student["number"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("N.º: " + widget.student["number"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Turma: " + widget.student["classroom"]["name"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Turma: " + widget.student["classroom"]["name"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sala: " + widget.student["classroom"]["room"].toString(), style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Sala: " + widget.student["classroom"]["room"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Período: " + widget.student["classroom"]["period"], style: TextStyle(color: Colors.white, fontFamily: 'Roboto',)),
+                                Text("Período: " + widget.student["classroom"]["period"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                Text("Contacto do Encarregado: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', )),
+                                Text("Contacto do Encarregado: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text("TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                                    Text("TRIMESTRES: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                     SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -235,12 +235,9 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           child: Text("I"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected1 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            primary: _selected1 ? Colors.white : letterColor,
+                                            backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
                                           ),
                                           onPressed: (){
                                             setState(() {
@@ -254,13 +251,9 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           child: Text("II"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected2 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold
-                                            )
+                                            primary: _selected2 ? Colors.white : letterColor,
+                                            backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
                                           ),
                                           onPressed: (){
                                             setState(() {
@@ -274,13 +267,9 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           child: Text("III"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected3 ? Colors.white : Colors.black,
-                                            backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.bold
-                                            )
+                                            primary: _selected3 ? Colors.white : letterColor,
+                                            backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
+                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)
                                           ),
                                           onPressed: (){
                                             setState(() {

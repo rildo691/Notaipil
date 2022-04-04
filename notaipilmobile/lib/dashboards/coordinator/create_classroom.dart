@@ -14,6 +14,7 @@ import 'package:notaipilmobile/parts/variables.dart';
 
 /**Model */
 import 'package:notaipilmobile/register/model/classroomModel.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -192,7 +193,7 @@ class _CreateClassroomState extends State<CreateClassroom> {
                   padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 40.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !* 1.07,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getCoursesByArea(_areaId), getGrade()]),
                     builder: (context, snapshot){
@@ -204,7 +205,7 @@ class _CreateClassroomState extends State<CreateClassroom> {
                             height: SizeConfig.screenHeight,
                             alignment: Alignment.center,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                               strokeWidth: 5.0,
                             )
                           );
@@ -240,15 +241,15 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                         width: SizeConfig.widthMultiplier !* 30,
                                         child: SizedBox(
                                           child: DropdownButtonFormField(
-                                            hint: Text("Curso"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            hint: Text("Curso", style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: courses.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -271,14 +272,14 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                         child: SizedBox(
                                           child: DropdownButtonFormField(
                                             hint: Text("Classe"),
-                                            style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                            style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(),
                                               filled: true,
-                                              fillColor: Color(0xFF202733),
-                                              hintStyle: TextStyle(color: Colors.white),
+                                              fillColor: fillColor,
+                                              hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                             ),
-                                            dropdownColor: Colors.black,
+                                            dropdownColor: fillColor,
                                             items: grades.map((e) => 
                                               DropdownMenuItem<String>(
                                                 value: e["id"],
@@ -304,11 +305,11 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                   TextFormField(
                                     style: TextStyle(color: Colors.white),
                                     decoration: InputDecoration(
-                                      prefix: Text(_courseCode != null && _gradeCode != null ? _courseCode.toString() + _gradeCode.toString() : "", style: TextStyle(color: Colors.white),),
+                                      prefix: Text(_courseCode != null && _gradeCode != null ? _courseCode.toString() + _gradeCode.toString() : "", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
                                       labelText: "Código",
-                                      labelStyle: TextStyle(color: Colors.white),
+                                      labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
+                                      fillColor: fillColor,
                                       border: OutlineInputBorder(),
                                     ),
                                     obscureText: true,
@@ -328,14 +329,14 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                   ),
                                   DropdownButtonFormField(
                                     hint: Text("Localização"),
-                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
-                                      hintStyle: TextStyle(color: Colors.white),
+                                      fillColor: fillColor,
+                                      hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     ),
-                                    dropdownColor: Colors.black,
+                                    dropdownColor: fillColor,
                                     items: [
                                       DropdownMenuItem(
                                         child: Text("Edifício"),
@@ -359,14 +360,14 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                   ),
                                   DropdownButtonFormField(
                                     hint: Text("Período"),
-                                    style: TextStyle(color: Colors.white, fontSize:SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),
+                                    style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
                                       filled: true,
-                                      fillColor: Color(0xFF202733),
-                                      hintStyle: TextStyle(color: Colors.white),
+                                      fillColor: fillColor,
+                                      hintStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     ),
-                                    dropdownColor: Colors.black,
+                                    dropdownColor: fillColor,
                                     items: [
                                       DropdownMenuItem(
                                         child: Text("Manhã"),
@@ -397,13 +398,9 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                       ElevatedButton(
                                         child: Text("Horário"),
                                         style: ElevatedButton.styleFrom(
-                                          primary:  Color(0xFF0D89A4),
+                                          primary:  borderAndButtonColor,
                                           onPrimary: Colors.white,
-                                          textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Roboto',
-                                            fontSize: 20.0,
-                                          ),
+                                          textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                         minimumSize: Size(0.0, 50.0),
                                         ),
                                         onPressed: (){
@@ -418,14 +415,10 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                   ElevatedButton(
                                     child: Text("Concluir"),
                                     style: ElevatedButton.styleFrom(
-                                      primary:  Color(0xFF0D89A4),
+                                      primary:  borderAndButtonColor,
                                       onPrimary: Colors.white,
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto',
-                                        fontSize: 20.0,
-                                      ),
-                                    minimumSize: Size(0.0, 50.0),
+                                      textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
+                                      minimumSize: Size(0.0, 50.0),
                                     ),
                                     onPressed: () async{
                                       if (_key.currentState!.validate()){
@@ -439,7 +432,7 @@ class _CreateClassroomState extends State<CreateClassroom> {
                                         );
                                       
                                         var response = await helper.post("classrooms", classroom!.toJson());
-                                        
+                                        buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => ClassroomsPage(widget.coordinator)));
                                       }
                                     },
                                   )

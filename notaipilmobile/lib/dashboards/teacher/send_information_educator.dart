@@ -152,18 +152,18 @@ class _SendInformationEducatorState extends State<SendInformationEducator> {
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
+                  color: backgroundColor,
                   child: Form(
                     key: _key,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Enviar uma determinada informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                        Text("Enviar uma determinada informação", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Assunto:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                            Text("Assunto:", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                             SizedBox(height: SizeConfig.heightMultiplier !* 3),
                             buildTextFormField("Escreva um assunto", TextInputType.text, _subjectController, false),
                           ],
@@ -171,7 +171,7 @@ class _SendInformationEducatorState extends State<SendInformationEducator> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Mensagem:", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                            Text("Mensagem:", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                             SizedBox(height: SizeConfig.heightMultiplier !* 3),
                             buildTextFormField("Escreva uma mensagem", TextInputType.multiline, _messageController, true),
                           ],
@@ -186,9 +186,9 @@ class _SendInformationEducatorState extends State<SendInformationEducator> {
                               child: ElevatedButton(
                                 child: Text("Anexar"),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
+                                  primary: borderAndButtonColor,
                                   onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                  textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                 ),
                                 onPressed: (){
                                   if (_key.currentState!.validate()){
@@ -203,9 +203,9 @@ class _SendInformationEducatorState extends State<SendInformationEducator> {
                               child: ElevatedButton(
                                 child: Text("Enviar"),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF0D89A4),
+                                  primary: borderAndButtonColor,
                                   onPrimary: Colors.white,
-                                  textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                  textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                 ),
                                 onPressed: (){
                                   if (_key.currentState!.validate()){

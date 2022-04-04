@@ -211,9 +211,9 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0
                           )
                         );
@@ -338,7 +338,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                                               DataCell(
                                                 GestureDetector(
                                                   child: Center(
-                                                  child: Icon(Icons.delete_forever_outlined, color: Colors.white,),
+                                                  child: Icon(Icons.delete_forever_outlined, color: iconColor,),
                                                       ),
                                                   onTap: (){
                                                     buildDeleteModal(context, "Tem certeza que pretende eliminar esse estudante dessa turma?", e);
@@ -375,7 +375,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7,),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("MASCULINOS: _${gender[0]["m"]}_ FEMENINOS: _${gender[0]["f"]}_", style: TextStyle(color: letterColor)),
+                                  child: Text("MASCULINOS: _${gender[0]["m"]}_ FEMENINOS: _${gender[0]["f"]}_", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                 )                                   
                               ]  
                             )

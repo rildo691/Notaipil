@@ -193,9 +193,9 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                           width: SizeConfig.screenWidth,
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: backgroundColor,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0D89A4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0,
                           ),
                         );
@@ -222,22 +222,22 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                             width: SizeConfig.screenWidth,
                             /*height: classrooms.length > 6 ? SizeConfig.screenHeight !* classrooms.length / 7 : SizeConfig.screenHeight,*/
                             height: SizeConfig.screenHeight,
-                            color: Color.fromARGB(255, 34, 42, 55),
+                            color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Selecione o destinatário", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                                Text("Selecione o destinatário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 TextFormField(
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: letterColor, fontFamily: fontFamily),
                                   decoration: InputDecoration(
                                     labelText: "Pesquise o Nome",
-                                    labelStyle: TextStyle(color: Colors.white),
+                                    labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
                                     filled: true,
-                                    fillColor: Color(0xFF202733),
+                                    fillColor: fillColor,
                                     border: OutlineInputBorder(),
                                   ),
                                   controller:  _nameController,
@@ -315,9 +315,9 @@ class _SelectClassroomsPageState extends State<SelectClassroomsPage> {
                                   child: ElevatedButton(
                                     child: Text("Confirmar"),
                                     style: ElevatedButton.styleFrom(
-                                      primary: Color(0xFF0D89A4),
+                                      primary: borderAndButtonColor,
                                       onPrimary: Colors.white,
-                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                      textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
                                     ),
                                     onPressed: () async{
                                       
