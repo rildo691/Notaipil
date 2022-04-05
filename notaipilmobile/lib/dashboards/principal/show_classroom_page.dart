@@ -81,7 +81,11 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
       })
     );
 
-     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) => setState((){informationLength = value;}));
+    getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
+      if (mounted){
+        setState((){informationLength = value;});
+      }
+    });
   }
 
   Future<void> start() async {
@@ -100,15 +104,16 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
             return Scaffold(
               key: _key,
               appBar: AppBar(
-                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
+                iconTheme: IconThemeData(color: appBarLetterColorAndDrawerColor),
               ),
               drawer: Drawer(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 34, 42, 55),
+                    color: borderAndButtonColor,
                   ),
                   child: SizedBox(
                     height: SizeConfig.screenHeight,
@@ -117,10 +122,10 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          accountName: new Text(widget.principal[1]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.principal[0]["title"] == "Geral" ? widget.principal[1]["personalData"]["gender"] == "M" ? "Director Geral" : "Directora Geral" : widget.principal[1]["personalData"]["gender"] == "M" ? "Sub-Director " + widget.principal[0]["title"] : "Sub-Directora " + widget.principal[0]["title"],style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           currentAccountPicture: new ClipOval(
-                            child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
+                            child: Center(child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),)
                           ),
                           otherAccountsPictures: [
                             new CircleAvatar(
@@ -128,46 +133,46 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                             ),
                           ],
                           decoration: BoxDecoration(
-                            color: drawerColor,
+                            color: borderAndButtonColor,
                           ),
                         ),
                         ListTile(
-                          leading: Icon(Icons.notifications, color: Colors.white,),
-                          title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                            Navigator.push(context, MaterialPageRoute(builder: (context) => Principalinformations(widget.principal)))
                           },
                           
                         ),
                         ListTile(
-                          leading: Icon(Icons.group, color: Colors.white,),
-                          title: Text('Pedidos de adesão', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.group, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Pedidos de adesão', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.account_circle, color: Colors.white,),
-                          title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.principal)))
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.settings, color: Colors.white,),
-                          title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(widget.principal)))
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
-                          title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => null,
                         ),
                         ListTile(
-                          leading: Icon(Icons.help_outline, color: Colors.white,),
-                          title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => null,
                         )
                       ]
