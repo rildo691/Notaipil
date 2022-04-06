@@ -298,6 +298,9 @@ class _CoordinatorinformationsState extends State<Coordinatorinformations> {
                                                 ),
                                                 onTap: (){
                                                   setReadInformation(widget.coordinator[2]["userId"], informations[index]["id"]);
+                                                  setState(() {
+                                                    
+                                                  });
                                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.coordinator, informations[index]["id"], informations[index]["sent"])));
                                                 },
                                               );

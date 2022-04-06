@@ -273,6 +273,9 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                                                 ),
                                                 onTap: (){
                                                   setReadInformation(widget.principal[2]["userId"], informations[index]["id"]);
+                                                  setState(() {
+                                                    
+                                                  });
                                                   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowSingleInformationPage(widget.principal, informations[index]["id"], informations[index]["sent"])));
                                                 },
                                               );
