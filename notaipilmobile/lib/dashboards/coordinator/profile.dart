@@ -215,7 +215,7 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.coordinator[0]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                              Text(widget.coordinator[0]["personalData"]["fullName"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                               Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
@@ -231,7 +231,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -241,15 +241,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.cake_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("Nascido aos " + widget.coordinator[0]["personalData"]["birthdate"]),
+                                  Text("Nascido aos " + widget.coordinator[0]["personalData"]["birthdate"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -257,9 +258,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("B.I. nº: " + widget.coordinator[0]["personalData"]["bi"]),
+                                  Text("B.I. nº: " + widget.coordinator[0]["personalData"]["bi"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],
@@ -273,7 +275,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -283,15 +285,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.cast_for_education, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos"),
+                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -299,9 +302,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.co_present_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos" ),
+                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],
@@ -315,7 +319,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -325,15 +329,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.contact_phone, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.coordinator[0]["teacherAccount"]["telephone"].toString()),
+                                  Text(widget.coordinator[0]["teacherAccount"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2),),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -341,9 +346,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.contact_mail, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.coordinator[0]["teacherAccount"]["email"]),
+                                  Text(widget.coordinator[0]["teacherAccount"]["email"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],

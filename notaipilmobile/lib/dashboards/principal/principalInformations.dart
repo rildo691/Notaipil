@@ -71,6 +71,13 @@ class _PrincipalinformationsState extends State<Principalinformations> {
 
             return Scaffold(
               key: _key,
+              appBar: AppBar(
+                title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: borderAndButtonColor,
+                elevation: 0,
+                centerTitle: true,
+                iconTheme: IconThemeData(color: appBarLetterColorAndDrawerColor),
+              ),
               drawer: Drawer(
                 child: Container(
                   decoration: BoxDecoration(

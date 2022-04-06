@@ -73,72 +73,79 @@ class _ProfileState extends State<Profile> {
                   decoration: BoxDecoration(
                     color: borderAndButtonColor,
                   ),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      UserAccountsDrawerHeader(
-                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        currentAccountPicture: new ClipOval(
-                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
-                        ),
-                        otherAccountsPictures: [
-                          new CircleAvatar(
-                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                  child: SizedBox(
+                    height: SizeConfig.screenHeight,
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      children: [
+                        UserAccountsDrawerHeader(
+                          accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          currentAccountPicture: new ClipOval(
+                            child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                           ),
-                        ],
-                        decoration: BoxDecoration(
-                          color: borderAndButtonColor,
+                          otherAccountsPictures: [
+                            new CircleAvatar(
+                              child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                            ),
+                          ],
+                          decoration: BoxDecoration(
+                            color: borderAndButtonColor,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
-                        },
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                        ListTile(
+                          leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
+                          },
+                          trailing: informationLength != 0 ? ClipOval(
+                            child: Container(
+                              color: Colors.red,
+                              width: 20,
+                              height: 20,
+                              child: Center(
+                                child: Text(
+                                  informationLength.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
+                          ) : Container(
+                            width: 20,
+                            height: 20,
                           ),
-                        ) : Container(),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => null,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => null,
-                      )
-                    ]
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => null,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => null,
+                        )
+                      ]
+                    ),
                   )
                 )
               ),
@@ -183,7 +190,7 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                              Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                               Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.teacher[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
@@ -199,7 +206,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -209,15 +216,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.cake_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("Nascido aos " + widget.teacher[0]["teacherAccount"]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
+                                  Text("Nascido aos " + widget.teacher[0]["teacherAccount"]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -225,9 +233,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("B.I. nº: " + widget.teacher[0]["teacherAccount"]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
+                                  Text("B.I. nº: " + widget.teacher[0]["teacherAccount"]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],
@@ -241,7 +250,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -251,15 +260,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Tempo de serviço", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.cast_for_education, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
+                                  Text("No IPIL há " + ipilTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -267,9 +277,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.co_present_rounded, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily),),
+                                  Text("No MED há " + educationTimeYear.toString() + " " + "anos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],
@@ -283,7 +294,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 20.0,
+                              blurRadius: 6.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -293,15 +304,16 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold)),
+                              Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 3),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.contact_phone, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.teacher[0]["teacherAccount"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily)),
+                                  Text(widget.teacher[0]["teacherAccount"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               ),
                               SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
@@ -309,9 +321,10 @@ class _ProfileState extends State<Profile> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  SizedBox(width: SizeConfig.widthMultiplier !* 3),
                                   Icon(Icons.contact_mail, color: iconColor),
                                   SizedBox(width: SizeConfig.widthMultiplier !* 5),
-                                  Text(widget.teacher[0]["teacherAccount"]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily),),
+                                  Text(widget.teacher[0]["teacherAccount"]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                 ]
                               )
                             ],

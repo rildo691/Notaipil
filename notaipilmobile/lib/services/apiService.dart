@@ -74,7 +74,7 @@ class ApiService{
   }
 
   Future<dynamic> patch(String url, Map body, {String? token, String? id}) async{
-    if (id != null){
+    if (id == null){
       var response = await http.patch(
         Uri.parse(_baseUrl + url /*+ "$id"*/),
         headers: {

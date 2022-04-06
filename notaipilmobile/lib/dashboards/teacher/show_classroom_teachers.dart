@@ -83,72 +83,79 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                   decoration: BoxDecoration(
                     color: borderAndButtonColor,
                   ),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: [
-                      UserAccountsDrawerHeader(
-                        accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                        accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        currentAccountPicture: new ClipOval(
-                          child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
-                        ),
-                        otherAccountsPictures: [
-                          new CircleAvatar(
-                            child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                  child: SizedBox(
+                    height: SizeConfig.screenHeight,
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      children: [
+                        UserAccountsDrawerHeader(
+                          accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          currentAccountPicture: new ClipOval(
+                            child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                           ),
-                        ],
-                        decoration: BoxDecoration(
-                          color: borderAndButtonColor,
+                          otherAccountsPictures: [
+                            new CircleAvatar(
+                              child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
+                            ),
+                          ],
+                          decoration: BoxDecoration(
+                            color: borderAndButtonColor,
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
-                        },
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                        ListTile(
+                          leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
+                          },
+                          trailing: informationLength != 0 ? ClipOval(
+                            child: Container(
+                              color: Colors.red,
+                              width: 20,
+                              height: 20,
+                              child: Center(
+                                child: Text(
+                                  informationLength.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ),
+                          ) : Container(
+                            width: 20,
+                            height: 20,
                           ),
-                        ) : Container(),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => null,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
-                        title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        onTap: () => null,
-                      )
-                    ]
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => {
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => null,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
+                          title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          onTap: () => null,
+                        )
+                      ]
+                    ),
                   )
                 )
               ),
@@ -230,7 +237,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 15.0,
                                     mainAxisSpacing: 15.0,
-                                    childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 2.5,
+                                    childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 3.1,
                                     children: teachers.map<Widget>((e) => 
                                       GestureDetector(
                                         child: Container(
@@ -238,7 +245,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                             boxShadow: [
                                               new BoxShadow(
                                                 color: Colors.black,
-                                                blurRadius: 20.0,
+                                                blurRadius: 6.0,
                                               )
                                             ],
                                             borderRadius: BorderRadius.circular(7.0),
@@ -250,7 +257,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 10), textAlign: TextAlign.center),
+                                                Text(e["subject"]["subject"]["code"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 10), textAlign: TextAlign.center),
                                                 Center(
                                                   child: ClipOval(
                                                     child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),

@@ -264,7 +264,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                     crossAxisCount: 2,
                                     crossAxisSpacing: 5.0,
                                     mainAxisSpacing: 10.0,
-                                    childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 2.5,
+                                    childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 3.1,
                                     children: teachers.map<Widget>((e) => 
                                       GestureDetector(
                                         child: Container(
@@ -272,7 +272,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                             boxShadow: [
                                               new BoxShadow(
                                                 color: Colors.black,
-                                                blurRadius: 20.0,
+                                                blurRadius: 6.0,
                                               )
                                             ],
                                             borderRadius: BorderRadius.circular(7.0),
@@ -284,7 +284,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
-                                                Text(e["subject"]["subject"]["name"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5),),
+                                                Text(e["subject"]["subject"]["code"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5),),
                                                 Center(
                                                   child: ClipOval(
                                                     child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),

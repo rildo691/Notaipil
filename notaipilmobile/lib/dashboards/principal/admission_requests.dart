@@ -7,6 +7,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
+import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/variables.dart';
 
 /**Variables */
@@ -183,7 +184,34 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                               children: [
                                 buildHeaderPartTwo("Pedidos de adesão"),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 10),
-                                _buildTextFormField("Pesquise o n.º do bilhete", TextInputType.text, _nameController),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: letterColor, fontFamily: fontFamily),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome ou B.I.",
+                                    labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
+                                    filled: true,
+                                    fillColor: fillColor,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome ou B.I.";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    if (value!.isNotEmpty){
+                                      _filter(value);
+                                    }
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      getAdmissionRequests();
+                                    }
+                                  },
+                                ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 8),
                                 SizedBox(
                                   height: SizeConfig.heightMultiplier !* 49.4,
@@ -265,19 +293,11 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
     );
   }
 
-  Widget _buildTextFormField(String hint, TextInputType type, TextEditingController controller){
-    return TextFormField(
-      keyboardType: type,
-      decoration: InputDecoration(
-        labelText: hint,
-        labelStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto'),
-        filled: true,
-        fillColor: Color(0xFF202733),
-        border: OutlineInputBorder(),
-      ),
-      style: TextStyle(color: Colors.white, fontFamily: 'Roboto'), textAlign: TextAlign.start,
-      controller: controller,
-    );
+  _filter(value){
+    getAdmissionRequestByName(value).then((value) => setState((){requests = value;}));
+    setState(() {
+      
+    });
   }
 
   Widget _buildAdmissionCard(index){

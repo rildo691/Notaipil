@@ -60,9 +60,9 @@ class MyApp extends StatelessWidget {
           dataRowColor: MaterialStateColor.resolveWith((states) => 
             states.contains(MaterialState.selected) ? backgroundColor : backgroundColor
           ),
-          dataTextStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.3 : 9),
+          dataTextStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.3 : 15.7),
           dividerThickness: 5,
-          headingTextStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.3 : 9),
+          headingTextStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier != null ? SizeConfig.textMultiplier !* 2.5 : 16.7),
           headingRowColor: MaterialStateColor.resolveWith((states) => states.contains(MaterialState.selected) 
             ? borderAndButtonColor: borderAndButtonColor
           ),

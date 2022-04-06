@@ -73,7 +73,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
         setState((){informationLength = value;});
       }
     });
-    
+
     getAllTeachers().then((value) => setState((){teachers = value.toList();}));
   }
 
@@ -220,7 +220,7 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                                   controller:  _nameController,
                                   validator: (String? value){
                                     if (value!.isEmpty){
-                                      return "Preencha o campo Pesquise o Nome";
+                                      return "Preencha o campo Pesquise o Nome ou B.I.";
                                     }
                                   },
                                   onFieldSubmitted: (String? value) {

@@ -997,6 +997,33 @@ ApiService helper = ApiService();
     return requests;
   }
 
+  Future<List<dynamic>> getAdmissionRequestByName(value) async{
+    var requests = [];
+    var response = await helper.get("teacher_accounts/admission");
+
+    for (var r in response){
+      if (r["personalData"]["fullName"].toString().toUpperCase().contains(value.toString().toUpperCase())
+      || r["personalData"]["bi"].toString().toUpperCase().contains(value.toString().toUpperCase())){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "email": r["email"],
+          "telephone": r["telephone"],
+          "regime": r["regime"],
+          "ipilDate": r["ipilDate"],
+          "educationDate": r["educationDate"],
+          "category": r["category"],
+          "createdAt": r["createdAt"],
+          "personalData": r["personalData"],
+          "qualification": r["qualification"],
+          "avatar": r["avatar"],
+        };          
+
+        requests.add(map);
+      }
+    }
+    return requests;
+  }
+
   Future<List<dynamic>> getPrincipal(userEmail) async{
     var principal = [];
     var response = await helper.get("directors");

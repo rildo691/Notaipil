@@ -84,6 +84,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                     color: borderAndButtonColor,
                   ),
                   child: ListView(
+                    shrinkWrap: true,
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
@@ -110,8 +111,8 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                         trailing: informationLength != 0 ? ClipOval(
                           child: Container(
                             color: Colors.red,
-                            width: 20,
-                            height: 20,
+                            width: 10,
+                            height: 10,
                             child: Center(
                               child: Text(
                                 informationLength.toString(),
@@ -122,7 +123,10 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                               ),
                             ),
                           ),
-                        ) : Container(),
+                        ) : Container(
+                            width: 20,
+                            height: 20,
+                          ),
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
