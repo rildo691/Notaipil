@@ -87,7 +87,9 @@ class _MainPageState extends State<MainPage> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

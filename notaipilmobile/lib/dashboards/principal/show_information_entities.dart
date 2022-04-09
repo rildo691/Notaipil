@@ -60,7 +60,9 @@ class _ShowInformationEntitiesState extends State<ShowInformationEntities> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

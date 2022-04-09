@@ -61,7 +61,9 @@ class _PrincipalinformationsState extends State<Principalinformations> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

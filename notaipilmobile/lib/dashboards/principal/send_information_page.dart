@@ -64,7 +64,9 @@ class _SendInformationPageState extends State<SendInformationPage> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

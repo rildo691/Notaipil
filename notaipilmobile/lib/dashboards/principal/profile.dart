@@ -59,7 +59,9 @@ class _ProfileState extends State<Profile> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

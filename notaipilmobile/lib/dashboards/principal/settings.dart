@@ -62,7 +62,9 @@ class _SettingsState extends State<Settings> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

@@ -64,7 +64,9 @@ class _SendInformationTeachersState extends State<SendInformationTeachers> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

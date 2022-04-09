@@ -70,7 +70,9 @@ class _SingleAdmissionRequestPageState extends State<SingleAdmissionRequestPage>
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

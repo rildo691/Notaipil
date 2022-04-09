@@ -73,7 +73,9 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
 

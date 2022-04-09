@@ -66,7 +66,9 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
 

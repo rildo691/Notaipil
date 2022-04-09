@@ -67,7 +67,9 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

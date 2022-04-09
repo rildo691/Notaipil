@@ -91,7 +91,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

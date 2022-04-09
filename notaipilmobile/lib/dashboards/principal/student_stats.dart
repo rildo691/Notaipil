@@ -73,7 +73,9 @@ class _StudentStatsState extends State<StudentStats> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

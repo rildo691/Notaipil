@@ -72,7 +72,9 @@ class _EditProfileState extends State<EditProfile> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
 

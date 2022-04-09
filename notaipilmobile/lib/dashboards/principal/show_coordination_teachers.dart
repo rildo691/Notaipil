@@ -75,7 +75,9 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
   }

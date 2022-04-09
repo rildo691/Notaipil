@@ -68,7 +68,9 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
     getAdmissionRequests().then((value) {
       if (mounted){
-        requests = value;
+        setState((){
+          requests = value;
+        });
       }
     });
 
