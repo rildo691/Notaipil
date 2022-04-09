@@ -8,7 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'dart:math';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -53,6 +53,7 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
 
   var coordinators = [];
   var recipients = [];
+  var requests = [];
 
   List<bool>? _selected;
   bool isFull = false;
@@ -65,6 +66,12 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
       if (mounted){
         setState((){informationLength = value;});
+      }
+    });
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
       }
     });
 
@@ -130,6 +137,17 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -188,6 +206,15 @@ class _SelectCoordinatorPageState extends State<SelectCoordinatorPage> {
 
                             if (!active){
                               coordinators = (snapshot.data! as List);
+
+                              for (int i = 0; i < coordinators.length; i++){
+                                var name = coordinators[i]["coordinator"].toString();
+                                var firstIndex = coordinators[i]["coordinator"].toString().indexOf(" ");
+                                var lastIndex = coordinators[i]["coordinator"].toString().lastIndexOf(" ");
+                                  
+                                  
+                                coordinators[i]["coordinator"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+                              }
                             }
 
                             if (!isFull){

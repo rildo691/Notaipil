@@ -9,6 +9,7 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:badges/badges.dart';
 
 /**User Interface */
 import 'package:fluttertoast/fluttertoast.dart';
@@ -58,6 +59,12 @@ class _EditProfileState extends State<EditProfile> {
       if (mounted){
         setState((){informationLength = value;});
       }
+    });
+
+    setState((){
+      _phoneController.text = widget.teacher[0]["teacherAccount"]["telephone"];
+      _emailController.text = widget.teacher[0]["teacherAccount"]["email"];
+
     });
   }
 
@@ -109,25 +116,17 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -160,9 +159,9 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 30.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight !* 1.12,
                   color: backgroundColor,
                   child: Form(
                     key: _key,
@@ -170,6 +169,14 @@ class _EditProfileState extends State<EditProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                        Center(
+                          child: GestureDetector(
+                            child: ClipOval(
+                              child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
+                            ),
+                          ),
+                        ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
                         buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),

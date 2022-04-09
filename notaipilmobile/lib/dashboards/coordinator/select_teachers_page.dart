@@ -9,9 +9,13 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+
+/**Model */
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -39,6 +43,10 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   TextEditingController _nameController = TextEditingController();
 
+  List<bool>? _selected;
+  bool _firstTime = true;
+  bool isFull = false;
+
   int _selectedIndex = 0;
   int? informationLength;
 
@@ -48,6 +56,8 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
 
   var coursesLength;
   var area = [];
+  var teachers = [];
+  var recipients = [];
 
   @override
   void initState(){
@@ -74,6 +84,24 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
         setState((){informationLength = value;});
       }
     });
+
+    getAllTeachersByArea(widget.coordinator[0]["courses"][0]["areaId"]).then((value) => 
+      setState((){
+        teachers = value;
+        for (int i = 0; i < teachers.length; i++){
+          var name = teachers[i]["teacherAccount"]["personalData"]["fullName"].toString().toString();
+          var firstIndex = teachers[i]["teacherAccount"]["personalData"]["fullName"].toString().indexOf(" ");
+          var lastIndex = teachers[i]["teacherAccount"]["personalData"]["fullName"].toString().lastIndexOf(" ");
+                              
+                              
+          teachers[i]["teacherAccount"]["personalData"]["fullName"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+        }
+      })
+    );
+  }
+
+  Future<void> start() async{
+    await Future.delayed(Duration(seconds: 3));
   }
 
   @override
@@ -119,22 +147,17 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -169,58 +192,169 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 50.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
-                  color: Color.fromARGB(255, 34, 42, 55),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Selecione o destinatário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        style: TextStyle(color: letterColor, fontFamily: fontFamily),
-                        decoration: InputDecoration(
-                          labelText: "Pesquise o Nome",
-                          labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
-                          filled: true,
-                          fillColor: fillColor,
-                          border: OutlineInputBorder(),
-                        ),
-                        controller:  _nameController,
-                        validator: (String? value){
-                          if (value!.isEmpty){
-                            return "Preencha o campo Pesquise o Nome";
-                          }
-                        },
-                        onFieldSubmitted: (String? value) {
-                                   
-                        },
-                        onChanged: (value){
-                                    
-                        },
-                      ),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                      SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                      Container(
-                        width: SizeConfig.widthMultiplier !* 30,
-                        height: SizeConfig.heightMultiplier !* 7,
-                        child: ElevatedButton(
-                          child: Text("Confirmar"),
-                          style: ElevatedButton.styleFrom(
-                            primary: borderAndButtonColor,
-                            onPrimary: Colors.white,
-                            textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)
-                          ),
-                          onPressed: (){},
-                        ),
-                      )
-                    ],
-                  ),
-                      
+                  color: backgroundColor,
+                  child: FutureBuilder(
+                    future: start(),
+                    builder: (context, snapshot){
+                      switch(snapshot.connectionState){
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight !* 2,
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                              strokeWidth: 5.0,
+                            ),
+                          );
+                        default:
+                          if (snapshot.hasError){
+                            return Container();
+                          } else {
+
+                            if (!isFull){
+                              _selected = List<bool>.generate(teachers.length, (index) => false);
+                              isFull = true;
+                            }
+                            
+                            return 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Selecione o destinatário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                TextFormField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  style: TextStyle(color: letterColor, fontFamily: fontFamily),
+                                  decoration: InputDecoration(
+                                    labelText: "Pesquise o Nome ou B.I.",
+                                    labelStyle: TextStyle(color: letterColor, fontFamily: fontFamily),
+                                    filled: true,
+                                    fillColor: fillColor,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  controller:  _nameController,
+                                  validator: (String? value){
+                                    if (value!.isEmpty){
+                                      return "Preencha o campo Pesquise o Nome ou B.I.";
+                                    }
+                                  },
+                                  onFieldSubmitted: (String? value) {
+                                    if (value!.isNotEmpty){
+                                      _filter(value);
+                                    }
+                                  },
+                                  onChanged: (value){
+                                    if (value.isEmpty){
+                                      getAllTeachersByArea(widget.coordinator[0]["courses"][0]["areaId"]).then((value) => setState((){teachers = value;}));
+                                      setState((){
+                                        isFull = false;
+                                      });
+                                    }
+                                  },
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: [
+                                      DataTable(
+                                        showCheckboxColumn: true,
+                                        columnSpacing: SizeConfig.widthMultiplier !* 3,
+                                        columns: [
+                                          DataColumn(
+                                            label: Text(""),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Professores"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("B.I."),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: List<DataRow>.generate(teachers.length, (index) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Center(
+                                                  child: ClipOval(
+                                                    child: teachers[index]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + teachers[index]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(teachers[index]["teacherAccount"]["personalData"]["fullName"].toString())
+                                                )
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(teachers[index]["teacherAccount"]["personalData"]["bi"].toString())
+                                                )
+                                              )
+                                            ],
+                                            selected: _selected![index],
+                                            onSelectChanged: (bool? value){
+                                              _selected![index] = value!;
+                                              setState(() {
+                                                getAllTeachersByArea(widget.coordinator[0]["courses"][0]["areaId"]);
+                                              });
+                                            }
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                Container(
+                                  width: SizeConfig.widthMultiplier !* 30,
+                                  height: SizeConfig.heightMultiplier !* 7,
+                                  child: ElevatedButton(
+                                    child: Text("Confirmar"),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: borderAndButtonColor,
+                                      onPrimary: Colors.white,
+                                      textStyle: TextStyle(fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)
+                                    ),
+                                    onPressed: () async{
+                                      for (int i = 0; i < _selected!.length; i++){
+                                        if (_selected![i] != false){
+                                          recipients.add(teachers[i]["teacherAccount"]["email"]);
+                                        }
+                                      }
+
+                                      Map<String, dynamic> body = {
+                                        "title": widget.information[0]["subject"].toString(),
+                                        "description": widget.information[0]["message"].toString(),
+                                        "userId": widget.coordinator[2]["userId"],
+                                        "typeAccountId":  widget.coordinator[2]["typeAccount"]["id"],
+                                        "group": "Professor",
+                                        "usersDestiny": recipients
+                                      };
+
+                                      var response = await helper.post("informations", body);
+                                      buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)));
+                                    },
+                                  ),
+                                )
+                              ],
+                            );
+                          }      
+                      }    
+                    },
+                  )
                 )
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -279,5 +413,12 @@ class _SelectTeachersPageState extends State<SelectTeachersPage> {
         );
       },
     );  
+  }
+
+  _filter(value){
+    getAllTeachersByAreaAndByName(widget.coordinator[0]["courses"][0]["areaId"], value).then((value) => setState((){teachers = value;}));
+    setState(() {
+      isFull = false;
+    });
   }
 }

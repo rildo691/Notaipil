@@ -10,6 +10,7 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'dart:math';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -23,6 +24,12 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**Complements */
 import 'package:notaipilmobile/dashboards/teacher/profile.dart';
 import 'package:notaipilmobile/dashboards/teacher/teacherInformations.dart';
+import 'package:notaipilmobile/dashboards/teacher/agendas.dart';
+import 'package:notaipilmobile/dashboards/teacher/classrooms.dart';
+import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
+import 'package:notaipilmobile/dashboards/teacher/schedule.dart';
+import 'package:notaipilmobile/dashboards/teacher/entities.dart';
+
 
 class SelectEducators extends StatefulWidget {
   late var teacher = [];
@@ -109,25 +116,17 @@ class _SelectEducatorsState extends State<SelectEducators> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -181,6 +180,14 @@ class _SelectEducatorsState extends State<SelectEducators> {
                         } else {
 
                           var educators = (snapshot.data! as List);
+                          for (int i = 0; i < educators.length; i++){
+                            var name = educators[i]["fullName"].toString();
+                            var firstIndex = educators[i]["fullName"].toString().indexOf(" ");
+                            var lastIndex = educators[i]["fullName"].toString().lastIndexOf(" ");
+                              
+                              
+                            educators[i]["fullName"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+                          }
 
                           if (!_firstTime){
                             _selected = List<bool>.generate(educators.length, (index) => false);
@@ -369,7 +376,24 @@ class _SelectEducatorsState extends State<SelectEducators> {
                   setState(() {
                     _selectedIndex = index;
                   });
-                  
+                  switch(index){
+                    case 0:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.teacher)));
+                      break;
+                    case 1:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Classrooms(widget.teacher)));
+                      break;
+                    case 2:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                      break;
+                    case 3:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Agendas(widget.teacher)));
+                      break;
+                    case 4:
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Entities(widget.teacher)));
+                      break;
+                    default:
+                  }
                 },
               ),
             );

@@ -22,13 +22,13 @@ Future<Widget>? buildModal(context, error, message, {route}){
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
-                Text(message, style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                 ElevatedButton(
                   child: Text("OK"),
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    primary: borderAndButtonColor,
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){
@@ -61,13 +61,13 @@ Future<Widget>? buildModalMaterialPage(context, error, message, MaterialPageRout
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 error ? Icon(Icons.error_outline, size: 70.0, color: Colors.red) : Icon(Icons.check_circle_outline, size: 70.0, color: Colors.green),
-                Text(message, style: TextStyle(color: letterColor, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                 ElevatedButton(
                   child: Text("OK"),
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(0, 209, 255, 0.49),
+                    primary: borderAndButtonColor,
                     onPrimary: Colors.white,
-                    textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                    textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: (){

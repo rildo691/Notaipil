@@ -47,5 +47,9 @@
   	<string>Upload image from camera for screen background</string>
   	<key>NSMicrophoneUsageDescription</key>
   	<string>Post videos to profile</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>https</string>
+	</array>
 </dict>
 </plist>

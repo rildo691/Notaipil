@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 /**Functions */
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -150,22 +151,17 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -296,7 +292,11 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                                           DataRow(
                                             cells: [
                                               DataCell(
-                                                Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                                Center(
+                                                  child: ClipOval(
+                                                    child: e["student"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + e["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                  ),
+                                                ),
                                               ),
                                               DataCell(
                                                 Align(
@@ -459,7 +459,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(Icons.info_outline, size: 70.0, color: Colors.amber),
-                Text(message, style: TextStyle(color: Colors.black, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.5 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                Text(message, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3), textAlign: TextAlign.center,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -469,13 +469,13 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                         ElevatedButton(
                           child: Text("Sim"),
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(0, 209, 255, 0.49),
+                            primary: borderAndButtonColor,
                             onPrimary: Colors.white,
-                            textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                            textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                             minimumSize: Size(SizeConfig.widthMultiplier !* 32, SizeConfig.heightMultiplier !* 6.5)
                           ),
                           onPressed: (){
-
+                            
                           },
                         ),
                         ElevatedButton(
@@ -483,7 +483,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
                             onPrimary: Colors.white,
-                            textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                            textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                             minimumSize: Size(SizeConfig.widthMultiplier !* 32, SizeConfig.heightMultiplier !* 6.5)
                           ),
                           onPressed: (){
@@ -510,7 +510,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0)
           ),
-          backgroundColor: Color(0xFF202733),
+          backgroundColor: backgroundColor,
           child: Container(
             padding: EdgeInsets.all(20.0),
             width: SizeConfig.screenWidth !* .8,
@@ -525,9 +525,9 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(message, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4), textAlign: TextAlign.center,),
+                      Text(message, style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7), textAlign: TextAlign.center,),
                       IconButton(
-                        icon: Icon(Icons.close, color: Colors.white),
+                        icon: Icon(Icons.close, color: iconColor),
                         onPressed: (){
                           Navigator.pop(context);
                         },
@@ -539,9 +539,9 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
                   ElevatedButton(
                     child: Text("Concluir"),
                     style: ElevatedButton.styleFrom(
-                      primary: Color.fromRGBO(0, 209, 255, 0.49),
+                      primary: borderAndButtonColor,
                       onPrimary: Colors.white,
-                      textStyle: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4,),
+                      textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                       minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                     ),
                     onPressed: () async{

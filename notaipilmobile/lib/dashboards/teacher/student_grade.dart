@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -130,25 +131,17 @@ class _StudentGradeState extends State<StudentGrade> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -245,12 +238,15 @@ class _StudentGradeState extends State<StudentGrade> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                      Text("--------", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
-                                      Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
+                                      Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+                                      Text(" / ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),
+                                      Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.5),),
                                     ],
                                   ),
-                                  Align(alignment: Alignment.centerLeft, child: Text("II Trimestre")),
+                                  SizedBox(
+                                    height: SizeConfig.heightMultiplier !* 1.5,
+                                  ),
+                                  Align(alignment: Alignment.centerLeft, child: Text("II Trimestre", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),)),
                                   SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

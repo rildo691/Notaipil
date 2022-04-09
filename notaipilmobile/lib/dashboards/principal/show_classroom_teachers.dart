@@ -8,6 +8,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+import 'package:badges/badges.dart';
 
 /**variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -47,6 +48,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   var teachers = [];
   var filter = [];
+  var requests = [];
 
   @override
   void initState(){
@@ -63,6 +65,12 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
         _classroomName = value[0]["name"].toString();
       })
     );
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
+      }
+    });
 
   }
 
@@ -123,6 +131,17 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -251,6 +270,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
+                                                SizedBox(height: SizeConfig.heightMultiplier !* .4,),
                                                 Text(e["subject"]["subject"]["code"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 10), textAlign: TextAlign.center),
                                                 Center(
                                                   child: ClipOval(

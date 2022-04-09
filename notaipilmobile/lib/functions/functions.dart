@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -69,6 +70,7 @@ ApiService helper = ApiService();
       if (r["teacherAccount"]["email"] == userEmail){
         Map<String, dynamic> map = {
           "id": r["id"],
+          "schedule": r["schedule"],
           "teacherAccount": r["teacherAccount"],
         };
 
@@ -89,6 +91,43 @@ ApiService helper = ApiService();
       || r["teacherAccount"]["personalData"]["bi"].toString().toUpperCase().contains(value.toString().toUpperCase())){
         Map<String, dynamic> map = {
           "id": r["id"],
+          "teacherAccount": r["teacherAccount"],
+        };
+
+        teachers.add(map);
+      }
+    }
+
+    return teachers;
+  }
+
+  Future<List<dynamic>> getAllTeachersByArea(areaId) async{
+    var teachers = [];
+    var response = await helper.get("teacher_classrooms/areas/$areaId");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "schedule": r["schedule"],
+        "teacherAccount": r["teacherAccount"],
+      };
+
+      teachers.add(map);
+    }
+
+    return teachers;
+  }
+
+  Future<List<dynamic>> getAllTeachersByAreaAndByName(value, areaId) async{
+    var teachers = [];
+    var response = await helper.get("teacher_classrooms/areas/$areaId");
+
+    for (var r in response){
+      if (r["teacherAccount"]["personalData"]["fullName"].toString().toUpperCase().contains(value.toString().toUpperCase()) 
+      || r["teacherAccount"]["personalData"]["bi"].toString().toUpperCase().contains(value.toString().toUpperCase())){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "schedule": r["schedule"],
           "teacherAccount": r["teacherAccount"],
         };
 
@@ -576,6 +615,7 @@ ApiService helper = ApiService();
     for (var r in response){
       Map<String, dynamic> map = {
         "id": r["id"],
+        "isEliminated": r["isEliminated"],
         "gradeId": r["gradeId"],
         "courseId": r["courseId"],
         "subjectId": r["subjectId"],
@@ -776,6 +816,7 @@ ApiService helper = ApiService();
           "code": response["code"],
           "schedule": response["schedule"],
           "place": response["place"],
+          "course": response["course"]
         };
 
         classroom.add(map);
@@ -882,6 +923,25 @@ ApiService helper = ApiService();
     return students;
   }
 
+  Future<List<dynamic>> getSingleStudent(userId, typeAccountId) async{
+    var student = [];
+    var response = await helper.get("users/my_datas");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "email": r["email"],
+        "telephone": r["telephone"],
+        "studentId": r["studentId"],
+        "student": r["student"],
+      };
+
+      student.add(map);
+    }
+
+    return student;
+  }
+
   Future<List<dynamic>> getAllClassroomStudents(classroom) async{
     var students = [];
     var response = await helper.get("classroom_students/students/${classroom}");
@@ -967,6 +1027,25 @@ ApiService helper = ApiService();
       };
 
       presences.add(map);
+    }
+
+    return presences;
+  }
+
+  Future<List<dynamic>> getStudentsFaultsByQuarter(studentId, quarterId) async{
+    var response = await helper.get("presences/statistic_classroom_student/${studentId}");
+    var presences = [];
+
+    for (var r in response){
+      if (r["quarterId"] == quarterId){
+        Map<String, dynamic> map = {
+          'name': r["name"],
+          "quarterId": r["quarterId"],
+          "faults": r["faults"],
+        };
+
+        presences.add(map);
+      }
     }
 
     return presences;
@@ -1240,7 +1319,7 @@ ApiService helper = ApiService();
       'userId': userId,
     };
     var students = [];
-    var response = await helper.post("nformations/info-user-student", body);
+    var response = await helper.post("informations/info-user-student", body);
 
     for (var r in response){
       Map<String, dynamic> map = {
@@ -1306,4 +1385,9 @@ ApiService helper = ApiService();
 
   Future logOut(context, token){
     return Navigator.pushNamed(context, '/login');
+  }
+
+  Future getSchedule(schedule) async{
+    var pdf = await helper.get(Uri.parse(baseScheduleUrl + schedule).toString());
+    return pdf;
   }

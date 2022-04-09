@@ -48,7 +48,12 @@ dependencies:
   file_picker: ^4.4.0
   image_picker: ^0.8.4+10
   jiffy: ^5.0.0
+  pdf_viewer_plugin: ^2.0.1
+  syncfusion_flutter_pdfviewer: ^20.1.47-beta
+  url_launcher: ^6.0.20
+  badges: ^2.0.2
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

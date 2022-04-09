@@ -10,6 +10,7 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -108,22 +109,14 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 10,
-                            height: 10,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ) : Container(
+                        trailing: informationLength !> 0 ?
+                          Badge(
+                            toAnimate: false,
+                            shape: BadgeShape.circle,
+                            badgeColor: Colors.red,
+                            badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                          ) :
+                          Container(
                             width: 20,
                             height: 20,
                           ),

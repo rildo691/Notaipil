@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -101,25 +102,17 @@ class _AgendaPageState extends State<AgendaPage> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -186,7 +179,7 @@ class _AgendaPageState extends State<AgendaPage> {
                         ]
                       ),
                       SizedBox(height: SizeConfig.heightMultiplier !* 10,),
-                      Align(alignment: Alignment.centerLeft, child: Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),)),
+                      Align(alignment: Alignment.centerLeft, child: Text(widget.classroom["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),)),
                       SizedBox(height: SizeConfig.heightMultiplier !* 1,),
                       Align(alignment: Alignment.centerLeft, child: Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),),),
                     ]  

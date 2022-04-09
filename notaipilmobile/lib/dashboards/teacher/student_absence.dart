@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:badges/badges.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -132,25 +133,17 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),

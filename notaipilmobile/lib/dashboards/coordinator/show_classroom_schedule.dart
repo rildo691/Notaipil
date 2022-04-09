@@ -8,6 +8,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -51,6 +54,9 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
   var coursesLength;
   var area = [];
+  var classroom = [];
+
+    late var pdf;
 
   @override
   void initState(){
@@ -58,6 +64,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
     getClassroomById(widget.classroomId).then((value) => 
       setState((){
+        classroom = value;
         _classroomName = value[0]["name"].toString();
       })
     );
@@ -84,6 +91,18 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
       }
     });
 
+  }
+
+  Future<void> start() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
+  void _viewFile(url) async {    
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Something went wrong');
+    }
   }
 
   @override
@@ -129,22 +148,17 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -178,55 +192,109 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: backgroundColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(_classroomName.toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 4.5 - .4, fontWeight: FontWeight.bold)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.brush_outlined, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId, widget.coordinator)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.calendar_today, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.coordinator)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.group_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.coordinator)));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.trending_up_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStats(widget.classroomId, widget.coordinator)));
-                                },
-                              ),
-                            ],
-                          )
-                        ]
-                      ),
-                    ]  
-                  )
-                ),
+                child: FutureBuilder(
+                  future: start(),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+                          color: backgroundColor,
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight !* 1.15,
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                            strokeWidth: 5.0,
+                          ),
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+
+                          return 
+                          Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: backgroundColor,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(_classroomName.toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 4.5 - .4, fontWeight: FontWeight.bold)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.brush_outlined, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId, widget.coordinator)));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.calendar_today, color: linKColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomSchedule(widget.classroomId, widget.coordinator)));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.group_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomTeachers(widget.classroomId, widget.coordinator)));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.trending_up_rounded, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                          onPressed: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShowClassroomStats(widget.classroomId, widget.coordinator)));
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  ]
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text("Visualizar"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: borderAndButtonColor,
+                                        onPrimary: Color.fromRGBO(255, 255, 255, 1),
+                                        textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)
+                                      ),
+                                      onPressed: () async{
+                                        _viewFile(Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString());
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: SfPdfViewer.network(
+                                      Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString()
+                                    ),
+                                    onTap: (){
+                                    
+                                    },
+                                  )
+                                )
+                              ]  
+                            )
+                          );
+                        }
+                    }
+                  },
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

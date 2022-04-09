@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -8,6 +11,8 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -50,6 +55,8 @@ class _EditClassroomState extends State<EditClassroom> {
   TextEditingController _roomController = TextEditingController();
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  File? schedule;
 
   var _periodValue;
   var _placeValue;
@@ -137,22 +144,17 @@ class _EditClassroomState extends State<EditClassroom> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -300,8 +302,23 @@ class _EditClassroomState extends State<EditClassroom> {
                                     textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),
                                     minimumSize: Size(0.0, 50.0),
                                   ),
-                                  onPressed: (){
-                                    
+                                  onPressed: () async{
+                                    try{
+                                      FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                        allowedExtensions: ['jpg', 'pdf']
+                                      );
+
+                                      if (result == null) return;
+
+                                      var scheduleTemporary = File(result.files.single.path.toString());
+
+                                      setState(() {
+                                        this.schedule = scheduleTemporary;
+                                      });
+                                      
+                                    } on PlatformException catch (e){
+
+                                    }
                                   },
                                 )
                               ],
@@ -318,11 +335,18 @@ class _EditClassroomState extends State<EditClassroom> {
                                 minimumSize: Size(0.0, 50.0),
                               ),
                               onPressed: () async{
+
                                 Map<String, dynamic> body = {
                                   "room": _roomController.text,
                                   "period": _periodValue.toString(),
                                   "place": _placeValue.toString(),
                                 };
+
+                                Map<String, dynamic> body2 = {
+                                  "schedule": this.schedule!.path,
+                                };
+
+                                var response2 = await helper.patchMultipartScheduleClassroom("classrooms", body2, widget.classroomId);
 
                                 var response = await helper.patch("classrooms/", body, id: widget.classroomId);
                                 buildModalMaterialPage(context, response["error"], response["error"], MaterialPageRoute(builder: (context) => ShowClassroomPage(widget.classroomId, widget.coordinator)));

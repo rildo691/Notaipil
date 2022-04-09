@@ -11,7 +11,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
-import 'dart:math';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -58,6 +58,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
   final FocusNode currentFocus = FocusNode();
 
   var teachers = [];
+  var requests = [];
   var qualification;
 
   @override
@@ -71,6 +72,12 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
     });
 
     getAllTeachers().then((value) => setState((){teachers = value.toList();}));
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
+      }
+    });
   }
 
    @override
@@ -130,6 +137,17 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),

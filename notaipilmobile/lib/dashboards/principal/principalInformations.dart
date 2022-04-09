@@ -8,10 +8,12 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:notaipilmobile/parts/widget_builder.dart';
+import 'package:badges/badges.dart';
+import 'package:badges/badges.dart';
 
 /**Varibales */
 import 'package:notaipilmobile/parts/variables.dart';
-import 'package:notaipilmobile/parts/widget_builder.dart';
 
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
@@ -40,6 +42,7 @@ class _PrincipalinformationsState extends State<Principalinformations> {
 
   var informations = [];
   var informationOne = [];
+  var requests = [];
 
   final  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -53,6 +56,12 @@ class _PrincipalinformationsState extends State<Principalinformations> {
     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
       if (mounted){
         setState((){informationLength = value;});
+      }
+    });
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
       }
     });
   }
@@ -118,6 +127,17 @@ class _PrincipalinformationsState extends State<Principalinformations> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),

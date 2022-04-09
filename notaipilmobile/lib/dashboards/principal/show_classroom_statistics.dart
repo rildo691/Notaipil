@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -45,6 +46,8 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  var requests = [];
+
   @override
   void initState(){
     super.initState();
@@ -60,6 +63,12 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
         _classroomName = value[0]["name"].toString();
       })
     );
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
+      }
+    });
   }
 
   Future<void> start() async {
@@ -123,6 +132,17 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),

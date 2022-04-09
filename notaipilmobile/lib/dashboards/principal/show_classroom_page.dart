@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -51,6 +52,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
   var classroom = [];
   var students = [];
   var teacher = [];
+  var requests = [];
   var _maleQuant;
   var _femaleQuant;
 
@@ -84,6 +86,12 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
       if (mounted){
         setState((){informationLength = value;});
+      }
+    });
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
       }
     });
   }
@@ -150,6 +158,17 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -203,6 +222,15 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                           else {
 
                             teacher = (snapshot.data! as List);
+
+                            for (int i = 0; i < students.length; i++){
+                              var name = students[i]["student"]["personalData"]["fullName"].toString();
+                              var firstIndex = students[i]["student"]["personalData"]["fullName"].toString().indexOf(" ");
+                              var lastIndex = students[i]["student"]["personalData"]["fullName"].toString().lastIndexOf(" ");
+                              
+                              
+                              students[i]["student"]["personalData"]["fullName"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+                            }
 
                             return 
                             Container(
@@ -294,7 +322,11 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                   DataRow(
                                                     cells: [
                                                       DataCell(
-                                                        Center(child: Icon(Icons.account_circle, color: profileIconColor,),)
+                                                        Center(
+                                                          child: ClipOval(
+                                                            child: e["student"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + e["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                          ),
+                                                        ),
                                                       ),
                                                       DataCell(
                                                         Align(

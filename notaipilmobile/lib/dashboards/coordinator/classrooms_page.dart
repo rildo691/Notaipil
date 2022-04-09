@@ -7,6 +7,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -151,22 +152,17 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -235,6 +231,14 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                             if ((snapshot.data! as List)[4] != null){
                               students.clear();
                               students = (snapshot.data! as List)[4];
+                              for (int i = 0; i < students.length; i++){
+                                var name = students[i]["student"]["personalData"]["fullName"].toString();
+                                var firstIndex = students[i]["student"]["personalData"]["fullName"].toString().indexOf(" ");
+                                var lastIndex = students[i]["student"]["personalData"]["fullName"].toString().lastIndexOf(" ");
+                              
+                              
+                                students[i]["student"]["personalData"]["fullName"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+                              }
                             }
                           
                             if (classrooms.isNotEmpty){

@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -125,25 +126,17 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -199,7 +192,7 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                           Container(
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight !- 90,
+                            height: SizeConfig.screenHeight !- 70,
                             color: backgroundColor,
                             child: Form(
                               key: _key,
@@ -240,11 +233,11 @@ class _SetClassroomAttendanceState extends State<SetClassroomAttendance> {
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 8,
                                   ),
-                                  Align( alignment: Alignment.centerLeft, child: Text(_classroomName != null ? _classroomName.toString() : "Nulo")),
+                                  Align( alignment: Alignment.centerLeft, child: Text(_classroomName != null ? _classroomName.toString() : "Nulo", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),)),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 1.5,
                                   ),
-                                  Align(alignment: Alignment.centerLeft, child: Text(widget.subject["name"].toString())),
+                                  Align(alignment: Alignment.centerLeft, child: Text(widget.subject["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3),)),
                                   SizedBox(
                                     height: SizeConfig.heightMultiplier !* 8,
                                   ),

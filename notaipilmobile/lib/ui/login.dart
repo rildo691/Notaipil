@@ -27,6 +27,7 @@ import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'package:notaipilmobile/dashboards/principal/main_page.dart';
 import 'package:notaipilmobile/dashboards/coordinator/main_page.dart' as coordinator;
 import 'package:notaipilmobile/dashboards/teacher/main_page.dart' as teacher;
+import 'package:notaipilmobile/dashboards/student/main_page.dart' as student;
 
 
 
@@ -55,6 +56,8 @@ class _LoginState extends State<Login> {
       'password': pass.toString().trim(),
     };
     String userEmail;
+    String userId;
+    String typeAccountId;
 
     var response = await helper.post("users/authenticate", body);
     
@@ -87,8 +90,20 @@ class _LoginState extends State<Login> {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => coordinator.MainPage(value)), (route) => false);
         });
+      } else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
+        userId = response["user"]["id"];
+        typeAccountId = response["user"]["typesAccounts"][0]["id"];
 
-      }else if (response["user"]["typesAccounts"][0]["name"] == "Aluno"){
+        getSingleStudent(userId, typeAccountId).then((value) {
+          Map<String, dynamic> map = {
+            'userId': userId,
+            'typeAccount': response["user"]["typesAccounts"][0],
+            'token': response["token"]
+          };
+          value.add(map);
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => student.MainPage(value)), (route) => false);
+        });
 
       } else if (response["user"]["typesAccounts"][0]["name"] == "Professor"){
         userEmail = response["user"]["email"];

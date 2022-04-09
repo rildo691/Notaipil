@@ -98,7 +98,7 @@ class _ChooseprofileState extends State<Chooseprofile> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Text(data["name"], style: TextStyle (color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                          Text(data["name"], style: TextStyle (color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                         ],
                                       ),
                                     )

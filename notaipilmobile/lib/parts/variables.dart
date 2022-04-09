@@ -3,6 +3,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 
 ///Strings 
 const String baseImageUrl = "http://10.0.2.2:9800/api/v1/profile/";
+const String baseScheduleUrl = "http://10.0.2.2:9800/api/v1/schedule/";
 const String fontFamily = 'Roboto';
 
 ///Colors

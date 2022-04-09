@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,6 +10,10 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -19,6 +25,7 @@ import 'package:notaipilmobile/dashboards/teacher/main_page.dart';
 import 'package:notaipilmobile/dashboards/teacher/entities.dart';
 import 'package:notaipilmobile/dashboards/teacher/profile.dart';
 import 'package:notaipilmobile/dashboards/teacher/teacherInformations.dart';
+import 'package:notaipilmobile/register/model/responseModel.dart';
 
 class Schedule extends StatefulWidget {
 
@@ -37,6 +44,10 @@ class _ScheduleState extends State<Schedule> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  File? schedule;
+
+  late var pdf;
+
   @override
   void initState(){
     super.initState();
@@ -46,6 +57,18 @@ class _ScheduleState extends State<Schedule> {
         setState((){informationLength = value;});
       }
     });
+  }
+
+  Future<void> start() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
+
+  void _viewFile(url) async {    
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Something went wrong');
+    }
   }
 
   @override
@@ -96,25 +119,17 @@ class _ScheduleState extends State<Schedule> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -146,44 +161,112 @@ class _ScheduleState extends State<Schedule> {
                 )
               ),
               body: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  color: backgroundColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Horário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                          GestureDetector(
-                            child: Container(
-                              width: SizeConfig.screenWidth !* .32,
-                              height: SizeConfig.heightMultiplier !* 6,
-                              color: borderAndButtonColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.cloud_upload, color: Colors.white, size: 25.0,),
-                                  SizedBox(width: 8.0),
-                                  Text("Upload", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                ],
-                              ),
-                            ),
-                            onTap: () {
-                                    
-                            },
-                          )
-                        ]
-                      ),
-                    ]  
-                  )
-                ),
+                child: FutureBuilder(
+                  future: start(),
+                  builder: (context, snapshot){
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return Container(
+
+                        );
+                      default:
+                        if (snapshot.hasError){
+                          return Container();
+                        } else {
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight !* 1.15,
+                            color: backgroundColor,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("Horário", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                                    GestureDetector(
+                                      child: Container(
+                                        width: SizeConfig.screenWidth !* .32,
+                                        height: SizeConfig.heightMultiplier !* 6,
+                                        color: borderAndButtonColor,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.cloud_upload, color: Colors.white, size: 25.0,),
+                                            SizedBox(width: 8.0),
+                                            Text("Upload", style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () async{
+                                        try{
+                                          FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                            allowedExtensions: ['jpg', 'pdf']
+                                          );
+
+                                          if (result == null) return;
+
+                                          var scheduleTemporary = File(result.files.single.path.toString());
+
+                                          setState(() {
+                                            this.schedule = scheduleTemporary;
+                                          });
+
+                                          Map<String, dynamic> body = {
+                                            'teacherId': widget.teacher[0]["id"],
+                                            'schedule': this.schedule!.path,
+                                          };
+
+                                          var response = await helper.patchMultipartScheduleTeacher("teachers", body);
+                                          buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+
+                                        } on PlatformException catch (e){
+
+                                        }
+                                      },
+                                    )
+                                  ]
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text("Visualizar"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: borderAndButtonColor,
+                                        onPrimary: Color.fromRGBO(255, 255, 255, 1),
+                                        textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)
+                                      ),
+                                      onPressed: () async{
+                                        _viewFile(Uri.parse(baseScheduleUrl + widget.teacher[0]["schedule"]).toString());
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: SfPdfViewer.network(
+                                      Uri.parse(baseScheduleUrl + widget.teacher[0]["schedule"]).toString()
+                                    ),
+                                    onTap: (){
+                                      
+                                    },
+                                  )
+                                )
+                              ]  
+                            )
+                          );
+                        }
+                    }
+                  },
+                )
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,

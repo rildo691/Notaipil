@@ -7,7 +7,10 @@ import 'package:notaipilmobile/configs/size_config.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
-import 'package:notaipilmobile/register/model/areaModel.dart';
+import 'package:notaipilmobile/functions/functions.dart';
+
+/**Variables */
+import 'package:notaipilmobile/parts/variables.dart';
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +23,9 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class MainPage extends StatefulWidget {
 
-  const MainPage({ Key? key }) : super(key: key);
+  late var student = [];
+
+  MainPage(this.student);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -29,10 +34,23 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
+  int? informationLength;
 
   var _selected1 = true;
   var _selected2 = false;
   var _selected3 = false;
+
+  @override
+  void initState() {
+    
+    super.initState();
+
+    getUnreadInformations(widget.student[1]["userId"], widget.student[1]["typeAccount"]["id"]).then((value) {
+      if (mounted){
+        setState((){informationLength = value;});
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,79 +62,48 @@ class _MainPageState extends State<MainPage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
-                actions: <Widget>[
-                  IconButton(
-                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
-                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
-                    onPressed: (){},
-                  )
-                ],
               ),
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 34, 42, 55),
+                    color: borderAndButtonColor,
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
-                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
-                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
-                        currentAccountPicture: new CircleAvatar(
-                          child: Icon(Icons.account_circle_outlined),
+                        accountName: new Text(widget.student[0]["student"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                        accountEmail: new Text(widget.student[0]["student"]["personalData"]["gender"] == "M" ? "Aluno" : "Aluna", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                        currentAccountPicture: new ClipOval(
+                          child: widget.student[0]["student"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.student[0]["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                         ),
                         otherAccountsPictures: [
                           new CircleAvatar(
-                            child: Text("R"),
+                            child: Text(widget.student[0]["student"]["personalData"]["fullName"].toString().substring(0, 1)),
                           ),
                         ],
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 34, 42, 55),
+                          color: borderAndButtonColor,
                         ),
                       ),
                       ListTile(
-                        leading: Icon(Icons.notifications, color: Colors.white,),
-                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
+                        title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
                         },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.account_circle, color: Colors.white,),
-                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.settings, color: Colors.white,),
-                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
-                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => null,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.help_outline, color: Colors.white,),
-                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
-                        onTap: () => null,
-                        trailing: ClipOval(
+                        trailing: informationLength != 0 ? ClipOval(
                           child: Container(
                             color: Colors.red,
                             width: 20,
                             height: 20,
                             child: Center(
                               child: Text(
-                                '8',
+                                informationLength.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
@@ -124,7 +111,31 @@ class _MainPageState extends State<MainPage> {
                               ),
                             ),
                           ),
-                        ),
+                        ) : Container(),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
+                        title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
+                        title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
+                        title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
+                        title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                        onTap: () => null,
                       )
                     ]
                   )

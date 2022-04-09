@@ -34,7 +34,7 @@ class ApiService{
   }
 
   Future<dynamic> get(String url) async{
-    var response = await http.get(
+    var response = await http.get(    
       Uri.parse(_baseUrl + url),
       headers: {
         'Content-type': 'application/json; charset=utf-8',
@@ -101,8 +101,8 @@ class ApiService{
     }
   }
 
-  Future<dynamic> patchMultipartOnly(String url, Map body, {String? token}) async{
-    var request = await http.MultipartRequest("PATCH", Uri.parse(_baseUrl + url));
+  Future<dynamic> patchMultipartScheduleClassroom(String url, Map body, String id, {String? token}) async{
+    var request = http.MultipartRequest("PATCH", Uri.parse(_baseUrl + url + "/${id}"));
 
     request.headers.addAll(
       {
@@ -110,7 +110,29 @@ class ApiService{
       }
     );
 
-    request.files.add(await http.MultipartFile.fromPath('schedule', body["schedule"]));
+    request.files.add(await http.MultipartFile.fromPath("schedule", body["schedule"]));
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    final responseData = json.decode(responsed.body);
+    
+    if (response.statusCode == 200){
+      return responseData; 
+    } 
+  }
+
+  Future<dynamic> patchMultipartScheduleTeacher(String url, Map body, {String? token}) async{
+    var request = http.MultipartRequest("PATCH", Uri.parse(_baseUrl + url));
+
+    request.headers.addAll(
+      {
+        "Content-Type": "multipart/form-data"
+      }
+    );
+
+    request.fields["teacherId"] = body["teacherId"];
+
+    request.files.add(await http.MultipartFile.fromPath("schedule", body["schedule"]));
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);

@@ -10,6 +10,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -153,22 +154,17 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength != 0 ? ClipOval(
-                          child: Container(
-                            color: Colors.red,
-                            width: 20,
-                            height: 20,
-                            child: Center(
-                              child: Text(
-                                informationLength.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ) : Container(),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -225,6 +221,15 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
 
                           teacher = (snapshot.data! as List);
 
+                          for (int i = 0; i < students.length; i++){
+                            var name = students[i]["student"]["personalData"]["fullName"].toString();
+                            var firstIndex = students[i]["student"]["personalData"]["fullName"].toString().indexOf(" ");
+                            var lastIndex = students[i]["student"]["personalData"]["fullName"].toString().lastIndexOf(" ");
+                              
+                              
+                            students[i]["student"]["personalData"]["fullName"] = name.substring(0, firstIndex) + name.substring(lastIndex, name.length);
+                          }
+
                           return 
                           Container(
                           padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 10.0),
@@ -246,9 +251,14 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.brush_outlined, color: iconColor, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                        icon: Icon(Icons.brush_outlined, color: (widget.coordinator[0]["courses"].length == coursesLength ||
+                                        widget.coordinator[0]["courses"][0]["name"].toString().toUpperCase().contains(classroom[0]["course"]["name"].toString().toUpperCase())) ? iconColor : Colors.grey, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
                                         onPressed: (){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId, widget.coordinator)));
+                                          if (widget.coordinator[0]["courses"].length == coursesLength){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId, widget.coordinator)));
+                                          } else if (widget.coordinator[0]["courses"][0]["name"].toString().toUpperCase().contains(classroom[0]["course"]["name"].toString().toUpperCase())){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditClassroom(widget.classroomId, widget.coordinator)));
+                                          }
                                         },
                                       ),
                                       IconButton(
@@ -322,7 +332,11 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                               DataRow(
                                                 cells: [
                                                   DataCell(
-                                                    Center(child: Icon(Icons.account_circle, color: Colors.white,),)
+                                                    Center(
+                                                      child: ClipOval(
+                                                        child: e["student"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + e["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
+                                                      ),
+                                                    ),
                                                   ),
                                                   DataCell(
                                                     Align(

@@ -11,7 +11,7 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
-import 'package:notaipilmobile/register/model/responseModel.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -58,6 +58,8 @@ class _EditProfileState extends State<EditProfile> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  var requests = [];
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +67,12 @@ class _EditProfileState extends State<EditProfile> {
     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
       if (mounted){
         setState((){informationLength = value;});
+      }
+    });
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
       }
     });
 
@@ -131,6 +139,17 @@ class _EditProfileState extends State<EditProfile> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -165,7 +184,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !- 25,
+                  height: SizeConfig.screenHeight !* 1.12,
                   color: backgroundColor,
                   child: Form(
                     key: _key,
@@ -173,10 +192,18 @@ class _EditProfileState extends State<EditProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("Perfil", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                        Center(
+                          child: GestureDetector(
+                            child: ClipOval(
+                              child: widget.principal[1]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.principal[1]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
+                            ),
+                          ),
+                        ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
-                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: Colors.white,)),
+                        buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: Colors.white,)),
+                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 8),
                         buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
                         SizedBox(height: SizeConfig.heightMultiplier !* 1.7),

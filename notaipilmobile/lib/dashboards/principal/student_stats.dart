@@ -10,6 +10,7 @@ import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -43,10 +44,11 @@ class StudentStats extends StatefulWidget {
 class _StudentStatsState extends State<StudentStats> {
 
   var subjects = [];
+  var quarters = [];
+  var faults = [];
+  var requests = [];
 
-  var _selected1 = true;
-  var _selected2 = false;
-  var _selected3 = false;
+  var quarterId;
 
   int _selectedIndex = 0;
   int? informationLength;
@@ -68,6 +70,12 @@ class _StudentStatsState extends State<StudentStats> {
         subjects = value;
       })
     );
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
+      }
+    });
   }
 
   Future<void> start() async {
@@ -131,6 +139,17 @@ class _StudentStatsState extends State<StudentStats> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -163,7 +182,7 @@ class _StudentStatsState extends State<StudentStats> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: start(),
+                  future: Future.wait([getQuarter(), getStudentsFaultsByQuarter(widget.student["id"], quarterId)]),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -182,150 +201,234 @@ class _StudentStatsState extends State<StudentStats> {
                         if (snapshot.hasError){
                           return Container();
                         } else {
+
+                          quarters = (snapshot.data! as List)[0];
+                          faults = (snapshot.data! as List)[1];
+
                           return 
                           Container(
                             padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight !* 1.2,
+                            height: SizeConfig.screenHeight !* 1.5,
                             color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text("Aluno", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                                 Center(
-                                  child: 
-                                    Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.all(8.0),
-                                    width: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    height: SizeConfig.imageSizeMultiplier !* 3.5 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,
-                                    child: Icon(Icons.account_circle_outlined, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 17),
+                                  child: ClipOval(
+                                    child: widget.student["student"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.student["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                                   ),
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3.5),
-                                Text("Bilhete: " + widget.student["student"]["personalData"]["bi"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Nome: " + widget.student["student"]["personalData"]["fullName"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sexo: " + widget.student["student"]["personalData"]["gender"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Data de nascimento: " + widget.student["student"]["personalData"]["birthdate"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 5.5),
-                                Text("N.º de processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("N.º: " + widget.student["number"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Turma: " + widget.student["classroom"]["name"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Sala: " + widget.student["classroom"]["room"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                Text("Período: " + widget.student["classroom"]["period"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                Text("Contacto do Encarregado: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                Expanded(
-                                  child: ConstrainedBox(
-                                  constraints: BoxConstraints(minWidth: constraints.minWidth),
-                                  child: DataTable(
-                                    columns: [
-                                      DataColumn(
-                                        label: Text("Disciplina"),
-                                        numeric: false,
-                                      ),
-                                      DataColumn(
-                                        label: Text("Faltas"),
-                                        numeric: false,
-                                      ),
-                                    ],
-                                    rows: subjects.map((e) => 
-                                      DataRow(
-                                        cells: [
-                                          DataCell(
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(e['subject']["name"].toString(), textAlign: TextAlign.left)
-                                            ),
-                                            showEditIcon: false,
-                                            placeholder: false,
-                                          ),
-                                          DataCell(
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text("1", textAlign: TextAlign.center)
-                                            ),
-                                            showEditIcon: false,
-                                            placeholder: false,
-                                          ),
-                                        ]
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2.5,),
+                                Text(widget.student["student"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2,),
+                                Text("Estudante", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3, fontWeight: FontWeight.bold)),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7,),
+                                Container(
+                                  width: SizeConfig.screenWidth,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.black,
+                                        blurRadius: 6.0,
                                       )
-                                    ).toList(),
+                                    ],
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    color: backgroundColor,
+                                  ),
+                                  child: Card(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Dados pessoais", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.cake_rounded, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text("Nascido aos " + widget.student["student"]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        ),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.perm_contact_cal_rounded, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text("B.I. nº: " + widget.student["student"]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Container(
+                                  width: SizeConfig.screenWidth,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.black,
+                                        blurRadius: 6.0,
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    color: backgroundColor,
+                                  ),
+                                  child: Card(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Dados académicos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.cast_for_education, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text("N' de Processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        ),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.co_present_rounded, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text("Turma: " + widget.student["classroom"]["name"].toString() + " / " + "Nº: " + widget.student["number"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Container(
+                                  width: SizeConfig.screenWidth,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.black,
+                                        blurRadius: 6.0,
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    color: backgroundColor,
+                                  ),
+                                  child: Card(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("Contactos", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4, fontWeight: FontWeight.bold)),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.contact_phone, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text(widget.student["student"]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        ),
+                                        SizedBox(height: SizeConfig.heightMultiplier !* 1.3),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 3),
+                                            Icon(Icons.contact_mail, color: iconColor),
+                                            SizedBox(width: SizeConfig.widthMultiplier !* 5),
+                                            Text(widget.student["student"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
+                                          ]
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text("TRIMESTRES: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                     SizedBox(height: SizeConfig.heightMultiplier !* 3),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.center,
+                                      buttonHeight: SizeConfig.heightMultiplier !* .5,
+                                      buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+                                      children: quarters.map((e) => 
                                         TextButton(
-                                          child: Text("I"),
                                           style: TextButton.styleFrom(
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected1 ? Colors.white : letterColor,
-                                            backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                            primary: e["id"] == quarterId ? Colors.white : letterColor,
+                                            backgroundColor: e["id"] == quarterId ? borderAndButtonColor : Colors.white,
                                             textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
                                           ),
+                                          child: Text(e["name"].toString()),
                                           onPressed: (){
                                             setState(() {
-                                              _selected1 = true;
-                                              _selected2 = false;
-                                              _selected3 = false;
+                                              quarterId = e["id"];
+                                              getStudentsFaultsByQuarter(widget.student["id"], quarterId);
                                             });
                                           }
                                         ),
-                                        TextButton(
-                                          child: Text("II"),
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected2 ? Colors.white : letterColor,
-                                            backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
-                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              _selected1 = false;
-                                              _selected2 = true;
-                                              _selected3 = false;
-                                            });
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: Text("III"),
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-                                            primary: _selected3 ? Colors.white : letterColor,
-                                            backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
-                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
-                                          ),
-                                          onPressed: (){
-                                            setState(() {
-                                              _selected1 = false;
-                                              _selected2 = false;
-                                              _selected3 = true;
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    )
+                                      ).toList(),
+                                    ),
                                   ],
-                                )
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                Expanded(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: [ 
+                                      DataTable(
+                                        columns: [
+                                          DataColumn(
+                                            label: Text("Disciplina"),
+                                            numeric: false,
+                                          ),
+                                          DataColumn(
+                                            label: Text("Faltas"),
+                                            numeric: false,
+                                          ),
+                                        ],
+                                        rows: faults.map((e) => 
+                                          DataRow(
+                                            cells: [
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(e['name'].toString(), textAlign: TextAlign.left)
+                                                ),
+                                                showEditIcon: false,
+                                                placeholder: false,
+                                              ),
+                                              DataCell(
+                                                Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text(e["faults"].toString(), textAlign: TextAlign.center)
+                                                ),
+                                                showEditIcon: false,
+                                                placeholder: false,
+                                              ),
+                                            ]
+                                          )
+                                        ).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           );

@@ -11,6 +11,7 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/variables.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -61,6 +62,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
   var gender = [];
   var filter = [];
   var subjects = [];
+  var requests = [];
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -74,6 +76,12 @@ class _ShowCoordinationState extends State<ShowCoordination> {
     getUnreadInformations(widget.principal[2]["userId"], widget.principal[2]["typeAccount"]["id"]).then((value) {
       if (mounted){
         setState((){informationLength = value;});
+      }
+    });
+
+    getAdmissionRequests().then((value) {
+      if (mounted){
+        requests = value;
       }
     });
   }
@@ -134,6 +142,17 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdmissionRequests(widget.principal)))
                           },
+                          trailing: requests.isNotEmpty ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(requests.length.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -364,6 +383,58 @@ class _ShowCoordinationState extends State<ShowCoordination> {
                                   ).toList(),
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Text(_courseName == null ? "" : "Disciplinas do Curso $_courseName - $_gradeName classe", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+                                DataTable(
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("Disciplina"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Categoria"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Contínua"),
+                                      numeric: false,
+                                    ),
+                                    DataColumn(
+                                      label: Text("Eliminatória"),
+                                      numeric: false,
+                                    )
+                                  ],
+                                  rows: subjects.map((e) => 
+                                    DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(e["subject"]["name"])
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(e["subject"]["category"])
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: e["isEliminated"] ? Icon(Icons.check, color: Colors.green,) : Icon(Icons.close, color: Colors.red,)
+                                          ),
+                                        ),
+                                        DataCell(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: e["isEliminated"] ? Icon(Icons.close, color: Colors.red,) : Icon(Icons.check, color: Colors.green,)
+                                          ),
+                                        ),
+                                      ]
+                                    )
+                                  ).toList()
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
                                 Text(_courseName == null ? "" : "Estatística do Curso $_courseName - $_gradeName classe", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
                                 DataTable(
@@ -493,7 +564,7 @@ class _ShowCoordinationState extends State<ShowCoordination> {
             ClipOval(
               child: index["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 15) : Image.network(baseImageUrl + index["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 15, height: SizeConfig.imageSizeMultiplier !* 15),
             ),
-            Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+            Text(index["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.5),),
             Text(index["teacherAccount"]["personalData"]["gender"] == "M" ? index["courses"].length == courses.length ? "Coordenador da Área" : "Coordenador do curso de " + index["courses"][0]["code"] : index["courses"].length == courses.length ? "Coordenadora da Área" : "Coordenadora do curso de " + index["courses"][0]["code"], style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3))
           ],
         ),

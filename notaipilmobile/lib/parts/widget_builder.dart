@@ -32,7 +32,7 @@ Widget buildPasswordFormFieldWithIcon(hint, controller){
     return TextFormField(
       style: TextStyle(color: Colors.black),
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key_outlined, color: Colors.white,),
+        prefixIcon: Icon(Icons.vpn_key_outlined, color: iconColor,),
         labelText: hint,
         labelStyle: TextStyle(color: Colors.black),
         filled: true,

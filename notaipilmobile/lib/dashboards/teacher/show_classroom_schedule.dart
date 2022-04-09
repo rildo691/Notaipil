@@ -8,6 +8,9 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:badges/badges.dart';
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -44,12 +47,17 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  late var pdf;
+
+  var classroom = [];
+
   @override
   void initState(){
     super.initState();
 
     getClassroomById(widget.classroomId).then((value) => 
       setState((){
+        classroom = value;
         _classroomName = value[0]["name"].toString();
       })
     );
@@ -63,6 +71,14 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
 
   Future<void> start() async{
     await Future.delayed(Duration(seconds: 3));
+  }
+
+  void _viewFile(url) async {    
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Something went wrong');
+    }
   }
 
   @override
@@ -113,25 +129,17 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength != 0 ? ClipOval(
-                            child: Container(
-                              color: Colors.red,
+                          trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
                               width: 20,
                               height: 20,
-                              child: Center(
-                                child: Text(
-                                  informationLength.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
                             ),
-                          ) : Container(
-                            width: 20,
-                            height: 20,
-                          ),
                         ),
                         ListTile(
                           leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
@@ -172,7 +180,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                         return Container(
                           color: backgroundColor,
                           width: SizeConfig.screenWidth,
-                          height: SizeConfig.screenHeight,
+                          height: SizeConfig.screenHeight !* 1.15,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
@@ -183,6 +191,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                         if (snapshot.hasError){
                           return Container();
                         } else {
+
                           return
                           Container(
                             padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
@@ -224,6 +233,34 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                                     )
                                   ]
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text("Visualizar"),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: borderAndButtonColor,
+                                        onPrimary: Color.fromRGBO(255, 255, 255, 1),
+                                        textStyle: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)
+                                      ),
+                                      onPressed: () async{
+                                        _viewFile(Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString());
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: SfPdfViewer.network(
+                                      Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString()
+                                    ),
+                                    onTap: (){
+                                    
+                                    },
+                                  )
+                                )
                               ]  
                             )
                           );
