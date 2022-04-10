@@ -337,6 +337,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                         child: e["student"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 10) : Image.network(baseImageUrl + e["student"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 9.5, height: SizeConfig.imageSizeMultiplier !* 9),
                                                       ),
                                                     ),
+                                                    onTap: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e, widget.classroomId)));
+                                                    }
                                                   ),
                                                   DataCell(
                                                     Align(
@@ -345,6 +348,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                     ),
                                                     showEditIcon: false,
                                                     placeholder: true,
+                                                    onTap: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e, widget.classroomId)));
+                                                    }
                                                   ),
                                                   DataCell(
                                                     Align(
@@ -353,6 +359,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                     ),
                                                     showEditIcon: false,
                                                     placeholder: true,
+                                                    onTap: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e, widget.classroomId)));
+                                                    }
                                                   ),
                                                   DataCell(
                                                     Align(
@@ -362,7 +371,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                     showEditIcon: false,
                                                     placeholder: false,
                                                     onTap: (){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e)));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e, widget.classroomId)));
                                                     }
                                                   ),
                                                   DataCell(
@@ -372,6 +381,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                     ),
                                                     showEditIcon: false,
                                                     placeholder: false,
+                                                    onTap: (){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.coordinator, e, widget.classroomId)));
+                                                    }
                                                   )
                                                 ]
                                               )

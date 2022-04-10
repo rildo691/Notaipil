@@ -40,7 +40,7 @@ class _ClassroomsState extends State<Classrooms> {
 
   int _selectedIndex = 1;
   int j = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   var _areaValue;
   var areas = [];
@@ -109,7 +109,7 @@ class _ClassroomsState extends State<Classrooms> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,
@@ -212,25 +212,24 @@ class _ClassroomsState extends State<Classrooms> {
                                     getTeacherClassroomsOrganizedByAreaAndCourse(widget.teacher[0]["id"], _areaValue);
                                   },
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 12,),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                 Expanded(
                                   child: ListView.builder(
-                                    itemCount: data.length,
+                                    itemCount: courses.length,
                                     itemBuilder: (context, index){
                                       if (index < courses.length){
                                         classrooms.clear();
                                         for (var d in data){
-                                          for (int i = 0; i < courses.length; i++){
-                                            if (d["course"] == courses[i]["name"] && !classrooms.contains(d["classroom"]["name"])){
-                                              classrooms.add(d);
-                                            }
+                                          if (d["course"] == courses[index]["name"] && !classrooms.contains(d["classroom"]["name"])){
+                                            classrooms.add(d);
                                           }
                                         }
 
                                         if (classrooms.isNotEmpty){
                                           return Column(
                                             children: [
-                                              Text(data[index]["course"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+                                              SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+                                              Text(courses[index]["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
                                               SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                               GridView.count(
                                                 shrinkWrap: true,

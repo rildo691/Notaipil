@@ -7,6 +7,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 /**Functions */
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:badges/badges.dart';
+import 'package:graphic/graphic.dart' as grafics;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -31,8 +32,9 @@ class StudentsStats extends StatefulWidget {
   late var teacher = [];
   late var student;
   late var subject;
+  late var classroomId;
 
-  StudentsStats(this.teacher, this.student);
+  StudentsStats(this.teacher, this.student, this.classroomId);
 
   @override
   _StudentsStatsState createState() => _StudentsStatsState();
@@ -43,13 +45,20 @@ class _StudentsStatsState extends State<StudentsStats> {
   var subjects = [];
   var quarters = [];
   var faults = [];
+  var scores = [];
   
   var quarterId;
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<Map<dynamic, dynamic>> data = [];
+
+  bool _selected1 = false;
+  bool _selected2 = false;
+  bool _selected3 = false;
 
   @override
   void initState(){
@@ -63,7 +72,7 @@ class _StudentsStatsState extends State<StudentsStats> {
   }
 
   Future<void> start() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
   }
 
   @override
@@ -80,11 +89,11 @@ class _StudentsStatsState extends State<StudentsStats> {
                 backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
-                iconTheme: IconThemeData(color: appBarLetterColorAndDrawerColor),
+                iconTheme: const IconThemeData(color: appBarLetterColorAndDrawerColor),
               ),
-              drawer: new Drawer(
+              drawer: Drawer(
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: borderAndButtonColor,
                   ),
                   child: SizedBox(
@@ -94,32 +103,32 @@ class _StudentsStatsState extends State<StudentsStats> {
                       padding: EdgeInsets.zero,
                       children: [
                         UserAccountsDrawerHeader(
-                          accountName: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
-                          accountEmail: new Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                          currentAccountPicture: new ClipOval(
+                          accountName: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
+                          accountEmail: Text(widget.teacher[0]["teacherAccount"]["personalData"]["gender"] == "M" ? "Professor" : "Professora", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                          currentAccountPicture: ClipOval(
                             child: widget.teacher[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 18) : Image.network(baseImageUrl + widget.teacher[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 23, height: SizeConfig.imageSizeMultiplier !* 23),
                           ),
                           otherAccountsPictures: [
-                            new CircleAvatar(
+                            CircleAvatar(
                               child: Text(widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().substring(0, 1)),
                             ),
                           ],
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: borderAndButtonColor,
                           ),
                         ),
                         ListTile(
-                          leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
+                          leading: const Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                           title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,
                               badgeColor: Colors.red,
-                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                              badgeContent: Text(informationLength.toString(), style: const TextStyle(color: Colors.white),),
                             ) :
                             Container(
                               width: 20,
@@ -127,26 +136,26 @@ class _StudentsStatsState extends State<StudentsStats> {
                             ),
                         ),
                         ListTile(
-                          leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
+                          leading: const Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                           title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.teacher)))
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
+                          leading: const Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
                           title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => {
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
+                          leading: const Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
                           title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => null,
                         ),
                         ListTile(
-                          leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
+                          leading: const Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
                           title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                           onTap: () => null,
                         )
@@ -157,7 +166,7 @@ class _StudentsStatsState extends State<StudentsStats> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: Future.wait([getQuarter(), getStudentsFaultsByQuarter(widget.student["id"], quarterId)]),
+                  future: Future.wait([getQuarter(), getStudentsFaultsByQuarter(widget.student["id"], quarterId), getStudentScoresByQuarter(widget.student["id"], quarterId, widget.classroomId)]),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -167,7 +176,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                           height: SizeConfig.screenHeight,
                           alignment: Alignment.center,
                           color: backgroundColor,
-                          child: CircularProgressIndicator(
+                          child: const CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
                             strokeWidth: 5.0
                           )
@@ -179,12 +188,42 @@ class _StudentsStatsState extends State<StudentsStats> {
 
                           quarters = (snapshot.data! as List)[0];
                           faults = (snapshot.data! as List)[1];
+                          scores = (snapshot.data! as List)[2];
+
+                          if (_selected1) {
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["mac"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          } else if (_selected2){
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["pp"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          } else if (_selected3){
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["pt"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          }
 
                           return 
                           Container(
-                            padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
+                            padding: const EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight !* 1.5,
+                            height: !_selected1 && !_selected2 && !_selected3 ? SizeConfig.screenHeight !* 1.75 : SizeConfig.screenHeight !* 2.12,
                             color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,8 +242,8 @@ class _StudentsStatsState extends State<StudentsStats> {
                                 Container(
                                   width: SizeConfig.screenWidth,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      new BoxShadow(
+                                    boxShadow: const [
+                                      BoxShadow(
                                         color: Colors.black,
                                         blurRadius: 6.0,
                                       )
@@ -223,7 +262,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.cake_rounded, color: iconColor),
+                                            const Icon(Icons.cake_rounded, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text("Nascido aos " + widget.student["student"]["personalData"]["birthdate"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -234,7 +273,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.perm_contact_cal_rounded, color: iconColor),
+                                            const Icon(Icons.perm_contact_cal_rounded, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text("B.I. nº: " + widget.student["student"]["personalData"]["bi"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -247,8 +286,8 @@ class _StudentsStatsState extends State<StudentsStats> {
                                 Container(
                                   width: SizeConfig.screenWidth,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      new BoxShadow(
+                                    boxShadow: const [
+                                      BoxShadow(
                                         color: Colors.black,
                                         blurRadius: 6.0,
                                       )
@@ -267,7 +306,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.cast_for_education, color: iconColor),
+                                            const Icon(Icons.cast_for_education, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text("N' de Processo: " + widget.student["student"]["process"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -278,7 +317,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.co_present_rounded, color: iconColor),
+                                            const Icon(Icons.co_present_rounded, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text("Turma: " + widget.student["classroom"]["name"].toString() + " / " + "Nº: " + widget.student["number"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -291,8 +330,8 @@ class _StudentsStatsState extends State<StudentsStats> {
                                 Container(
                                   width: SizeConfig.screenWidth,
                                   decoration: BoxDecoration(
-                                    boxShadow: [
-                                      new BoxShadow(
+                                    boxShadow: const [
+                                      BoxShadow(
                                         color: Colors.black,
                                         blurRadius: 6.0,
                                       )
@@ -311,7 +350,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.contact_phone, color: iconColor),
+                                            const Icon(Icons.contact_phone, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text(widget.student["student"]["email"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -322,7 +361,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             SizedBox(width: SizeConfig.widthMultiplier !* 3),
-                                            Icon(Icons.contact_mail, color: iconColor),
+                                            const Icon(Icons.contact_mail, color: iconColor),
                                             SizedBox(width: SizeConfig.widthMultiplier !* 5),
                                             Text(widget.student["student"]["telephone"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.2)),
                                           ]
@@ -348,13 +387,14 @@ class _StudentsStatsState extends State<StudentsStats> {
                                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
                                             primary: e["id"] == quarterId ? Colors.white : letterColor,
                                             backgroundColor: e["id"] == quarterId ? borderAndButtonColor : Colors.white,
-                                            textStyle: TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
+                                            textStyle: const TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
                                           ),
                                           child: Text(e["name"].toString()),
                                           onPressed: (){
                                             setState(() {
                                               quarterId = e["id"];
                                               getStudentsFaultsByQuarter(widget.student["id"], quarterId);
+                                              getStudentScoresByQuarter(widget.student["id"], quarterId, widget.classroomId);
                                             });
                                           }
                                         ),
@@ -368,7 +408,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     shrinkWrap: true,
                                     children: [ 
                                       DataTable(
-                                        columns: [
+                                        columns: const [
                                           DataColumn(
                                             label: Text("Disciplina"),
                                             numeric: false,
@@ -404,6 +444,95 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("NOTAS: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.center,
+                                      buttonHeight: SizeConfig.heightMultiplier !* .5,
+                                      buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected1 ? Colors.white : letterColor,
+                                            backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected1 ? const TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : const TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: const Text("MAC"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = true;
+                                              _selected2 = false;
+                                              _selected3 = false;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected2 ? Colors.white : letterColor,
+                                            backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected2 ? const TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : const TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: const Text("PP"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = true;
+                                              _selected3 = false;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected3 ? Colors.white : letterColor,
+                                            backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected3 ? const TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : const TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: const Text("PT"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = false;
+                                              _selected3 = true;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                      ]
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                data.isNotEmpty ? Expanded(
+                                  child: grafics.Chart(
+                                    data: data,
+                                    variables: {
+                                      'subject': grafics.Variable(
+                                        accessor: (Map map) => map['subject'] as String,
+                                      ),
+                                      'grade': grafics.Variable(
+                                        accessor: (Map map) => map['grade'] as num,
+                                      ),
+                                    },
+                                    elements: [grafics.IntervalElement()],
+                                    axes: [
+                                      grafics.Defaults.horizontalAxis,
+                                      grafics.Defaults.verticalAxis,
+                                    ],
+                                  ),
+                                ) : Container(),
                               ],
                             ),
                           );
@@ -414,15 +543,15 @@ class _StudentsStatsState extends State<StudentsStats> {
               ),
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
-                backgroundColor: Color(0xFF151717),
+                backgroundColor: const Color(0xFF151717),
                 elevation: 1,
                 mouseCursor: SystemMouseCursors.grab,
                 selectedFontSize: 15,
-                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-                selectedIconTheme: IconThemeData(color: Color(0xFF0D89A4), size: 30,),
+                selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+                selectedIconTheme: const IconThemeData(color: const Color(0xFF0D89A4), size: 30,),
                 selectedItemColor: linKColor,
                 unselectedItemColor: Colors.grey,
-                unselectedLabelStyle: TextStyle(color: Colors.grey),
+                unselectedLabelStyle: const TextStyle(color: Colors.grey),
                 items: const <BottomNavigationBarItem> [
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),

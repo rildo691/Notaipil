@@ -45,7 +45,7 @@ class SelectStudents extends StatefulWidget {
 class _SelectStudentsState extends State<SelectStudents> {
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   TextEditingController _nameController = TextEditingController();
 
@@ -116,7 +116,7 @@ class _SelectStudentsState extends State<SelectStudents> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

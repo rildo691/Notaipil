@@ -82,6 +82,10 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
     });
   }
 
+  Future _start() async{
+    await Future.delayed(Duration(seconds: 5));
+  }
+
    @override
    Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -187,7 +191,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                   height: SizeConfig.screenHeight,
                   color: backgroundColor,
                   child: FutureBuilder(
-                    future: getQualificationsByArray(teachers),
+                    future: Future.wait([getQualificationsByArray(teachers), _start()]),
                     builder: (context, snapshot){
                       switch (snapshot.connectionState){
                         case ConnectionState.none:
@@ -206,7 +210,7 @@ class _ShowCoordinationTeachersState extends State<ShowCoordinationTeachers> {
                             return Container();
                           } else {
 
-                            qualification = (snapshot.data! as List);
+                            qualification = (snapshot.data! as List)[0];
 
                             return
                             Column(

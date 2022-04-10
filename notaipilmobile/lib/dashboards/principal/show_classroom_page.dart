@@ -337,6 +337,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                         ),
                                                         showEditIcon: false,
                                                         placeholder: true,
+                                                        onTap: (){
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e, widget.classroomId)));
+                                                        }
                                                       ),
                                                       DataCell(
                                                         Align(
@@ -345,6 +348,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                         ),
                                                         showEditIcon: false,
                                                         placeholder: true,
+                                                        onTap: (){
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e, widget.classroomId)));
+                                                        }
                                                       ),
                                                       DataCell(
                                                         Align(
@@ -354,7 +360,7 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                         showEditIcon: false,
                                                         placeholder: false,
                                                         onTap: (){
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e)));
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e, widget.classroomId)));
                                                         }
                                                       ),
                                                       DataCell(
@@ -364,6 +370,9 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                                         ),
                                                         showEditIcon: false,
                                                         placeholder: false,
+                                                        onTap: (){
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentStats(widget.principal, e, widget.classroomId)));
+                                                        }
                                                       )
                                                     ]
                                                   )

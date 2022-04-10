@@ -52,6 +52,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.1.47-beta
   url_launcher: ^6.0.20
   badges: ^2.0.2
+  graphic: ^0.9.2
 
   
 dev_dependencies:

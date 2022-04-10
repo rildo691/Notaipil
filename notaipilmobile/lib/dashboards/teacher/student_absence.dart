@@ -50,7 +50,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
 
   int _selectedIndex = 0;
   int i = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   String? _classroomName;
 
@@ -133,7 +133,7 @@ class _StudentAbsenceState extends State<StudentAbsence> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

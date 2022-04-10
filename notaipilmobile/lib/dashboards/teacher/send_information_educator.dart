@@ -41,7 +41,7 @@ class SendInformationEducator extends StatefulWidget {
 class _SendInformationEducatorState extends State<SendInformationEducator> {
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   GlobalKey<FormState> _key = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -108,7 +108,7 @@ class _SendInformationEducatorState extends State<SendInformationEducator> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

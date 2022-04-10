@@ -48,7 +48,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
   TextEditingController _descriptionController = TextEditingController();
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -109,7 +109,7 @@ class _ShowSingleInformationPageState extends State<ShowSingleInformationPage> {
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                         },
-                        trailing: informationLength !> 0 ?
+                        trailing: informationLength > 0 ?
                           Badge(
                             toAnimate: false,
                             shape: BadgeShape.circle,

@@ -49,7 +49,7 @@ class _StudentGradeState extends State<StudentGrade> {
 
   int _selectedIndex = 0;
   int i = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   double? media = 0.0;
 
@@ -131,7 +131,7 @@ class _StudentGradeState extends State<StudentGrade> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

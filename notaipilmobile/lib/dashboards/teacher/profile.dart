@@ -35,7 +35,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   late var ipilTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.YEAR);
   late var educationTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.YEAR);
@@ -101,7 +101,7 @@ class _ProfileState extends State<Profile> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

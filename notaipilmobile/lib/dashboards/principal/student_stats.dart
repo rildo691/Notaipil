@@ -11,6 +11,7 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 import 'package:badges/badges.dart';
+import 'package:graphic/graphic.dart' as grafics;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -34,8 +35,9 @@ class StudentStats extends StatefulWidget {
 
   late var principal = [];
   late var student;
+  late var classroomId;
 
-  StudentStats(this.principal, this.student);
+  StudentStats(this.principal, this.student, this.classroomId);
 
   @override
   _StudentStatsState createState() => _StudentStatsState();
@@ -47,6 +49,7 @@ class _StudentStatsState extends State<StudentStats> {
   var quarters = [];
   var faults = [];
   var requests = [];
+  var scores = [];
 
   var quarterId;
 
@@ -54,6 +57,12 @@ class _StudentStatsState extends State<StudentStats> {
   int? informationLength;
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  List<Map<dynamic, dynamic>> data = [];
+
+  bool _selected1 = false;
+  bool _selected2 = false;
+  bool _selected3 = false;
 
   @override
   void initState(){
@@ -184,7 +193,7 @@ class _StudentStatsState extends State<StudentStats> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: Future.wait([getQuarter(), getStudentsFaultsByQuarter(widget.student["id"], quarterId)]),
+                  future: Future.wait([getQuarter(), getStudentsFaultsByQuarter(widget.student["id"], quarterId), getStudentScoresByQuarter(widget.student["id"], quarterId, widget.classroomId)]),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -206,12 +215,42 @@ class _StudentStatsState extends State<StudentStats> {
 
                           quarters = (snapshot.data! as List)[0];
                           faults = (snapshot.data! as List)[1];
+                          scores = (snapshot.data! as List)[2];
+
+                          if (_selected1) {
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["mac"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          } else if (_selected2){
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["pp"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          } else if (_selected3){
+                            data.clear();
+                            for (int i = 0; i < scores.length; i++){
+                              Map<dynamic, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                'grade': scores[i]["miniAgenda"][0]["pt"] ?? 0,
+                              };
+                              data.add(map);
+                            }
+                          }
 
                           return 
                           Container(
                             padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 0.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight !* 1.5,
+                            height: !_selected1 && !_selected2 && !_selected3 ? SizeConfig.screenHeight !* 1.75 : SizeConfig.screenHeight !* 2.12,
                             color: backgroundColor,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -382,6 +421,7 @@ class _StudentStatsState extends State<StudentStats> {
                                             setState(() {
                                               quarterId = e["id"];
                                               getStudentsFaultsByQuarter(widget.student["id"], quarterId);
+                                              getStudentScoresByQuarter(widget.student["id"], quarterId, widget.classroomId);
                                             });
                                           }
                                         ),
@@ -419,7 +459,7 @@ class _StudentStatsState extends State<StudentStats> {
                                               DataCell(
                                                 Align(
                                                   alignment: Alignment.centerLeft,
-                                                  child: Text(e["faults"].toString(), textAlign: TextAlign.center)
+                                                  child: Text(e["faults"].toString(), textAlign: TextAlign.right)
                                                 ),
                                                 showEditIcon: false,
                                                 placeholder: false,
@@ -431,6 +471,98 @@ class _StudentStatsState extends State<StudentStats> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("NOTAS: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.center,
+                                      buttonHeight: SizeConfig.heightMultiplier !* .5,
+                                      buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+                                      children: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected1 ? Colors.white : letterColor,
+                                            backgroundColor: _selected1 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected1 ? TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: Text("MAC"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = true;
+                                              _selected2 = false;
+                                              _selected3 = false;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected2 ? Colors.white : letterColor,
+                                            backgroundColor: _selected2 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected2 ? TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: Text("PP"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = true;
+                                              _selected3 = false;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: _selected3 ? Colors.white : letterColor,
+                                            backgroundColor: _selected3 ? borderAndButtonColor : Colors.white,
+                                            textStyle: !_selected3 ? TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold) 
+                                            : TextStyle(color: Colors.white, fontFamily: fontFamily, fontWeight: FontWeight.bold) ,
+                                          ),
+                                          child: Text("PT"),
+                                          onPressed: (){
+                                            setState(() {
+                                              _selected1 = false;
+                                              _selected2 = false;
+                                              _selected3 = true;
+                                              data.clear();
+                                            });
+                                          }
+                                        ),
+                                      ]
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                data.isNotEmpty ? Expanded(
+                                  child: grafics.Chart(
+                                    data: data as List<Map<dynamic, dynamic>>,
+                                    variables: {
+                                      'subject': grafics.Variable(
+                                        accessor: (Map map) => map['subject'] as String,
+                                      ),
+                                      'grade': grafics.Variable(
+                                        accessor: (Map map) => map['grade'] as num,
+                                      ),
+                                    },
+                                    elements: [grafics.IntervalElement()],
+                                    axes: [
+                                      grafics.Defaults.horizontalAxis,
+                                      grafics.Defaults.verticalAxis,
+                                    ],
+                                    transforms: [
+
+                                    ],
+                                  ),
+                                ) : Container(),
                               ],
                             ),
                           );

@@ -116,6 +116,7 @@ class _AddDeleteStudentState extends State<AddDeleteStudent> {
             SizeConfig().init(constraints, orientation);
 
             var index;
+            
             return Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(

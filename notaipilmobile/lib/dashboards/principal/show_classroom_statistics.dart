@@ -9,6 +9,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:badges/badges.dart';
+import 'package:graphic/graphic.dart' as grafics;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -46,7 +47,12 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
 
   GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  List<Map<dynamic, dynamic>> data = [];
+
   var requests = [];
+  var quarters = [];
+  var scores = [];
+  var quarterId;
 
   @override
   void initState(){
@@ -177,7 +183,7 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
-                  future: start(),
+                  future: Future.wait([getQuarter(), getClassroomScoresByQuarterAndSubject(quarterId, widget.classroomId)]),
                   builder: (context, snapshot){
                     switch(snapshot.connectionState){
                       case ConnectionState.none:
@@ -196,14 +202,29 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                         if (snapshot.hasError){
                           return Container();
                         } else {
+
+
+                          quarters = (snapshot.data! as List)[0];
+                          scores = (snapshot.data! as List)[1];
+
+                          if (scores.isNotEmpty){
+                            for (int i = 0; i < scores.length; i++){
+                              Map<String, dynamic> map = {
+                                'subject': scores[i]["subject"]["subject"]["code"],
+                                "classroom": scores[i]["classroom"],
+                              };
+
+                              data.add(map);
+                            }
+                          }
+
                           return
                           Container(
                             padding: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 50.0),
                             width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
+                            height: SizeConfig.screenHeight !- 100,
                             color: backgroundColor,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Row(
@@ -237,7 +258,56 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                                     )
                                   ]
                                 ),
-                                
+                                SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text("TRIMESTRES: ", style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+                                    SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.center,
+                                      buttonHeight: SizeConfig.heightMultiplier !* .5,
+                                      buttonMinWidth: SizeConfig.widthMultiplier !* .5,
+                                      children: quarters.map((e) => 
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                            primary: e["id"] == quarterId ? Colors.white : letterColor,
+                                            backgroundColor: e["id"] == quarterId ? borderAndButtonColor : Colors.white,
+                                            textStyle: const TextStyle(color: letterColor, fontFamily: fontFamily, fontWeight: FontWeight.bold),
+                                          ),
+                                          child: Text(e["name"].toString()),
+                                          onPressed: (){
+                                            setState(() {
+                                              quarterId = e["id"];
+                                              getClassroomScoresByQuarterAndSubject(quarterId, widget.classroomId);
+                                            });
+                                          }
+                                        ),
+                                      ).toList(),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 4),
+                                data.isNotEmpty ? Expanded(
+                                  child: grafics.Chart(
+                                    data: data,
+                                    variables: {
+                                      'subject': grafics.Variable(
+                                        accessor: (Map map) => map['subject'] as String,
+                                      ),
+                                      'classroom': grafics.Variable(
+                                        accessor: (Map map) => map['classroom'] as num,
+                                      ),
+                                    },
+                                    elements: [grafics.IntervalElement()],
+                                    axes: [
+                                      grafics.Defaults.horizontalAxis,
+                                      grafics.Defaults.verticalAxis,
+                                    ],
+                                  ),
+                                ) : Container(),
                               ]  
                             )
                           );

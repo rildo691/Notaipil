@@ -171,9 +171,11 @@ ApiService helper = ApiService();
 
       if (r["teacher"]["id"].toString() == teacherId && r["classroom"]["id"] == classroomId){
 
+        var response2 = await helper.get("subject_course_grade/${r["subjectCourseGradeId"]}");
+
         Map<String, dynamic> map = {
           "id": r["id"],
-          "subjectCourseGrade": r["subjectCourseGrade"],
+          "subject": response2["subject"],
           "classroom": r["classroom"],
           "teacher": r["teacher"]
         };
@@ -1051,6 +1053,25 @@ ApiService helper = ApiService();
     return presences;
   }
 
+  Future<List<dynamic>> getStudentsFaultsByQuarterAndSubject(studentId, quarterId, teacherSubject) async{
+    var response = await helper.get("presences/statistic_classroom_student/${studentId}");
+    var presences = [];
+
+    for (var r in response){
+      if (r["quarterId"] == quarterId && r["name"] == teacherSubject){
+        Map<String, dynamic> map = {
+          'name': r["name"],
+          "quarterId": r["quarterId"],
+          "faults": r["faults"],
+        };
+
+        presences.add(map);
+      }
+    }
+
+    return presences;
+  }
+
   Future<List<dynamic>> getAdmissionRequests() async{
     var requests = [];
     var response = await helper.get("teacher_accounts/admission");
@@ -1390,4 +1411,102 @@ ApiService helper = ApiService();
   Future getSchedule(schedule) async{
     var pdf = await helper.get(Uri.parse(baseScheduleUrl + schedule).toString());
     return pdf;
+  }
+
+  Future<List<dynamic>> getStudentScoresByQuarter(classroomStudentId, quarterId, classroomId) async{
+    var scores = [];
+    var response = await helper.get("teacher_classrooms/classrooms/teacher/mini_agenda/$classroomId/$quarterId");
+
+    if (quarterId != null){
+      for (var r in response){
+        for (int i = 0; i < r["miniAgenda"].length; i++){
+          if (r["miniAgenda"][i]["classroomStudentId"] == classroomStudentId){
+            Map<String, dynamic> map = {
+              "id": r["teacher"]["id"],
+              "classroomId": r["teacher"]["classroomId"],
+              "subjectCourseGradeId": r["teacher"]["subjectCourseGradeId"],
+              "teacher": r["teacher"]["teacher"],
+              "miniAgenda": [
+                {
+                  "id": r["miniAgenda"][i]["id"],
+                  "mac": r["miniAgenda"][i]["mac"],
+                  "pp": r["miniAgenda"][i]["pp"],
+                  "pt": r["miniAgenda"][i]["pt"],
+                  "mt": r["miniAgenda"][i]["mt"],
+                  "mf": r["miniAgenda"][i]["mf"],
+                  "quarterId": r["miniAgenda"][i]["quarterId"],
+                  "teacherInClassroomId": r["miniAgenda"][i]["teacherInClassroomId"],
+                  "classroomStudentId": r["miniAgenda"][i]["classroomStudentId"],
+                }
+              ],
+              "subject": r["subject"],
+            };
+
+            scores.add(map);
+          }
+        }
+        
+      }
+
+      return scores;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getClassroomScoresByQuarterAndSubject(quarterId, classroomId) async{
+    var scores = [];
+    var response = await helper.get("teacher_classrooms/classrooms/teacher/mini_agenda/$classroomId/$quarterId");
+
+    if (quarterId != null){
+      for (var r in response){
+        int sum = 0;
+        int cont = 0;
+        for (int i = 0; i < r["miniAgenda"].length; i++){
+          if (r["miniAgenda"][i]["mt"] != null){
+            sum += int.parse(r["miniAgenda"][i]["mt"].toString());
+            cont++;
+          }
+        }
+
+        Map<String, dynamic> map = {
+          'subject': r["subject"],
+          "classroom": sum / cont,
+        };
+
+        scores.add(map);
+      }
+
+      return scores;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getStudentScoresByTeacherAndQuarter (teacherInClassroomId, quarterId, classroomStudentId) async{
+    var scores = [];
+    var response = await helper.get("mini_agendas/$teacherInClassroomId/$quarterId");
+
+    if (quarterId != null){
+      for (var r in response){
+        if (r["classroomStudentId"] == classroomStudentId){
+          Map<String, dynamic> map = {
+            'id': r["id"],
+            "mac": r["mac"],
+            "pp": r["pp"],
+            "pt": r["pt"],
+            "mt": r["mt"],
+            "mf": r["mf"],
+            "classroomStudent": r["classroomStudent"],
+          };
+
+          scores.add(map);
+        }
+      }
+
+      return scores;
+
+    } else {
+      return [];
+    }
   }

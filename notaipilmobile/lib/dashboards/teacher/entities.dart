@@ -41,7 +41,7 @@ class Entities extends StatefulWidget {
 class _EntitiesState extends State<Entities> {
 
   int _selectedIndex = 4;
-  int? informationLength;
+  int informationLength = 0;
 
   var coordinations = [];
 
@@ -106,7 +106,7 @@ class _EntitiesState extends State<Entities> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

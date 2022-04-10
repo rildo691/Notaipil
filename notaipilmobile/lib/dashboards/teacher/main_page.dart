@@ -40,7 +40,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   var classrooms = [];
   var students = [];
@@ -110,7 +110,7 @@ class _MainPageState extends State<MainPage> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

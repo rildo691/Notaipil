@@ -279,7 +279,7 @@ class _ShowClassroomScheduleState extends State<ShowClassroomSchedule> {
                                       Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString()
                                     ),
                                     onTap: (){
-                                      _viewFile(Uri.parse(baseScheduleUrl + classroom[0]["schedule"]).toString());
+                                      
                                     },
                                   )
                                 )

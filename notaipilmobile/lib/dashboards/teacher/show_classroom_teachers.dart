@@ -37,7 +37,7 @@ class ShowClassroomTeachers extends StatefulWidget {
 class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   String? _classroomName;
 
@@ -111,7 +111,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,

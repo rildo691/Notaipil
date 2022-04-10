@@ -40,7 +40,7 @@ class Schedule extends StatefulWidget {
 class _ScheduleState extends State<Schedule> {
 
   int _selectedIndex = 2;
-  int? informationLength;
+  int informationLength = 0;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -119,7 +119,7 @@ class _ScheduleState extends State<Schedule> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,
@@ -168,7 +168,14 @@ class _ScheduleState extends State<Schedule> {
                       case ConnectionState.none:
                       case ConnectionState.waiting:
                         return Container(
-
+                          width: SizeConfig.screenWidth,
+                          height: SizeConfig.screenHeight,
+                          alignment: Alignment.center,
+                          color: backgroundColor,
+                          child: const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(borderAndButtonColor),
+                            strokeWidth: 5.0
+                          )
                         );
                       default:
                         if (snapshot.hasError){
@@ -206,24 +213,28 @@ class _ScheduleState extends State<Schedule> {
                                       onTap: () async{
                                         try{
                                           FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                            allowedExtensions: ['jpg', 'pdf']
+                                            allowMultiple: false,
                                           );
 
                                           if (result == null) return;
 
-                                          var scheduleTemporary = File(result.files.single.path.toString());
+                                          if (result.files.first.extension == "pdf"){
+                                            var scheduleTemporary = File(result.files.single.path.toString());
 
-                                          setState(() {
-                                            this.schedule = scheduleTemporary;
-                                          });
+                                            setState(() {
+                                              this.schedule = scheduleTemporary;
+                                            });
 
-                                          Map<String, dynamic> body = {
-                                            'teacherId': widget.teacher[0]["id"],
-                                            'schedule': this.schedule!.path,
-                                          };
+                                            Map<String, dynamic> body = {
+                                              'teacherId': widget.teacher[0]["id"],
+                                              'schedule': this.schedule!.path,
+                                            };
 
-                                          var response = await helper.patchMultipartScheduleTeacher("teachers", body);
-                                          buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                                            var response = await helper.patchMultipartScheduleTeacher("teachers", body);
+                                            buildModalMaterialPage(context, response["error"], response["message"], MaterialPageRoute(builder: (context) => Schedule(widget.teacher)));
+                                          } else {
+                                            return;
+                                          }
 
                                         } on PlatformException catch (e){
 

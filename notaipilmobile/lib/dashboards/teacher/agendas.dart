@@ -40,7 +40,7 @@ class _AgendasState extends State<Agendas> {
 
   int _selectedIndex = 3;
   int j = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   var _areaValue;
   var areas = [];
@@ -109,7 +109,7 @@ class _AgendasState extends State<Agendas> {
                           onTap: () => {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Teacherinformtions(widget.teacher)))
                           },
-                          trailing: informationLength !> 0 ?
+                          trailing: informationLength > 0 ?
                             Badge(
                               toAnimate: false,
                               shape: BadgeShape.circle,
