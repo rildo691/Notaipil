@@ -8,12 +8,15 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
+<<<<<<< HEAD
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:badges/badges.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,9 +30,13 @@ import 'package:notaipilmobile/dashboards/student/classroom_schedule.dart';
 
 class StudentGrades extends StatefulWidget {
 
+<<<<<<< HEAD
   late var student = [];
 
   StudentGrades(this.student);
+=======
+  const StudentGrades({ Key? key }) : super(key: key);
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   _StudentGradesState createState() => _StudentGradesState();
@@ -38,12 +45,20 @@ class StudentGrades extends StatefulWidget {
 class _StudentGradesState extends State<StudentGrades> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
 
   var quarterId;
   var teacher = [];
   var faults = [];
   var quarters = [];
+=======
+
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
+  var _selected4 = false;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   var _fakeTeachers = [
     {
@@ -73,6 +88,7 @@ class _StudentGradesState extends State<StudentGrades> {
   ];
 
   @override
+<<<<<<< HEAD
   void initState() {
     
     super.initState();
@@ -85,6 +101,8 @@ class _StudentGradesState extends State<StudentGrades> {
   }
 
   @override
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
@@ -94,20 +112,39 @@ class _StudentGradesState extends State<StudentGrades> {
 
             return Scaffold(
               appBar: AppBar(
+<<<<<<< HEAD
                 title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
+=======
+                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                elevation: 0,
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    onPressed: (){},
+                  )
+                ],
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
               ),
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
+<<<<<<< HEAD
                     color: borderAndButtonColor,
+=======
+                    color: Color.fromARGB(255, 34, 42, 55),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
+<<<<<<< HEAD
                         accountName: new Text(widget.student[0]["student"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         accountEmail: new Text(widget.student[0]["student"]["personalData"]["gender"] == "M" ? "Aluno" : "Aluna", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         currentAccountPicture: new ClipOval(
@@ -143,18 +180,50 @@ class _StudentGradesState extends State<StudentGrades> {
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
@@ -163,6 +232,32 @@ class _StudentGradesState extends State<StudentGrades> {
                         leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
+=======
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                       )
                     ]
                   )
@@ -173,6 +268,7 @@ class _StudentGradesState extends State<StudentGrades> {
                   padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight,
+<<<<<<< HEAD
                   color: backgroundColor,
                   child: FutureBuilder(
                     future: Future.wait([getStudentsFaultsByQuarter(widget.student[0]["classroomStudentId"], quarterId), getClassroomResponsible(widget.student[0]["classroom"]["id"]), getQuarter()]),
@@ -319,6 +415,179 @@ class _StudentGradesState extends State<StudentGrades> {
                           }
                       }
                     },
+=======
+                  color: Color.fromARGB(255, 34, 42, 55),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.grade_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrades()));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSchedule()));
+                                },
+                              ),
+                            ],
+                          )
+                        ]
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("PERÍODO: "),
+                          Text("SALA: "),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 7),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("I TRIMESTRE: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text("I"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected1 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = true;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                    _selected4 = false;
+                                  });
+                                }
+                              ),
+                              TextButton(
+                                child: Text("II"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected2 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = true;
+                                    _selected3 = false;
+                                    _selected4 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("III"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = true;
+                                    _selected4 = false;
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Expanded(
+                        child: DataTable(
+                          columnSpacing: SizeConfig.widthMultiplier !* 5,
+                          columns: [
+                            DataColumn(
+                              label: Text("Disciplina"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Faltas"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Categoria"),
+                              numeric: false,
+                            ),
+                            DataColumn(
+                              label: Text("Estado"),
+                              numeric: false,
+                            ),
+                          ],
+                          rows: _fakeTeachers.map((e) => 
+                            DataRow(
+                              cells: [
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(e["name"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e["misses"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(e["category"].toString()),
+                                  )
+                                ),
+                                DataCell(
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(e["state"].toString()),
+                                  )
+                                ),
+                              ]
+                            ),
+                          ).toList(),
+                        )
+                      ),
+                    ]  
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   )
                 ),
               ),

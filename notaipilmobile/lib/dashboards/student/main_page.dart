@@ -8,8 +8,11 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/functions/functions.dart';
+<<<<<<< HEAD
 import 'package:badges/badges.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -23,6 +26,7 @@ import 'package:notaipilmobile/services/apiService.dart';
 /**User Interface */
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
+<<<<<<< HEAD
 /**Complemets */
 import 'package:notaipilmobile/dashboards/student/profile.dart';
 import 'package:notaipilmobile/dashboards/student/studetInformations.dart';
@@ -31,6 +35,8 @@ import 'package:notaipilmobile/dashboards/student/entities.dart';
 import 'package:notaipilmobile/dashboards/student/grades_history.dart';
 import 'package:notaipilmobile/dashboards/student/main_page.dart';
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 class MainPage extends StatefulWidget {
 
   late var student = [];
@@ -44,6 +50,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
   int quantPositivas = 0;
   int quantNegativas = 0;
@@ -67,6 +74,13 @@ class _MainPageState extends State<MainPage> {
   double quarterMedia = 0;
   double quarterSum = 0.0;
   int contSum = 0;
+=======
+  int? informationLength;
+
+  var _selected1 = true;
+  var _selected2 = false;
+  var _selected3 = false;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   void initState() {
@@ -78,6 +92,7 @@ class _MainPageState extends State<MainPage> {
         setState((){informationLength = value;});
       }
     });
+<<<<<<< HEAD
 
     getActiveQuarter().then((value) {
       if (mounted){
@@ -86,6 +101,8 @@ class _MainPageState extends State<MainPage> {
         });
       }
     });
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   }
 
   @override
@@ -130,6 +147,7 @@ class _MainPageState extends State<MainPage> {
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => {
+<<<<<<< HEAD
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Studetinformations(widget.student)))
                         },
                         trailing: informationLength > 0 ?
@@ -143,12 +161,36 @@ class _MainPageState extends State<MainPage> {
                             width: 20,
                             height: 20,
                           ),
+=======
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                        },
+                        trailing: informationLength != 0 ? ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                informationLength.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ) : Container(),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                       ),
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => {
+<<<<<<< HEAD
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(widget.student)))
+=======
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         },
                       ),
                       ListTile(
@@ -173,6 +215,7 @@ class _MainPageState extends State<MainPage> {
                 )
               ),
               body: SingleChildScrollView(
+<<<<<<< HEAD
                 child: FutureBuilder(
                     future: Future.wait([getAllStudentSubjectsLength(widget.student[0]["studentId"]), getAllStudentTeachersLength(widget.student[0]["studentId"]), getAllStudentStudentsLength(widget.student[0]["studentId"]), getStudentScoresByQuarter(widget.student[0]["classroomStudentId"], widget.student[0]["quarterId"], widget.student[0]["classroom"]["id"])]),
                     builder: (context, snapshot){
@@ -515,6 +558,150 @@ class _MainPageState extends State<MainPage> {
                           }
                       }
                     },
+=======
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(8.0, 50.0, 8.0, 30.0),
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight,
+                  //color: Color.fromARGB(255, 34, 42, 55),
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 7.0,
+                        mainAxisSpacing: 10.0,
+                        childAspectRatio: SizeConfig.widthMultiplier !* .5 / SizeConfig.heightMultiplier !* 6,
+                        children: [
+                          _buildCard("Cursos", "5", Color.fromARGB(255, 0, 191, 252)),
+                          _buildCard("Turmas", "5", Color.fromARGB(255, 241, 188, 109)),
+                          _buildCard("Professores", "5", Color.fromARGB(255, 13, 137, 164)),
+                          _buildCard("Estudantes", "5", Color.fromARGB(255, 225, 106, 128)),
+                        ],
+                      ),
+                      SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("I TRIMESTRES: ", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                          SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: Text("PP"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected1 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected1 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = true;
+                                    _selected2 = false;
+                                    _selected3 = false;
+                                  });
+                                }
+                              ),
+                              TextButton(
+                                child: Text("PT"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected2 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected2 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = true;
+                                    _selected3 = false;
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text("T"),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                                  primary: _selected3 ? Colors.white : Colors.black,
+                                  backgroundColor: _selected3 ? Color(0xFF0D89A4) : Colors.white,
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                  )
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    _selected1 = false;
+                                    _selected2 = false;
+                                    _selected3 = true;
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Estado:"),
+                          SizedBox(
+                            height: SizeConfig.heightMultiplier !* 2.5,
+                          ),
+                          OutlinedButton(
+                            child: Text("Em progresso", style: TextStyle(color: Colors.white)),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(width: 3.0, color: Color(0xFFF1BC6D),),
+                              primary: Color.fromARGB(255, 34, 42, 55),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                            ),
+
+                            onPressed: (){}, 
+                          ),
+                        ]
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Média:"),
+                          SizedBox(
+                            height: SizeConfig.heightMultiplier !* 2.5,
+                          ),
+                          OutlinedButton(
+                            child: Text("17.05 valores", style: TextStyle(color: Colors.white)),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(width: 3.0, color: Color(0xFF00AD96),),
+                              primary: Color.fromARGB(255, 34, 42, 55),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                              minimumSize: Size(SizeConfig.widthMultiplier !* 45, SizeConfig.heightMultiplier !* 7)
+                            ),
+
+                            onPressed: (){}, 
+                          ),
+                        ]
+                      )
+                    ]  
+                  )
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                 ),
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -551,6 +738,7 @@ class _MainPageState extends State<MainPage> {
                   setState(() {
                     _selectedIndex = index;
                   });
+<<<<<<< HEAD
                   switch(index){
                     case 0:
                       Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.student)));
@@ -566,6 +754,9 @@ class _MainPageState extends State<MainPage> {
                       break;
                     default:
                   }
+=======
+                  
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                 },
               ),
             );
@@ -600,8 +791,13 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+<<<<<<< HEAD
                 Text(t, style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4)),
                 Text(s, style: TextStyle(color: Colors.white, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.4))
+=======
+                Text(t, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                Text(s, style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
               ],
             )
           ],
@@ -609,6 +805,7 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+<<<<<<< HEAD
 }
 
 class StudentStats{
@@ -617,4 +814,6 @@ class StudentStats{
   final Color color;
 
   StudentStats(this.subject, this.grade, this.color);
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 }

@@ -37,8 +37,11 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
   int informationLength = 0;
 
+<<<<<<< HEAD
   String name = "";
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   late var ipilTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.YEAR);
   late var educationTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.YEAR);
 
@@ -53,6 +56,7 @@ class _ProfileState extends State<Profile> {
         setState((){informationLength = value;});
       }
     });
+<<<<<<< HEAD
 
     String oldName = widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString();
     var firstIndex = widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().indexOf(" ");
@@ -60,6 +64,8 @@ class _ProfileState extends State<Profile> {
     setState((){
       name = oldName.substring(0, firstIndex).toUpperCase() + oldName.substring(lastIndex, oldName.length).toUpperCase();
     });
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   }
 
   @override
@@ -208,7 +214,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -252,7 +262,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -296,7 +310,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),

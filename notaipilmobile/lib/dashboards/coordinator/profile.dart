@@ -45,10 +45,16 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
 
   String? _areaId;
   String name = "";
+=======
+  int? informationLength;
+
+  String? _areaId;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -82,6 +88,7 @@ class _ProfileState extends State<Profile> {
         setState((){informationLength = value;});
       }
     });
+<<<<<<< HEAD
 
     String oldName = widget.coordinator[0]["personalData"]["fullName"].toString();
     var firstIndex = widget.coordinator[0]["personalData"]["fullName"].toString().indexOf(" ");
@@ -89,6 +96,8 @@ class _ProfileState extends State<Profile> {
     setState((){
       name = oldName.substring(0, firstIndex).toUpperCase() + oldName.substring(lastIndex, oldName.length).toUpperCase();
     });
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   }
 
   @override
@@ -134,6 +143,7 @@ class _ProfileState extends State<Profile> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+<<<<<<< HEAD
                         trailing: informationLength > 0 ?
                           Badge(
                             toAnimate: false,
@@ -145,6 +155,19 @@ class _ProfileState extends State<Profile> {
                             width: 20,
                             height: 20,
                           ),
+=======
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -219,7 +242,11 @@ class _ProfileState extends State<Profile> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+<<<<<<< HEAD
                               Text(name.toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
+=======
+                              Text(widget.coordinator[0]["personalData"]["fullName"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7, fontWeight: FontWeight.bold)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
                               Text(widget.coordinator[0]["personalData"]["gender"] == "M" ? "PROFESSOR DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase() : "PROFESSORA DO " + widget.coordinator[0]["teacherAccount"]["category"].toString().toUpperCase(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                               SizedBox(height: SizeConfig.heightMultiplier !* 2,),
@@ -235,7 +262,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -279,7 +310,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -323,7 +358,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),

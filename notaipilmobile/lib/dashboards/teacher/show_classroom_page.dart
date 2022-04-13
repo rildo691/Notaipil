@@ -269,7 +269,11 @@ class _ShowClassroomPageState extends State<ShowClassroomPage> {
                                           SizedBox(height: SizeConfig.heightMultiplier !* 1),
                                           Text("SALA: " + classroom[0]["room"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                                           SizedBox(height: SizeConfig.heightMultiplier !* 1),
+<<<<<<< HEAD
                                           Text("DIRECTOR DE TURMA: " + (teacher.length > 0 ? teacher[0]["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"].toString().toUpperCase() : ""), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                                          Text("DIRECTOR DE TURMA: " + (teacher.length > 0 ? teacher[0]["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"].toString() : ""), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                         ]
                                       ),
                                       SizedBox(height: SizeConfig.heightMultiplier !* 7,),

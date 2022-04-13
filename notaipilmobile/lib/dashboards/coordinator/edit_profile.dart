@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+<<<<<<< HEAD
 import 'dart:io';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -13,7 +16,10 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
+<<<<<<< HEAD
 import 'package:image_picker/image_picker.dart';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 import 'dart:math';
 import 'package:badges/badges.dart';
 
@@ -54,12 +60,18 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _currentPwdController = TextEditingController();
   TextEditingController _newPwdController = TextEditingController();
   TextEditingController _confirmateNewPwdController = TextEditingController();
+<<<<<<< HEAD
   TextEditingController _photo = TextEditingController();
 
   File? image;
 
   int _selectedIndex = 0;
   int informationLength = 0;
+=======
+
+  int _selectedIndex = 0;
+  int? informationLength;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   String? _areaId;
 
@@ -143,6 +155,7 @@ class _EditProfileState extends State<EditProfile> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+<<<<<<< HEAD
                         trailing: informationLength > 0 ?
                           Badge(
                             toAnimate: false,
@@ -154,6 +167,19 @@ class _EditProfileState extends State<EditProfile> {
                             width: 20,
                             height: 20,
                           ),
+=======
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -188,9 +214,15 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
+<<<<<<< HEAD
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 60,
+=======
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight !* 1.12,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   color: backgroundColor,
                   child: Form(
                     key: _key,
@@ -204,13 +236,17 @@ class _EditProfileState extends State<EditProfile> {
                             child: ClipOval(
                               child:widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                             ),
+<<<<<<< HEAD
                             onTap: (){
                               _showOptions(context);
                             },
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                           ),
                         ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
                         buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: iconColor,)),
+<<<<<<< HEAD
                         SizedBox(height: SizeConfig.heightMultiplier !* 3),
                         buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: iconColor,)),
                         SizedBox(height: SizeConfig.heightMultiplier !* 3),
@@ -235,6 +271,17 @@ class _EditProfileState extends State<EditProfile> {
                           },
                         ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 8),
+=======
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: iconColor,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 8),
+                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,7 +311,25 @@ class _EditProfileState extends State<EditProfile> {
                                       "email": _emailController.text,
                                     };
                                   }
+<<<<<<< HEAD
                                   
+=======
+                                  if (_currentPwdController.text.isNotEmpty){
+                                    if (_newPwdController.text.isNotEmpty){
+                                      if (_confirmateNewPwdController.text != _newPwdController.text){
+                                        Fluttertoast.showToast(
+                                          msg: "Confirmação da palavra-passe não coincide com a nova palavra-passe.",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          gravity: ToastGravity.BOTTOM,
+                                        ).toString();
+                                      } else {
+
+                                      }
+                                    }
+                                  }
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                 },
                               ),
                             )
@@ -332,6 +397,7 @@ class _EditProfileState extends State<EditProfile> {
       },
     );  
   }
+<<<<<<< HEAD
 
   Future _pickImage(source) async{
     try{
@@ -434,4 +500,6 @@ class _EditProfileState extends State<EditProfile> {
         }
       );
   }
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 } 
