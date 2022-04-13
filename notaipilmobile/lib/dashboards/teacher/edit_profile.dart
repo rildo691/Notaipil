@@ -165,9 +165,9 @@ class _EditProfileState extends State<EditProfile> {
               ),
               body: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 20.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.12,
+                  height: SizeConfig.screenHeight !- 60,
                   color: backgroundColor,
                   child: Form(
                     key: _key,
