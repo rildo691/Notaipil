@@ -47,6 +47,8 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
   int? informationLength;
 
+  String name = "";
+
   @override
   void initState(){
     super.initState();
@@ -63,6 +65,13 @@ class _ProfileState extends State<Profile> {
           requests = value;
         });
       }
+    });
+
+    String oldName = widget.principal[1]["personalData"]["fullName"].toString();
+    var firstIndex = widget.principal[1]["personalData"]["fullName"].toString().indexOf(" ");
+    var lastIndex = widget.principal[1]["personalData"]["fullName"].toString().lastIndexOf(" ");
+    setState((){
+      name = oldName.substring(0, firstIndex).toUpperCase() + oldName.substring(lastIndex, oldName.length).toUpperCase();
     });
   }
 
@@ -222,7 +231,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -266,7 +275,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -310,7 +319,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),

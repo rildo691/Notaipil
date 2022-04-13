@@ -277,9 +277,6 @@ class _StudentGradeState extends State<StudentGrade> {
                                     ),
                                     controller: _macController,
                                     validator: (String? value){
-                                      if (value!.isEmpty){
-                                        return "Preencha o campo MAC";
-                                      } 
                                       if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
                                         return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
@@ -300,9 +297,6 @@ class _StudentGradeState extends State<StudentGrade> {
                                     ),
                                     controller: _firstTestController,
                                     validator: (String? value){
-                                      if (value!.isEmpty){
-                                        return "Preencha o campo PP";
-                                      }
                                       if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
                                         return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
@@ -323,9 +317,6 @@ class _StudentGradeState extends State<StudentGrade> {
                                     ),
                                     controller: _secondTestController,
                                     validator: (String? value){
-                                      if (value!.isEmpty){
-                                        return "Preencha o campo PT";
-                                      }
                                       if (value.toString().length > 2 || int.parse(value.toString()) < 0 || int.parse(value.toString()) > 20){
                                         return "Certifique-se que a nota não tem mais de dois dígitos ou esteja no intervalo de 0 a 20";
                                       }
@@ -497,13 +488,15 @@ class _StudentGradeState extends State<StudentGrade> {
                   ),
                   onPressed: (){
 
-                    datum = Datum (
-                      mac: int.parse(_macController.text.toString()),
-                      pp: int.parse(_firstTestController.text.toString()),
-                      pt: int.parse(_secondTestController.text.toString()),
-                      teacherInClassroomId: teacher[0]["id"],
-                      classroomStudentId: students[i]["id"],
-                    );
+                    if (!(_macController.text.isEmpty && _firstTestController.text.isEmpty && _secondTestController.text.isEmpty)){
+                      datum = Datum (
+                        mac: int.parse(_macController.text.toString()),
+                        pp: int.parse(_firstTestController.text.toString()),
+                        pt: int.parse(_secondTestController.text.toString()),
+                        teacherInClassroomId: teacher[0]["id"],
+                        classroomStudentId: students[i]["id"],
+                      );
+                    }
 
                     setState((){
                       grades.add(datum);
@@ -555,13 +548,15 @@ class _StudentGradeState extends State<StudentGrade> {
                     minimumSize: Size(SizeConfig.widthMultiplier !* 40, SizeConfig.heightMultiplier !* 6.5)
                   ),
                   onPressed: () async {
-                    datum = Datum (
-                      mac: int.parse(_macController.text.toString()),
-                      pp: int.parse(_firstTestController.text.toString()),
-                      pt: int.parse(_secondTestController.text.toString()),
-                      teacherInClassroomId: teacher[0]["id"],
-                      classroomStudentId: students[i]["id"],
-                    );
+                    if (!(_macController.text.isEmpty && _firstTestController.text.isEmpty && _secondTestController.text.isEmpty)){
+                      datum = Datum (
+                        mac: int.parse(_macController.text.toString()),
+                        pp: int.parse(_firstTestController.text.toString()),
+                        pt: int.parse(_secondTestController.text.toString()),
+                        teacherInClassroomId: teacher[0]["id"],
+                        classroomStudentId: students[i]["id"],
+                      );
+                    }
 
                     grades.add(datum);
 

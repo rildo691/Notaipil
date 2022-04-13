@@ -221,7 +221,7 @@ class _TeacherStatsState extends State<TeacherStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -265,7 +265,7 @@ class _TeacherStatsState extends State<TeacherStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -309,7 +309,7 @@ class _TeacherStatsState extends State<TeacherStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),

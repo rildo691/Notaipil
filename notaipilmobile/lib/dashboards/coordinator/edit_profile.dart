@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 
 /**Configuration */
 import 'package:notaipilmobile/configs/size_config.dart';
@@ -12,6 +13,7 @@ import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/parts/register.dart';
 import 'package:notaipilmobile/parts/widget_builder.dart';
 import 'package:notaipilmobile/register/model/responseModel.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:math';
 import 'package:badges/badges.dart';
 
@@ -52,9 +54,12 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _currentPwdController = TextEditingController();
   TextEditingController _newPwdController = TextEditingController();
   TextEditingController _confirmateNewPwdController = TextEditingController();
+  TextEditingController _photo = TextEditingController();
+
+  File? image;
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   String? _areaId;
 
@@ -138,17 +143,17 @@ class _EditProfileState extends State<EditProfile> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength !> 0 ?
-                            Badge(
-                              toAnimate: false,
-                              shape: BadgeShape.circle,
-                              badgeColor: Colors.red,
-                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
-                            ) :
-                            Container(
-                              width: 20,
-                              height: 20,
-                            ),
+                        trailing: informationLength > 0 ?
+                          Badge(
+                            toAnimate: false,
+                            shape: BadgeShape.circle,
+                            badgeColor: Colors.red,
+                            badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                          ) :
+                          Container(
+                            width: 20,
+                            height: 20,
+                          ),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -185,7 +190,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight !* 1.12,
+                  height: SizeConfig.screenHeight !- 70,
                   color: backgroundColor,
                   child: Form(
                     key: _key,
@@ -199,19 +204,37 @@ class _EditProfileState extends State<EditProfile> {
                             child: ClipOval(
                               child:widget.coordinator[0]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 30) : Image.network(baseImageUrl + widget.coordinator[0]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 45, height: SizeConfig.imageSizeMultiplier !* 45),
                             ),
+                            onTap: (){
+                              _showOptions(context);
+                            },
                           ),
                         ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 5),
                         buildTextFormFieldWithIcon("", TextInputType.number, _phoneController, false, icon: Icon(Icons.phone, color: iconColor,)),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 3),
                         buildTextFieldRegister("", TextInputType.emailAddress, _emailController, icon: Icon(Icons.mail_outlined, color: iconColor,)),
+                        SizedBox(height: SizeConfig.heightMultiplier !* 3),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.done,
+                          readOnly: true,
+                          style: TextStyle(color: letterColor),
+                          decoration: InputDecoration(
+                            labelText: "Fotografia",
+                            labelStyle: TextStyle(color: letterColor),
+                            filled: true,
+                            fillColor: fillColor,
+                            border: OutlineInputBorder(),
+                          ),
+                          controller:  _photo,
+                          validator: (String? value){
+                            
+                          },
+                          onTap: (){
+                            
+                          },
+                        ),
                         SizedBox(height: SizeConfig.heightMultiplier !* 8),
-                        buildPasswordFormFieldWithIcon("Palavra-passe actual", _currentPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Palavra-passe nova", _newPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 1.7),
-                        buildPasswordFormFieldWithIcon("Confirmar nova palavra-passe", _confirmateNewPwdController),
-                        SizedBox(height: SizeConfig.heightMultiplier !* 5),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,21 +264,7 @@ class _EditProfileState extends State<EditProfile> {
                                       "email": _emailController.text,
                                     };
                                   }
-                                  if (_currentPwdController.text.isNotEmpty){
-                                    if (_newPwdController.text.isNotEmpty){
-                                      if (_confirmateNewPwdController.text != _newPwdController.text){
-                                        Fluttertoast.showToast(
-                                          msg: "Confirmação da palavra-passe não coincide com a nova palavra-passe.",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          gravity: ToastGravity.BOTTOM,
-                                        ).toString();
-                                      } else {
-
-                                      }
-                                    }
-                                  }
+                                  
                                 },
                               ),
                             )
@@ -322,5 +331,107 @@ class _EditProfileState extends State<EditProfile> {
         );
       },
     );  
+  }
+
+  Future _pickImage(source) async{
+    try{
+      final image = await ImagePicker().pickImage(source: source);
+
+      if (image == null) return;
+
+      var imageTemporary = File(image.path);
+      
+      setState((){
+        this.image = imageTemporary;
+        _photo.text = this.image!.path;
+      });
+
+    } on PlatformException catch (e){
+      print('Falha ao carregar a imagem: $e');
+    }
+  }
+
+  _showOptions(contex){
+    /*if (Platform.isIOS){
+      return showCupertinoModalPopup(
+        context: context, 
+        builder: (context) {
+          return CupertinoActionSheet(
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text("Abrir câmera"),
+                onPressed: (){}
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Escolher da galeria"),
+                onPressed: (){}
+              ),
+            ],
+          );
+        }
+      );
+    } else {*/
+      showModalBottomSheet(
+        context: context, 
+        builder: (context){
+          return BottomSheet(
+            builder: (context){
+              return Container(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          child: Icon(Icons.camera_alt_outlined, color: Colors.black),
+                        ),
+                        TextButton(
+                          child: Text("Abrir câmera"),
+                          style: TextButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                            ),
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.camera);
+                          }
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Container(
+                          child: Icon(Icons.photo_library_outlined, color: Colors.black),
+                        ),
+                        TextButton(
+                          child: Text("Escolher da galeria"),
+                          style: TextButton.styleFrom(
+                            primary: Colors.black,
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0
+                            ),
+                          ),
+                          onPressed: (){
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.gallery);
+                          }
+                        ),
+                      ]
+                    )
+                  ]
+                )
+              );
+            },
+            onClosing: (){},
+          );
+        }
+      );
   }
 } 

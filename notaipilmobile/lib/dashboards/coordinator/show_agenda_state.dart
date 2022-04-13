@@ -40,7 +40,7 @@ class ShowAgendaState extends StatefulWidget {
 class _ShowAgendaStateState extends State<ShowAgendaState> {
 
   int _selectedIndex = 3;
-  int? informationLength;
+  int informationLength = 0;
 
   var _selected1 = true;
   var _selected2 = false;
@@ -123,17 +123,17 @@ class _ShowAgendaStateState extends State<ShowAgendaState> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength !> 0 ?
-                            Badge(
-                              toAnimate: false,
-                              shape: BadgeShape.circle,
-                              badgeColor: Colors.red,
-                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
-                            ) :
-                            Container(
-                              width: 20,
-                              height: 20,
-                            ),
+                        trailing: informationLength > 0 ?
+                          Badge(
+                            toAnimate: false,
+                            shape: BadgeShape.circle,
+                            badgeColor: Colors.red,
+                            badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                          ) :
+                          Container(
+                            width: 20,
+                            height: 20,
+                          ),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },

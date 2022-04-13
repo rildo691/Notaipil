@@ -276,7 +276,7 @@ class _ShowClassroomTeachersState extends State<ShowClassroomTeachers> {
                                                 Text(e["subject"]["subject"]["code"].toString(), style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.textMultiplier !* 4.5 - 10), textAlign: TextAlign.center),
                                                 Center(
                                                   child: ClipOval(
-                                                    child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: Colors.grey, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),
+                                                    child: e["teacher"]["teacher"]["teacherAccount"]["avatar"] == null ? Icon(Icons.account_circle, color: profileIconColor, size: SizeConfig.imageSizeMultiplier !* 20) : Image.network(baseImageUrl + e["teacher"]["teacher"]["teacherAccount"]["avatar"], fit: BoxFit.cover, width: SizeConfig.imageSizeMultiplier !* 20, height: SizeConfig.imageSizeMultiplier !* 20),
                                                   ),
                                                 ),
                                                 Text("Prof. " + e["teacher"]["teacher"]["teacherAccount"]["personalData"]["fullName"].toString(), style: TextStyle(fontFamily: fontFamily, color: teacherNameColor)),

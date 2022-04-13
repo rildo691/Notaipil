@@ -8,6 +8,7 @@ import 'package:notaipilmobile/functions/functions.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:badges/badges.dart';
 import 'package:graphic/graphic.dart' as grafics;
+import 'package:charts_flutter/flutter.dart' as charts;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -55,6 +56,9 @@ class _StudentsStatsState extends State<StudentsStats> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Map<dynamic, dynamic>> data = [];
+  List<charts.Series<StudentStats, String>> series = [];
+  List<StudentStats> studentData = [];
+  List<charts.Series> seriesList = [];
 
   bool _selected1 = false;
   bool _selected2 = false;
@@ -199,6 +203,21 @@ class _StudentsStatsState extends State<StudentsStats> {
                               };
                               data.add(map);
                             }
+
+                            studentData = data.map((e) => 
+                              StudentStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
+                            ).toList();
+
+                            series = [
+                              charts.Series(
+                                data: studentData,
+                                id: 'Estatísticas do Estudante',
+                                domainFn: (StudentStats stats, _) => stats.subject,
+                                measureFn: (StudentStats stats, _) => stats.grade,
+                                colorFn: (StudentStats stats, _) => charts.ColorUtil.fromDartColor(stats.color),
+                              )
+                            ];
+
                           } else if (_selected2){
                             data.clear();
                             for (int i = 0; i < scores.length; i++){
@@ -208,6 +227,20 @@ class _StudentsStatsState extends State<StudentsStats> {
                               };
                               data.add(map);
                             }
+
+                            studentData = data.map((e) => 
+                              StudentStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
+                            ).toList();
+
+                            series = [
+                              charts.Series(
+                                data: studentData,
+                                id: 'Estatísticas do Estudante',
+                                domainFn: (StudentStats stats, _) => stats.subject,
+                                measureFn: (StudentStats stats, _) => stats.grade,
+                                colorFn: (StudentStats stats, _) => charts.ColorUtil.fromDartColor(stats.color),
+                              )
+                            ];
                           } else if (_selected3){
                             data.clear();
                             for (int i = 0; i < scores.length; i++){
@@ -217,6 +250,20 @@ class _StudentsStatsState extends State<StudentsStats> {
                               };
                               data.add(map);
                             }
+
+                            studentData = data.map((e) => 
+                              StudentStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
+                            ).toList();
+
+                            series = [
+                              charts.Series(
+                                data: studentData,
+                                id: 'Estatísticas do Estudante',
+                                domainFn: (StudentStats stats, _) => stats.subject,
+                                measureFn: (StudentStats stats, _) => stats.grade,
+                                colorFn: (StudentStats stats, _) => charts.ColorUtil.fromDartColor(stats.color),
+                              )
+                            ];
                           }
 
                           return 
@@ -245,7 +292,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -289,7 +336,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -333,7 +380,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     boxShadow: const [
                                       BoxShadow(
                                         color: Colors.black,
-                                        blurRadius: 6.0,
+                                        blurRadius: 4.0,
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -444,7 +491,7 @@ class _StudentsStatsState extends State<StudentsStats> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 3),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -515,8 +562,8 @@ class _StudentsStatsState extends State<StudentsStats> {
                                   ],
                                 ),
                                 SizedBox(height: SizeConfig.heightMultiplier !* 4),
-                                data.isNotEmpty ? Expanded(
-                                  child: grafics.Chart(
+                                series.isNotEmpty ? Expanded(
+                                  /*child: grafics.Chart(
                                     data: data,
                                     variables: {
                                       'subject': grafics.Variable(
@@ -531,6 +578,11 @@ class _StudentsStatsState extends State<StudentsStats> {
                                       grafics.Defaults.horizontalAxis,
                                       grafics.Defaults.verticalAxis,
                                     ],
+                                  ),*/
+                                  child: charts.BarChart(
+                                    series,
+                                    animate: true,
+                                    vertical: true,
                                   ),
                                 ) : Container(),
                               ],
@@ -605,4 +657,12 @@ class _StudentsStatsState extends State<StudentsStats> {
       },
     );
   }
+}
+
+class StudentStats{
+  final String subject;
+  final int grade;
+  final Color color;
+
+  StudentStats(this.subject, this.grade, this.color);
 }

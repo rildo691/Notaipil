@@ -42,7 +42,7 @@ class _CoordinatorinformationsState extends State<Coordinatorinformations> {
   var informationOne = [];
 
   int _selectedIndex = 0;
-  int? informationLength;
+  int informationLength = 0;
 
   String? _areaId;
 
@@ -126,17 +126,17 @@ class _CoordinatorinformationsState extends State<Coordinatorinformations> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
-                        trailing: informationLength !> 0 ?
-                            Badge(
-                              toAnimate: false,
-                              shape: BadgeShape.circle,
-                              badgeColor: Colors.red,
-                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
-                            ) :
-                            Container(
-                              width: 20,
-                              height: 20,
-                            ),
+                        trailing: informationLength > 0 ?
+                          Badge(
+                            toAnimate: false,
+                            shape: BadgeShape.circle,
+                            badgeColor: Colors.red,
+                            badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                          ) :
+                          Container(
+                            width: 20,
+                            height: 20,
+                          ),
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },

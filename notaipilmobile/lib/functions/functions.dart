@@ -925,20 +925,59 @@ ApiService helper = ApiService();
     return students;
   }
 
-  Future<List<dynamic>> getSingleStudent(userId, typeAccountId) async{
+  Future<List<dynamic>> getSingleClassroomStudent(studentId) async{
     var student = [];
-    var response = await helper.get("users/my_datas");
+    var response = await helper.get("classroom_students/students");
 
     for (var r in response){
-      Map<String, dynamic> map = {
-        "id": r["id"],
-        "email": r["email"],
-        "telephone": r["telephone"],
-        "studentId": r["studentId"],
-        "student": r["student"],
-      };
+      if (r["studentId"] == studentId){
+        Map<String, dynamic> map = {
+          "id": r["id"],
+          "number": r["number"],
+          "student": r["student"],
+          "classroom": r["classroom"]
+        };
 
-      student.add(map);
+        student.add(map);
+      }
+    }
+
+    return student;
+  }
+
+  Future<List<dynamic>> getSingleStudent(userId, typeAccountId) async{
+    var student = [];
+
+    Map<String, dynamic> body = {
+      'userId': userId,
+      'typeaccountId': typeAccountId,
+    };
+
+    var response = await helper.post("users/my_datas", body);
+
+    var response2 = await helper.get("classroom_students");
+
+    for (var r in response2){
+      if (r["studentId"] == response["studentId"]){
+        var response3 = await helper.get("quarters");
+        for (var res in response3){
+          if (res["isActive"]){
+            Map<String, dynamic> map = {
+              "id": response["id"],
+              "email": response["email"],
+              "telephone": response["telephone"],
+              "studentId": response["studentId"],
+              "student": response["student"],
+              "number": r["number"],
+              "classroomStudentId": r["id"],
+              "classroom": r["classroom"],
+              "quarterId": res["id"],
+            };
+
+            student.add(map);
+          }
+        }
+      }
     }
 
     return student;
@@ -1016,6 +1055,34 @@ ApiService helper = ApiService();
 
     return students;
   }
+
+  Future<int> getAllStudentSubjectsLength(studentId) async{
+    int length;
+    var response = await helper.get("classroom_students/qtd_subjects/$studentId");
+
+    length = int.parse(response.toString());
+
+    return length;
+  }
+
+  Future<int> getAllStudentTeachersLength(studentId) async{
+    int length;
+    var response = await helper.get("classroom_students/qtd_teachers/$studentId");
+
+    length = int.parse(response.toString());
+
+    return length;
+  }
+
+  Future<int> getAllStudentStudentsLength(studentId) async{
+    int length;
+    var response = await helper.get("classroom_students/qtd_students/$studentId");
+
+    length = int.parse(response.toString());
+
+    return length;
+  }
+
 
   Future<List<dynamic>> getStudentsFaults(studentId) async{
     var response = await helper.get("presences/statistic_classroom_student/${studentId}");
@@ -1203,7 +1270,7 @@ ApiService helper = ApiService();
     var quarters = [];
 
     for (var r in response){
-      if (r["isActive"] == true){
+      if (r["isActive"]){
         Map<String, dynamic> map = {
           "id": r["id"],
           "name": r["name"],

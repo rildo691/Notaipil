@@ -198,7 +198,8 @@ class _PrincipalinformationsState extends State<Principalinformations> {
 
                             informations = (snapshot.data as List);
 
-                            return Column(
+                            return 
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [

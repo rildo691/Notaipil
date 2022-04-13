@@ -37,6 +37,8 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
   int informationLength = 0;
 
+  String name = "";
+
   late var ipilTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["ipilDate"], Units.YEAR);
   late var educationTimeYear = Jiffy(now).diff(widget.teacher[0]["teacherAccount"]["educationDate"], Units.YEAR);
 
@@ -50,6 +52,13 @@ class _ProfileState extends State<Profile> {
       if (mounted){
         setState((){informationLength = value;});
       }
+    });
+
+    String oldName = widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString();
+    var firstIndex = widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().indexOf(" ");
+    var lastIndex = widget.teacher[0]["teacherAccount"]["personalData"]["fullName"].toString().lastIndexOf(" ");
+    setState((){
+      name = oldName.substring(0, firstIndex).toUpperCase() + oldName.substring(lastIndex, oldName.length).toUpperCase();
     });
   }
 
@@ -199,7 +208,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -243,7 +252,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -287,7 +296,7 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
-                              blurRadius: 6.0,
+                              blurRadius: 4.0,
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),

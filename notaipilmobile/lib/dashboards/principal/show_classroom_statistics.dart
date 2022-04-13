@@ -308,6 +308,77 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                                     ],
                                   ),
                                 ) : Container(),
+                                SizedBox(height: SizeConfig.heightMultiplier !* 2),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 3,
+                                          height: SizeConfig.heightMultiplier !* 3,  
+                                          child: Text("Text"),
+                                        ),
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 1,
+                                          height: SizeConfig.heightMultiplier !* 1,
+                                          child: Text("Text"),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 3,
+                                          height: SizeConfig.heightMultiplier !* 3,  
+                                          child: Text("Text"),
+                                        ),
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 1,
+                                          height: SizeConfig.heightMultiplier !* 1,
+                                          child: Text("Text"),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 3,
+                                          height: SizeConfig.heightMultiplier !* 3,  
+                                          child: Text("Text"),
+                                        ),
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 1,
+                                          height: SizeConfig.heightMultiplier !* 1,
+                                          child: Text("Text"),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 3,
+                                          height: SizeConfig.heightMultiplier !* 3,  
+                                          child: Text("Text"),
+                                        ),
+                                        Container(
+                                          width: SizeConfig.widthMultiplier !* 1,
+                                          height: SizeConfig.heightMultiplier !* 1,
+                                          child: Text("Text"),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
                               ]  
                             )
                           );
