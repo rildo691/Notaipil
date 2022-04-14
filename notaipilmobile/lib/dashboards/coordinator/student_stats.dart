@@ -12,7 +12,10 @@ import 'package:notaipilmobile/register/model/responseModel.dart';
 import 'dart:math';
 import 'package:badges/badges.dart';
 import 'package:graphic/graphic.dart' as grafics;
+<<<<<<< HEAD
 import 'package:charts_flutter/flutter.dart' as charts;
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
@@ -53,16 +56,23 @@ class _StudentStatsState extends State<StudentStats> {
 
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
+=======
+  int? informationLength;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   String? _areaId;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Map<dynamic, dynamic>> data = [];
+<<<<<<< HEAD
   List<charts.Series<StudentsStats, String>> series = [];
   List<StudentsStats> studentData = [];
   List<charts.Series> seriesList = [];
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   bool _selected1 = false;
   bool _selected2 = false;
@@ -148,6 +158,7 @@ class _StudentStatsState extends State<StudentStats> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+<<<<<<< HEAD
                         trailing: informationLength > 0 ?
                           Badge(
                             toAnimate: false,
@@ -159,6 +170,19 @@ class _StudentStatsState extends State<StudentStats> {
                             width: 20,
                             height: 20,
                           ),
+=======
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },
@@ -226,6 +250,7 @@ class _StudentStatsState extends State<StudentStats> {
                               };
                               data.add(map);
                             }
+<<<<<<< HEAD
 
                             studentData = data.map((e) => 
                               StudentsStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
@@ -241,6 +266,8 @@ class _StudentStatsState extends State<StudentStats> {
                               )
                             ];
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                           } else if (_selected2){
                             data.clear();
                             for (int i = 0; i < scores.length; i++){
@@ -250,6 +277,7 @@ class _StudentStatsState extends State<StudentStats> {
                               };
                               data.add(map);
                             }
+<<<<<<< HEAD
 
                             studentData = data.map((e) => 
                               StudentsStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
@@ -264,6 +292,8 @@ class _StudentStatsState extends State<StudentStats> {
                                 colorFn: (StudentsStats stats, _) => charts.ColorUtil.fromDartColor(stats.color),
                               )
                             ];
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                           } else if (_selected3){
                             data.clear();
                             for (int i = 0; i < scores.length; i++){
@@ -273,6 +303,7 @@ class _StudentStatsState extends State<StudentStats> {
                               };
                               data.add(map);
                             }
+<<<<<<< HEAD
 
                             studentData = data.map((e) => 
                               StudentsStats(e["subject"], e["grade"], int.parse(e["grade"].toString()) > 10 ? Color.fromRGBO(53, 162, 235, .5) : Color.fromRGBO(255, 99, 132, .5))
@@ -287,6 +318,8 @@ class _StudentStatsState extends State<StudentStats> {
                                 colorFn: (StudentsStats stats, _) => charts.ColorUtil.fromDartColor(stats.color),
                               )
                             ];
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                           }
 
                           return 
@@ -315,7 +348,11 @@ class _StudentStatsState extends State<StudentStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
+<<<<<<< HEAD
                                         blurRadius: 4.0,
+=======
+                                        blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -359,7 +396,11 @@ class _StudentStatsState extends State<StudentStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
+<<<<<<< HEAD
                                         blurRadius: 4.0,
+=======
+                                        blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -403,7 +444,11 @@ class _StudentStatsState extends State<StudentStats> {
                                     boxShadow: [
                                       new BoxShadow(
                                         color: Colors.black,
+<<<<<<< HEAD
                                         blurRadius: 4.0,
+=======
+                                        blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                       )
                                     ],
                                     borderRadius: BorderRadius.circular(7.0),
@@ -513,7 +558,11 @@ class _StudentStatsState extends State<StudentStats> {
                                     ],
                                   ),
                                 ),
+<<<<<<< HEAD
                                 SizedBox(height: SizeConfig.heightMultiplier !* 3),
+=======
+                                SizedBox(height: SizeConfig.heightMultiplier !* 5),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -670,6 +719,7 @@ class _StudentStatsState extends State<StudentStats> {
       },
     );
   }
+<<<<<<< HEAD
 }
 
 class StudentsStats{
@@ -678,4 +728,6 @@ class StudentsStats{
   final Color color;
 
   StudentsStats(this.subject, this.grade, this.color);
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 }

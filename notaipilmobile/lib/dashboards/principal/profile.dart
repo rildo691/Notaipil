@@ -47,8 +47,11 @@ class _ProfileState extends State<Profile> {
   int _selectedIndex = 0;
   int? informationLength;
 
+<<<<<<< HEAD
   String name = "";
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   @override
   void initState(){
     super.initState();
@@ -66,6 +69,7 @@ class _ProfileState extends State<Profile> {
         });
       }
     });
+<<<<<<< HEAD
 
     String oldName = widget.principal[1]["personalData"]["fullName"].toString();
     var firstIndex = widget.principal[1]["personalData"]["fullName"].toString().indexOf(" ");
@@ -73,6 +77,8 @@ class _ProfileState extends State<Profile> {
     setState((){
       name = oldName.substring(0, firstIndex).toUpperCase() + oldName.substring(lastIndex, oldName.length).toUpperCase();
     });
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   }
 
   @override
@@ -231,7 +237,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -275,7 +285,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),
@@ -319,7 +333,11 @@ class _ProfileState extends State<Profile> {
                           boxShadow: [
                             new BoxShadow(
                               color: Colors.black,
+<<<<<<< HEAD
                               blurRadius: 4.0,
+=======
+                              blurRadius: 6.0,
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                             )
                           ],
                           borderRadius: BorderRadius.circular(7.0),

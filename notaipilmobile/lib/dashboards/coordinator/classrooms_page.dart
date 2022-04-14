@@ -74,7 +74,11 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
 
   int _currentPos = 0;
   int _selectedIndex = 1;
+<<<<<<< HEAD
   int informationLength = 0;
+=======
+  int? informationLength;
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   String? _classroomId;
   String? _areaId;
@@ -152,6 +156,7 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                       ListTile(
                         leading: Icon(Icons.notifications, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Informações', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+<<<<<<< HEAD
                         trailing: informationLength > 0 ?
                           Badge(
                             toAnimate: false,
@@ -163,6 +168,19 @@ class _ClassroomsPageState extends State<ClassroomsPage> {
                             width: 20,
                             height: 20,
                           ),
+=======
+                        trailing: informationLength !> 0 ?
+                            Badge(
+                              toAnimate: false,
+                              shape: BadgeShape.circle,
+                              badgeColor: Colors.red,
+                              badgeContent: Text(informationLength.toString(), style: TextStyle(color: Colors.white),),
+                            ) :
+                            Container(
+                              width: 20,
+                              height: 20,
+                            ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations(widget.coordinator)))
                         },

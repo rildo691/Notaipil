@@ -8,16 +8,20 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
+<<<<<<< HEAD
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:badges/badges.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
 
+<<<<<<< HEAD
 /**Complements */
 import 'package:notaipilmobile/dashboards/student/show_single_information_page.dart';
 import 'package:notaipilmobile/dashboards/student/classroom_student.dart';
@@ -25,14 +29,20 @@ import 'package:notaipilmobile/dashboards/student/entities.dart';
 import 'package:notaipilmobile/dashboards/student/grades_history.dart';
 import 'package:notaipilmobile/dashboards/student/main_page.dart';
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 /**API Helper */
 import 'package:notaipilmobile/services/apiService.dart';
 
 class Studetinformations extends StatefulWidget {
 
+<<<<<<< HEAD
   late var student = [];
 
   Studetinformations(this.student);
+=======
+  const Studetinformations({ Key? key }) : super(key: key);
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   _StudetinformationsState createState() => _StudetinformationsState();
@@ -41,6 +51,7 @@ class Studetinformations extends StatefulWidget {
 class _StudetinformationsState extends State<Studetinformations> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
 
   var informations = [];
@@ -60,6 +71,27 @@ class _StudetinformationsState extends State<Studetinformations> {
   Future _refresh() async{
     getInformations(widget.student[1]["userId"], widget.student[1]["typeAccount"]["id"]).then((value) => setState((){informations = value;}));
   }
+=======
+
+  var _fakeInformations = [
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+    {
+      'mensagem': 'Data de término da minipauta',
+      'prazo': '12/09/2021'
+    },
+  ];
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +103,39 @@ class _StudetinformationsState extends State<Studetinformations> {
 
             return Scaffold(
               appBar: AppBar(
+<<<<<<< HEAD
                 title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
+=======
+                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                elevation: 0,
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    onPressed: (){},
+                  )
+                ],
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
               ),
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
+<<<<<<< HEAD
                     color: borderAndButtonColor,
+=======
+                    color: Color.fromARGB(255, 34, 42, 55),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
+<<<<<<< HEAD
                         accountName: new Text(widget.student[0]["student"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         accountEmail: new Text(widget.student[0]["student"]["personalData"]["gender"] == "M" ? "Aluno" : "Aluna", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         currentAccountPicture: new ClipOval(
@@ -120,18 +171,50 @@ class _StudetinformationsState extends State<Studetinformations> {
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
@@ -140,6 +223,32 @@ class _StudetinformationsState extends State<Studetinformations> {
                         leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
+=======
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                       )
                     ]
                   )
@@ -147,6 +256,7 @@ class _StudetinformationsState extends State<Studetinformations> {
               ),
               body: SingleChildScrollView(
                 child: Container(
+<<<<<<< HEAD
                   padding: EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 30.0),
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight !- 70,
@@ -264,6 +374,63 @@ class _StudetinformationsState extends State<Studetinformations> {
                           }
                       }
                     }
+=======
+                  padding: EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 30.0),
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight,
+                  color: Color.fromARGB(255, 34, 42, 55),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Informação", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4),),
+                          
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Recebidas", style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.7 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4))
+                              ]
+                            ),
+                            SizedBox(height: SizeConfig.heightMultiplier !* 5),
+                            
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier !* 50,
+                              child: ListView.builder(
+                              itemCount: _fakeInformations.length,
+                              itemBuilder: (context, index){
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  color: Color.fromARGB(255, 34, 42, 55),
+                                  child: ListTile(
+                                    title: Text(_fakeInformations[index]["mensagem"].toString(), style: TextStyle(color: Colors.white),),
+                                    leading: Icon(Icons.info_outline, color: Colors.yellow,),
+                                    trailing: Text(_fakeInformations[index]["prazo"].toString(), style: TextStyle(color: Colors.white),),
+                                    onTap: (){
+                                      buildModal(context, _fakeInformations[index]["prazo"], _fakeInformations[index]["mensagem"]);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            )
+                          ],
+                        ),
+                      )
+                    ]  
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   )
                 ),
               ),
@@ -301,6 +468,7 @@ class _StudetinformationsState extends State<Studetinformations> {
                   setState(() {
                     _selectedIndex = index;
                   });
+<<<<<<< HEAD
                   switch(index){
                     case 0:
                       Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(widget.student)));
@@ -316,6 +484,9 @@ class _StudetinformationsState extends State<Studetinformations> {
                       break;
                     default:
                   }
+=======
+                  
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                 },
               ),
             );

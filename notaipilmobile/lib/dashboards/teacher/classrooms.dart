@@ -229,7 +229,11 @@ class _ClassroomsState extends State<Classrooms> {
                                           return Column(
                                             children: [
                                               SizedBox(height: SizeConfig.heightMultiplier !* 5,),
+<<<<<<< HEAD
                                               Text(courses[index]["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7), textAlign: TextAlign.center),
+=======
+                                              Text(courses[index]["name"].toString(), style: TextStyle(color: letterColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7),),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                                               SizedBox(height: SizeConfig.heightMultiplier !* 5,),
                                               GridView.count(
                                                 shrinkWrap: true,

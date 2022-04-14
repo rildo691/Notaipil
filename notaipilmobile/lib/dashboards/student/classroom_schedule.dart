@@ -8,6 +8,7 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
+<<<<<<< HEAD
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,9 +32,13 @@ import 'package:notaipilmobile/dashboards/student/classroom_schedule.dart';
 
 class ClassroomSchedule extends StatefulWidget {
 
+<<<<<<< HEAD
   late var student = [];
 
   ClassroomSchedule(this.student);
+=======
+  const ClassroomSchedule({ Key? key }) : super(key: key);
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   _ClassroomScheduleState createState() => _ClassroomScheduleState();
@@ -40,6 +47,7 @@ class ClassroomSchedule extends StatefulWidget {
 class _ClassroomScheduleState extends State<ClassroomSchedule> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
 
   @override
@@ -65,6 +73,8 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
       print('Something went wrong');
     }
   }
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   Widget build(BuildContext context) {
@@ -76,20 +86,39 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
 
             return Scaffold(
               appBar: AppBar(
+<<<<<<< HEAD
                 title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
+=======
+                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                elevation: 0,
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    onPressed: (){},
+                  )
+                ],
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
               ),
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
+<<<<<<< HEAD
                     color: borderAndButtonColor,
+=======
+                    color: Color.fromARGB(255, 34, 42, 55),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
+<<<<<<< HEAD
                         accountName: new Text(widget.student[0]["student"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         accountEmail: new Text(widget.student[0]["student"]["personalData"]["gender"] == "M" ? "Aluno" : "Aluna", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         currentAccountPicture: new ClipOval(
@@ -125,18 +154,50 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
@@ -145,6 +206,32 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
                         leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
+=======
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                       )
                     ]
                   )
@@ -154,6 +241,7 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
                 child: Container(
                   padding: EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 30.0),
                   width: SizeConfig.screenWidth,
+<<<<<<< HEAD
                   height: SizeConfig.screenHeight !* 1.15,
                   color: backgroundColor,
                   child: FutureBuilder(
@@ -241,6 +329,41 @@ class _ClassroomScheduleState extends State<ClassroomSchedule> {
                           }
                       }
                     },
+=======
+                  height: SizeConfig.screenHeight,
+                  color: Color.fromARGB(255, 34, 42, 55),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 4.1 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 5.5, fontFamily: 'Roboto',)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.grade_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StudentGrades()));
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.calendar_today_outlined, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ClassroomSchedule()));
+                                },
+                              ),
+                            ],
+                          )
+                        ]
+                      ),
+                      
+                    ]  
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   )
                 ),
               ),

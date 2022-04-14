@@ -308,6 +308,7 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                                     ],
                                   ),
                                 ) : Container(),
+<<<<<<< HEAD
                                 SizedBox(height: SizeConfig.heightMultiplier !* 2),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -379,6 +380,8 @@ class _ShowClassroomStatisticsState extends State<ShowClassroomStatistics> {
                                     ),
                                   ],
                                 )
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                               ]  
                             )
                           );

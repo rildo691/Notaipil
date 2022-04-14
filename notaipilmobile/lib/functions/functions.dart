@@ -925,6 +925,7 @@ ApiService helper = ApiService();
     return students;
   }
 
+<<<<<<< HEAD
   Future<List<dynamic>> getSingleClassroomStudent(studentId) async{
     var student = [];
     var response = await helper.get("classroom_students/students");
@@ -978,6 +979,22 @@ ApiService helper = ApiService();
           }
         }
       }
+=======
+  Future<List<dynamic>> getSingleStudent(userId, typeAccountId) async{
+    var student = [];
+    var response = await helper.get("users/my_datas");
+
+    for (var r in response){
+      Map<String, dynamic> map = {
+        "id": r["id"],
+        "email": r["email"],
+        "telephone": r["telephone"],
+        "studentId": r["studentId"],
+        "student": r["student"],
+      };
+
+      student.add(map);
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
     }
 
     return student;
@@ -1056,6 +1073,7 @@ ApiService helper = ApiService();
     return students;
   }
 
+<<<<<<< HEAD
   Future<int> getAllStudentSubjectsLength(studentId) async{
     int length;
     var response = await helper.get("classroom_students/qtd_subjects/$studentId");
@@ -1084,6 +1102,8 @@ ApiService helper = ApiService();
   }
 
 
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   Future<List<dynamic>> getStudentsFaults(studentId) async{
     var response = await helper.get("presences/statistic_classroom_student/${studentId}");
     var presences = [];
@@ -1270,7 +1290,11 @@ ApiService helper = ApiService();
     var quarters = [];
 
     for (var r in response){
+<<<<<<< HEAD
       if (r["isActive"]){
+=======
+      if (r["isActive"] == true){
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
         Map<String, dynamic> map = {
           "id": r["id"],
           "name": r["name"],

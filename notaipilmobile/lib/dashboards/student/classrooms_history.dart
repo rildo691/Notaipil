@@ -8,12 +8,15 @@ import 'package:notaipilmobile/configs/size_config.dart';
 import 'package:notaipilmobile/parts/header.dart';
 import 'package:notaipilmobile/parts/navbar.dart';
 import 'package:notaipilmobile/register/model/areaModel.dart';
+<<<<<<< HEAD
 import 'package:notaipilmobile/functions/functions.dart';
 import 'package:badges/badges.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 /**Variables */
 import 'package:notaipilmobile/parts/variables.dart';
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
 /**Sessions */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,9 +29,13 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class ClassroomsHistory extends StatefulWidget {
 
+<<<<<<< HEAD
   late var student = [];
 
   ClassroomsHistory(this.student);
+=======
+  const ClassroomsHistory({ Key? key }) : super(key: key);
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   @override
   _ClassroomsHistoryState createState() => _ClassroomsHistoryState();
@@ -37,7 +44,10 @@ class ClassroomsHistory extends StatefulWidget {
 class _ClassroomsHistoryState extends State<ClassroomsHistory> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   int informationLength = 0;
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
 
   var _selected1 = true;
   var _selected2 = false;
@@ -63,6 +73,7 @@ class _ClassroomsHistoryState extends State<ClassroomsHistory> {
   ];
 
   @override
+<<<<<<< HEAD
   void initState() {
     
     super.initState();
@@ -75,6 +86,8 @@ class _ClassroomsHistoryState extends State<ClassroomsHistory> {
   }
 
   @override
+=======
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints){
@@ -84,20 +97,39 @@ class _ClassroomsHistoryState extends State<ClassroomsHistory> {
 
             return Scaffold(
               appBar: AppBar(
+<<<<<<< HEAD
                 title: Text("NotaIPIL", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontSize: SizeConfig.textMultiplier !* 3.4, fontFamily: fontFamily, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
                 backgroundColor: borderAndButtonColor,
                 elevation: 0,
                 centerTitle: true,
+=======
+                title: Text("NotaIPIL", style: TextStyle(color: Colors.white, fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 3.4 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4, fontFamily: 'Roboto', fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+                backgroundColor: Color.fromARGB(255, 34, 42, 55),
+                elevation: 0,
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.only(right: SizeConfig.imageSizeMultiplier !* 7),
+                    icon: Icon(Icons.account_circle, color: Colors.white, size: SizeConfig.imageSizeMultiplier !* 1 * double.parse(SizeConfig.heightMultiplier.toString()) * 1,),
+                    onPressed: (){},
+                  )
+                ],
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
               ),
               drawer: new Drawer(
                 child: Container(
                   decoration: BoxDecoration(
+<<<<<<< HEAD
                     color: borderAndButtonColor,
+=======
+                    color: Color.fromARGB(255, 34, 42, 55),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
                       UserAccountsDrawerHeader(
+<<<<<<< HEAD
                         accountName: new Text(widget.student[0]["student"]["personalData"]["fullName"], style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.7)),
                         accountEmail: new Text(widget.student[0]["student"]["personalData"]["gender"] == "M" ? "Aluno" : "Aluna", style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         currentAccountPicture: new ClipOval(
@@ -133,18 +165,50 @@ class _ClassroomsHistoryState extends State<ClassroomsHistory> {
                       ListTile(
                         leading: Icon(Icons.account_circle, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Perfil', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        accountName: new Text("Rildo Franco", style: TextStyle(color: Colors.white),),
+                        accountEmail: new Text("Director", style: TextStyle(color: Colors.white),),
+                        currentAccountPicture: new CircleAvatar(
+                          child: Icon(Icons.account_circle_outlined),
+                        ),
+                        otherAccountsPictures: [
+                          new CircleAvatar(
+                            child: Text("R"),
+                          ),
+                        ],
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 34, 42, 55),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.notifications, color: Colors.white,),
+                        title: Text('Informações', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => {
+                          //Navigator.push(context, MaterialPageRoute(builder: (context) => Coordinatorinformations()))
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.account_circle, color: Colors.white,),
+                        title: Text('Perfil', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.settings, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Definições', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
+=======
+                        leading: Icon(Icons.settings, color: Colors.white,),
+                        title: Text('Definições', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                         onTap: () => {
                           //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()))
                         },
                       ),
                       ListTile(
+<<<<<<< HEAD
                         leading: Icon(Icons.power_settings_new_sharp, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Sair', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
@@ -153,6 +217,32 @@ class _ClassroomsHistoryState extends State<ClassroomsHistory> {
                         leading: Icon(Icons.help_outline, color: appBarLetterColorAndDrawerColor,),
                         title: Text('Ajuda', style: TextStyle(color: appBarLetterColorAndDrawerColor, fontFamily: fontFamily, fontSize: SizeConfig.textMultiplier !* 2.3)),
                         onTap: () => null,
+=======
+                        leading: Icon(Icons.power_settings_new_sharp, color: Colors.white,),
+                        title: Text('Sair', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.help_outline, color: Colors.white,),
+                        title: Text('Ajuda', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: SizeConfig.isPortrait ? SizeConfig.textMultiplier !* 2.3 : SizeConfig.textMultiplier !* double.parse(SizeConfig.widthMultiplier.toString()) - 4)),
+                        onTap: () => null,
+                        trailing: ClipOval(
+                          child: Container(
+                            color: Colors.red,
+                            width: 20,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '8',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+>>>>>>> 4f1a03fcc0ff3075ae9d1fc608492b95e52c41ae
                       )
                     ]
                   )
